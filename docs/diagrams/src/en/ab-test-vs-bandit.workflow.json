@@ -1,0 +1,167 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "A/B test as a special case of a bandit",
+    "output": "docs/diagrams/en/ab-test-vs-bandit.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "lanes": [
+    {
+      "id": "ab",
+      "label": "A/B/n test"
+    },
+    {
+      "id": "bandit",
+      "label": "Contextual bandit"
+    }
+  ],
+  "mainPath": [
+    "b_ctx",
+    "b_est",
+    "b_pick",
+    "b_reward",
+    "b_update"
+  ],
+  "nodes": [
+    {
+      "id": "ab_split",
+      "lane": "ab",
+      "col": 0,
+      "type": "frontend",
+      "label": "Split traffic",
+      "sublabel": "1/K per variant"
+    },
+    {
+      "id": "ab_run",
+      "lane": "ab",
+      "col": 1,
+      "type": "backend",
+      "label": "Run test",
+      "sublabel": "fixed period"
+    },
+    {
+      "id": "ab_analyze",
+      "lane": "ab",
+      "col": 2,
+      "type": "backend",
+      "label": "Analyze",
+      "sublabel": "pick winner"
+    },
+    {
+      "id": "ab_ship",
+      "lane": "ab",
+      "col": 3,
+      "type": "cloud",
+      "label": "Ship winner",
+      "sublabel": "100% traffic"
+    },
+    {
+      "id": "b_ctx",
+      "lane": "bandit",
+      "col": 0,
+      "type": "external",
+      "label": "Observe context",
+      "sublabel": "per request"
+    },
+    {
+      "id": "b_est",
+      "lane": "bandit",
+      "col": 1,
+      "type": "database",
+      "label": "Estimate arms",
+      "sublabel": "mean + width"
+    },
+    {
+      "id": "b_pick",
+      "lane": "bandit",
+      "col": 2,
+      "type": "backend",
+      "label": "Pick arm",
+      "sublabel": "explore / exploit"
+    },
+    {
+      "id": "b_reward",
+      "lane": "bandit",
+      "col": 3,
+      "type": "frontend",
+      "label": "Get reward",
+      "sublabel": "chosen arm only"
+    },
+    {
+      "id": "b_update",
+      "lane": "bandit",
+      "col": 4,
+      "type": "database",
+      "label": "Update model",
+      "sublabel": "posterior"
+    }
+  ],
+  "edges": [
+    {
+      "id": "ab1",
+      "from": "ab_split",
+      "to": "ab_run"
+    },
+    {
+      "id": "ab2",
+      "from": "ab_run",
+      "to": "ab_analyze"
+    },
+    {
+      "id": "ab3",
+      "from": "ab_analyze",
+      "to": "ab_ship",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b1",
+      "from": "b_ctx",
+      "to": "b_est"
+    },
+    {
+      "id": "b2",
+      "from": "b_est",
+      "to": "b_pick",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b3",
+      "from": "b_pick",
+      "to": "b_reward"
+    },
+    {
+      "id": "b4",
+      "from": "b_reward",
+      "to": "b_update"
+    },
+    {
+      "id": "next",
+      "from": "b_update",
+      "to": "b_est",
+      "label": "next round",
+      "variant": "dashed",
+      "role": "return",
+      "route": "bottom-channel"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Same thing at ε = 1",
+      "items": [
+        "ε-greedy with ε = 1 is the 1/K split (Lean: epsGreedy_one_is_ab_test)",
+        "Split, then ship = explore-then-commit"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "What the bandit adds",
+      "items": [
+        "Moves traffic to better arms during the test",
+        "Uses context: a winner per member, not one for all"
+      ]
+    }
+  ]
+}

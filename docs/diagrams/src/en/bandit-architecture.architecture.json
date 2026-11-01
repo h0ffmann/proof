@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Contextual bandit: model and decision layers",
+    "output": "docs/diagrams/en/bandit-architecture.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "components": [
+    {
+      "id": "member",
+      "type": "external",
+      "label": "Member",
+      "sublabel": "opens the homepage",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "context",
+      "type": "frontend",
+      "label": "Context c",
+      "sublabel": "history, country",
+      "pos": [
+        270,
+        200
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "model",
+      "type": "database",
+      "label": "RewardModel",
+      "sublabel": "belief b",
+      "tag": "probabilistic",
+      "pos": [
+        500,
+        200
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "rule",
+      "type": "backend",
+      "label": "DecisionRule",
+      "sublabel": "greedy, ε, UCB, TS",
+      "pos": [
+        730,
+        200
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "home",
+      "type": "frontend",
+      "label": "Homepage",
+      "sublabel": "shows arm a",
+      "pos": [
+        960,
+        200
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "spec",
+      "type": "security",
+      "label": "Lean spec",
+      "sublabel": "proved invariants",
+      "pos": [
+        730,
+        50
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "log",
+      "type": "messagebus",
+      "label": "Event log",
+      "sublabel": "(c, a, r, P(a))",
+      "pos": [
+        960,
+        50
+      ],
+      "size": [
+        130,
+        64
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "request",
+      "from": "member",
+      "to": "context",
+      "label": "request",
+      "variant": "emphasis"
+    },
+    {
+      "id": "estimate",
+      "from": "context",
+      "to": "model",
+      "label": "estimate"
+    },
+    {
+      "id": "estimates",
+      "from": "model",
+      "to": "rule",
+      "label": "mean, width",
+      "variant": "emphasis"
+    },
+    {
+      "id": "show",
+      "from": "rule",
+      "to": "home",
+      "label": "arm a",
+      "variant": "emphasis"
+    },
+    {
+      "id": "proves",
+      "from": "spec",
+      "to": "rule",
+      "label": "proves",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "log",
+      "from": "home",
+      "to": "log",
+      "label": "log",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "reward",
+      "from": "home",
+      "to": "model",
+      "label": "reward r → update",
+      "fromSide": "bottom",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Model layer",
+      "items": [
+        "Keeps a belief b and updates it with (c, a, r)",
+        "Reports a mean and an uncertainty width for each arm"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Decision layer",
+      "items": [
+        "Sees only the per-arm estimates, never the raw history",
+        "Returns a probability for every arm"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Lean guarantees",
+      "items": [
+        "Every rule returns a valid distribution",
+        "Calibrated model ⇒ UCB loses at most 2β·width"
+      ]
+    }
+  ]
+}
