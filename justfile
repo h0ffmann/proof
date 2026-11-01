@@ -42,8 +42,10 @@ images:
       ev=".archify/capture/$lang/$name"; rm -rf "$ev"; mkdir -p "$ev" "docs/diagrams/img/$lang"
       {{archify}} visual-check "$html" --summary --require-provenance --out-dir "$ev" > "$ev/summary.json" \
         || { echo "visual-check failed for $lang/$name:" >&2; cat "$ev/summary.json" >&2; exit 1; }
-      png=$(ls "$ev"/*light*1440*.png 2>/dev/null | head -1)
-      [ -n "$png" ] || png=$(ls "$ev"/*.png | head -1)
+      # visual-check writes <name>.visual-check.<W>x<H>.<theme>.png; take the smallest light capture.
+      png=$(find "$ev" -name '*.light.png' | sort -V | head -1 || true)
+      [ -n "$png" ] || png=$(find "$ev" -name '*.png' | sort -V | head -1 || true)
+      [ -n "$png" ] || { echo "no PNG capture for $lang/$name in $ev:" >&2; ls -la "$ev" >&2; exit 1; }
       cp "$png" "docs/diagrams/img/$lang/$name.png"
       echo "docs/diagrams/img/$lang/$name.png"
     done
