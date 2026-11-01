@@ -7,7 +7,9 @@ and Nikkei 225 since 2015. The question: how wrong is a Gaussian risk number
 for the S&P 500 right now?
 
 The paper [`papers/fat-tails`](../papers/fat-tails/metadata.md) tells the same story in full,
-with every figure (`just paper fat-tails`).
+with every figure. A built copy is
+[`papers/fat-tails/fat-tails.pdf`](../papers/fat-tails/fat-tails.pdf); `just paper fat-tails`
+rebuilds it.
 
 Educational only. Not investment advice.
 
