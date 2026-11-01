@@ -1,0 +1,5 @@
+name = "HousePricing"
+defaultTargets = ["HousePricing"]
+
+[[lean_lib]]
+name = "HousePricing"

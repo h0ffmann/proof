@@ -1,0 +1,17 @@
+[package]
+name = "house-pricing"
+version = "0.1.0"
+edition = "2021"
+description = "California house prices: models compared in Rust, the chosen one replicated and proved in Lean 4"
+license = "MPL-2.0"
+publish = false
+
+# No dependencies: std only. The `lean` feature links the Lean-compiled model
+# (house-pricing/lean, `lake build HousePricing:static`) through its C ABI.
+[dependencies]
+
+[features]
+lean = []
+
+[profile.release]
+debug = false

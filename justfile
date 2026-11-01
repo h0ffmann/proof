@@ -40,9 +40,12 @@ images:
     for html in docs/diagrams/en/*.html docs/diagrams/pt-BR/*.html; do
       lang=$(basename "$(dirname "$html")"); name=$(basename "$html" .html)
       ev=".archify/capture/$lang/$name"; rm -rf "$ev"; mkdir -p "$ev" "docs/diagrams/img/$lang"
-      {{archify}} visual-check "$html" --summary --require-provenance --out-dir "$ev" > "$ev/summary.json"
-      png=$(ls "$ev"/*light*1440*.png 2>/dev/null | head -1)
-      [ -n "$png" ] || png=$(ls "$ev"/*.png | head -1)
+      {{archify}} visual-check "$html" --summary --require-provenance --out-dir "$ev" > "$ev/summary.json" \
+        || { echo "visual-check failed for $lang/$name:" >&2; cat "$ev/summary.json" >&2; exit 1; }
+      # visual-check writes <name>.visual-check.<W>x<H>.<theme>.png; take the smallest light capture.
+      png=$(find "$ev" -name '*.light.png' | sort -V | head -1 || true)
+      [ -n "$png" ] || png=$(find "$ev" -name '*.png' | sort -V | head -1 || true)
+      [ -n "$png" ] || { echo "no PNG capture for $lang/$name in $ev:" >&2; ls -la "$ev" >&2; exit 1; }
       cp "$png" "docs/diagrams/img/$lang/$name.png"
       echo "docs/diagrams/img/$lang/$name.png"
     done
@@ -57,6 +60,13 @@ check:
     cd lean && lake build
     cd ocean-waves/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+
+# House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
+house-pricing:
+    house-pricing/data/fetch.sh
+    cd house-pricing/rust && cargo run --release -- train
+    cd house-pricing/lean && lake build && lake build HousePricing:static
+    cd house-pricing/rust && cargo run --release --features lean -- parity
 
 # Build every paper, or the papers named: pdf/<slug>.pdf (and pdf/<slug>-ste.pdf, pdf/<slug>-pt-BR.pdf
 # when the paper has prose-ste/ or prose-pt-BR/). Run inside `nix develop`.
