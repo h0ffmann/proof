@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "b6c7dc26-da95-48ae-a58a-0cb11559af5c",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/runner/work/dogma/dogma/docs/diagrams/src/en/ab-test-vs-bandit.workflow.json",
+  "output": "/home/runner/work/dogma/dogma/docs/diagrams/en/ab-test-vs-bandit.html",
+  "specification": {
+    "sha256": "72b8121940c7c08c37cd2228606c3da09f7223c8d2c780254f1cf11c6a4ca16b",
+    "bytes": 3242
+  },
+  "artifact": {
+    "sha256": "696e8cd6eef6efe8b7cee88a35465e240f9b1b6c03c79d3d593ad80949c1bc59",
+    "bytes": 838555
+  }
+}

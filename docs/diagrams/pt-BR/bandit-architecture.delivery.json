@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "32692119-ac3e-48ca-81df-c4078c0b61d9",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/runner/work/dogma/dogma/docs/diagrams/src/pt-BR/bandit-architecture.architecture.json",
+  "output": "/home/runner/work/dogma/dogma/docs/diagrams/pt-BR/bandit-architecture.html",
+  "specification": {
+    "sha256": "8e672ff46cdaa700ff50f231a4c3f0ffb38a1d002d4b9785ce5f48ab960650fe",
+    "bytes": 33986
+  },
+  "artifact": {
+    "sha256": "c255576cdef28202dcd5d7255ef0ef7b19f647fe2793829f31d08dce20a3f693",
+    "bytes": 844299
+  }
+}
