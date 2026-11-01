@@ -1,0 +1,51 @@
+# diagrams: render every archify diagram (docs/diagrams/src) to docs/diagrams/<lang>/*.html, capture
+# the PNG figures that the Markdown notes embed (docs/diagrams/img/<lang>/*.png), and commit them to
+# the branch it ran on. Manual only: CI is disabled while the repository is private (AGENTS.md).
+# Run it from the Actions tab on a PR branch, never on main.
+name: diagrams
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: refuse main
+        if: github.ref == 'refs/heads/main'
+        run: { echo "run this on a branch, not main (AGENTS.md)"; exit 1; }
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: extractions/setup-just@v2
+      - name: render the diagrams (validate, deliver, browser check)
+        env:
+          ARCHIFY_CHROME: /usr/bin/google-chrome
+          ARCHIFY_CHROME_NO_SANDBOX: "1"
+        run: just diagrams
+      - name: capture the PNG figures
+        env:
+          ARCHIFY_CHROME: /usr/bin/google-chrome
+          ARCHIFY_CHROME_NO_SANDBOX: "1"
+        run: just images
+      - name: keep the receipts when a step fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: archify-evidence
+          path: .archify/
+          include-hidden-files: true
+          if-no-files-found: ignore
+      - name: commit the rendered diagrams
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/diagrams/en docs/diagrams/pt-BR docs/diagrams/img
+          git diff --cached --quiet && { echo "nothing changed"; exit 0; }
+          git commit -m "Render archify diagrams and figures"
+          git push
