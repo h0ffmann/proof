@@ -22,6 +22,10 @@ models (WAVEWATCH III, WAM Cycle 4 physics) and the kernels of one model time
 step, written and proved in pure Lean. It has no Haskell port yet. See
 `ocean-waves/README.md`.
 
+The fourth is `cycle/`: an essay on eternal return (`papers/cycle/`) with a small
+core-Lean package `Cycle` that proves a clock of `n + 1` moments returns. See
+`cycle/README.md`.
+
 ## Layout
 
 ```
@@ -50,6 +54,7 @@ ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same tool
 # Lean (toolchain pinned in lean/lean-toolchain; install via elan)
 cd lean && lake build            # must finish with no errors; prints the #eval outputs
 cd ocean-waves/lean && lake build # the same for the ocean-waves package
+cd cycle/lean && lake build       # the same for the cycle package
 
 # Haskell (GHC >= 9.4)
 cd haskell && cabal run examples
@@ -104,9 +109,9 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 
 ## Rules
 
-1. **No `sorry`, `admit` or new `axiom`** in `lean/`, `house-pricing/lean/` or
-   `ocean-waves/lean/`. Check with
-   `grep -rnE "sorry|admit|^axiom" lean/ContextualBandit house-pricing/lean/HousePricing ocean-waves/lean/OceanWaves`.
+1. **No `sorry`, `admit` or new `axiom`** in `lean/`, `house-pricing/lean/`,
+   `ocean-waves/lean/` or `cycle/lean/`. Check with
+   `grep -rnE "sorry|admit|^axiom" lean/ContextualBandit house-pricing/lean/HousePricing ocean-waves/lean/OceanWaves cycle/lean/Cycle`.
    `native_decide` is allowed only in `Examples.lean`.
 2. **Lean first.** A new decision rule or model goes in Lean (definition plus at
    least a validity theorem), then in Haskell with the same name. Update the
