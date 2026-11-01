@@ -47,4 +47,4 @@ result-*
 target/
 
 # graphify graph outputs (graph.json, graph.html, PDF): `just graph` rebuilds them
-triad-graph/out/
+triad-graph/*/out/

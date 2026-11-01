@@ -1,5 +1,6 @@
 // Open graphify's graph.html in headless Chromium, wait for the layout to settle,
-// then write a PDF and PNG screenshots. Usage: node triad-graph/render.mjs [outDir]
+// then write a PDF and PNG screenshots. Usage: node triad-graph/render.mjs triad-graph/<triad>
+// Reads <triad>/meta.json (title, focus node) and <triad>/out/graph.html; writes into <triad>/out/.
 import { createRequire } from "node:module";
 import path from "node:path";
 import fs from "node:fs";
@@ -7,9 +8,10 @@ import { pathToFileURL } from "node:url";
 
 const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
-const here = path.dirname(new URL(import.meta.url).pathname);
-const outDir = path.resolve(process.argv[2] ?? path.join(here, "out"));
-fs.mkdirSync(outDir, { recursive: true });
+if (!process.argv[2]) { console.error("usage: render.mjs <triad folder>"); process.exit(1); }
+const here = path.resolve(process.argv[2]);
+const outDir = path.join(here, "out");
+const meta = JSON.parse(fs.readFileSync(path.join(here, "meta.json"), "utf-8"));
 const html = pathToFileURL(path.join(here, "out", "graph.html")).href;
 
 const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
@@ -33,11 +35,11 @@ await page.evaluate(() => new Promise((done) => {
 await page.waitForTimeout(800);
 await page.screenshot({ path: path.join(outDir, "graph.png") });
 
-// A second screenshot with Palantir selected, so the side panel lists its ties.
-const pos = await page.evaluate(() => network.canvasToDOM(network.getPositions(["palantir"]).palantir));
+// A second screenshot with the focus node selected, so the side panel lists its ties.
+const pos = await page.evaluate((id) => network.canvasToDOM(network.getPositions([id])[id]), meta.focus);
 await page.mouse.click(pos.x, pos.y);
 await page.waitForTimeout(500);
-await page.screenshot({ path: path.join(outDir, "graph-palantir.png") });
+await page.screenshot({ path: path.join(outDir, `graph-${meta.focus}.png`) });
 
 // The PDF: the graph on page 1, then every edge with its source (deal sizes live in the edge text).
 const graph = JSON.parse(fs.readFileSync(path.join(here, "out", "graph.json"), "utf-8"));
@@ -55,12 +57,12 @@ const report = `<!doctype html><meta charset="utf-8"><style>
   table { border-collapse: collapse; width: 100%; } td, th { border-bottom: 1px solid #ddd; padding: 2px 4px; text-align: left; vertical-align: top; }
   th { background: #eee; } a { color: #1a4e8a; text-decoration: none; }
 </style>
-<div class="fig"><h1>Musk, Thiel and Karp: companies, deals and Big Tech ties</h1>
-<p>${graph.nodes.length} nodes, ${graph.links.length} edges. Drawn by graphify from triad-graph/nodes.csv and edges.csv. Dashed edges are press reports, not confirmed deals.</p>
+<div class="fig"><h1>${esc(meta.title)}</h1>
+<p>${graph.nodes.length} nodes, ${graph.links.length} edges. Drawn by graphify from triad-graph/${path.basename(here)}/nodes.csv and edges.csv. Dashed edges are press reports, not confirmed deals.</p>
 <img src="data:image/png;base64,${png}"></div>
 <h1>Edges and sources</h1><table><tr><th>From</th><th>To</th><th>Relation (year)</th><th>Source</th></tr>${rows}</table>`;
 const doc = await browser.newPage();
 await doc.setContent(report, { waitUntil: "load" });
-await doc.pdf({ path: path.join(outDir, "triad-graph.pdf"), printBackground: true, preferCSSPageSize: true });
+await doc.pdf({ path: path.join(outDir, `${path.basename(here)}.pdf`), printBackground: true, preferCSSPageSize: true });
 await browser.close();
-console.log(`wrote graph.png, graph-palantir.png and triad-graph.pdf in ${outDir}`);
+console.log(`wrote graph.png, graph-${meta.focus}.png and ${path.basename(here)}.pdf in ${outDir}`);

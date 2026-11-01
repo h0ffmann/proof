@@ -62,18 +62,25 @@ serve port=port:
 # ---- triad-graph (graphify) ----
 
 # Needs graphify and Playwright with Chromium (set VIS_NETWORK if unpkg.com is blocked; see triad-graph/README.md).
-# Musk, Thiel and Karp graph: CSV -> graph.json -> graphify graph.html -> PDF and PNG in triad-graph/out/
-graph:
-    python3 triad-graph/build.py
-    {{graphify}} export html --graph triad-graph/out/graph.json
-    node triad-graph/render.mjs
+# Build a triad graph (or all of them): CSV -> graph.json -> graphify graph.html -> PDF and PNG in triad-graph/<triad>/out/
+graph triad="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    triads="{{triad}}"
+    [ -n "$triads" ] || triads=$(for m in triad-graph/*/meta.json; do basename "$(dirname "$m")"; done)
+    for t in $triads; do
+      [ -f "triad-graph/$t/meta.json" ] || { echo "graph: no triad triad-graph/$t" >&2; exit 1; }
+      python3 triad-graph/build.py "triad-graph/$t"
+      {{graphify}} export html --graph "triad-graph/$t/out/graph.json"
+      node triad-graph/render.mjs "triad-graph/$t"
+    done
 
-# Build the graphify graph.html and serve it at http://localhost:8000/graph.html
-render-graph port=port:
-    python3 triad-graph/build.py
-    {{graphify}} export html --graph triad-graph/out/graph.json
+# Build one triad's graphify graph.html and serve it at http://localhost:8000/graph.html
+render-graph triad="musk-thiel-karp" port=port:
+    python3 triad-graph/build.py triad-graph/{{triad}}
+    {{graphify}} export html --graph triad-graph/{{triad}}/out/graph.json
     @echo "Graph: http://localhost:{{port}}/graph.html"
-    python3 -m http.server {{port}} --directory triad-graph/out
+    python3 -m http.server {{port}} --directory triad-graph/{{triad}}/out
 
 # ---- Lean and Haskell checks ----
 

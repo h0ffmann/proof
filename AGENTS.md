@@ -26,8 +26,8 @@ The fourth is `cycle/`: an essay on eternal return (`papers/cycle/`) with a smal
 core-Lean package `Cycle` that proves a clock of `n + 1` moments returns. See
 `cycle/README.md`.
 
-The fifth is `triad-graph/`: a sourced graph of Musk, Thiel and Karp drawn by
-graphify. `fat-tails/` (Python) holds fat-tail metrics on the S&P 500.
+The fifth is `triad-graph/`: sourced graphs of three tech figures each (Musk, Thiel
+and Karp; Musk, Altman and Amodei), drawn by graphify. `fat-tails/` (Python) holds fat-tail metrics on the S&P 500.
 
 ## Layout
 
@@ -162,9 +162,11 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
   (both languages live there), then `just diagrams` and `just images`. Any figure
   used in the Markdown notes must be an archify capture from `contextual-bandit/diagrams/img/<lang>/`.
 
-- `triad-graph/` is drawn by [graphify](https://graphify.com)
-  (`pip install graphifyy==0.9.100`). Edit its `nodes.csv` and `edges.csv`; every edge
-  needs a source URL. `just graph` builds `out/` (not committed), `just render-graph` serves it.
+- `triad-graph/` holds one folder per triad (`musk-thiel-karp/`, `musk-altman-amodei/`), drawn by
+  [graphify](https://graphify.com) (`pip install graphifyy==0.9.100`). Each folder has `meta.json`,
+  `nodes.csv`, `edges.csv` and `screenshots/`; `build.py` and `render.mjs` serve all of them. Every
+  edge needs a source URL. `just graph [triad]` builds `<triad>/out/` (not committed) and
+  `just render-graph <triad>` serves it. A new triad follows the same files and README pattern.
 
 - `contextual-bandit/MULTI_ARMED_CONTEXTUAL_BANDIT.md` is written in ASD-STE100 (Simplified
   Technical English). `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md` follows the

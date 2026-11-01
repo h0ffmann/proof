@@ -13,7 +13,7 @@ build steps. No project imports code from another.
 | [`contextual-bandit/`](contextual-bandit/README.md) | A bandit as a decision rule on top of a probabilistic model. Lean proves the rules (UCB optimism lemma, ε-greedy exploration); Haskell runs them. | Lean, Haskell | `just bandit` |
 | [`house-pricing/`](house-pricing/README.md) | Rust trains seven models on California Housing. The best one that Lean replicates exactly (gradient boosting, test R² 0.833) runs in Lean over `Rat`, is called from Rust through Lean's C ABI, and has proved output bounds. | Rust, Lean | `just house-pricing` |
 | [`ocean-waves/`](ocean-waves/README.md) | Spectral wave model physics (WAVEWATCH III, WAM Cycle 4 source terms) and the kernels of one model time step, in pure Lean. | Lean | `just ocean-waves` |
-| [`triad-graph/`](triad-graph/README.md) | A sourced graph of Elon Musk, Peter Thiel and Alex Karp: their companies, large deals and ties to other tech figures, drawn by graphify. | CSV, Python, JS | `just graph`, `just render-graph` |
+| [`triad-graph/`](triad-graph/README.md) | Sourced graphs of three tech figures each, drawn by graphify: [Musk, Thiel and Karp](triad-graph/musk-thiel-karp/README.md) and [Musk, Altman and Amodei](triad-graph/musk-altman-amodei/README.md). Their companies, large deals and ties to other tech figures. | CSV, Python, JS | `just graph`, `just render-graph <triad>` |
 | [`cycle/`](cycle/README.md) | An essay on eternal return, with a small Lean theorem that a clock of `n + 1` moments returns. | Lean, Markdown | `just cycle` |
 | [`fat-tails/`](fat-tails/README.md) | Taleb's fat-tail metrics (κ, Hill exponents, MS plots) on the S&P 500 since 1950. | Python | see its README |
 
