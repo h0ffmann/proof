@@ -66,6 +66,13 @@ Every line must say `OK`.
 7. **Exact vs float**: Lean uses `Rat`, Haskell uses `Double`. Don't claim a
    Lean theorem covers floating-point behaviour.
 
+## Notes
+
+- `MULTI_ARMED_CONTEXTUAL_BANDIT.md` is written in ASD-STE100 (Simplified
+  Technical English). `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md` follows the
+  piabrota/gramatico rules (level `smart-note + descritivo`). Keep the two in sync.
+  Cite only sources that you have opened. Mark unchecked claims with ⚠ in pt-BR.
+
 ## Good next steps
 
 - Probabilistic half of the LinUCB regret bound: calibration holds with

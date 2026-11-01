@@ -112,6 +112,15 @@ theorem epsGreedy_explores {K : Nat} [NeZero K] (ε : Rat) (h1 : ε ≤ 1)
     ε * invK K ≤ epsGreedy ε est a := by
   rw [epsGreedy_prob]; split <;> grind
 
+/-- **A/B/n test as a bandit.** With `ε = 1`, ε-greedy ignores the model and
+sends each arm probability `1/K`: a uniform random allocation, which is
+exactly the test period of an A/B/n test. -/
+theorem epsGreedy_one_is_ab_test {K : Nat} [NeZero K] (est : Arm K → Estimate) :
+    epsGreedy 1 est = uniform K := by
+  funext a
+  unfold epsGreedy mix
+  grind
+
 /-! ## 3. Greedy and UCB pick maximisers -/
 
 theorem greedy_is_argmax {K : Nat} [NeZero K] (est : Arm K → Estimate) (a : Arm K) :

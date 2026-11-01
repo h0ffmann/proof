@@ -2,7 +2,7 @@
 axioms and proofs
 
 Specs written and proved in Lean 4, then implemented in Haskell (and later Python).
-The first one is contextual bandits.
+The first one is contextual bandits. Background note: [MULTI_ARMED_CONTEXTUAL_BANDIT.md](MULTI_ARMED_CONTEXTUAL_BANDIT.md) ([pt-BR](MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md)).
 
 ## Contextual bandits: Lean 4 spec, Haskell implementation
 
@@ -67,6 +67,7 @@ plugs into any rule.
 | `greedy_valid`, `ucb_valid`, `epsGreedy_valid` | the output is a probability distribution (non-negative, sums to 1) when `0 ≤ ε ≤ 1` |
 | `epsGreedy_prob` | greedy arm gets `1 - ε + ε/K`, every other arm gets `ε/K` |
 | `epsGreedy_explores` | every arm has probability ≥ `ε/K` |
+| `epsGreedy_one_is_ab_test` | ε-greedy with ε = 1 is the uniform allocation of an A/B/n test |
 | `greedy_is_argmax`, `ucb_is_argmax` | the chosen arm maximises its score |
 | `ucb_zero` | UCB with β = 0 is greedy |
 | `ucb_gap` (optimism lemma) | if the model is **calibrated** (`|mean − μ| ≤ β·width` for every arm), UCB's arm is within `2β·width` of the best arm |
