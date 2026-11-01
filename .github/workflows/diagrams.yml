@@ -17,20 +17,27 @@ jobs:
     steps:
       - name: refuse main
         if: github.ref == 'refs/heads/main'
-        run: { echo "run this on a branch, not main (AGENTS.md)"; exit 1; }
+        run: |
+          echo "run this on a branch, not main (AGENTS.md)"
+          exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - uses: extractions/setup-just@v2
+      # The runner image may not ship Chrome; install it and point archify at it.
+      - id: chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
       - name: render the diagrams (validate, deliver, browser check)
         env:
-          ARCHIFY_CHROME: /usr/bin/google-chrome
+          ARCHIFY_CHROME: ${{ steps.chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: "1"
         run: just diagrams
       - name: capture the PNG figures
         env:
-          ARCHIFY_CHROME: /usr/bin/google-chrome
+          ARCHIFY_CHROME: ${{ steps.chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: "1"
         run: just images
       - name: keep the receipts when a step fails
