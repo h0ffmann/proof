@@ -22,6 +22,30 @@ line-by-line port that runs. Both share one idea:
    └────────────── update(b, (c, a, r)) ◄────────────── reward r ◄──────────────── environment
 ```
 
+## Diagrams
+
+All figures are made with [archify](https://github.com/tt-a1i/archify) by tt-a1i
+(Apache-2.0), vendored in [`vendor/archify`](vendor/archify/VENDORED.md).
+Sources for both languages are in [`docs/diagrams/src`](docs/diagrams/src).
+
+| Diagram | English | Português (BR) |
+|---|---|---|
+| Model and decision layers (architecture) | [html](docs/diagrams/en/bandit-architecture.html) | [html](docs/diagrams/pt-BR/bandit-architecture.html) |
+| One round (sequence) | [html](docs/diagrams/en/bandit-round.html) | [html](docs/diagrams/pt-BR/bandit-round.html) |
+| A/B test as a special case (workflow) | [html](docs/diagrams/en/ab-test-vs-bandit.html) | [html](docs/diagrams/pt-BR/ab-test-vs-bandit.html) |
+
+Render and host them (needs [`just`](https://github.com/casey/just), Node ≥ 18, Python 3 and Chrome/Chromium;
+set `ARCHIFY_CHROME` if Chromium is not on `PATH`):
+
+```bash
+just diagrams   # validate + render every diagram to docs/diagrams/<lang>/*.html
+just images     # capture PNG figures to docs/diagrams/img/<lang>/ for the notes
+just serve      # host everything at http://localhost:8000 (just serve 9000 for another port)
+```
+
+To publish them, enable GitHub Pages for the `docs/` folder: the index is
+`docs/diagrams/index.html`.
+
 ### Layout
 
 ```

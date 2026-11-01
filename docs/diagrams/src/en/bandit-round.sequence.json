@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "One round of a contextual bandit",
+    "output": "docs/diagrams/en/bandit-round.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "participants": [
+    {
+      "id": "home",
+      "type": "external",
+      "label": "Homepage",
+      "sublabel": "Member"
+    },
+    {
+      "id": "agent",
+      "type": "backend",
+      "label": "Agent",
+      "sublabel": "policy"
+    },
+    {
+      "id": "model",
+      "type": "database",
+      "label": "RewardModel",
+      "sublabel": "belief b"
+    },
+    {
+      "id": "rule",
+      "type": "backend",
+      "label": "DecisionRule",
+      "sublabel": "greedy, ε, UCB, TS"
+    },
+    {
+      "id": "log",
+      "type": "messagebus",
+      "label": "Event log",
+      "sublabel": "(c, a, r, P(a))"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 295,
+      "label": "Decide"
+    },
+    {
+      "from": 300,
+      "to": 350,
+      "label": "Act"
+    },
+    {
+      "from": 360,
+      "to": 415,
+      "label": "Learn"
+    }
+  ],
+  "messages": [
+    {
+      "id": "ctx",
+      "from": "home",
+      "to": "agent",
+      "y": 165,
+      "label": "context c",
+      "variant": "emphasis"
+    },
+    {
+      "id": "est",
+      "from": "agent",
+      "to": "model",
+      "y": 195,
+      "label": "estimate(b, c, a) for all a"
+    },
+    {
+      "id": "estret",
+      "from": "model",
+      "to": "agent",
+      "y": 225,
+      "label": "mean, width per arm",
+      "variant": "return"
+    },
+    {
+      "id": "rule",
+      "from": "agent",
+      "to": "rule",
+      "y": 255,
+      "label": "estimates"
+    },
+    {
+      "id": "dist",
+      "from": "rule",
+      "to": "agent",
+      "y": 283,
+      "label": "P(arm)",
+      "variant": "return"
+    },
+    {
+      "id": "show",
+      "from": "agent",
+      "to": "home",
+      "y": 312,
+      "label": "show arm a ~ P",
+      "variant": "emphasis"
+    },
+    {
+      "id": "reward",
+      "from": "home",
+      "to": "agent",
+      "y": 340,
+      "label": "reward r",
+      "variant": "return"
+    },
+    {
+      "id": "update",
+      "from": "agent",
+      "to": "model",
+      "y": 372,
+      "label": "update(b, c, a, r)"
+    },
+    {
+      "id": "log",
+      "from": "agent",
+      "to": "log",
+      "y": 402,
+      "label": "log (c, a, r, P(a))",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "agent",
+      "from": 165,
+      "to": 408,
+      "type": "backend"
+    },
+    {
+      "participant": "model",
+      "from": 190,
+      "to": 231,
+      "type": "database"
+    },
+    {
+      "participant": "rule",
+      "from": 250,
+      "to": 289,
+      "type": "backend"
+    },
+    {
+      "participant": "model",
+      "from": 367,
+      "to": 380,
+      "type": "database"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Decide",
+      "items": [
+        "The model turns the belief into estimates",
+        "The rule turns estimates into P(arm)"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Learn",
+      "items": [
+        "Only the chosen arm's reward is observed",
+        "Logging P(a) enables offline replay and IPW"
+      ]
+    }
+  ]
+}
