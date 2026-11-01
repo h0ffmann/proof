@@ -17,7 +17,9 @@ jobs:
     steps:
       - name: refuse main
         if: github.ref == 'refs/heads/main'
-        run: { echo "run this on a branch, not main (AGENTS.md)"; exit 1; }
+        run: |
+          echo "run this on a branch, not main (AGENTS.md)"
+          exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
