@@ -158,6 +158,10 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
   piabrota/gramatico rules (level `smart-note + descritivo`). Keep the two in sync.
   Cite only sources that you have opened. Mark unchecked claims with ⚠ in pt-BR.
 
+- `crypto-strength/` scores crypto networks. Edit `data/scores.csv` (every row needs
+  evidence and a source id from `data/sources.csv`, or `J` for judgment), then run
+  `just crypto-strength` and commit `heatmap.svg` and `results.md` with the data.
+
 ## Good next steps
 
 - Probabilistic half of the LinUCB regret bound: calibration holds with

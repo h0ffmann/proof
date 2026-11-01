@@ -1,0 +1,154 @@
+symbol,factor,score,evidence,sources
+BTC,decentralization,4,"Anyone can validate on consumer hardware; but Foundry (~30%) and AntPool (~19%) mine over half the blocks and six pools mine >95%",S04;J
+BTC,security,5,"Longest record of any chain; no consensus failure in over a decade; largest hashrate to attack",J
+BTC,scalability,2,"About 7 tx/s on L1; Lightning adds capacity but is not used by most holders",J
+BTC,affordability,4,"A full node runs on a small consumer machine; mining needs ASICs and cheap power",J
+BTC,adoption,5,"Market-cap rank 1; about 1200 monthly active developers",S12;S11
+BTC,maturity,5,"Mainnet since 2009",J
+BTC,fees_solved,2,"Fee market spikes under demand; Lightning helps only for small payments",J
+BTC,privacy,1,"Transparent ledger; privacy only by user discipline (coinjoin)",J
+BTC,crypto_force,3,"Costliest chain to 51%-attack and small attack surface (no general smart contracts); but ~6.51M BTC have exposed public keys and BIP-360 has no activation path yet; pool concentration",S07;S04
+ETH,decentralization,4,"Large validator set and several client teams; Lido holds 24.45% of stake",S05;J
+ETH,security,5,"No chain halt since 2015; survived the PoW-to-PoS switch",J
+ETH,scalability,3,"L1 stays narrow; capacity comes from rollups that post data to Ethereum",S15;J
+ETH,affordability,3,"Solo staking needs 32 ETH (about $72k at $2261); node needs a large SSD",S12;J
+ETH,adoption,5,"Market-cap rank 2; most developers of any ecosystem (6244 monthly active)",S12;S11
+ETH,maturity,5,"Mainnet since 2015",J
+ETH,fees_solved,4,"EIP-1559 fee market plus rollups give cent-level fees on L2; L1 is still costly at peaks",J
+ETH,privacy,1,"Transparent by default; privacy only at the application layer",J
+ETH,crypto_force,4,"Funded post-quantum team, weekly PQ devnets with 10+ clients, ~2029 target, ~0.1% of ETH in vulnerable dormant accounts; MEV and app-level contract exploits remain the main risk",S06;J
+SOL,decentralization,3,"Nakamoto coefficient 17 (Chainspect) or 6 (Nakaflow) over 665 validators; heavy hardware concentrates validators in data centres",S02;S01
+SOL,security,3,"Several full outages up to Feb 2024; no full outage since; Aug 2026 routing failure took 28.83% of stake offline without a halt",S17
+SOL,scalability,5,"About 1000 tx/s sustained, 11015 tx/s peak, 400 ms finality",S03
+SOL,affordability,2,"Validators need data-centre hardware and pay vote fees",J
+SOL,adoption,4,"Market-cap rank 7; second-most developers (3201 monthly active)",S12;S11
+SOL,maturity,3,"Mainnet since 2020",J
+SOL,fees_solved,5,"Sub-cent fees with local fee markets at high throughput",S03;J
+SOL,privacy,1,"Transparent by default",J
+SOL,crypto_force,2,"No public post-quantum roadmap; low Nakamoto coefficient by one measure; outage history",S07;S01;S17
+BNB,decentralization,2,"Small validator set; Nakamoto coefficient 7",S01;J
+BNB,security,3,"Chain halted after the 2022 bridge exploit",J
+BNB,scalability,4,"About 184 tx/s sustained, 3252 tx/s peak, 650 ms finality",S03
+BNB,affordability,2,"Validator seats are few and need large stake",J
+BNB,adoption,4,"Market-cap rank 4",S12
+BNB,maturity,3,"Mainnet since 2020",J
+BNB,fees_solved,4,"Low fees at moderate throughput",S03;J
+BNB,privacy,1,"Transparent by default",J
+BNB,crypto_force,2,"Small validator set can be coerced; bridge history; no PQ plan known",S01;J
+XRP,decentralization,2,"Validators trust a Unique Node List that most operators take from one published list",S16;J
+XRP,security,3,"About 64-minute halt in Feb 2025 when validations stopped publishing",S16
+XRP,scalability,4,"Seconds-level finality and high throughput for payments",J
+XRP,affordability,3,"No stake needed to run a validator, but UNL inclusion is gated",J
+XRP,adoption,4,"Market-cap rank 5",S12
+XRP,maturity,5,"Mainnet since 2012",J
+XRP,fees_solved,5,"Tiny fixed fees that burn XRP",J
+XRP,privacy,1,"Transparent by default",J
+XRP,crypto_force,2,"Liveness depends on a small trusted list; no PQ plan known",S16;J
+TRX,decentralization,2,"27 super representatives; Nakamoto coefficient 14",S02
+TRX,security,3,"No large halts known, but few block producers",J
+TRX,scalability,3,"About 137 tx/s sustained, 439 tx/s peak, 57 s finality",S03
+TRX,affordability,2,"Block producers are voted in; fees need staked energy to be cheap",J
+TRX,adoption,4,"Market-cap rank 8; large stablecoin transfer volume",S12;J
+TRX,maturity,4,"Mainnet since 2018",J
+TRX,fees_solved,3,"Cheap with staked energy; a plain stablecoin transfer without it costs about a dollar",J
+TRX,privacy,1,"Transparent by default",J
+TRX,crypto_force,2,"27 producers are a small target for coercion; no PQ plan known",S02;J
+ADA,decentralization,4,"Nakamoto coefficient 15 over 2069 stake pools; pools run on modest hardware",S02
+ADA,security,4,"21 Nov 2025 malformed transaction split the chain for up to 14 h; block production did not stop",S10
+ADA,scalability,2,"Low L1 throughput; Hydra and sidechains are early",J
+ADA,affordability,4,"No minimum stake to run a pool; modest hardware",J
+ADA,adoption,2,"Market-cap rank 18; small developer base relative to its rank",S12;J
+ADA,maturity,4,"Mainnet since 2017",J
+ADA,fees_solved,3,"Predictable, low fees, but congestion at peaks",J
+ADA,privacy,1,"Transparent by default (privacy planned in a separate chain, Midnight)",J
+ADA,crypto_force,3,"Broad stake distribution; formal-methods culture; no PQ migration yet",S02;J
+AVAX,decentralization,3,"Nakamoto coefficient 25 (Chainspect) or 22 (Nakaflow) over 563 validators",S02;S01
+AVAX,security,4,"Short stalls but no long halts known",J
+AVAX,scalability,4,"Sub-second finality; app-specific L1s add capacity",J
+AVAX,affordability,3,"2000 AVAX minimum stake (about $17k at $8.66)",S12;J
+AVAX,adoption,3,"Market-cap rank 29",S12
+AVAX,maturity,3,"Mainnet since 2020",J
+AVAX,fees_solved,4,"Low fees with dynamic base fee",J
+AVAX,privacy,1,"Transparent by default",J
+AVAX,crypto_force,3,"Medium Nakamoto coefficient; bridge risk on cross-chain assets; no PQ plan known",S02;J
+DOT,decentralization,5,"Highest Nakamoto coefficient measured (179) over 600 validators",S02
+DOT,security,4,"Shared security for parachains; no long halts known",J
+DOT,scalability,4,"Parallel parachains with async backing",J
+DOT,affordability,3,"Active validator set has a high effective minimum stake",J
+DOT,adoption,3,"Third-most developers (1245 monthly active) but market cap below rank 41",S11;S12
+DOT,maturity,3,"Relay chain since 2020",J
+DOT,fees_solved,4,"Low, weight-based fees",J
+DOT,privacy,1,"Transparent by default",J
+DOT,crypto_force,4,"Very high Nakamoto coefficient and fast forkless upgrades; no PQ migration yet",S02;J
+ATOM,decentralization,2,"Nakamoto coefficient 4",S01
+ATOM,security,3,"No long halts known on the Hub; app-chains vary",J
+ATOM,scalability,3,"Scales by many sovereign chains joined by IBC",J
+ATOM,affordability,3,"Active set of about 180 validators; entry needs large stake",J
+ATOM,adoption,2,"About 1200 monthly developers across Cosmos, but the Hub token is below rank 41",S11;S12
+ATOM,maturity,4,"Hub since 2019",J
+ATOM,fees_solved,4,"Low fees",J
+ATOM,privacy,1,"Transparent by default",J
+ATOM,crypto_force,2,"Nakamoto coefficient 4 means few entities can halt the Hub",S01
+NEAR,decentralization,2,"Nakamoto coefficient 9 over 379 validators",S02;S01
+NEAR,security,4,"No long halts known",J
+NEAR,scalability,4,"Sharded design (Nightshade)",J
+NEAR,affordability,3,"Seat price set by stake auction",J
+NEAR,adoption,3,"Market-cap rank 21",S12
+NEAR,maturity,3,"Mainnet since 2020",J
+NEAR,fees_solved,5,"Very low fees on a sharded chain",J
+NEAR,privacy,1,"Transparent by default",J
+NEAR,crypto_force,3,"Low Nakamoto coefficient; no PQ migration yet",S02;J
+ALGO,decentralization,3,"Nakamoto coefficient 14 over 1573 validators",S02;S01
+ALGO,security,4,"Instant finality; no long halts known",J
+ALGO,scalability,4,"Seconds-level blocks with instant finality",J
+ALGO,affordability,4,"No minimum stake to participate; modest hardware",J
+ALGO,adoption,2,"Market cap below rank 41",S12
+ALGO,maturity,4,"Mainnet since 2019",J
+ALGO,fees_solved,5,"Fixed minimum fee of 0.001 ALGO",J
+ALGO,privacy,1,"Transparent by default",J
+ALGO,crypto_force,4,"Already uses post-quantum Falcon signatures in state proofs, closest to production PQ among major chains",S07
+LTC,decentralization,3,"Merged-mined with Dogecoin by a few large pools",J
+LTC,security,4,"No successful attack on the main chain known",J
+LTC,scalability,2,"Bitcoin-like L1 with faster blocks",J
+LTC,affordability,4,"Full node on consumer hardware",J
+LTC,adoption,3,"Market-cap rank 26; common payment option",S12;J
+LTC,maturity,5,"Mainnet since 2011",J
+LTC,fees_solved,3,"Low fees, as demand is low",J
+LTC,privacy,2,"Optional MWEB extension blocks",J
+LTC,crypto_force,2,"Far less hashrate than Bitcoin; no PQ plan known",J
+XMR,decentralization,3,"CPU mining (RandomX) is open to anyone, but Qubic reached about 22% average hashrate",S08
+XMR,security,2,"18-block reorg on 14-15 Sep 2025 invalidated 118 transactions",S09
+XMR,scalability,2,"Large private transactions limit throughput",J
+XMR,affordability,5,"Mine and run a node on an ordinary CPU",S08;J
+XMR,adoption,3,"Market-cap rank 13; delisted from many exchanges",S12;J
+XMR,maturity,5,"Mainnet since 2014",J
+XMR,fees_solved,3,"Low fees, as demand is low",J
+XMR,privacy,5,"Private by default (ring signatures, stealth addresses, RingCT)",J
+XMR,crypto_force,2,"Selfish-mining campaign showed a small hashrate market can be rented or bribed; no PQ plan known",S08;S09
+ZEC,decentralization,2,"ASIC mining concentrated in a few pools",J
+ZEC,security,3,"Orchard counterfeiting bug existed 2022-2026; pool halted and patched; no evidence of exploit",S14
+ZEC,scalability,2,"Bitcoin-like L1",J
+ZEC,affordability,4,"Full node (Zebra) on consumer hardware",J
+ZEC,adoption,3,"Market-cap rank 11",S12
+ZEC,maturity,4,"Mainnet since 2016",J
+ZEC,fees_solved,4,"Low fixed-style fees",J
+ZEC,privacy,4,"Strong zero-knowledge privacy, but optional; about 30% of supply shielded",S13
+ZEC,crypto_force,3,"Halo 2 needs no trusted setup; a 4-year latent bug shows the cost of complex cryptography",S14;J
+SUI,decentralization,3,"Nakamoto coefficient 18 (Chainspect) or 17 (Nakaflow), but only 125 validators",S02;S01
+SUI,security,3,"Validators froze stolen funds after the 2025 Cetus exploit, which shows they can coordinate to censor",J
+SUI,scalability,5,"About 105 tx/s sustained, 1204 tx/s peak, near-instant finality for owned objects",S03
+SUI,affordability,2,"Large minimum stake for a validator",J
+SUI,adoption,3,"Market-cap rank 30",S12
+SUI,maturity,1,"Mainnet since 2023",J
+SUI,fees_solved,5,"Very low fees",J
+SUI,privacy,1,"Transparent by default",J
+SUI,crypto_force,2,"Small validator set showed it can freeze funds; no PQ plan known",J
+ARB,decentralization,1,"One centralized sequencer",S15
+ARB,security,4,"Stage 1: users can force-include via L1 within a day and exit; BoLD fraud proofs",S15
+ARB,scalability,4,"Rollup capacity on top of Ethereum",S15;J
+ARB,affordability,3,"Anyone can run a node or a validator for fraud proofs; nobody else can sequence",S15
+ARB,adoption,3,"About $9.67B secured; 975 monthly developers",S15;S11
+ARB,maturity,3,"Mainnet since 2021",J
+ARB,fees_solved,5,"Cent-level fees with Ethereum security",J
+ARB,privacy,1,"Transparent by default",J
+ARB,crypto_force,3,"Inherits Ethereum security, but emergency upgrades have no exit window",S15

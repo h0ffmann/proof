@@ -71,6 +71,10 @@ render-graph port=port:
     @echo "Graph: http://localhost:{{port}}/graph.html"
     python3 -m http.server {{port}} --directory graphs/triad/out
 
+# Crypto strength map: check data/, write heatmap.svg and results.md in crypto-strength/
+crypto-strength:
+    python3 crypto-strength/build.py
+
 # Check the Lean proofs (every package) and run the Haskell examples
 check:
     cd lean && lake build
