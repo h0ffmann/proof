@@ -1,0 +1,5 @@
+name = "ContextualBandit"
+defaultTargets = ["ContextualBandit"]
+
+[[lean_lib]]
+name = "ContextualBandit"
