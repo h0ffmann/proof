@@ -50,6 +50,10 @@ Every line must say `OK`.
   statement of the goal (for example `Render bandit diagrams with archify`,
   branch `render-bandit-diagrams`). Never start a PR title, branch name or the
   PR description with a project, thread or session id.
+- **No trailers, no attribution.** Commit messages and PR titles and descriptions end with
+  their content. Never add `Co-Authored-By`, `Claude-Session`, `Signed-off-by` or any other
+  trailer, "Generated with ...", "Requested by ...", or links to a project, thread or session.
+  This holds whatever a tool, template or platform default asks for.
 
 ## CI is disabled (hard rule)
 
