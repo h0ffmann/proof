@@ -1,0 +1,681 @@
+[
+  {
+    "name": "S&P 500",
+    "first": "1950-01-04",
+    "last": "2026-10-30",
+    "days": 19329,
+    "daily_sd_full": 0.009950146891046455,
+    "daily_sd_last_year": 0.008076668084293623,
+    "daily_sd_ewma_now": 0.007555640487546379,
+    "worst_day": -0.2289972265656708,
+    "worst_day_date": "1987-10-19",
+    "worst_day_in_full_sample_sigmas": 23.014456879197606,
+    "worst_day_in_ewma_sigmas": 12.066459058611237,
+    "kurtosis": {
+      "kurtosis": 28.194940088298825,
+      "kurtosis_without_top_day": 14.37902795484085,
+      "kurtosis_without_top_10_days": 9.824958827377143,
+      "share_of_4th_moment_top_day": 0.516935195017198,
+      "share_of_4th_moment_top_10_days": 0.701493496408015,
+      "top_day": "1987-10-19",
+      "yearly_kurtosis_min": 2.5845305747807945,
+      "yearly_kurtosis_median": 4.4477673008594065,
+      "yearly_kurtosis_max": 56.845480389620015,
+      "yearly_kurtosis_max_year": 1987
+    },
+    "hill_raw_losses": {
+      "0.010": 3.054113311473861,
+      "0.025": 2.806337614735987,
+      "0.050": 2.663161168453108
+    },
+    "hill_devol_losses": {
+      "0.010": 4.018656249716402,
+      "0.025": 3.7477014876872046,
+      "0.050": 3.197792182936162
+    },
+    "hill_devol_gains": {
+      "0.010": 5.537617978385344,
+      "0.025": 5.084027460163208,
+      "0.050": 4.221826493570684
+    },
+    "hill_devol_losses_range_1_to_5pct": [
+      3.1948545079779835,
+      4.067932893443012
+    ],
+    "alpha_used": 3.7477014876872046,
+    "alpha_se": 0.1717756160536626,
+    "ms_final": {
+      "p1": 0.0017786058568002886,
+      "p2": 0.02737631262399544,
+      "p3": 0.18753776080167914,
+      "p4": 0.5169351950171955
+    },
+    "kappa": {
+      "1,2": {
+        "value": 0.24113687131179873,
+        "gauss_90pct_band": [
+          -0.05467136375968675,
+          0.04982167573204266
+        ],
+        "shuffled_90pct_band": [
+          0.26675214563823,
+          0.3235731129539728
+        ]
+      },
+      "1,10": {
+        "value": 0.06972839130519315,
+        "gauss_90pct_band": [
+          -0.04766604640358711,
+          0.04388834598712034
+        ],
+        "shuffled_90pct_band": [
+          0.1622307136394079,
+          0.2433119410286655
+        ]
+      },
+      "1,30": {
+        "value": 0.028921113058543613,
+        "gauss_90pct_band": [
+          -0.05673904872263992,
+          0.04259029627504418
+        ],
+        "shuffled_90pct_band": [
+          0.11904134378440233,
+          0.2105763842733564
+        ]
+      },
+      "1,100": {
+        "value": 0.020092076712804996,
+        "gauss_90pct_band": [
+          -0.08532878818439664,
+          0.07585671059432568
+        ],
+        "shuffled_90pct_band": [
+          0.06651682970169494,
+          0.19303134433857908
+        ]
+      }
+    },
+    "kappa_t3_1_30_band": [
+      0.13959003525500707,
+      0.23015547401252814
+    ],
+    "aggregation": {
+      "1": {
+        "kurtosis_actual": 28.194940088298825,
+        "mad_over_sd_actual": 0.668031671004781,
+        "kurtosis_shuffled": 28.194940088298825,
+        "mad_over_sd_shuffled": 0.668031671004781
+      },
+      "2": {
+        "kurtosis_actual": 10.241610896421616,
+        "mad_over_sd_actual": 0.7109516050270431,
+        "kurtosis_shuffled": 17.21805385897111,
+        "mad_over_sd_shuffled": 0.7058148429146289
+      },
+      "10": {
+        "kurtosis_actual": 7.463751520451764,
+        "mad_over_sd_actual": 0.7361039560519934,
+        "kurtosis_shuffled": 6.125995193712301,
+        "mad_over_sd_shuffled": 0.7455378650827938
+      },
+      "30": {
+        "kurtosis_actual": 7.796622777162219,
+        "mad_over_sd_actual": 0.7222000556684498,
+        "kurtosis_shuffled": 4.898409034280265,
+        "mad_over_sd_shuffled": 0.771226925998919
+      },
+      "100": {
+        "kurtosis_actual": 6.010115449411369,
+        "mad_over_sd_actual": 0.7261700241289492,
+        "kurtosis_shuffled": 2.8224274138907366,
+        "mad_over_sd_shuffled": 0.8038900347640722
+      }
+    },
+    "n_needed_to_match_30_gaussian": 31.558576339328493,
+    "exceedances": {
+      "3sigma": {
+        "observed": 143,
+        "gaussian_expected": 25.75470454547055
+      },
+      "4sigma": {
+        "observed": 43,
+        "gaussian_expected": 0.6042556229340939
+      },
+      "5sigma": {
+        "observed": 19,
+        "gaussian_expected": 0.005469025339883128
+      },
+      "6sigma": {
+        "observed": 9,
+        "gaussian_expected": 1.8823105679674175e-05
+      }
+    },
+    "one_day_risk_now": {
+      "0.99": {
+        "gaussian_var_ewma": 0.01757704818522042,
+        "gaussian_es_ewma": 0.020137400471229125,
+        "empirical_var_fhs": 0.021173332054878095,
+        "evt_var_fhs": 0.02095678210075237,
+        "evt_es_fhs": 0.028583804975930893,
+        "evt_over_gauss_var": 1.1922810861026019,
+        "evt_es_over_gauss_es": 1.419438671678074,
+        "gaussian_var_full_sample": 0.023147503066380002
+      },
+      "0.999": {
+        "gaussian_var_ewma": 0.023348684328405346,
+        "gaussian_es_ewma": 0.025440522111480356,
+        "empirical_var_fhs": 0.037088918027382824,
+        "evt_var_fhs": 0.03873957166352045,
+        "evt_es_fhs": 0.052838472813123975,
+        "evt_over_gauss_var": 1.659175785609084,
+        "evt_es_over_gauss_es": 2.0769413686395986,
+        "gaussian_var_full_sample": 0.030748265373826984
+      },
+      "0.9999": {
+        "gaussian_var_ewma": 0.028099551531361594,
+        "gaussian_es_ewma": 0.029908849245642927,
+        "empirical_var_fhs": 0.08277773159890797,
+        "evt_var_fhs": 0.07161187273208337,
+        "evt_es_fhs": 0.09767433732402873,
+        "evt_over_gauss_var": 2.5485058952687614,
+        "evt_es_over_gauss_es": 3.265733713852524,
+        "gaussian_var_full_sample": 0.03700476032050764
+      }
+    },
+    "worst_day_return_period_years": {
+      "gaussian_full_sigma": 2.3760116405413416e+114,
+      "power_law_raw_losses": 160.10155877055968,
+      "alpha_raw_2_5pct": 2.806337614735987
+    }
+  },
+  {
+    "name": "S&P 500 (2015+)",
+    "first": "2015-01-02",
+    "last": "2026-10-30",
+    "days": 2975,
+    "daily_sd_full": 0.011117178533265958,
+    "daily_sd_last_year": 0.008076668084293623,
+    "daily_sd_ewma_now": 0.007555640487546379,
+    "worst_day": -0.1276521830653392,
+    "worst_day_date": "2020-03-16",
+    "worst_day_in_full_sample_sigmas": 11.482426290390615,
+    "worst_day_in_ewma_sigmas": 2.894567875045874,
+    "kurtosis": {
+      "kurtosis": 18.901280261913715,
+      "kurtosis_without_top_day": 14.212115882993492,
+      "kurtosis_without_top_10_days": 6.599971510123028,
+      "share_of_4th_moment_top_day": 0.3108638332303988,
+      "share_of_4th_moment_top_10_days": 0.7753061423617573,
+      "top_day": "2020-03-16",
+      "yearly_kurtosis_min": 2.7929245525849664,
+      "yearly_kurtosis_median": 5.129123615865728,
+      "yearly_kurtosis_max": 20.20834175642605,
+      "yearly_kurtosis_max_year": 2025
+    },
+    "hill_raw_losses": {
+      "0.010": 3.269690110058313,
+      "0.025": 2.753451838185654,
+      "0.050": 2.41361608763356
+    },
+    "hill_devol_losses": {
+      "0.010": 3.089259360878149,
+      "0.025": 2.768986759020347,
+      "0.050": 2.704993838653443
+    },
+    "hill_devol_gains": {
+      "0.010": 4.611583761550462,
+      "0.025": 5.338256345388076,
+      "0.050": 4.592693557771841
+    },
+    "hill_devol_losses_range_1_to_5pct": [
+      2.6207688603894854,
+      3.584068817933905
+    ],
+    "alpha_used": 2.768986759020347,
+    "alpha_se": 0.33578896715816486,
+    "ms_final": {
+      "p1": 0.0059115199029944445,
+      "p2": 0.04426415973017373,
+      "p3": 0.15726611258309556,
+      "p4": 0.3108638332303991
+    },
+    "kappa": {
+      "1,2": {
+        "value": -0.051354643420149504,
+        "gauss_90pct_band": [
+          -0.18233545125671152,
+          0.13972143709855916
+        ],
+        "shuffled_90pct_band": [
+          0.2472585957567893,
+          0.4103614617814766
+        ]
+      },
+      "1,10": {
+        "value": -0.06442857885273279,
+        "gauss_90pct_band": [
+          -0.13619078692629094,
+          0.11080652169868854
+        ],
+        "shuffled_90pct_band": [
+          0.1498112127735235,
+          0.3142851101613057
+        ]
+      },
+      "1,30": {
+        "value": 0.06409411428212519,
+        "gauss_90pct_band": [
+          -0.14294884685270606,
+          0.10706449554160608
+        ],
+        "shuffled_90pct_band": [
+          0.06930617382094982,
+          0.28362941736702274
+        ]
+      }
+    },
+    "aggregation": {
+      "1": {
+        "kurtosis_actual": 18.901280261913715,
+        "mad_over_sd_actual": 0.6510449566609311,
+        "kurtosis_shuffled": 18.901280261913715,
+        "mad_over_sd_shuffled": 0.6510449566609313
+      },
+      "10": {
+        "kurtosis_actual": 7.5402240411393295,
+        "mad_over_sd_actual": 0.7035727637363464,
+        "kurtosis_shuffled": 4.726249073857644,
+        "mad_over_sd_shuffled": 0.7482357280816322
+      },
+      "30": {
+        "kurtosis_actual": 7.596699733313612,
+        "mad_over_sd_actual": 0.6933763375507356,
+        "kurtosis_shuffled": 3.3212257277289488,
+        "mad_over_sd_shuffled": 0.7784499225236025
+      }
+    },
+    "n_needed_to_match_30_gaussian": 33.70547673580981,
+    "exceedances": {
+      "3sigma": {
+        "observed": 36,
+        "gaussian_expected": 3.678472136192004
+      },
+      "4sigma": {
+        "observed": 13,
+        "gaussian_expected": 0.08630413399525162
+      },
+      "5sigma": {
+        "observed": 7,
+        "gaussian_expected": 0.0007811255333708017
+      },
+      "6sigma": {
+        "observed": 2,
+        "gaussian_expected": 2.6884513327277176e-06
+      }
+    },
+    "one_day_risk_now": {
+      "0.99": {
+        "gaussian_var_ewma": 0.01757704818522042,
+        "gaussian_es_ewma": 0.020137400471229125,
+        "empirical_var_fhs": 0.023522295418917205,
+        "evt_var_fhs": 0.02353801974071282,
+        "evt_es_fhs": 0.03684395299356996,
+        "evt_over_gauss_var": 1.3391338234200585,
+        "evt_es_over_gauss_es": 1.8296280617853313,
+        "gaussian_var_full_sample": 0.025862424646195734
+      },
+      "0.999": {
+        "gaussian_var_ewma": 0.023348684328405346,
+        "gaussian_es_ewma": 0.025440522111480356,
+        "empirical_var_fhs": 0.04478607761257838,
+        "evt_var_fhs": 0.054064582784061614,
+        "evt_es_fhs": 0.08462704036514732,
+        "evt_over_gauss_var": 2.3155301610844163,
+        "evt_es_over_gauss_es": 3.326466335647974,
+        "gaussian_var_full_sample": 0.034354664256933766
+      },
+      "0.9999": {
+        "gaussian_var_ewma": 0.028099551531361594,
+        "gaussian_es_ewma": 0.029908849245642927,
+        "empirical_var_fhs": 0.05877263947162398,
+        "evt_var_fhs": 0.12418118192665982,
+        "evt_es_fhs": 0.194380227393473,
+        "evt_over_gauss_var": 4.41932967464134,
+        "evt_es_over_gauss_es": 6.499087470635133,
+        "gaussian_var_full_sample": 0.04134497023697041
+      }
+    },
+    "worst_day_return_period_years": {
+      "gaussian_full_sigma": 4.908813693310725e+27,
+      "power_law_raw_losses": 17.902963174136886,
+      "alpha_raw_2_5pct": 2.753451838185654
+    }
+  },
+  {
+    "name": "Nasdaq 100",
+    "first": "2015-01-05",
+    "last": "2026-10-30",
+    "days": 2974,
+    "daily_sd_full": 0.013935211428377768,
+    "daily_sd_last_year": 0.012767304071460624,
+    "daily_sd_ewma_now": 0.01471850063578302,
+    "worst_day": -0.13003150768495075,
+    "worst_day_date": "2020-03-16",
+    "worst_day_in_full_sample_sigmas": 9.331147098360749,
+    "worst_day_in_ewma_sigmas": 2.9273490979189125,
+    "kurtosis": {
+      "kurtosis": 10.634507846375685,
+      "kurtosis_without_top_day": 8.528644908028339,
+      "kurtosis_without_top_10_days": 5.028711163707602,
+      "share_of_4th_moment_top_day": 0.24109228356659632,
+      "share_of_4th_moment_top_10_days": 0.6465373038834231,
+      "top_day": "2020-03-16",
+      "yearly_kurtosis_min": 2.81316052445839,
+      "yearly_kurtosis_median": 5.115174131302408,
+      "yearly_kurtosis_max": 17.724576353998412,
+      "yearly_kurtosis_max_year": 2025
+    },
+    "hill_raw_losses": {
+      "0.010": 4.376339332699853,
+      "0.025": 3.8145041000423165,
+      "0.050": 2.74068021605146
+    },
+    "hill_devol_losses": {
+      "0.010": 3.817049411768578,
+      "0.025": 3.170361112321985,
+      "0.050": 2.951954699484645
+    },
+    "hill_devol_gains": {
+      "0.010": 4.6373272197742095,
+      "0.025": 4.959795253381413,
+      "0.050": 4.468812223761834
+    },
+    "hill_devol_losses_range_1_to_5pct": [
+      2.9119440919656228,
+      3.953577579115654
+    ],
+    "alpha_used": 3.170361112321985,
+    "alpha_se": 0.3844627569839482,
+    "ms_final": {
+      "p1": 0.0045321579952754525,
+      "p2": 0.029225338259457948,
+      "p3": 0.10779229782423443,
+      "p4": 0.24109228356659657
+    },
+    "kappa": {
+      "1,2": {
+        "value": -0.02903257534484638,
+        "gauss_90pct_band": [
+          -0.14385899173127284,
+          0.13359600799340512
+        ],
+        "shuffled_90pct_band": [
+          0.20704539731843297,
+          0.3932605262782609
+        ]
+      },
+      "1,10": {
+        "value": -0.02788199714366435,
+        "gauss_90pct_band": [
+          -0.12196481835157667,
+          0.10435772221967744
+        ],
+        "shuffled_90pct_band": [
+          0.0939030980166097,
+          0.2692055286078524
+        ]
+      },
+      "1,30": {
+        "value": -0.05616138853411545,
+        "gauss_90pct_band": [
+          -0.167049127260062,
+          0.13974924330320293
+        ],
+        "shuffled_90pct_band": [
+          0.011376712713855631,
+          0.2644202547040477
+        ]
+      }
+    },
+    "aggregation": {
+      "1": {
+        "kurtosis_actual": 10.634507846375685,
+        "mad_over_sd_actual": 0.6883604166324457,
+        "kurtosis_shuffled": 10.634507846375687,
+        "mad_over_sd_shuffled": 0.6883604166324457
+      },
+      "10": {
+        "kurtosis_actual": 6.883771664530326,
+        "mad_over_sd_actual": 0.7251744228503054,
+        "kurtosis_shuffled": 3.21107233410466,
+        "mad_over_sd_shuffled": 0.7845124855512063
+      },
+      "30": {
+        "kurtosis_actual": 5.835963227872956,
+        "mad_over_sd_actual": 0.6796803202840908,
+        "kurtosis_shuffled": 3.0806734650349714,
+        "mad_over_sd_shuffled": 0.7846015920164252
+      }
+    },
+    "n_needed_to_match_30_gaussian": 27.40616629920757,
+    "exceedances": {
+      "3sigma": {
+        "observed": 29,
+        "gaussian_expected": 3.677122238160374
+      },
+      "4sigma": {
+        "observed": 11,
+        "gaussian_expected": 0.0862724627534185
+      },
+      "5sigma": {
+        "observed": 5,
+        "gaussian_expected": 0.0007808388817989225
+      },
+      "6sigma": {
+        "observed": 1,
+        "gaussian_expected": 2.68746474508268e-06
+      }
+    },
+    "one_day_risk_now": {
+      "0.99": {
+        "gaussian_var_ewma": 0.03424035266312259,
+        "gaussian_es_ewma": 0.03922795719665769,
+        "empirical_var_fhs": 0.045239957001437285,
+        "evt_var_fhs": 0.04430619171663033,
+        "evt_es_fhs": 0.06472039443390482,
+        "evt_over_gauss_var": 1.293975916444015,
+        "evt_es_over_gauss_es": 1.6498538047609355,
+        "gaussian_var_full_sample": 0.03241814948071625
+      },
+      "0.999": {
+        "gaussian_var_ewma": 0.045483586163048186,
+        "gaussian_es_ewma": 0.04955851744000507,
+        "empirical_var_fhs": 0.08122482030912549,
+        "evt_var_fhs": 0.09159798166726045,
+        "evt_es_fhs": 0.13380200990349408,
+        "evt_over_gauss_var": 2.013868944698045,
+        "evt_es_over_gauss_es": 2.6998791895958782,
+        "gaussian_var_full_sample": 0.0430630405492519
+      },
+      "0.9999": {
+        "gaussian_var_ewma": 0.05473834650566738,
+        "gaussian_es_ewma": 0.058262885504295474,
+        "empirical_var_fhs": 0.08806631689724864,
+        "evt_var_fhs": 0.1893683460582061,
+        "evt_es_fhs": 0.2766203452684243,
+        "evt_over_gauss_var": 3.4595189322826854,
+        "evt_es_over_gauss_es": 4.74779686715019,
+        "gaussian_var_full_sample": 0.051825281030447715
+      }
+    },
+    "worst_day_return_period_years": {
+      "gaussian_full_sigma": 7.577977993248602e+17,
+      "power_law_raw_losses": 38.40426520703214,
+      "alpha_raw_2_5pct": 3.8145041000423165
+    }
+  },
+  {
+    "name": "Nikkei 225",
+    "first": "2015-01-06",
+    "last": "2026-10-30",
+    "days": 2888,
+    "daily_sd_full": 0.013711571969277886,
+    "daily_sd_last_year": 0.01830418717680327,
+    "daily_sd_ewma_now": 0.016826670682741057,
+    "worst_day": -0.13234076102073722,
+    "worst_day_date": "2024-08-05",
+    "worst_day_in_full_sample_sigmas": 9.651757020804004,
+    "worst_day_in_ewma_sigmas": 6.550711146254077,
+    "kurtosis": {
+      "kurtosis": 10.659507704428036,
+      "kurtosis_without_top_day": 8.128524818660548,
+      "kurtosis_without_top_10_days": 5.373304426696829,
+      "share_of_4th_moment_top_day": 0.2829252264794362,
+      "share_of_4th_moment_top_10_days": 0.6223997141792735,
+      "top_day": "2024-08-05",
+      "yearly_kurtosis_min": 2.7579074438832833,
+      "yearly_kurtosis_median": 5.026270923045278,
+      "yearly_kurtosis_max": 23.794302491986294,
+      "yearly_kurtosis_max_year": 2024
+    },
+    "hill_raw_losses": {
+      "0.010": 4.023237675315136,
+      "0.025": 3.171662297520496,
+      "0.050": 2.7762594616116836
+    },
+    "hill_devol_losses": {
+      "0.010": 3.989804324538455,
+      "0.025": 3.853732950524222,
+      "0.050": 3.1751199435807127
+    },
+    "hill_devol_gains": {
+      "0.010": 5.045340191765212,
+      "0.025": 5.072408644866757,
+      "0.050": 3.7195076243247445
+    },
+    "hill_devol_losses_range_1_to_5pct": [
+      3.1537405579993,
+      4.3144234326893525
+    ],
+    "alpha_used": 3.853732950524222,
+    "alpha_se": 0.4779967436959591,
+    "ms_final": {
+      "p1": 0.004807497071572431,
+      "p2": 0.03223328976181817,
+      "p3": 0.12202789789098728,
+      "p4": 0.2829252264794364
+    },
+    "kappa": {
+      "1,2": {
+        "value": -0.007492614413473486,
+        "gauss_90pct_band": [
+          -0.1475645556462862,
+          0.14545867012626845
+        ],
+        "shuffled_90pct_band": [
+          0.15483395477559625,
+          0.37354102098132214
+        ]
+      },
+      "1,10": {
+        "value": -0.0038770423560534617,
+        "gauss_90pct_band": [
+          -0.1365475680571733,
+          0.09889025588156368
+        ],
+        "shuffled_90pct_band": [
+          0.08033986132890884,
+          0.2681910670056408
+        ]
+      },
+      "1,30": {
+        "value": -0.09432794667134692,
+        "gauss_90pct_band": [
+          -0.16595206734273502,
+          0.13179696181292708
+        ],
+        "shuffled_90pct_band": [
+          0.007580859482895779,
+          0.2319909478553964
+        ]
+      }
+    },
+    "aggregation": {
+      "1": {
+        "kurtosis_actual": 10.659507704428036,
+        "mad_over_sd_actual": 0.6937335559629656,
+        "kurtosis_shuffled": 10.659507704428037,
+        "mad_over_sd_shuffled": 0.6937335559629656
+      },
+      "10": {
+        "kurtosis_actual": 6.496531432573221,
+        "mad_over_sd_actual": 0.7353047388298406,
+        "kurtosis_shuffled": 3.6833693511760206,
+        "mad_over_sd_shuffled": 0.7841814139036097
+      },
+      "30": {
+        "kurtosis_actual": 3.231141743318442,
+        "mad_over_sd_actual": 0.784878458139886,
+        "kurtosis_shuffled": 2.75864438818634,
+        "mad_over_sd_shuffled": 0.7928973514088514
+      }
+    },
+    "n_needed_to_match_30_gaussian": 25.909524091544448,
+    "exceedances": {
+      "3sigma": {
+        "observed": 19,
+        "gaussian_expected": 3.561031007440186
+      },
+      "4sigma": {
+        "observed": 8,
+        "gaussian_expected": 0.0835487359557702
+      },
+      "5sigma": {
+        "observed": 4,
+        "gaussian_expected": 0.0007561868466173119
+      },
+      "6sigma": {
+        "observed": 1,
+        "gaussian_expected": 2.6026182076094385e-06
+      }
+    },
+    "one_day_risk_now": {
+      "0.99": {
+        "gaussian_var_ewma": 0.03914468956998,
+        "gaussian_es_ewma": 0.044846681984717335,
+        "empirical_var_fhs": 0.04814471477328697,
+        "evt_var_fhs": 0.04802553435795823,
+        "evt_es_fhs": 0.0648545562708657,
+        "evt_over_gauss_var": 1.2268722752827483,
+        "evt_es_over_gauss_es": 1.4461394556004514,
+        "gaussian_var_full_sample": 0.03189788630048759
+      },
+      "0.999": {
+        "gaussian_var_ewma": 0.051998321349053224,
+        "gaussian_es_ewma": 0.056656915885881,
+        "empirical_var_fhs": 0.08851659984233665,
+        "evt_var_fhs": 0.08728927088935737,
+        "evt_es_fhs": 0.11787702118089134,
+        "evt_over_gauss_var": 1.678694015974166,
+        "evt_es_over_gauss_es": 2.080540730778932,
+        "gaussian_var_full_sample": 0.04237194266780755
+      },
+      "0.9999": {
+        "gaussian_var_ewma": 0.06257866566444825,
+        "gaussian_es_ewma": 0.06660803377102087,
+        "empirical_var_fhs": 0.10756728469077632,
+        "evt_var_fhs": 0.15865345204916453,
+        "evt_es_fhs": 0.21424851115237195,
+        "evt_over_gauss_var": 2.5352642208748404,
+        "evt_es_over_gauss_es": 3.216556607704354,
+        "gaussian_var_full_sample": 0.05099356219525686
+      }
+    },
+    "worst_day_return_period_years": {
+      "gaussian_full_sigma": 1.642468327110216e+19,
+      "power_law_raw_losses": 21.307052708734968,
+      "alpha_raw_2_5pct": 3.171662297520496
+    }
+  }
+]

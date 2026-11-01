@@ -28,6 +28,13 @@ line-by-line port that runs. Both share one idea:
    └────────────── update(b, (c, a, r)) ◄────────────── reward r ◄──────────────── environment
 ```
 
+## Fat tails in equity indexes
+
+[`fat-tails/`](fat-tails/README.md) applies metrics from Taleb's *Statistical
+Consequences of Fat Tails* (κ, Hill tail exponents, MS plots, kurtosis
+instability) to the S&P 500 since 1950 and compares power-law VaR with Gaussian
+VaR at today's volatility. Python only for now.
+
 ## Papers
 
 Papers are written in Markdown and built to PDF with pandoc and XeLaTeX, using the
