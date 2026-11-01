@@ -1,0 +1,51 @@
+id,label,group,kind,url
+elon_musk,Elon Musk,triad,person,https://en.wikipedia.org/wiki/Elon_Musk
+peter_thiel,Peter Thiel,triad,person,https://en.wikipedia.org/wiki/Peter_Thiel
+alex_karp,Alex Karp,triad,person,https://en.wikipedia.org/wiki/Alex_Karp
+paypal,PayPal,shared,company,https://en.wikipedia.org/wiki/PayPal
+openai,OpenAI,shared,company,https://en.wikipedia.org/wiki/OpenAI
+zip2,Zip2,musk,company,https://en.wikipedia.org/wiki/Zip2
+x_com,X.com (1999),musk,company,https://en.wikipedia.org/wiki/X.com_(bank)
+tesla,Tesla,musk,company,https://en.wikipedia.org/wiki/Tesla%2C_Inc.
+solarcity,SolarCity,musk,company,https://en.wikipedia.org/wiki/SolarCity
+spacex,SpaceX,musk,company,https://en.wikipedia.org/wiki/SpaceX
+neuralink,Neuralink,musk,company,https://en.wikipedia.org/wiki/Neuralink
+boring_company,The Boring Company,musk,company,https://en.wikipedia.org/wiki/The_Boring_Company
+twitter_x,Twitter / X Corp,musk,company,https://en.wikipedia.org/wiki/Twitter
+xai,xAI,musk,company,https://en.wikipedia.org/wiki/XAI_(company)
+palantir,Palantir,thiel_karp,company,https://en.wikipedia.org/wiki/Palantir_Technologies
+founders_fund,Founders Fund,thiel_karp,fund,https://en.wikipedia.org/wiki/Founders_Fund
+clarium,Clarium Capital,thiel_karp,fund,https://en.wikipedia.org/wiki/Clarium_Capital
+mithril,Mithril Capital,thiel_karp,fund,https://en.wikipedia.org/wiki/Mithril_Capital
+valar,Valar Ventures,thiel_karp,fund,https://en.wikipedia.org/wiki/Valar_Ventures
+thiel_fellowship,Thiel Fellowship,thiel_karp,program,https://en.wikipedia.org/wiki/Thiel_Fellowship
+anduril,Anduril,thiel_karp,company,https://en.wikipedia.org/wiki/Anduril_Industries
+airbnb,Airbnb,thiel_karp,company,https://en.wikipedia.org/wiki/Airbnb
+stripe,Stripe,thiel_karp,company,https://en.wikipedia.org/wiki/Stripe%2C_Inc.
+meta,Facebook / Meta,big_tech,company,https://en.wikipedia.org/wiki/Meta_Platforms
+linkedin,LinkedIn,big_tech,company,https://en.wikipedia.org/wiki/LinkedIn
+google,Google,big_tech,company,https://en.wikipedia.org/wiki/Google
+microsoft,Microsoft,big_tech,company,https://en.wikipedia.org/wiki/Microsoft
+oracle,Oracle,big_tech,company,https://en.wikipedia.org/wiki/Oracle_Corporation
+ebay,eBay,big_tech,company,https://en.wikipedia.org/wiki/EBay
+compaq,Compaq,big_tech,company,https://en.wikipedia.org/wiki/Compaq
+mark_zuckerberg,Mark Zuckerberg,people,person,https://en.wikipedia.org/wiki/Mark_Zuckerberg
+reid_hoffman,Reid Hoffman,people,person,https://en.wikipedia.org/wiki/Reid_Hoffman
+max_levchin,Max Levchin,people,person,https://en.wikipedia.org/wiki/Max_Levchin
+david_sacks,David Sacks,people,person,https://en.wikipedia.org/wiki/David_O._Sacks
+luke_nosek,Luke Nosek,people,person,https://en.wikipedia.org/wiki/Luke_Nosek
+ken_howery,Ken Howery,people,person,https://en.wikipedia.org/wiki/Ken_Howery
+joe_lonsdale,Joe Lonsdale,people,person,https://en.wikipedia.org/wiki/Joe_Lonsdale
+stephen_cohen,Stephen Cohen,people,person,https://en.wikipedia.org/wiki/Stephen_Cohen_(entrepreneur)
+palmer_luckey,Palmer Luckey,people,person,https://en.wikipedia.org/wiki/Palmer_Luckey
+trae_stephens,Trae Stephens,people,person,https://en.wikipedia.org/wiki/Anduril_Industries
+sam_altman,Sam Altman,people,person,https://en.wikipedia.org/wiki/Sam_Altman
+larry_page,Larry Page,people,person,https://en.wikipedia.org/wiki/Larry_Page
+larry_ellison,Larry Ellison,people,person,https://en.wikipedia.org/wiki/Larry_Ellison
+jd_vance,JD Vance,people,person,https://en.wikipedia.org/wiki/JD_Vance
+nasa,NASA,government,agency,https://en.wikipedia.org/wiki/NASA
+us_army,US Army / DoD,government,agency,https://en.wikipedia.org/wiki/United_States_Department_of_Defense
+in_q_tel,In-Q-Tel (CIA),government,agency,https://en.wikipedia.org/wiki/In-Q-Tel
+nhs_england,NHS England,government,agency,https://en.wikipedia.org/wiki/NHS_England
+doge,DOGE,government,agency,https://en.wikipedia.org/wiki/Department_of_Government_Efficiency
+golden_dome,Golden Dome,government,program,https://en.wikipedia.org/wiki/Golden_Dome_(missile_defense_system)

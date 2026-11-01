@@ -1,0 +1,78 @@
+source,target,relation,year,status,url
+peter_thiel,alex_karp,met at Stanford Law School,1992,confirmed,https://en.wikipedia.org/wiki/Alex_Karp
+elon_musk,peter_thiel,PayPal co-founders (X.com + Confinity merger),2000,confirmed,https://en.wikipedia.org/wiki/PayPal
+elon_musk,zip2,co-founded,1995,confirmed,https://en.wikipedia.org/wiki/Zip2
+compaq,zip2,acquired for $305M,1999,confirmed,https://en.wikipedia.org/wiki/Zip2
+elon_musk,x_com,founded,1999,confirmed,https://en.wikipedia.org/wiki/X.com_(bank)
+x_com,paypal,merged with Confinity into PayPal,2000,confirmed,https://en.wikipedia.org/wiki/PayPal
+peter_thiel,paypal,co-founded (Confinity); CEO from Oct 2000,1998,confirmed,https://en.wikipedia.org/wiki/PayPal
+elon_musk,paypal,CEO until replaced by Thiel,2000,confirmed,https://en.wikipedia.org/wiki/PayPal
+ebay,paypal,acquired for $1.5B,2002,confirmed,https://en.wikipedia.org/wiki/PayPal
+max_levchin,paypal,co-founded (Confinity); CTO,1998,confirmed,https://en.wikipedia.org/wiki/PayPal
+luke_nosek,paypal,co-founded (Confinity),1998,confirmed,https://en.wikipedia.org/wiki/PayPal
+ken_howery,paypal,chief financial officer,,confirmed,https://en.wikipedia.org/wiki/PayPal_Mafia
+reid_hoffman,paypal,board member; COO then SVP,2000,confirmed,https://en.wikipedia.org/wiki/Reid_Hoffman
+david_sacks,paypal,chief operating officer,2000,confirmed,https://en.wikipedia.org/wiki/PayPal_Mafia
+elon_musk,tesla,lead investor (2004); CEO (2008-),2004,confirmed,https://en.wikipedia.org/wiki/Tesla%2C_Inc.
+elon_musk,solarcity,chairman; proposed the idea,2006,confirmed,https://en.wikipedia.org/wiki/SolarCity
+tesla,solarcity,acquired for $2.6B,2016,confirmed,https://en.wikipedia.org/wiki/SolarCity
+larry_ellison,tesla,board member (2018-2022),2018,confirmed,https://en.wikipedia.org/wiki/Larry_Ellison
+elon_musk,spacex,founded; CEO,2002,confirmed,https://en.wikipedia.org/wiki/SpaceX
+founders_fund,spacex,first institutional investor,2008,confirmed,https://en.wikipedia.org/wiki/Founders_Fund
+luke_nosek,spacex,board member (via Founders Fund),,confirmed,https://en.wikipedia.org/wiki/Luke_Nosek
+google,spacex,$1B round with Fidelity for 8.33%,2015,confirmed,https://en.wikipedia.org/wiki/SpaceX
+nasa,spacex,Commercial Crew contract $2.6B,2014,confirmed,https://en.wikipedia.org/wiki/Commercial_Crew_Program
+nasa,spacex,Artemis lunar lander (HLS) $2.89B,2021,confirmed,https://en.wikipedia.org/wiki/Starship_HLS
+elon_musk,neuralink,co-founded,2016,confirmed,https://en.wikipedia.org/wiki/Neuralink
+founders_fund,neuralink,led $280M Series D,2023,confirmed,https://technode.global/2023/08/08/musks-neuralink-raises-280m-in-funding-led-by-thiels-founders-fund/
+elon_musk,boring_company,founded,2016,confirmed,https://en.wikipedia.org/wiki/The_Boring_Company
+elon_musk,openai,co-founded; co-chair until 2018,2015,confirmed,https://openai.com/index/introducing-openai/
+sam_altman,openai,co-founded; CEO,2015,confirmed,https://openai.com/index/introducing-openai/
+peter_thiel,openai,founding donor pledge,2015,confirmed,https://openai.com/index/introducing-openai/
+reid_hoffman,openai,founding donor pledge,2015,confirmed,https://openai.com/index/introducing-openai/
+microsoft,openai,invested $1B (2019) and $10B (2023),2019,confirmed,https://en.wikipedia.org/wiki/OpenAI
+elon_musk,sam_altman,Musk v. OpenAI lawsuit,2024,confirmed,https://en.wikipedia.org/wiki/OpenAI
+elon_musk,twitter_x,acquired for $44B,2022,confirmed,https://en.wikipedia.org/wiki/Acquisition_of_Twitter_by_Elon_Musk
+larry_ellison,twitter_x,co-investor in the buyout,2022,confirmed,https://en.wikipedia.org/wiki/Acquisition_of_Twitter_by_Elon_Musk
+elon_musk,xai,founded,2023,confirmed,https://en.wikipedia.org/wiki/XAI_(company)
+xai,twitter_x,acquired in all-stock deal (X valued $33B),2025,confirmed,https://www.nbcchicago.com/news/business/money-report/elon-musk-says-xai-has-acquired-x-in-deal-that-values-social-media-site-at-33-billion/3708833/
+spacex,xai,acquired xAI in all-stock merger,2026,confirmed,https://www.dawn.com/news/1970823
+elon_musk,doge,led the Department of Government Efficiency,2025,confirmed,https://en.wikipedia.org/wiki/Department_of_Government_Efficiency
+peter_thiel,palantir,co-founded; chairman,2003,confirmed,https://en.wikipedia.org/wiki/Palantir_Technologies
+alex_karp,palantir,co-founded; CEO,2003,confirmed,https://en.wikipedia.org/wiki/Palantir_Technologies
+joe_lonsdale,palantir,co-founded,2003,confirmed,https://en.wikipedia.org/wiki/Palantir_Technologies
+stephen_cohen,palantir,co-founded; president,2003,confirmed,https://en.wikipedia.org/wiki/Palantir_Technologies
+in_q_tel,palantir,early investor (~$2M),2004,confirmed,https://en.wikipedia.org/wiki/Palantir_Technologies
+us_army,palantir,Army enterprise agreement up to $10B,2025,confirmed,https://www.army.mil/article/287506/
+us_army,palantir,Maven Smart System ceiling raised to ~$1.3B,2025,confirmed,https://defensescoop.com/2025/05/23/dod-palantir-maven-smart-system-contract-increase/
+nhs_england,palantir,Federated Data Platform £330M,2023,confirmed,https://digitalhealth.net/2023/11/nhs-england-awards-330m-federated-data-platform-contract-to-palantir
+palantir,anduril,defense-tech bidding consortium (reported),2024,reported,https://www.irishtimes.com/world/us/2024/12/23/palantir-partners-with-leading-defence-and-tech-companies-to-win-us-government-contracts
+spacex,golden_dome,led bid with Palantir and Anduril (reported),2025,reported,https://www.foxbusiness.com/politics/spacex-its-partners-emerge-frontrunners-build-part-trumps-golden-dome-project-report
+palantir,golden_dome,partner in SpaceX-led bid (reported),2025,reported,https://www.foxbusiness.com/politics/spacex-its-partners-emerge-frontrunners-build-part-trumps-golden-dome-project-report
+anduril,golden_dome,partner in SpaceX-led bid (reported),2025,reported,https://www.foxbusiness.com/politics/spacex-its-partners-emerge-frontrunners-build-part-trumps-golden-dome-project-report
+peter_thiel,founders_fund,co-founded,2005,confirmed,https://en.wikipedia.org/wiki/Founders_Fund
+luke_nosek,founders_fund,co-founded,2005,confirmed,https://en.wikipedia.org/wiki/Founders_Fund
+ken_howery,founders_fund,co-founded,2005,confirmed,https://en.wikipedia.org/wiki/Founders_Fund
+founders_fund,airbnb,Series C investor,2013,confirmed,https://en.wikipedia.org/wiki/Founders_Fund
+founders_fund,stripe,investor,,confirmed,https://en.wikipedia.org/wiki/Founders_Fund
+founders_fund,anduril,seed investor; $1B in Series G (2025),2017,confirmed,https://en.wikipedia.org/wiki/Anduril_Industries
+palmer_luckey,anduril,co-founded,2017,confirmed,https://en.wikipedia.org/wiki/Anduril_Industries
+trae_stephens,anduril,co-founded; chairman,2017,confirmed,https://en.wikipedia.org/wiki/Anduril_Industries
+trae_stephens,palantir,worked at Palantir before Founders Fund,,confirmed,https://en.wikipedia.org/wiki/Anduril_Industries
+peter_thiel,clarium,founded after the PayPal sale,2002,confirmed,https://en.wikipedia.org/wiki/Clarium_Capital
+peter_thiel,valar,co-founded,2010,confirmed,https://en.wikipedia.org/wiki/Valar_Ventures
+peter_thiel,mithril,co-founded,2012,confirmed,https://en.wikipedia.org/wiki/Mithril_Capital
+peter_thiel,thiel_fellowship,founded,,confirmed,https://en.wikipedia.org/wiki/Thiel_Fellowship
+peter_thiel,meta,$500K angel for 10.2%; board until 2022,2004,confirmed,https://en.wikipedia.org/wiki/Peter_Thiel
+mark_zuckerberg,meta,co-founded; CEO,2004,confirmed,https://en.wikipedia.org/wiki/Meta_Platforms
+reid_hoffman,linkedin,co-founded,2003,confirmed,https://en.wikipedia.org/wiki/Reid_Hoffman
+peter_thiel,linkedin,investor,,confirmed,https://en.wikipedia.org/wiki/Reid_Hoffman
+microsoft,linkedin,acquired for $26.2B,2016,confirmed,https://en.wikipedia.org/wiki/LinkedIn
+reid_hoffman,mark_zuckerberg,arranged his first meeting with Thiel,2004,confirmed,https://en.wikipedia.org/wiki/Reid_Hoffman
+larry_page,google,co-founded,1998,confirmed,https://en.wikipedia.org/wiki/Google
+larry_ellison,oracle,co-founded; chairman,1977,confirmed,https://en.wikipedia.org/wiki/Oracle_Corporation
+jd_vance,mithril,principal,2016,confirmed,https://en.wikipedia.org/wiki/JD_Vance
+peter_thiel,jd_vance,$15M to 2022 Senate campaign super PAC,2022,confirmed,https://en.wikipedia.org/wiki/JD_Vance
+david_sacks,elon_musk,urged the Twitter bid; post-deal war room,2022,confirmed,https://en.wikipedia.org/wiki/Acquisition_of_Twitter_by_Elon_Musk
+microsoft,palantir,AI and analytics on classified Azure Government clouds,2024,confirmed,https://news.microsoft.com/source/2024/08/08/palantir-and-microsoft-partner-to-deliver-enhanced-analytics-and-ai-services-to-classified-networks-for-critical-national-security-operations
+oracle,palantir,cloud and AI partnership,2024,confirmed,https://www.oracle.com/news/announcement/oracle-and-palantir-join-forces-to-deliver-mission-critical-ai-solutions-to-governments-and-businesses-2024-04-04
