@@ -18,7 +18,7 @@
   },
   "globs": ["**/*.md"],
   "ignores": [
-    "vendor/**", "LICENSES/**", "build/**", "tools/build/**", "lean/.lake/**", "haskell/dist-newstyle/**",
+    "vendor/**", "LICENSES/**", "build/**", "tools/build/**", "contextual-bandit/lean/.lake/**", "contextual-bandit/haskell/dist-newstyle/**",
     // pandoc sources: their syntax is pandoc's, and ste-check is their check.
     "papers/*/prose*/**", "papers/*/metadata.md"
   ]

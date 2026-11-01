@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Contextual bandit: model and decision layers",
-    "output": "docs/diagrams/en/bandit-architecture.html",
+    "output": "contextual-bandit/diagrams/en/bandit-architecture.html",
     "quality_profile": "showcase",
     "locale": "en"
   },

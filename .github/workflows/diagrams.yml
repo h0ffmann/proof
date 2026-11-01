@@ -1,5 +1,5 @@
-# diagrams: render every archify diagram (docs/diagrams/src) to docs/diagrams/<lang>/*.html, capture
-# the PNG figures that the Markdown notes embed (docs/diagrams/img/<lang>/*.png), and commit them to
+# diagrams: render every archify diagram (contextual-bandit/diagrams/src) to contextual-bandit/diagrams/<lang>/*.html, capture
+# the PNG figures that the Markdown notes embed (contextual-bandit/diagrams/img/<lang>/*.png), and commit them to
 # the branch it ran on. Manual only: CI is disabled while the repository is private (AGENTS.md).
 # Run it from the Actions tab on a PR branch, never on main.
 name: diagrams
@@ -52,7 +52,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/diagrams/en docs/diagrams/pt-BR docs/diagrams/img
+          git add contextual-bandit/diagrams/en contextual-bandit/diagrams/pt-BR contextual-bandit/diagrams/img
           git diff --cached --quiet && { echo "nothing changed"; exit 0; }
           git commit -m "Render archify diagrams and figures"
           git push

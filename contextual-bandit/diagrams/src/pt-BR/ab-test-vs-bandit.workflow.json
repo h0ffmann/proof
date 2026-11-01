@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
-  "diagram_type": "sequence",
+  "schema_version": 2,
+  "diagram_type": "workflow",
   "meta": {
-    "title": "Uma rodada de um bandit contextual",
-    "output": "docs/diagrams/pt-BR/bandit-round.html",
+    "title": "Teste A/B como caso particular de bandit",
+    "output": "contextual-bandit/diagrams/pt-BR/ab-test-vs-bandit.html",
     "quality_profile": "showcase",
     "locale": "pt-BR",
     "translations": {
@@ -470,167 +470,160 @@
       "legend.waterfall.incomplete": "Incompleto (fim não registrado)"
     }
   },
-  "participants": [
+  "lanes": [
     {
-      "id": "home",
+      "id": "ab",
+      "label": "Teste A/B/n"
+    },
+    {
+      "id": "bandit",
+      "label": "Bandit contextual"
+    }
+  ],
+  "mainPath": [
+    "b_ctx",
+    "b_est",
+    "b_pick",
+    "b_reward",
+    "b_update"
+  ],
+  "nodes": [
+    {
+      "id": "ab_split",
+      "lane": "ab",
+      "col": 0,
+      "type": "frontend",
+      "label": "Dividir tráfego",
+      "sublabel": "1/K por variante"
+    },
+    {
+      "id": "ab_run",
+      "lane": "ab",
+      "col": 1,
+      "type": "backend",
+      "label": "Rodar o teste",
+      "sublabel": "período fixo"
+    },
+    {
+      "id": "ab_analyze",
+      "lane": "ab",
+      "col": 2,
+      "type": "backend",
+      "label": "Analisar",
+      "sublabel": "escolher vencedora"
+    },
+    {
+      "id": "ab_ship",
+      "lane": "ab",
+      "col": 3,
+      "type": "cloud",
+      "label": "Lançar vencedora",
+      "sublabel": "100% do tráfego"
+    },
+    {
+      "id": "b_ctx",
+      "lane": "bandit",
+      "col": 0,
       "type": "external",
-      "label": "Página inicial",
-      "sublabel": "Assinante"
+      "label": "Observar contexto",
+      "sublabel": "por requisição"
     },
     {
-      "id": "agent",
-      "type": "backend",
-      "label": "Agente",
-      "sublabel": "política"
-    },
-    {
-      "id": "model",
+      "id": "b_est",
+      "lane": "bandit",
+      "col": 1,
       "type": "database",
-      "label": "RewardModel",
-      "sublabel": "crença b"
+      "label": "Estimar braços",
+      "sublabel": "média + largura"
     },
     {
-      "id": "rule",
+      "id": "b_pick",
+      "lane": "bandit",
+      "col": 2,
       "type": "backend",
-      "label": "DecisionRule",
-      "sublabel": "gulosa, ε, UCB, TS"
+      "label": "Escolher braço",
+      "sublabel": "explorar / aproveitar"
     },
     {
-      "id": "log",
-      "type": "messagebus",
-      "label": "Log de eventos",
-      "sublabel": "(c, a, r, P(a))"
+      "id": "b_reward",
+      "lane": "bandit",
+      "col": 3,
+      "type": "frontend",
+      "label": "Receber recompensa",
+      "sublabel": "só do braço escolhido"
+    },
+    {
+      "id": "b_update",
+      "lane": "bandit",
+      "col": 4,
+      "type": "database",
+      "label": "Atualizar modelo",
+      "sublabel": "posteriori"
     }
   ],
-  "segments": [
+  "edges": [
     {
-      "from": 150,
-      "to": 295,
-      "label": "Decidir"
+      "id": "ab1",
+      "from": "ab_split",
+      "to": "ab_run"
     },
     {
-      "from": 300,
-      "to": 350,
-      "label": "Agir"
+      "id": "ab2",
+      "from": "ab_run",
+      "to": "ab_analyze"
     },
     {
-      "from": 360,
-      "to": 415,
-      "label": "Aprender"
-    }
-  ],
-  "messages": [
-    {
-      "id": "ctx",
-      "from": "home",
-      "to": "agent",
-      "y": 165,
-      "label": "contexto c",
+      "id": "ab3",
+      "from": "ab_analyze",
+      "to": "ab_ship",
       "variant": "emphasis"
     },
     {
-      "id": "est",
-      "from": "agent",
-      "to": "model",
-      "y": 195,
-      "label": "estimate(b, c, a) para todo a"
+      "id": "b1",
+      "from": "b_ctx",
+      "to": "b_est"
     },
     {
-      "id": "estret",
-      "from": "model",
-      "to": "agent",
-      "y": 225,
-      "label": "média, largura por braço",
-      "variant": "return"
-    },
-    {
-      "id": "rule",
-      "from": "agent",
-      "to": "rule",
-      "y": 255,
-      "label": "estimativas"
-    },
-    {
-      "id": "dist",
-      "from": "rule",
-      "to": "agent",
-      "y": 283,
-      "label": "P(braço)",
-      "variant": "return"
-    },
-    {
-      "id": "show",
-      "from": "agent",
-      "to": "home",
-      "y": 312,
-      "label": "mostrar braço a ~ P",
+      "id": "b2",
+      "from": "b_est",
+      "to": "b_pick",
       "variant": "emphasis"
     },
     {
-      "id": "reward",
-      "from": "home",
-      "to": "agent",
-      "y": 340,
-      "label": "recompensa r",
-      "variant": "return"
+      "id": "b3",
+      "from": "b_pick",
+      "to": "b_reward"
     },
     {
-      "id": "update",
-      "from": "agent",
-      "to": "model",
-      "y": 372,
-      "label": "update(b, c, a, r)"
+      "id": "b4",
+      "from": "b_reward",
+      "to": "b_update"
     },
     {
-      "id": "log",
-      "from": "agent",
-      "to": "log",
-      "y": 402,
-      "label": "registrar (c, a, r, P(a))",
-      "variant": "dashed"
-    }
-  ],
-  "activations": [
-    {
-      "participant": "agent",
-      "from": 165,
-      "to": 408,
-      "type": "backend"
-    },
-    {
-      "participant": "model",
-      "from": 190,
-      "to": 231,
-      "type": "database"
-    },
-    {
-      "participant": "rule",
-      "from": 250,
-      "to": 289,
-      "type": "backend"
-    },
-    {
-      "participant": "model",
-      "from": 367,
-      "to": 380,
-      "type": "database"
+      "id": "next",
+      "from": "b_update",
+      "to": "b_est",
+      "label": "próxima rodada",
+      "variant": "dashed",
+      "role": "return",
+      "route": "bottom-channel"
     }
   ],
   "cards": [
     {
-      "dot": "emerald",
-      "title": "Decidir",
+      "dot": "cyan",
+      "title": "Igual com ε = 1",
       "items": [
-        "O modelo transforma a crença em estimativas",
-        "A regra transforma as estimativas em P(braço)"
+        "ε-gulosa com ε = 1 é a divisão 1/K (Lean: epsGreedy_one_is_ab_test)",
+        "Dividir e depois lançar = explorar e depois decidir"
       ]
     },
     {
-      "dot": "orange",
-      "title": "Aprender",
+      "dot": "emerald",
+      "title": "O que o bandit acrescenta",
       "items": [
-        "Só a recompensa do braço escolhido é observada",
-        "Registrar P(a) permite replay e IPW offline"
+        "Move tráfego para os braços melhores durante o teste",
+        "Usa contexto: uma vencedora por assinante, não uma para todos"
       ]
     }
   ]

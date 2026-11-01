@@ -1,0 +1,57 @@
+source,target,relation,year,status,url
+elon_musk,openai,co-founded; co-chair; left the board in 2018,2015,confirmed,https://en.wikipedia.org/wiki/OpenAI
+sam_altman,openai,co-founded; CEO from 2019; removed and reinstated in Nov 2023,2015,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+dario_amodei,openai,vice president of research,2016,confirmed,https://en.wikipedia.org/wiki/Dario_Amodei
+dario_amodei,anthropic,co-founded; CEO,2021,confirmed,https://en.wikipedia.org/wiki/Anthropic
+daniela_amodei,anthropic,co-founded,2021,confirmed,https://en.wikipedia.org/wiki/Anthropic
+dario_amodei,daniela_amodei,siblings and co-founders,2021,confirmed,https://en.wikipedia.org/wiki/Dario_Amodei
+dario_amodei,baidu,researcher,2014,confirmed,https://en.wikipedia.org/wiki/Dario_Amodei
+openai,anthropic,founded by seven former OpenAI employees,2021,confirmed,https://en.wikipedia.org/wiki/Anthropic
+dario_amodei,sam_altman,OpenAI board asked Amodei to replace Altman; he declined,2023,confirmed,https://en.wikipedia.org/wiki/Dario_Amodei
+elon_musk,sam_altman,Musk v. Altman and OpenAI; jury verdict for OpenAI (2026),2024,confirmed,https://en.wikipedia.org/wiki/OpenAI
+greg_brockman,openai,co-founded,2015,confirmed,https://en.wikipedia.org/wiki/OpenAI
+ilya_sutskever,openai,co-founded; chief scientist until 2024,2015,confirmed,https://en.wikipedia.org/wiki/OpenAI
+ilya_sutskever,ssi,founded after leaving OpenAI,2024,confirmed,https://en.wikipedia.org/wiki/OpenAI
+peter_thiel,openai,early backer,2015,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+peter_thiel,sam_altman,mentor; main backer of Hydrazine Capital,2012,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+peter_thiel,hydrazine,provided most of the $21M first fund,2012,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+sam_altman,hydrazine,co-founded,2012,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+elon_musk,xai,founded,2023,confirmed,https://en.wikipedia.org/wiki/XAI_(company)
+igor_babuschkin,xai,chief engineer of the founding team,2023,confirmed,https://en.wikipedia.org/wiki/XAI_(company)
+xai,openai,$97.4B bid with other investors for OpenAI,2025,confirmed,https://en.wikipedia.org/wiki/XAI_(company)
+xai,apple,antitrust suit against Apple and OpenAI,2025,confirmed,https://www.dawn.com/news/1937160
+apple,openai,ChatGPT in Apple Intelligence,2024,confirmed,https://en.wikipedia.org/wiki/OpenAI
+xai,twitter_x,acquired X in all-stock deal (X valued $33B),2025,confirmed,https://en.wikipedia.org/wiki/XAI_(company)
+spacex,xai,invested $2B (2025); acquired xAI (2026),2025,confirmed,https://en.wikipedia.org/wiki/XAI_(company)
+elon_musk,spacex,founded; CEO,2002,confirmed,https://en.wikipedia.org/wiki/SpaceX
+elon_musk,tesla,lead investor (2004); CEO (2008-),2004,confirmed,https://en.wikipedia.org/wiki/Tesla%2C_Inc.
+elon_musk,twitter_x,acquired for $44B,2022,confirmed,https://en.wikipedia.org/wiki/Acquisition_of_Twitter_by_Elon_Musk
+elon_musk,neuralink,co-founded,2016,confirmed,https://en.wikipedia.org/wiki/Neuralink
+sam_altman,loopt,co-founded; CEO,2005,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+green_dot,loopt,acquired for $43.4M,2012,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+sam_altman,y_combinator,president (2014-2019),2014,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+paul_graham,y_combinator,president before Altman,2014,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+sam_altman,tools_for_humanity,co-founded (Worldcoin / World),2019,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+sam_altman,helion,chairman,,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+sam_altman,oklo,AltC SPAC merger (2024); chairman until 2025,2021,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+sam_altman,reddit,CEO for 8 days (2014); board until 2022; ~9% stake,2014,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+sam_altman,retro_bio,investor,,confirmed,https://en.wikipedia.org/wiki/Sam_Altman
+microsoft,openai,$1B (2019) and $10B (2023); 27% stake after the 2025 restructuring,2019,confirmed,https://fortune.com/2025/10/28/openai-for-profit-restructuring-microsoft-stake
+nvidia,openai,up to $100B for 10 GW of Nvidia systems (letter of intent),2025,confirmed,https://investor.nvidia.com/news/press-release-details/2025/OpenAI-and-NVIDIA-Announce-Strategic-Partnership-to-Deploy-10-Gigawatts-of-NVIDIA-Systems/
+amd,openai,6 GW chip deal; option on up to 160M AMD shares,2025,confirmed,https://en.wikipedia.org/wiki/OpenAI
+oracle,openai,$300B of compute over five years,2025,confirmed,https://en.wikipedia.org/wiki/OpenAI
+softbank,openai,led $40B round at $300B valuation,2025,confirmed,https://en.wikipedia.org/wiki/OpenAI
+amazon,openai,AWS partnership (2025); $50B in the $110B round (2026),2025,confirmed,https://en.wikipedia.org/wiki/OpenAI
+openai,stargate,joint venture partner ($500B estimate),2025,confirmed,https://en.wikipedia.org/wiki/Stargate_LLC
+oracle,stargate,joint venture partner,2025,confirmed,https://en.wikipedia.org/wiki/Stargate_LLC
+softbank,stargate,joint venture partner,2025,confirmed,https://en.wikipedia.org/wiki/Stargate_LLC
+amazon,anthropic,$8B in total (2023-2024),2023,confirmed,https://en.wikipedia.org/wiki/Anthropic
+google,anthropic,$500M + up to $1.5B (2023); $1B (2025); up to 1M TPUs (2025),2023,confirmed,https://en.wikipedia.org/wiki/Anthropic https://siliconangle.com/2025/10/23/anthropic-strikes-multibillion-dollar-deal-google-access-million-tpus/
+microsoft,anthropic,up to $5B investment; Anthropic buys $30B of Azure,2025,confirmed,https://en.wikipedia.org/wiki/Anthropic
+nvidia,anthropic,up to $10B investment,2025,confirmed,https://en.wikipedia.org/wiki/Anthropic
+ftx,anthropic,invested $500M,2022,confirmed,https://en.wikipedia.org/wiki/Anthropic
+palantir,anthropic,Claude for US defense and intelligence (with AWS),2024,confirmed,https://en.wikipedia.org/wiki/Anthropic
+pentagon,anthropic,$200M contract (2025); designated a supply chain risk then blocked by a court injunction (2026),2025,confirmed,https://en.wikipedia.org/wiki/Anthropic
+pentagon,openai,$200M contract (2025); new agreement after the Anthropic ban (2026),2025,confirmed,https://defensescoop.com/2025/07/14/pentagon-ai-contracts-musk-xai-google-openai-anthropic-cdao/ https://fortune.com/2026/02/28/openai-pentagon-deal-anthropic-designated-supply-chain-risk-unprecedented-action-damage-its-growth
+pentagon,xai,$200M contract,2025,confirmed,https://defensescoop.com/2025/07/14/pentagon-ai-contracts-musk-xai-google-openai-anthropic-cdao/
+pentagon,google,$200M contract,2025,confirmed,https://defensescoop.com/2025/07/14/pentagon-ai-contracts-musk-xai-google-openai-anthropic-cdao/

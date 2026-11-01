@@ -29,7 +29,7 @@ The objective is to get the maximum total reward.
 | Policy | Rule from context to arm | Image selection model |
 | Regret | Reward of the best arm minus reward of the selected arm, added for all rounds | Plays that the system did not get |
 
-[![One round of a contextual bandit](docs/diagrams/img/en/bandit-round.png)](docs/diagrams/en/bandit-round.html)
+[![One round of a contextual bandit](diagrams/img/en/bandit-round.png)](diagrams/en/bandit-round.html)
 
 *Figure 1. One round: decide, act, learn. Made with archify. Click the figure to open the interactive diagram.*
 
@@ -67,7 +67,7 @@ Thus an A/B test is one specific policy in the bandit model: no context, a fixed
 
 The A/B test still has an advantage. A fixed random allocation gives a simple, unbiased estimate of the effect. A bandit changes the allocation, so a simple mean of the logs is biased. To evaluate a bandit offline, record the probability of each selection. Then use replay or inverse propensity weighting. Netflix uses replay for this purpose (see section 4).
 
-[![A/B test as a special case of a bandit](docs/diagrams/img/en/ab-test-vs-bandit.png)](docs/diagrams/en/ab-test-vs-bandit.html)
+[![A/B test as a special case of a bandit](diagrams/img/en/ab-test-vs-bandit.png)](diagrams/en/ab-test-vs-bandit.html)
 
 *Figure 2. The A/B test and the bandit loop. Made with archify.*
 
@@ -116,7 +116,7 @@ The primary sources that this note confirms are from 2017 and 2018. This note di
 | UCB regret, one round | `ucb_gap` | `ucb` |
 | Model gives the only path from history to decision | `policy_factors` | `posterior` |
 
-[![Model and decision layers](docs/diagrams/img/en/bandit-architecture.png)](docs/diagrams/en/bandit-architecture.html)
+[![Model and decision layers](diagrams/img/en/bandit-architecture.png)](diagrams/en/bandit-architecture.html)
 
 *Figure 3. The model layer, the decision layer and the Lean spec. Made with archify.*
 

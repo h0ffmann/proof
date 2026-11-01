@@ -10,7 +10,7 @@ The implementations mirror the Lean definitions name for name. The owner cares
 more about using Lean as a verified spec than about Lean itself.
 
 The first topic is contextual bandits, split into a probabilistic
-`RewardModel` and a `DecisionRule` on top of it. See `README.md`.
+`RewardModel` and a `DecisionRule` on top of it. See `contextual-bandit/README.md`.
 
 The second is `house-pricing/`: Rust trains and compares models on California
 Housing, the best one that Lean replicates exactly (gradient boosting) is
@@ -26,19 +26,31 @@ The fourth is `cycle/`: an essay on eternal return (`papers/cycle/`) with a smal
 core-Lean package `Cycle` that proves a clock of `n + 1` moments returns. See
 `cycle/README.md`.
 
+The fifth is `triad-graph/`: sourced graphs of three tech figures each (Musk, Thiel
+and Karp; Musk, Altman and Amodei), drawn by graphify. `fat-tails/` (Python) holds fat-tail metrics on the S&P 500.
+
 ## Layout
 
+Each project is one top-level folder with its own README and build steps, and it
+never imports from another project. Keep it that way: a new project gets a new
+top-level folder, a section in the root `README.md` table and its own `just`
+recipe. Only shared tooling sits outside the project folders: `papers/` (Paper
+Fabric, one folder per paper), `format/`, `tools/`, `scripts/`, `vendor/`,
+`flake.nix` and `justfile`.
+
+
 ```
-lean/      Lean 4 package `ContextualBandit` (Lake, core Lean only, no Mathlib)
+contextual-bandit/lean/      Lean 4 package `ContextualBandit` (Lake, core Lean only, no Mathlib)
   ContextualBandit/Interface.lean   types: Obs, Estimate, RewardModel, DecisionRule, policy
   ContextualBandit/Argmax.lean      verified argmax
   ContextualBandit/Policies.lean    greedy, ucb, epsGreedy
   ContextualBandit/Theorems.lean    all proofs
   ContextualBandit/Examples.lean    #eval examples (ground truth for the Haskell spec check)
-haskell/   cabal package `contextual-bandit` (only base + containers)
+contextual-bandit/haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
   app/Main.hs                       spec check against Lean + simulations
+contextual-bandit/diagrams/  archify figures (src/, en/, pt-BR/, img/)
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
   OceanWaves/Bisection.lean         verified bisection, wavenumber kernel
@@ -51,15 +63,16 @@ ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same tool
 ## Build and check
 
 ```bash
-# Lean (toolchain pinned in lean/lean-toolchain; install via elan)
-cd lean && lake build            # must finish with no errors; prints the #eval outputs
+# Every Lean package and the Haskell examples: just check (= just bandit ocean-waves cycle)
+# Lean (toolchain pinned in each lean/lean-toolchain; install via elan)
+cd contextual-bandit/lean && lake build # must finish with no errors; prints the #eval outputs
 cd ocean-waves/lean && lake build # the same for the ocean-waves package
 cd cycle/lean && lake build       # the same for the cycle package
 
 # Haskell (GHC >= 9.4)
-cd haskell && cabal run examples
+cd contextual-bandit/haskell && cabal run examples
 # or, without cabal:
-cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+cd contextual-bandit/haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 ```
 
 The first block of the Haskell output is **"Spec check against Lean #eval"**.
@@ -109,17 +122,17 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 
 ## Rules
 
-1. **No `sorry`, `admit` or new `axiom`** in `lean/`, `house-pricing/lean/`,
+1. **No `sorry`, `admit` or new `axiom`** in `contextual-bandit/lean/`, `house-pricing/lean/`,
    `ocean-waves/lean/` or `cycle/lean/`. Check with
-   `grep -rnE "sorry|admit|^axiom" lean/ContextualBandit house-pricing/lean/HousePricing ocean-waves/lean/OceanWaves cycle/lean/Cycle`.
+   `grep -rnE "sorry|admit|^axiom" contextual-bandit/lean/ContextualBandit house-pricing/lean/HousePricing ocean-waves/lean/OceanWaves cycle/lean/Cycle`.
    `native_decide` is allowed only in `Examples.lean`.
 2. **Lean first.** A new decision rule or model goes in Lean (definition plus at
    least a validity theorem), then in Haskell with the same name. Update the
-   mapping table in `README.md`.
+   mapping table in `contextual-bandit/README.md`.
 3. **Keep the mirror exact.** Tie-breaking (argmax keeps the *first* maximum),
    argument order and the meaning of `width` must match between Lean and Haskell.
    When a Lean `#eval` in `Examples.lean` changes, update `specCheck` in
-   `haskell/app/Main.hs`.
+   `contextual-bandit/haskell/app/Main.hs`.
 4. **Decision rules see only estimates.** A `DecisionRule` gets per-arm
    `Estimate`s, never the history or the context. Uncertainty belongs to the
    model, choice belongs to the rule. Don't break this boundary; the
@@ -145,15 +158,17 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 ## Notes
 
 - Diagrams come from [archify](https://github.com/tt-a1i/archify), vendored in
-  `vendor/archify` (see `VENDORED.md` there). Edit `docs/diagrams/src/build_candidates.py`
+  `vendor/archify` (see `VENDORED.md` there). Edit `contextual-bandit/diagrams/src/build_candidates.py`
   (both languages live there), then `just diagrams` and `just images`. Any figure
-  used in the Markdown notes must be an archify capture from `docs/diagrams/img/<lang>/`.
+  used in the Markdown notes must be an archify capture from `contextual-bandit/diagrams/img/<lang>/`.
 
-- Network graphs live in `graphs/<name>/` and are drawn by [graphify](https://graphify.com)
-  (`pip install graphifyy==0.9.100`). Edit the `nodes.csv` and `edges.csv` there; every edge
-  needs a source URL. `just graph` builds `out/` (not committed), `just render-graph` serves it.
+- `triad-graph/` holds one folder per triad (`musk-thiel-karp/`, `musk-altman-amodei/`), drawn by
+  [graphify](https://graphify.com) (`pip install graphifyy==0.9.100`). Each folder has `meta.json`,
+  `nodes.csv`, `edges.csv` and `screenshots/`; `build.py` and `render.mjs` serve all of them. Every
+  edge needs a source URL. `just graph [triad]` builds `<triad>/out/` (not committed) and
+  `just render-graph <triad>` serves it. A new triad follows the same files and README pattern.
 
-- `MULTI_ARMED_CONTEXTUAL_BANDIT.md` is written in ASD-STE100 (Simplified
+- `contextual-bandit/MULTI_ARMED_CONTEXTUAL_BANDIT.md` is written in ASD-STE100 (Simplified
   Technical English). `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md` follows the
   piabrota/gramatico rules (level `smart-note + descritivo`). Keep the two in sync.
   Cite only sources that you have opened. Mark unchecked claims with ⚠ in pt-BR.

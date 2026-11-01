@@ -3,7 +3,7 @@
   "diagram_type": "workflow",
   "meta": {
     "title": "A/B test as a special case of a bandit",
-    "output": "docs/diagrams/en/ab-test-vs-bandit.html",
+    "output": "contextual-bandit/diagrams/en/ab-test-vs-bandit.html",
     "quality_profile": "showcase",
     "locale": "en"
   },

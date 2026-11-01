@@ -1,27 +1,21 @@
-"""Turn nodes.csv and edges.csv into a graphify graph.json (node-link format).
+"""Turn one triad's nodes.csv and edges.csv into a graphify graph.json (node-link format).
 
-Run: python3 graphs/triad/build.py  -> graphs/triad/out/graph.json and .graphify_labels.json
-Then `graphify export html --graph graphs/triad/out/graph.json` draws graph.html.
-Only the standard library is used.
+Run: python3 triad-graph/build.py triad-graph/<triad>
+  -> triad-graph/<triad>/out/graph.json and .graphify_labels.json
+Then `graphify export html --graph triad-graph/<triad>/out/graph.json` draws graph.html.
+The colour groups come from <triad>/meta.json. Only the standard library is used.
 """
 import csv
 import json
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+if len(sys.argv) != 2:
+    sys.exit("usage: build.py <triad folder>")
+HERE = Path(sys.argv[1]).resolve()
 OUT = HERE / "out"
-
-# graphify colours nodes by community; one community per group in nodes.csv.
-GROUPS = {
-    "triad": "Musk, Thiel, Karp",
-    "shared": "Shared companies",
-    "musk": "Musk companies",
-    "thiel_karp": "Thiel and Karp companies and funds",
-    "big_tech": "Big Tech",
-    "people": "Tech figures",
-    "government": "Governments and contracts",
-}
+# graphify colours nodes by community; one community per group, in meta.json order.
+GROUPS = json.loads((HERE / "meta.json").read_text(encoding="utf-8"))["groups"]
 # graphify confidence tags: EXTRACTED = stated by the source, INFERRED = press reports only.
 CONFIDENCE = {"confirmed": "EXTRACTED", "reported": "INFERRED"}
 

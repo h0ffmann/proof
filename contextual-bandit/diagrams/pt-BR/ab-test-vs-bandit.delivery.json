@@ -4,8 +4,8 @@
   "status": "current",
   "command": "deliver",
   "type": "workflow",
-  "input": "/home/runner/work/dogma/dogma/docs/diagrams/src/pt-BR/ab-test-vs-bandit.workflow.json",
-  "output": "/home/runner/work/dogma/dogma/docs/diagrams/pt-BR/ab-test-vs-bandit.html",
+  "input": "/home/runner/work/dogma/dogma/contextual-bandit/diagrams/src/pt-BR/ab-test-vs-bandit.workflow.json",
+  "output": "/home/runner/work/dogma/dogma/contextual-bandit/diagrams/pt-BR/ab-test-vs-bandit.html",
   "specification": {
     "sha256": "35124dedba977af2e1713697bddb7cbdee6baa915a2a5dcfc384fc912b4b3732",
     "bytes": 33689

@@ -3,7 +3,7 @@
   "diagram_type": "sequence",
   "meta": {
     "title": "One round of a contextual bandit",
-    "output": "docs/diagrams/en/bandit-round.html",
+    "output": "contextual-bandit/diagrams/en/bandit-round.html",
     "quality_profile": "showcase",
     "locale": "en"
   },

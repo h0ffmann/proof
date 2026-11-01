@@ -1,0 +1,40 @@
+id,label,group,kind,url
+elon_musk,Elon Musk,triad,person,https://en.wikipedia.org/wiki/Elon_Musk
+sam_altman,Sam Altman,triad,person,https://en.wikipedia.org/wiki/Sam_Altman
+dario_amodei,Dario Amodei,triad,person,https://en.wikipedia.org/wiki/Dario_Amodei
+openai,OpenAI,ai_labs,company,https://en.wikipedia.org/wiki/OpenAI
+anthropic,Anthropic,ai_labs,company,https://en.wikipedia.org/wiki/Anthropic
+xai,xAI,ai_labs,company,https://en.wikipedia.org/wiki/XAI_(company)
+ssi,Safe Superintelligence,ai_labs,company,https://en.wikipedia.org/wiki/Safe_Superintelligence_Inc.
+spacex,SpaceX,musk,company,https://en.wikipedia.org/wiki/SpaceX
+tesla,Tesla,musk,company,https://en.wikipedia.org/wiki/Tesla%2C_Inc.
+twitter_x,Twitter / X Corp,musk,company,https://en.wikipedia.org/wiki/Twitter
+neuralink,Neuralink,musk,company,https://en.wikipedia.org/wiki/Neuralink
+loopt,Loopt,altman,company,https://en.wikipedia.org/wiki/Loopt
+y_combinator,Y Combinator,altman,fund,https://en.wikipedia.org/wiki/Y_Combinator
+tools_for_humanity,Tools for Humanity (World),altman,company,https://en.wikipedia.org/wiki/World_(blockchain)
+helion,Helion Energy,altman,company,https://en.wikipedia.org/wiki/Helion_Energy
+oklo,Oklo,altman,company,https://en.wikipedia.org/wiki/Oklo_Inc.
+reddit,Reddit,altman,company,https://en.wikipedia.org/wiki/Reddit
+retro_bio,Retro Biosciences,altman,company,https://en.wikipedia.org/wiki/Sam_Altman
+hydrazine,Hydrazine Capital,altman,fund,https://en.wikipedia.org/wiki/Sam_Altman
+microsoft,Microsoft,big_tech,company,https://en.wikipedia.org/wiki/Microsoft
+google,Google,big_tech,company,https://en.wikipedia.org/wiki/Google
+amazon,Amazon / AWS,big_tech,company,https://en.wikipedia.org/wiki/Amazon_(company)
+nvidia,Nvidia,big_tech,company,https://en.wikipedia.org/wiki/Nvidia
+apple,Apple,big_tech,company,https://en.wikipedia.org/wiki/Apple_Inc.
+oracle,Oracle,big_tech,company,https://en.wikipedia.org/wiki/Oracle_Corporation
+amd,AMD,big_tech,company,https://en.wikipedia.org/wiki/AMD
+softbank,SoftBank,big_tech,company,https://en.wikipedia.org/wiki/SoftBank_Group
+palantir,Palantir,big_tech,company,https://en.wikipedia.org/wiki/Palantir_Technologies
+baidu,Baidu,big_tech,company,https://en.wikipedia.org/wiki/Baidu
+ftx,FTX,big_tech,company,https://en.wikipedia.org/wiki/FTX
+green_dot,Green Dot,big_tech,company,https://en.wikipedia.org/wiki/Green_Dot_Corporation
+greg_brockman,Greg Brockman,people,person,https://en.wikipedia.org/wiki/Greg_Brockman
+ilya_sutskever,Ilya Sutskever,people,person,https://en.wikipedia.org/wiki/Ilya_Sutskever
+daniela_amodei,Daniela Amodei,people,person,https://en.wikipedia.org/wiki/Daniela_Amodei
+igor_babuschkin,Igor Babuschkin,people,person,https://en.wikipedia.org/wiki/XAI_(company)
+peter_thiel,Peter Thiel,people,person,https://en.wikipedia.org/wiki/Peter_Thiel
+paul_graham,Paul Graham,people,person,https://en.wikipedia.org/wiki/Paul_Graham_(programmer)
+pentagon,Pentagon (DoD),government,agency,https://en.wikipedia.org/wiki/United_States_Department_of_Defense
+stargate,Stargate,government,program,https://en.wikipedia.org/wiki/Stargate_LLC

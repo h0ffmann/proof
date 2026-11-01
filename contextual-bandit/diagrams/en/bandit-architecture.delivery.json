@@ -4,8 +4,8 @@
   "status": "current",
   "command": "deliver",
   "type": "architecture",
-  "input": "/home/runner/work/dogma/dogma/docs/diagrams/src/en/bandit-architecture.architecture.json",
-  "output": "/home/runner/work/dogma/dogma/docs/diagrams/en/bandit-architecture.html",
+  "input": "/home/runner/work/dogma/dogma/contextual-bandit/diagrams/src/en/bandit-architecture.architecture.json",
+  "output": "/home/runner/work/dogma/dogma/contextual-bandit/diagrams/en/bandit-architecture.html",
   "specification": {
     "sha256": "f0eb98be8fb870c185d229184321a558a8a58f3cda46f74c7ffdb903c529ebc5",
     "bytes": 3548
