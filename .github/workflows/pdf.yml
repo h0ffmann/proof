@@ -1,0 +1,36 @@
+# pdf: build every paper with the pinned toolchain (h0ffmann/picasso's paper lab, through
+# flake.nix) on each pull request and push to main, with pandoc warnings as errors (an unresolved
+# citation or cross-reference fails), check the reference logs and the STE/pt-BR texts, and keep
+# the PDFs as a workflow artifact. PDFs are not committed. From Paper Fabric (h0ffmann/closed-source).
+name: pdf
+
+# DISABLED (owner, 2026-11-01): the repository is private, so no workflow runs on its own.
+# Only a manual run from the Actions tab starts it. To turn it back on, restore:
+#   on:
+#     pull_request:
+#     push:
+#       branches: [main]
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v31
+      - name: the lock is current
+        run: nix flake metadata --no-update-lock-file >/dev/null
+      - run: nix develop --no-update-lock-file --command just fabric-test
+      - run: nix develop --no-update-lock-file --command just paper-check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: papers-pdf
+          path: pdf/*.pdf
+          if-no-files-found: error

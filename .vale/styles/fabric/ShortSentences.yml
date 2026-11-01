@@ -1,0 +1,8 @@
+# "Short sentences" (AGENTS.md). A warning, not an error: a long sentence is sometimes right, and
+# the paper's own limit (25 words, ASD-STE100) is checked by `tools/fabric ste-check`.
+extends: occurrence
+message: "A sentence of more than 35 words. Split it if it holds two ideas."
+level: warning
+scope: sentence
+max: 35
+token: \b(\w+)\b

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# fabric: build tools/ (Gleam, Erlang target) and run one of its commands at the repository root.
+# Needs gleam and erl on PATH (`nix develop`). Output is UTF-8 whatever the locale: with LANG unset,
+# erl -noshell would print latin1.
+#   tools/fabric book-check
+set -euo pipefail
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+(cd "$here" && gleam build --no-print-progress >&2)
+cd "$here/.."
+exec erl -noshell -pa "$here"/build/dev/erlang/*/ebin -eval 'io:setopts(standard_io, [{encoding, unicode}]), io:setopts(standard_error, [{encoding, unicode}]), fabric:main(), erlang:halt(0).' -extra "$@"

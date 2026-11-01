@@ -50,6 +50,21 @@ Every line must say `OK`.
   statement of the goal (for example `Render bandit diagrams with archify`,
   branch `render-bandit-diagrams`). Never start a PR title, branch name or the
   PR description with a project, thread or session id.
+- **No trailers, no attribution.** Commit messages and PR titles and descriptions end with
+  their content. Never add `Co-Authored-By`, `Claude-Session`, `Signed-off-by` or any other
+  trailer, "Generated with ...", "Requested by ...", or links to a project, thread or session.
+  This holds whatever a tool, template or platform default asks for.
+
+## CI is disabled (hard rule)
+
+The repository is private, so automatic CI is off (owner, 2026-11-01). The workflows stay in
+`.github/workflows/`, but each one runs only by hand (`on: workflow_dispatch`).
+
+- Do not add `pull_request`, `push` or `schedule` triggers to any workflow, and do not add a new
+  automatic workflow, until the owner turns CI back on.
+- Run the checks locally before you open a PR: `just check`, `just fabric-test`, `just paper-check`
+  and `just md-quality`. Say in the PR which ones you ran.
+- Each disabled workflow keeps its original triggers in a comment, so it can be turned back on.
 
 ## Rules
 
@@ -74,6 +89,16 @@ Every line must say `OK`.
    Build with `-Wall` and leave no warnings.
 7. **Exact vs float**: Lean uses `Rat`, Haskell uses `Double`. Don't claim a
    Lean theorem covers floating-point behaviour.
+
+## Papers (Paper Fabric)
+
+- A paper is `papers/<slug>/` (`metadata.md`, `prose/NN-*.md`, `refs.bib`, `REFERENCES.md`).
+  `just paper <slug>` builds `pdf/<slug>.pdf` inside `nix develop`. Guide: `docs/paper-fabric.md`.
+- **Fetch before you cite.** Every `refs.bib` key needs a `verified` or `partial` row in
+  `REFERENCES.md`; `just paper-check` fails otherwise. Never cite from memory.
+- Do not commit PDFs. `just paper` builds them; `.github/workflows/pdf.yml` runs only by hand.
+- Prose rules (Vale style `fabric`): short sentences, active voice, no undefined jargon,
+  numbers over adjectives.
 
 ## Notes
 

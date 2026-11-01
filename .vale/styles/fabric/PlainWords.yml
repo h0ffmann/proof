@@ -1,0 +1,22 @@
+# "No undefined jargon" (AGENTS.md): a plain word where one exists. An error: it has one fix.
+extends: substitution
+message: "Use '%s', not '%s'."
+level: error
+ignorecase: true
+swap:
+  utilize: use
+  utilizes: uses
+  utilizing: using
+  leverage: use
+  leverages: uses
+  leveraging: using
+  in order to: to
+  due to the fact that: because
+  at this point in time: now
+  prior to: before
+  a number of: some
+  facilitate: help
+  facilitates: helps
+  commence: start
+  endeavor: try
+  endeavour: try

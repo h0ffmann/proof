@@ -1,0 +1,25 @@
+// markdownlint-cli2: the structure of every Markdown file. Part of `just md-quality`.
+// From Paper Fabric (h0ffmann/closed-source); docs/paper-fabric.md says why each rule is on or off.
+{
+  "config": {
+    "default": true,
+    // Line length is a wrap habit, not a defect: a badge, an HTML header and a long link cannot wrap.
+    "MD013": false,
+    // The front matter's `title:` is metadata; the page still has one `#` heading.
+    "MD025": { "front_matter_title": "" },
+    // A file starts with front matter and the cite line, not with a heading.
+    "MD041": false,
+    // README.md uses HTML for its centred header, after picasso's.
+    "MD033": false,
+    // A citation (APA, in README.md) and a caption for a post are text to copy: a bare URL stays bare.
+    "MD034": false,
+    // Tables are not padded into columns: a long cell would make every row long.
+    "MD060": false
+  },
+  "globs": ["**/*.md"],
+  "ignores": [
+    "vendor/**", "LICENSES/**", "build/**", "tools/build/**", "lean/.lake/**", "haskell/dist-newstyle/**",
+    // pandoc sources: their syntax is pandoc's, and ste-check is their check.
+    "papers/*/prose*/**", "papers/*/metadata.md"
+  ]
+}
