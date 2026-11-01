@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Bandit contextual: camadas de modelo e de decisão",
-    "output": "docs/diagrams/pt-BR/bandit-architecture.html",
+    "output": "contextual-bandit/diagrams/pt-BR/bandit-architecture.html",
     "quality_profile": "showcase",
     "locale": "pt-BR",
     "translations": {

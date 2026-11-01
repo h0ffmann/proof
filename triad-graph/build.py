@@ -1,7 +1,7 @@
 """Turn nodes.csv and edges.csv into a graphify graph.json (node-link format).
 
-Run: python3 graphs/triad/build.py  -> graphs/triad/out/graph.json and .graphify_labels.json
-Then `graphify export html --graph graphs/triad/out/graph.json` draws graph.html.
+Run: python3 triad-graph/build.py  -> triad-graph/out/graph.json and .graphify_labels.json
+Then `graphify export html --graph triad-graph/out/graph.json` draws graph.html.
 Only the standard library is used.
 """
 import csv

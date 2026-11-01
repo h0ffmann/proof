@@ -1,7 +1,7 @@
 """Write the Archify candidate JSON for every diagram, in English and pt-BR.
 
 One source of truth for both languages: edit TEXT, then run
-    python3 docs/diagrams/src/build_candidates.py
+    python3 contextual-bandit/diagrams/src/build_candidates.py
 and render with `just diagrams`.
 """
 import json
@@ -75,7 +75,7 @@ T = {
 def build(lang):
     i = 0 if lang == "en" else 1
     t = lambda k: T[k][i]
-    out = f"docs/diagrams/{lang}"
+    out = f"contextual-bandit/diagrams/{lang}"
     meta_extra = {"locale": "en"} if lang == "en" else {
         "locale": "pt-BR",
         "translations": json.loads(PT_UI.read_text(encoding="utf-8")),

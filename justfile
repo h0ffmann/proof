@@ -15,68 +15,83 @@ graphify := env_var_or_default("GRAPHIFY", "graphify")
 default:
     @just --list
 
-# Regenerate the Archify candidate JSON (en + pt-BR) from docs/diagrams/src/build_candidates.py
-candidates:
-    python3 docs/diagrams/src/build_candidates.py
+# ---- contextual-bandit/diagrams (archify) ----
 
-# Render every diagram to docs/diagrams/<lang>/<name>.html (validate + deliver + browser check)
+# Regenerate the Archify candidate JSON (en + pt-BR) from contextual-bandit/diagrams/src/build_candidates.py
+candidates:
+    python3 contextual-bandit/diagrams/src/build_candidates.py
+
+# Render every diagram to contextual-bandit/diagrams/<lang>/<name>.html (validate + deliver + browser check)
 diagrams: candidates
     #!/usr/bin/env bash
     set -euo pipefail
-    for json in docs/diagrams/src/*/*.json; do
+    for json in contextual-bandit/diagrams/src/*/*.json; do
       lang=$(basename "$(dirname "$json")")
       file=$(basename "$json" .json)          # e.g. bandit-round.sequence
       name=${file%.*}; type=${file##*.}
-      out="docs/diagrams/$lang/$name.html"
-      mkdir -p "docs/diagrams/$lang" ".archify/evidence/$lang"
+      out="contextual-bandit/diagrams/$lang/$name.html"
+      mkdir -p "contextual-bandit/diagrams/$lang" ".archify/evidence/$lang"
       echo "== $lang/$name ($type)"
       {{archify}} finalize "$type" "$json" "$out" --quality showcase \
         --out-dir ".archify/evidence/$lang/$name" --json > ".archify/evidence/$lang/$name.finalize.json" \
         || { cat ".archify/evidence/$lang/$name.finalize.json"; exit 1; }
     done
 
-# Capture PNG figures of every rendered diagram into docs/diagrams/img/<lang>/ (used by the Markdown notes)
+# Capture PNG figures of every rendered diagram into contextual-bandit/diagrams/img/<lang>/ (used by the Markdown notes)
 images:
     #!/usr/bin/env bash
     set -euo pipefail
-    for html in docs/diagrams/en/*.html docs/diagrams/pt-BR/*.html; do
+    for html in contextual-bandit/diagrams/en/*.html contextual-bandit/diagrams/pt-BR/*.html; do
       lang=$(basename "$(dirname "$html")"); name=$(basename "$html" .html)
-      ev=".archify/capture/$lang/$name"; rm -rf "$ev"; mkdir -p "$ev" "docs/diagrams/img/$lang"
+      ev=".archify/capture/$lang/$name"; rm -rf "$ev"; mkdir -p "$ev" "contextual-bandit/diagrams/img/$lang"
       {{archify}} visual-check "$html" --summary --require-provenance --out-dir "$ev" > "$ev/summary.json" \
         || { echo "visual-check failed for $lang/$name:" >&2; cat "$ev/summary.json" >&2; exit 1; }
       # visual-check writes <name>.visual-check.<W>x<H>.<theme>.png; take the smallest light capture.
       png=$(find "$ev" -name '*.light.png' | sort -V | head -1 || true)
       [ -n "$png" ] || png=$(find "$ev" -name '*.png' | sort -V | head -1 || true)
       [ -n "$png" ] || { echo "no PNG capture for $lang/$name in $ev:" >&2; ls -la "$ev" >&2; exit 1; }
-      cp "$png" "docs/diagrams/img/$lang/$name.png"
-      echo "docs/diagrams/img/$lang/$name.png"
+      cp "$png" "contextual-bandit/diagrams/img/$lang/$name.png"
+      echo "contextual-bandit/diagrams/img/$lang/$name.png"
     done
 
-# Serve all diagrams at http://localhost:8000 (index links both languages)
+# Serve the bandit diagrams at http://localhost:8000 (index links both languages)
 serve port=port:
     @echo "Diagrams: http://localhost:{{port}}/"
-    python3 -m http.server {{port}} --directory docs/diagrams
+    python3 -m http.server {{port}} --directory contextual-bandit/diagrams
 
-# Needs graphify and Playwright with Chromium (set VIS_NETWORK if unpkg.com is blocked; see graphs/triad/README.md).
-# Musk, Thiel and Karp graph: CSV -> graph.json -> graphify graph.html -> PDF and PNG in graphs/triad/out/
+# ---- triad-graph (graphify) ----
+
+# Needs graphify and Playwright with Chromium (set VIS_NETWORK if unpkg.com is blocked; see triad-graph/README.md).
+# Musk, Thiel and Karp graph: CSV -> graph.json -> graphify graph.html -> PDF and PNG in triad-graph/out/
 graph:
-    python3 graphs/triad/build.py
-    {{graphify}} export html --graph graphs/triad/out/graph.json
-    node graphs/triad/render.mjs
+    python3 triad-graph/build.py
+    {{graphify}} export html --graph triad-graph/out/graph.json
+    node triad-graph/render.mjs
 
 # Build the graphify graph.html and serve it at http://localhost:8000/graph.html
 render-graph port=port:
-    python3 graphs/triad/build.py
-    {{graphify}} export html --graph graphs/triad/out/graph.json
+    python3 triad-graph/build.py
+    {{graphify}} export html --graph triad-graph/out/graph.json
     @echo "Graph: http://localhost:{{port}}/graph.html"
-    python3 -m http.server {{port}} --directory graphs/triad/out
+    python3 -m http.server {{port}} --directory triad-graph/out
 
-# Check the Lean proofs (every package) and run the Haskell examples
-check:
-    cd lean && lake build
+# ---- Lean and Haskell checks ----
+
+# Check every Lean package and run the Haskell examples (the projects below, except house-pricing)
+check: bandit ocean-waves cycle
+
+# Contextual bandit: check the Lean proofs, then run the Haskell examples (spec check first)
+bandit:
+    cd contextual-bandit/lean && lake build
+    cd contextual-bandit/haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+
+# Ocean waves: check the Lean proofs and print the #eval examples
+ocean-waves:
     cd ocean-waves/lean && lake build
+
+# Eternal return: check the Lean clock theorem
+cycle:
     cd cycle/lean && lake build
-    cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:
@@ -84,6 +99,8 @@ house-pricing:
     cd house-pricing/rust && cargo run --release -- train
     cd house-pricing/lean && lake build && lake build HousePricing:static
     cd house-pricing/rust && cargo run --release --features lean -- parity
+
+# ---- papers (Paper Fabric, shared) ----
 
 # Build every paper, or the papers named: pdf/<slug>.pdf (and pdf/<slug>-ste.pdf, pdf/<slug>-pt-BR.pdf
 # when the paper has prose-ste/ or prose-pt-BR/). Run inside `nix develop`.

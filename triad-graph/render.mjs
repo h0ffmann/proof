@@ -1,5 +1,5 @@
 // Open graphify's graph.html in headless Chromium, wait for the layout to settle,
-// then write a PDF and PNG screenshots. Usage: node graphs/triad/render.mjs [outDir]
+// then write a PDF and PNG screenshots. Usage: node triad-graph/render.mjs [outDir]
 import { createRequire } from "node:module";
 import path from "node:path";
 import fs from "node:fs";
@@ -56,7 +56,7 @@ const report = `<!doctype html><meta charset="utf-8"><style>
   th { background: #eee; } a { color: #1a4e8a; text-decoration: none; }
 </style>
 <div class="fig"><h1>Musk, Thiel and Karp: companies, deals and Big Tech ties</h1>
-<p>${graph.nodes.length} nodes, ${graph.links.length} edges. Drawn by graphify from graphs/triad/nodes.csv and edges.csv. Dashed edges are press reports, not confirmed deals.</p>
+<p>${graph.nodes.length} nodes, ${graph.links.length} edges. Drawn by graphify from triad-graph/nodes.csv and edges.csv. Dashed edges are press reports, not confirmed deals.</p>
 <img src="data:image/png;base64,${png}"></div>
 <h1>Edges and sources</h1><table><tr><th>From</th><th>To</th><th>Relation (year)</th><th>Source</th></tr>${rows}</table>`;
 const doc = await browser.newPage();

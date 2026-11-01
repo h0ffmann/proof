@@ -6,7 +6,7 @@ article recommendation [@li2010contextual].
 
 This repository splits the agent into two layers. A probabilistic model reports a mean and an
 uncertainty for each arm. A decision rule turns those estimates into a probability for each arm.
-The Lean 4 specification in `lean/` proves properties of the decision rules, and `haskell/`
+The Lean 4 specification in `contextual-bandit/lean/` proves properties of the decision rules, and `contextual-bandit/haskell/`
 ports them. [@Sec:proved] lists what is proved.
 
 # What is proved {#sec:proved}
@@ -17,7 +17,7 @@ ports them. [@Sec:proved] lists what is proved.
 | `epsGreedy_one_is_ab_test` | ε-greedy with $\varepsilon = 1$ is the uniform allocation of an A/B/n test |
 | `ucb_gap` | with a calibrated model, UCB's arm is within $2\beta \cdot w$ of the best arm |
 
-: Three of the theorems in `lean/ContextualBandit/Theorems.lean`. {#tbl:proved}
+: Three of the theorems in `contextual-bandit/lean/ContextualBandit/Theorems.lean`. {#tbl:proved}
 
 [@Tbl:proved] is a sample of the list in the repository's README. Mechanised work on
 stochastic bandits in Lean is in progress elsewhere [@degenne2026leanbandits].
