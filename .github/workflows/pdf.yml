@@ -4,10 +4,14 @@
 # the PDFs as a workflow artifact. PDFs are not committed. From Paper Fabric (h0ffmann/closed-source).
 name: pdf
 
+# DISABLED (owner, 2026-11-01): the repository is private, so no workflow runs on its own.
+# Only a manual run from the Actions tab starts it. To turn it back on, restore:
+#   on:
+#     pull_request:
+#     push:
+#       branches: [main]
 on:
-  pull_request:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read

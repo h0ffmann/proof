@@ -39,8 +39,9 @@ warning as an error, so an unknown citation or label fails it.
 | `just fabric-test` | a test of `tools/` fails |
 | `just md-quality` | markdownlint finds a structure fault, Vale finds a prose error, or lychee finds a dead link to a file |
 
-CI (`.github/workflows/pdf.yml`) runs `just fabric-test` and `just paper-check` on each pull
-request, and keeps the PDFs as an artifact. PDFs are not committed.
+CI is disabled while the repository is private (AGENTS.md). `.github/workflows/pdf.yml` runs
+`just fabric-test` and `just paper-check` only when started by hand from the Actions tab, and keeps
+the PDFs as an artifact. PDFs are not committed.
 
 ## 4. Rules that make the output credible
 
