@@ -4,7 +4,7 @@
 
 To argue:
 
-- In §341 a demon tells you that you will live this life again, "innumerable times more", with
+- In §341 a demon tells you that you will live this life again, many times, with
   nothing new. Nietzsche asks if you would curse him or bless him [@nietzsche1910joyful].
   **[TODO: quote §341 from the fetched text; the reference log marks it partial.]**
 - The demon makes no claim about physics. The test works if the thought is only possible.
