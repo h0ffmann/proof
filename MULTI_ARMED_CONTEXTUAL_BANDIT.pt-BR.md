@@ -42,6 +42,10 @@ O objetivo é maximizar a recompensa total.
 | Política | Regra que leva do contexto ao braço | Modelo que escolhe a imagem |
 | Arrependimento (*regret*) | Soma, em todas as rodadas, da recompensa do melhor braço menos a recompensa do braço escolhido | Reproduções que o sistema perdeu |
 
+[![Uma rodada de um bandit contextual](docs/diagrams/img/pt-BR/bandit-round.png)](docs/diagrams/pt-BR/bandit-round.html)
+
+*Figura 1. Uma rodada: decidir, agir, aprender. Feita com archify. Clique na figura para abrir o diagrama interativo.*
+
 ## 2. Exploração e aproveitamento
 
 O sistema faz duas coisas ao mesmo tempo:
@@ -75,6 +79,10 @@ Compare esse procedimento com as regras de bandit:
 Conclusão: o teste A/B é uma política específica dentro do modelo de bandit. Essa política não usa contexto, usa alocação uniforme fixa e toma uma única decisão no fim.
 
 O teste A/B ainda tem uma vantagem. A alocação aleatória fixa dá uma estimativa simples e sem viés do efeito. O bandit muda a alocação, e por isso a média simples dos registros tem viés. Para avaliar um bandit *offline*, registre a probabilidade de cada escolha. Depois, use *replay* ou ponderação pelo inverso da propensão (IPW). A Netflix usa *replay* para esse fim (ver a seção 4).
+
+[![Teste A/B como caso particular de bandit](docs/diagrams/img/pt-BR/ab-test-vs-bandit.png)](docs/diagrams/pt-BR/ab-test-vs-bandit.html)
+
+*Figura 2. O teste A/B e o ciclo do bandit. Feita com archify.*
 
 ## 4. Netflix
 
@@ -120,6 +128,10 @@ As fontes primárias que esta nota confirmou são de 2017 e 2018. Esta nota não
 | Garantia de exploração | `epsGreedy_explores` | — |
 | Arrependimento do UCB numa rodada | `ucb_gap` | `ucb` |
 | O modelo é o único caminho do histórico até a decisão | `policy_factors` | `posterior` |
+
+[![Camadas de modelo e de decisão](docs/diagrams/img/pt-BR/bandit-architecture.png)](docs/diagrams/pt-BR/bandit-architecture.html)
+
+*Figura 3. A camada de modelo, a camada de decisão e a spec em Lean. Feita com archify.*
 
 ## 6. Fontes
 

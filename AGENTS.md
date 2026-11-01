@@ -42,6 +42,15 @@ cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/ex
 The first block of the Haskell output is **"Spec check against Lean #eval"**.
 Every line must say `OK`.
 
+## Hard rules (git and pull requests)
+
+- **Never commit directly to `main`.** Every change goes on its own branch and
+  lands through a pull request. Do not push to `main`, not even for docs.
+- **Name branches and PRs by the goal.** The PR title and branch name are a short
+  statement of the goal (for example `Render bandit diagrams with archify`,
+  branch `render-bandit-diagrams`). Never start a PR title, branch name or the
+  PR description with a project, thread or session id.
+
 ## Rules
 
 1. **No `sorry`, `admit` or new `axiom`** in `lean/`. Check with
@@ -67,6 +76,11 @@ Every line must say `OK`.
    Lean theorem covers floating-point behaviour.
 
 ## Notes
+
+- Diagrams come from [archify](https://github.com/tt-a1i/archify), vendored in
+  `vendor/archify` (see `VENDORED.md` there). Edit `docs/diagrams/src/build_candidates.py`
+  (both languages live there), then `just diagrams` and `just images`. Any figure
+  used in the Markdown notes must be an archify capture from `docs/diagrams/img/<lang>/`.
 
 - `MULTI_ARMED_CONTEXTUAL_BANDIT.md` is written in ASD-STE100 (Simplified
   Technical English). `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md` follows the
