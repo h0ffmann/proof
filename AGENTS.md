@@ -149,6 +149,10 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
   (both languages live there), then `just diagrams` and `just images`. Any figure
   used in the Markdown notes must be an archify capture from `docs/diagrams/img/<lang>/`.
 
+- Network graphs live in `graphs/<name>/` and are drawn by [graphify](https://graphify.com)
+  (`pip install graphifyy==0.9.100`). Edit the `nodes.csv` and `edges.csv` there; every edge
+  needs a source URL. `just graph` builds `out/` (not committed), `just render-graph` serves it.
+
 - `MULTI_ARMED_CONTEXTUAL_BANDIT.md` is written in ASD-STE100 (Simplified
   Technical English). `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md` follows the
   piabrota/gramatico rules (level `smart-note + descritivo`). Keep the two in sync.

@@ -45,3 +45,6 @@ result-*
 
 # Rust: cargo
 target/
+
+# graphify graph outputs (graph.json, graph.html, PDF): `just graph` rebuilds them
+graphs/*/out/

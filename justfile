@@ -8,6 +8,8 @@ archify := "node vendor/archify/bin/archify.mjs"
 # BibTeX) -> LaTeX -> XeLaTeX twice. docs/paper-fabric.md has the guide. Tools: `nix develop`.
 pandoc_opts := "--from markdown+fancy_lists+raw_tex -F pandoc-crossref --citeproc --metadata link-citations=true --number-sections --top-level-division=section --fail-if-warnings -s --template format/tex/template.tex -t latex --metadata-file format/crossref.yaml"
 port := "8000"
+# graphify (https://graphify.com), pinned: `pip install graphifyy==0.9.100`. Override with GRAPHIFY=...
+graphify := env_var_or_default("GRAPHIFY", "graphify")
 
 # List recipes
 default:
@@ -54,6 +56,20 @@ images:
 serve port=port:
     @echo "Diagrams: http://localhost:{{port}}/"
     python3 -m http.server {{port}} --directory docs/diagrams
+
+# Needs graphify and Playwright with Chromium (set VIS_NETWORK if unpkg.com is blocked; see graphs/triad/README.md).
+# Musk, Thiel and Karp graph: CSV -> graph.json -> graphify graph.html -> PDF and PNG in graphs/triad/out/
+graph:
+    python3 graphs/triad/build.py
+    {{graphify}} export html --graph graphs/triad/out/graph.json
+    node graphs/triad/render.mjs
+
+# Build the graphify graph.html and serve it at http://localhost:8000/graph.html
+render-graph port=port:
+    python3 graphs/triad/build.py
+    {{graphify}} export html --graph graphs/triad/out/graph.json
+    @echo "Graph: http://localhost:{{port}}/graph.html"
+    python3 -m http.server {{port}} --directory graphs/triad/out
 
 # Check the Lean proofs (every package) and run the Haskell examples
 check:
