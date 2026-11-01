@@ -22,6 +22,19 @@ line-by-line port that runs. Both share one idea:
    └────────────── update(b, (c, a, r)) ◄────────────── reward r ◄──────────────── environment
 ```
 
+## Papers
+
+Papers are written in Markdown and built to PDF with pandoc and XeLaTeX, using the
+Paper Fabric pipeline from [h0ffmann/closed-source](https://github.com/h0ffmann/closed-source).
+Start with [docs/paper-fabric.md](docs/paper-fabric.md); the starter paper is
+[`papers/contextual-bandits`](papers/contextual-bandits/metadata.md).
+
+```bash
+nix develop          # pandoc, pandoc-crossref, XeLaTeX, Gleam (pinned by flake.lock)
+just paper           # every paper -> pdf/<slug>.pdf
+just paper-check     # + reference log and STE/pt-BR checks
+```
+
 ## Diagrams
 
 All figures are made with [archify](https://github.com/tt-a1i/archify) by tt-a1i

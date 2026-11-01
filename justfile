@@ -3,6 +3,10 @@
 # (set ARCHIFY_CHROME=/path/to/chromium if it is not on PATH).
 
 archify := "node vendor/archify/bin/archify.mjs"
+
+# Paper Fabric (from h0ffmann/closed-source): Markdown prose -> pandoc (pandoc-crossref, citeproc,
+# BibTeX) -> LaTeX -> XeLaTeX twice. docs/paper-fabric.md has the guide. Tools: `nix develop`.
+pandoc_opts := "--from markdown+fancy_lists+raw_tex -F pandoc-crossref --citeproc --metadata link-citations=true --number-sections --top-level-division=section --fail-if-warnings -s --template format/tex/template.tex -t latex --metadata-file format/crossref.yaml"
 port := "8000"
 
 # List recipes
@@ -52,3 +56,56 @@ serve port=port:
 check:
     cd lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+
+# Build every paper, or the papers named: pdf/<slug>.pdf (and pdf/<slug>-ste.pdf, pdf/<slug>-pt-BR.pdf
+# when the paper has prose-ste/ or prose-pt-BR/). Run inside `nix develop`.
+paper *slugs:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    slugs="{{slugs}}"
+    [ -n "$slugs" ] || slugs="$(ls papers)"
+    mkdir -p build/tex pdf
+    # The revision stamped on every page: short hash + commit count.
+    printf '%s+%s' "$(git rev-parse --short HEAD)" "$(git rev-list --count HEAD)" > build/.current-revision
+    for p in $slugs; do
+      [ -d "papers/$p" ] || { echo "paper: no paper papers/$p" >&2; exit 1; }
+      just _pdf "$p" prose "$p"
+      if [ -d "papers/$p/prose-ste" ]; then just _pdf "$p" prose-ste "$p-ste"; fi
+      if [ -d "papers/$p/prose-pt-BR" ]; then just _pdf "$p" prose-pt-BR "$p-pt-BR"; fi
+    done
+
+# One PDF: papers/<slug>/<dir>/*.md -> build/tex/<out>.tex -> pdf/<out>.pdf (XeLaTeX twice).
+_pdf slug dir out:
+    pandoc {{pandoc_opts}} --bibliography papers/{{slug}}/refs.bib -o build/tex/{{out}}.tex \
+      papers/{{slug}}/metadata.md papers/{{slug}}/{{dir}}/*.md
+    cd build && for _ in 1 2; do \
+      xelatex -interaction=nonstopmode -halt-on-error tex/{{out}}.tex > /dev/null \
+        || { tail -n 30 {{out}}.log >&2; exit 1; }; \
+    done
+    cp build/{{out}}.pdf pdf/{{out}}.pdf
+    @echo "paper: pdf/{{out}}.pdf"
+
+# Build the papers, then check that every cited reference was fetched and logged (REFERENCES.md)
+# and that each STE text and pt-BR translation keeps its citations, quotations and numbers.
+paper-check: paper
+    tools/fabric refs-check papers/*/refs.bib
+    for p in papers/*/prose-ste; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check "${p%/prose-ste}"; done
+    for p in papers/*/prose-pt-BR; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check --translation "${p%/prose-pt-BR}"; done
+
+# The tests of tools/ (gleeunit): refs-check and ste-check.
+fabric-test:
+    cd tools && gleam test
+
+# Three analysers over the Markdown files, in the flake's `md` shell: markdownlint-cli2 (structure),
+# Vale (prose rules) and lychee (links). `--online` also fetches web links; `--self-test` gives each
+# analyser a bad file.
+md-quality *args:
+    nix develop --extra-experimental-features 'nix-command flakes' --no-update-lock-file .#md --command scripts/md-quality.sh {{args}}
+
+# Enter the paper toolchain: pandoc, pandoc-crossref, XeLaTeX, pdfLaTeX, Gleam and Erlang, just (Nix).
+shell:
+    nix develop --extra-experimental-features 'nix-command flakes'
+
+# Remove the paper build outputs.
+clean:
+    rm -rf build pdf tools/build

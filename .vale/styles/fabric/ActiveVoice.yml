@@ -1,0 +1,9 @@
+# "Active voice" (AGENTS.md). A suggestion: `vale --minAlertLevel=suggestion` shows it. The
+# passive is right when the doer is unknown or does not matter.
+extends: existence
+message: "'%s' may be passive. Say who does it, if that is known."
+level: suggestion
+ignorecase: true
+raw:
+  - \b(am|are|were|being|is|been|was|be)\b\s+
+  - (\w+ed|built|done|found|given|held|kept|made|read|run|seen|sent|shown|taken|written)\b

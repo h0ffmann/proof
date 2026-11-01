@@ -1,0 +1,25 @@
+# "Numbers over adjectives" (AGENTS.md): a word that praises and measures nothing. An error:
+# delete it, or give the number.
+extends: existence
+message: "'%s' praises and measures nothing. Delete it or give the number."
+level: error
+ignorecase: true
+tokens:
+  - very
+  - extremely
+  - incredibly
+  - highly
+  - truly
+  - state-of-the-art
+  - cutting-edge
+  - world-class
+  - best-in-class
+  - revolutionary
+  - groundbreaking
+  - game-changing
+  - seamless
+  - seamlessly
+  - blazing
+  - blazingly
+  - effortless
+  - effortlessly

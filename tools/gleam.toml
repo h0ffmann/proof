@@ -1,0 +1,10 @@
+name = "fabric"
+version = "1.0.0"
+description = "Paper Fabric's paper checks (refs-check, ste-check), from h0ffmann/closed-source"
+target = "erlang"
+
+[dependencies]
+gleam_stdlib = ">= 1.0.0 and < 2.0.0"
+
+[dev_dependencies]
+gleeunit = ">= 1.0.0 and < 2.0.0"

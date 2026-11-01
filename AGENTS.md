@@ -75,6 +75,16 @@ Every line must say `OK`.
 7. **Exact vs float**: Lean uses `Rat`, Haskell uses `Double`. Don't claim a
    Lean theorem covers floating-point behaviour.
 
+## Papers (Paper Fabric)
+
+- A paper is `papers/<slug>/` (`metadata.md`, `prose/NN-*.md`, `refs.bib`, `REFERENCES.md`).
+  `just paper <slug>` builds `pdf/<slug>.pdf` inside `nix develop`. Guide: `docs/paper-fabric.md`.
+- **Fetch before you cite.** Every `refs.bib` key needs a `verified` or `partial` row in
+  `REFERENCES.md`; `just paper-check` fails otherwise. Never cite from memory.
+- Do not commit PDFs. CI builds them (`.github/workflows/pdf.yml`).
+- Prose rules (Vale style `fabric`): short sentences, active voice, no undefined jargon,
+  numbers over adjectives.
+
 ## Notes
 
 - Diagrams come from [archify](https://github.com/tt-a1i/archify), vendored in
