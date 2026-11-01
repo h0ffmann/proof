@@ -4,6 +4,12 @@ axioms and proofs
 Specs written and proved in Lean 4, then implemented in Haskell (and later Python).
 The first one is contextual bandits. Background note: [MULTI_ARMED_CONTEXTUAL_BANDIT.md](MULTI_ARMED_CONTEXTUAL_BANDIT.md) ([pt-BR](MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md)).
 
+The second is [house pricing](house-pricing/README.md): Rust trains and compares
+seven models on California Housing; the best one that Lean replicates exactly
+(gradient boosting, test R² 0.833) runs in Lean over exact `Rat`, is called
+from Rust through Lean's C ABI, and comes with proofs (output bounds for every
+input, and a certified income-monotone variant).
+
 ## Contextual bandits: Lean 4 spec, Haskell implementation
 
 The Lean side is the *specification with proofs*. The Haskell side is a
