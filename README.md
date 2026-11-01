@@ -1,0 +1,2 @@
+# dogma
+axioms and proofs
