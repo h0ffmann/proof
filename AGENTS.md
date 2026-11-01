@@ -65,6 +65,8 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 - Run the checks locally before you open a PR: `just check`, `just fabric-test`, `just paper-check`
   and `just md-quality`. Say in the PR which ones you ran.
 - Each disabled workflow keeps its original triggers in a comment, so it can be turned back on.
+- `diagrams.yml` is manual by design: run it on a PR branch to render the archify diagrams and
+  commit them there (it refuses `main`).
 
 ## Rules
 
