@@ -55,9 +55,10 @@ serve port=port:
     @echo "Diagrams: http://localhost:{{port}}/"
     python3 -m http.server {{port}} --directory docs/diagrams
 
-# Check the Lean proofs and run the Haskell examples
+# Check the Lean proofs (both packages) and run the Haskell examples
 check:
     cd lean && lake build
+    cd ocean-waves/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI

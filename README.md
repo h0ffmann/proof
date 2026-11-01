@@ -10,6 +10,9 @@ seven models on California Housing; the best one that Lean replicates exactly
 from Rust through Lean's C ABI, and comes with proofs (output bounds for every
 input, and a certified income-monotone variant).
 
+The third is ocean waves: the physics of spectral wave models (WAVEWATCH III and the
+WAM Cycle 4 source terms) with numerical kernels in pure Lean. See [ocean-waves/README.md](ocean-waves/README.md).
+
 ## Contextual bandits: Lean 4 spec, Haskell implementation
 
 The Lean side is the *specification with proofs*. The Haskell side is a

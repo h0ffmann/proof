@@ -1,0 +1,5 @@
+name = "OceanWaves"
+defaultTargets = ["OceanWaves"]
+
+[[lean_lib]]
+name = "OceanWaves"

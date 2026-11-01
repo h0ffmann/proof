@@ -17,6 +17,11 @@ Housing, the best one that Lean replicates exactly (gradient boosting) is
 evaluated and proved in Lean, and Rust calls it through Lean's C ABI. See
 `house-pricing/README.md`.
 
+The third topic is ocean waves (`ocean-waves/`): the theory of spectral wave
+models (WAVEWATCH III, WAM Cycle 4 physics) and the kernels of one model time
+step, written and proved in pure Lean. It has no Haskell port yet. See
+`ocean-waves/README.md`.
+
 ## Layout
 
 ```
@@ -30,6 +35,13 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
   app/Main.hs                       spec check against Lean + simulations
+ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
+  OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
+  OceanWaves/Bisection.lean         verified bisection, wavenumber kernel
+  OceanWaves/Advection.lean         upwind advection (conservation, positivity)
+  OceanWaves/Sources.lean           wind input, whitecapping, quadruplet transfer, integration
+  OceanWaves/ActionBalance.lean     one model step and its theorems
+  OceanWaves/Examples.lean          #eval examples
 ```
 
 ## Build and check
@@ -37,6 +49,7 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
 ```bash
 # Lean (toolchain pinned in lean/lean-toolchain; install via elan)
 cd lean && lake build            # must finish with no errors; prints the #eval outputs
+cd ocean-waves/lean && lake build # the same for the ocean-waves package
 
 # Haskell (GHC >= 9.4)
 cd haskell && cabal run examples
@@ -91,8 +104,9 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 
 ## Rules
 
-1. **No `sorry`, `admit` or new `axiom`** in `lean/` or `house-pricing/lean/`. Check with
-   `grep -rnE "sorry|admit|^axiom" lean/ContextualBandit house-pricing/lean/HousePricing`.
+1. **No `sorry`, `admit` or new `axiom`** in `lean/`, `house-pricing/lean/` or
+   `ocean-waves/lean/`. Check with
+   `grep -rnE "sorry|admit|^axiom" lean/ContextualBandit house-pricing/lean/HousePricing ocean-waves/lean/OceanWaves`.
    `native_decide` is allowed only in `Examples.lean`.
 2. **Lean first.** A new decision rule or model goes in Lean (definition plus at
    least a validity theorem), then in Haskell with the same name. Update the
