@@ -13,6 +13,9 @@ input, and a certified income-monotone variant).
 The third is ocean waves: the physics of spectral wave models (WAVEWATCH III and the
 WAM Cycle 4 source terms) with numerical kernels in pure Lean. See [ocean-waves/README.md](ocean-waves/README.md).
 
+The fourth is an essay, [eternal return](cycle/README.md): "time is a flat circle" as a
+small Lean theorem about a clock, plus the essay skeleton in [`papers/cycle`](papers/cycle/metadata.md).
+
 ## Contextual bandits: Lean 4 spec, Haskell implementation
 
 The Lean side is the *specification with proofs*. The Haskell side is a

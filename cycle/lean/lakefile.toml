@@ -1,0 +1,5 @@
+name = "Cycle"
+defaultTargets = ["Cycle"]
+
+[[lean_lib]]
+name = "Cycle"
