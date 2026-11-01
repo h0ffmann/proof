@@ -42,3 +42,6 @@ tools/build/
 .lycheecache
 result
 result-*
+
+# Rust: cargo
+target/

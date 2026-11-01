@@ -57,6 +57,13 @@ check:
     cd lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 
+# House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
+house-pricing:
+    house-pricing/data/fetch.sh
+    cd house-pricing/rust && cargo run --release -- train
+    cd house-pricing/lean && lake build && lake build HousePricing:static
+    cd house-pricing/rust && cargo run --release --features lean -- parity
+
 # Build every paper, or the papers named: pdf/<slug>.pdf (and pdf/<slug>-ste.pdf, pdf/<slug>-pt-BR.pdf
 # when the paper has prose-ste/ or prose-pt-BR/). Run inside `nix develop`.
 paper *slugs:
