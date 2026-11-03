@@ -1,0 +1,18 @@
+symbol,name,kind,consensus,mainnet_year,mcap_rank,github,sources
+BTC,Bitcoin,L1,PoW,2009,1,https://github.com/bitcoin/bitcoin,S12
+ETH,Ethereum,L1,PoS,2015,2,https://github.com/ethereum/go-ethereum,S12
+BNB,BNB Smart Chain,L1,PoSA,2020,4,https://github.com/bnb-chain/bsc,S12
+XRP,XRP Ledger,L1,Federated BFT,2012,5,https://github.com/XRPLF/rippled,S12
+SOL,Solana,L1,PoS,2020,7,https://github.com/anza-xyz/agave,S12
+TRX,TRON,L1,DPoS,2018,8,https://github.com/tronprotocol/java-tron,S12
+ZEC,Zcash,L1,PoW,2016,11,https://github.com/ZcashFoundation/zebra,S12
+XMR,Monero,L1,PoW,2014,13,https://github.com/monero-project/monero,S12
+ADA,Cardano,L1,PoS,2017,18,https://github.com/IntersectMBO/cardano-node,S12
+NEAR,NEAR Protocol,L1,PoS,2020,21,https://github.com/near/nearcore,S12
+LTC,Litecoin,L1,PoW,2011,26,https://github.com/litecoin-project/litecoin,S12
+AVAX,Avalanche,L1,PoS,2020,29,https://github.com/ava-labs/avalanchego,S12
+SUI,Sui,L1,PoS,2023,30,https://github.com/MystenLabs/sui,S12
+DOT,Polkadot,L1,NPoS,2020,,https://github.com/paritytech/polkadot-sdk,S12
+ATOM,Cosmos Hub,L1,PoS,2019,,https://github.com/cosmos/cosmos-sdk,S12
+ALGO,Algorand,L1,PPoS,2019,,https://github.com/algorand/go-algorand,S12
+ARB,Arbitrum One,L2 rollup,Rollup on Ethereum,2021,,https://github.com/OffchainLabs/nitro,S12;S15

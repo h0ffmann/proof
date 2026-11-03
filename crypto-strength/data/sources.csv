@@ -1,0 +1,19 @@
+id,url,what_it_supports,accessed
+S01,https://nakaflow.io/,"Nakamoto coefficients for PoS chains (Solana 6, BNB 7, Avalanche 22, Cardano 15, Algorand 14, NEAR 9, Sui 17, Cosmos 4)",2026-11-01
+S02,https://chainspect.app/dashboard/decentralization,"Nakamoto coefficient and validator counts (Polkadot 179/600, Avalanche 25/563, Sui 18/125, Solana 17/665, Cardano 15/2069, Algorand 14/1573, TRON 14/27, NEAR 9/379)",2026-11-01
+S03,https://chainspect.app/dashboard,"Real-time and max TPS, finality (Solana 1000/11015 tx/s 400 ms; BNB 184/3252 tx/s 650 ms; TRON 137/439 tx/s 57 s; Sui 105/1204 tx/s)",2026-11-01
+S04,https://b10c.me/blog/015-bitcoin-mining-centralization/,"Bitcoin: Foundry ~30% and AntPool ~19% exceed 50% together; AntPool and proxy pools ~40%; six pools mine >95% of blocks (April 2025)",2026-11-01
+S05,https://www.kucoin.com/news/flash/ethereum-staking-rate-hits-28-91-lido-holds-24-45-share,"Ethereum: 28.91% of ETH staked, Lido holds 24.45% of stake (2 Jan 2026)",2026-11-01
+S06,https://ethereum.org/en/roadmap/future-proofing/quantum-resistance/,"Ethereum post-quantum plan: dedicated PQ team (Jan 2026), leanXMSS for consensus, weekly PQ devnets with 10+ clients, core PQ target ~2029, ~0.1% of ETH in vulnerable dormant accounts",2026-11-01
+S07,https://rdevaul.github.io/research/bitcoin-quantum-resistance.html,"Bitcoin: ~6.51M BTC with exposed public keys; BIP-360 merged Feb 2026 but no activation; Algorand uses Falcon in state proofs; Solana has no public PQ roadmap (March 2026)",2026-11-01
+S08,https://arxiv.org/html/2512.01437v2,"Monero: Qubic averaged ~22% hashrate (28% in selfish-mining periods), briefly near 50% in 6-hour windows, no sustained majority",2026-11-01
+S09,https://decrypt.co/339424/moneros-largest-reorg-erases-36-minutes-transaction-history,"Monero: 18-block reorg on 14-15 Sep 2025, 118 transactions invalidated, caused by Qubic selfish mining",2026-11-01
+S10,https://cardano.org/news/2025-12-04-november-2025-incident/,"Cardano: malformed transaction caused a chain partition on 21 Nov 2025, resolved within 14 h, block production did not stop (Cardano Foundation account)",2026-11-01
+S11,https://hashlock.com/blog/blockchains-with-the-most-developers-in-2025,"Monthly active developers, Electric Capital 2024 data: Ethereum 6244, Solana 3201, Polkadot 1245, Cosmos 1200, Bitcoin 1200, Arbitrum 975",2026-11-01
+S12,https://www.coingecko.com/,"Market-cap ranks and prices on 2026-11-01 (BTC 1, ETH 2, BNB 4, XRP 5, SOL 7, TRX 8, ZEC 11, XMR 13, ADA 18, NEAR 21, LTC 26, AVAX 29, SUI 30; DOT, ATOM, ALGO, ARB below rank 41)",2026-11-01
+S13,https://crypto.news/why-30-of-zcash-supply-is-now-in-the-shielded-pool/,"Zcash: ~30% of supply shielded (May 2026), up from 8% in early 2024",2026-11-01
+S14,https://cryptobriefing.com/zcash-orchard-pool-withdrawal-counterfeiting-bug/,"Zcash: Orchard counterfeiting bug disclosed 29 May 2026, present since NU5 (2022), Orchard halted and patched, no evidence of exploitation",2026-11-01
+S15,https://l2beat.com/scaling/projects/arbitrum,"Arbitrum One: Stage 1, centralized sequencer, forced inclusion via L1 within 1 day, BoLD fraud proofs, emergency upgrades have no exit window, ~$9.67B secured",2026-11-01
+S16,https://www.theblock.co/post/338980/xrp-ledger-halt,"XRP Ledger: ~64-minute halt in Feb 2025, validations stopped publishing, unclear manual intervention",2026-11-01
+S17,https://www.analyticsinsight.net/solana/solana-network-status-outages-uptime-current-network-issues,"Solana: last full outage Feb 2024; ~30 months uptime; 12 Aug 2026 TeraSwitch routing failure took 28.83% of stake offline for ~33 min without halting",2026-11-01
+J,,"Author judgment from general knowledge; not backed by a source opened for this survey. Treat as a claim to check.",

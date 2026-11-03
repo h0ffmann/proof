@@ -41,6 +41,14 @@ Consequences of Fat Tails* (κ, Hill tail exponents, MS plots, kurtosis
 instability) to the S&P 500 since 1950 and compares power-law VaR with Gaussian
 VaR at today's volatility. Python only for now.
 
+## Crypto strength map
+
+[`crypto-strength/`](crypto-strength/README.md) scores 17 crypto networks from 1 to 5
+on nine factors (decentralization, security, scalability, affordability, adoption,
+maturity, fees, privacy, and resistance to 2026 attacks), renders the heatmap, and
+derives a long-term top 10 of mature projects with their GitHub repositories.
+Every score has evidence and a source id in a CSV. Educational only, not investment advice.
+
 ## Papers
 
 Papers are written in Markdown and built to PDF with pandoc and XeLaTeX, using the
