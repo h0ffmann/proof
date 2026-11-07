@@ -4,7 +4,6 @@ subtitle: "An essay on eternal return, from Nietzsche's demon to a theorem in Le
 author:
   - name: Matheus Hoffmann
     orcid: 0009-0009-1056-7661
-    affiliation: Escola Politécnica, Universidade Federal do Rio de Janeiro
 date: "November 2026"
 version: "v0 (skeleton, not for circulation)"
 keywords:

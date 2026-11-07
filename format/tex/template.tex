@@ -125,8 +125,11 @@ $if(subtitle)$
 $endif$
 \vspace{12pt}
 $for(author)$
-{\large $author.name$}\,$if(author.orcid)$\href{https://orcid.org/$author.orcid$}{\footnotesize\color{fabric}ORCID}$endif$\\
-{\small\itshape $author.affiliation$}\par\vspace{4pt}
+{\large $author.name$}\,$if(author.orcid)$\href{https://orcid.org/$author.orcid$}{\footnotesize\color{fabric}ORCID}$endif$\par
+$if(author.affiliation)$
+{\small\itshape $author.affiliation$}\par
+$endif$
+\vspace{4pt}
 $endfor$
 \vspace{6pt}
 {\small $date$ \textperiodcentered{} $version$ \textperiodcentered{} rev.~\revision\par}

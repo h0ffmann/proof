@@ -4,7 +4,6 @@ subtitle: "Forecasting audiences of big TV shows as a competition between channe
 author:
   - name: Matheus Hoffmann
     orcid: 0009-0009-1056-7661
-    affiliation: Escola Politécnica, Universidade Federal do Rio de Janeiro
 date: "November 2026"
 version: "v0 (draft, not peer reviewed)"
 keywords:
