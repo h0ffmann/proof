@@ -1,6 +1,8 @@
 # pomodoro
 
-A 13-line Zig timer. It sleeps for an interval, plays a sound, and repeats until Ctrl-C.
+A Zig interval timer for macOS in under 30 lines. Every launch opens two native dialogs, one for
+the interval in seconds and one for the beep sound, pre-filled with your last answers. Then the
+sound plays every interval until Ctrl-C.
 
 ## Build
 
@@ -16,12 +18,19 @@ from Linux. The binary depends only on macOS itself.
 ## Run
 
 ```bash
-pomodoro/pomodoro                                          # every 25 min, Glass.aiff
-pomodoro/pomodoro 300                                      # every 5 min
-pomodoro/pomodoro 1500 /System/Library/Sounds/Ping.aiff    # another stock sound
-pomodoro/pomodoro 1500 ~/Music/gong.mp3                    # any file afplay can play
+pomodoro/pomodoro
 ```
 
-Argument 1 is the interval in seconds, argument 2 the sound file. The sound plays through the
-macOS `afplay` command, which is why the program needs no audio library. The stock sounds live in
-`/System/Library/Sounds/`.
+1. **Interval in seconds**: default 1500 (25 minutes).
+2. **Beep sound**: a path to any file `afplay` can play; default `/System/Library/Sounds/Glass.aiff`.
+   You can drag a file from Finder into the text field. The stock sounds live in
+   `/System/Library/Sounds/` (Glass, Ping, Pop, Purr, Submarine, ...).
+
+Cancel in either dialog quits. The answers are saved to `~/.pomodoro` (two lines: seconds, path)
+and become the defaults next time; delete that file to reset.
+
+## How it stays small
+
+The dialogs are AppleScript's `display dialog`, run through `osascript`, and the sound goes
+through the `afplay` command. Both ship with macOS, so the program needs no GUI toolkit, no audio
+library and no SDK to link against.
