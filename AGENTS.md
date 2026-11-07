@@ -26,6 +26,10 @@ The fourth is `cycle/`: an essay on eternal return (`papers/cycle/`) with a smal
 core-Lean package `Cycle` that proves a clock of `n + 1` moments returns. See
 `cycle/README.md`.
 
+`tv-audience/` forecasts big-show TV audiences as a competition between channels, on simulated
+data, with the paper in `papers/tv-audience/`. See `tv-audience/README.md`. The experiment index in
+`README.md` lists every topic with its language and maturity; add a row for a new topic.
+
 ## Layout
 
 ```
