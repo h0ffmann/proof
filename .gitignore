@@ -49,3 +49,8 @@ target/
 # graphify graph outputs (graph.json, graph.html, PDF): `just graph` rebuilds them
 graphs/*/out/
 __pycache__/
+
+# Zig: build-exe outputs (just build-mac)
+pomodoro/pomodoro
+pomodoro/*.o
+.zig-cache/

@@ -89,6 +89,11 @@ house-pricing:
     cd house-pricing/lean && lake build && lake build HousePricing:static
     cd house-pricing/rust && cargo run --release --features lean -- parity
 
+# Pomodoro timer: compile pomodoro/pomodoro.zig for Apple Silicon (needs Zig >= 0.13; works from Linux too)
+build-mac:
+    cd pomodoro && zig build-exe pomodoro.zig -target aarch64-macos -O ReleaseSmall
+    @echo "pomodoro: pomodoro/pomodoro"
+
 # Build every paper, or the papers named: pdf/<slug>.pdf (and pdf/<slug>-ste.pdf, pdf/<slug>-pt-BR.pdf
 # when the paper has prose-ste/ or prose-pt-BR/). Run inside `nix develop`.
 paper *slugs:

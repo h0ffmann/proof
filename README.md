@@ -43,6 +43,7 @@
 | [`tv-audience/`](tv-audience/README.md) | Forecasting big-show TV audiences as a competition between channels: XGBoost, DNN, Mistral Timestral, joint competitive share model ([paper](papers/tv-audience/metadata.md)) | Python | **Simulated**: synthetic benchmark and paper v0; Timestral arm not run; real-channel test pending |
 | [`crypto-strength/`](crypto-strength/README.md) | 17 crypto networks scored on nine factors, long-term top 10 | Python, CSV | **Results**: sourced scores, partly judgment |
 | [`graphs/triad/`](graphs/triad/README.md) | Network of Musk, Thiel and Karp: companies, deals and ties | Python, JavaScript (graphify) | **Results**: sourced edges, rendered graph |
+| [`pomodoro/`](pomodoro/README.md) | Interval timer for macOS: native dialogs set the period and the beep sound, remembered in `~/.pomodoro` (`just build-mac`) | Zig | **Tool**: builds for Apple Silicon |
 
 Maturity levels, strongest first: **Proved** (Lean proofs with no `sorry`, implementation
 checked against them), **Results** (runs end to end on real data, outputs committed),
