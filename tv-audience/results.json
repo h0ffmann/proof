@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "seed": 20261107,
+    "train_rows": 28620,
+    "test_rows": 8208,
+    "test_big_shows": 129,
+    "test_slots": 2736,
+    "timestral_run": false,
+    "timestral_model": "mistralai/Timestral-209M",
+    "true_clash": 0.45,
+    "share_features": [
+      "log1p_hype",
+      "lo_lag7",
+      "lo_lag_mean",
+      "n_same_genre",
+      "rival_max_hype",
+      "rival_sum_hype",
+      "lag_series_change",
+      "t",
+      "holiday"
+    ]
+  },
+  "results": {
+    "naive": {
+      "wape_all": 0.1896779091565869,
+      "n_all": 8208,
+      "wape_big_show": 0.5506151988035168,
+      "n_big_show": 129,
+      "wape_clash": 0.5284255295606736,
+      "n_clash": 46,
+      "wape_big_show_ci": [
+        0.516501146574717,
+        0.5858277002383151
+      ],
+      "diff_vs_xgb_rival_all_ci": [
+        0.032013548314565786,
+        0.04592570598793192
+      ],
+      "diff_vs_xgb_rival_big_ci": [
+        0.29546315106256865,
+        0.37301274519930344
+      ],
+      "winner_acc_all": 0.8760964912280702,
+      "winner_acc_event_slots": 0.7320574162679426,
+      "slots_over_pool": 0.004751461988304093
+    },
+    "xgb": {
+      "wape_all": 0.15538536636810377,
+      "n_all": 8208,
+      "wape_big_show": 0.21732020322141704,
+      "n_big_show": 129,
+      "wape_clash": 0.24981440572017627,
+      "n_clash": 46,
+      "wape_big_show_ci": [
+        0.18014500762850802,
+        0.25346916126657226
+      ],
+      "diff_vs_xgb_rival_all_ci": [
+        0.0031255773754696628,
+        0.006661503946167829
+      ],
+      "diff_vs_xgb_rival_big_ci": [
+        -0.00721178190019723,
+        0.015109359817901699
+      ],
+      "winner_acc_all": 0.8987573099415205,
+      "winner_acc_event_slots": 0.84688995215311,
+      "slots_over_pool": 0.0
+    },
+    "xgb_rival": {
+      "wape_all": 0.15061414805708778,
+      "n_all": 8208,
+      "wape_big_show": 0.21310894391030322,
+      "n_big_show": 129,
+      "wape_clash": 0.235073471302611,
+      "n_clash": 46,
+      "wape_big_show_ci": [
+        0.1794101950463405,
+        0.24568698941139422
+      ],
+      "diff_vs_xgb_rival_all_ci": [
+        0.0,
+        0.0
+      ],
+      "diff_vs_xgb_rival_big_ci": [
+        0.0,
+        0.0
+      ],
+      "winner_acc_all": 0.8987573099415205,
+      "winner_acc_event_slots": 0.8803827751196173,
+      "slots_over_pool": 0.0
+    },
+    "dnn": {
+      "wape_all": 0.20666971135747145,
+      "n_all": 8208,
+      "wape_big_show": 0.27551800323831027,
+      "n_big_show": 129,
+      "wape_clash": 0.258323724095129,
+      "n_clash": 46,
+      "wape_big_show_ci": [
+        0.23292924360047182,
+        0.31954517843472596
+      ],
+      "diff_vs_xgb_rival_all_ci": [
+        0.05115973291543331,
+        0.061245319272080066
+      ],
+      "diff_vs_xgb_rival_big_ci": [
+        0.027847879512308084,
+        0.0957363009620739
+      ],
+      "winner_acc_all": 0.8739035087719298,
+      "winner_acc_event_slots": 0.8516746411483254,
+      "slots_over_pool": 0.0
+    },
+    "jcs": {
+      "wape_all": 0.1624237502068618,
+      "n_all": 8208,
+      "wape_big_show": 0.20096800476861243,
+      "n_big_show": 129,
+      "wape_clash": 0.2092898182372818,
+      "n_clash": 46,
+      "wape_big_show_ci": [
+        0.16947279322761857,
+        0.2323895405172015
+      ],
+      "diff_vs_xgb_rival_all_ci": [
+        0.008883910960188507,
+        0.0145221845472129
+      ],
+      "diff_vs_xgb_rival_big_ci": [
+        -0.033489252326098624,
+        0.0064515216404769605
+      ],
+      "winner_acc_all": 0.8929093567251462,
+      "winner_acc_event_slots": 0.8708133971291866,
+      "slots_over_pool": 0.0
+    },
+    "ns_jcs": {
+      "wape_all": 0.15857783606645173,
+      "n_all": 8208,
+      "wape_big_show": 0.2248601735334802,
+      "n_big_show": 129,
+      "wape_clash": 0.24137168047506022,
+      "n_clash": 46,
+      "wape_big_show_ci": [
+        0.19254857864855957,
+        0.26234442627177823
+      ],
+      "diff_vs_xgb_rival_all_ci": [
+        0.0038453529288910776,
+        0.011718662570996841
+      ],
+      "diff_vs_xgb_rival_big_ci": [
+        -0.017427693153778567,
+        0.041987986320759174
+      ],
+      "winner_acc_all": 0.9027777777777778,
+      "winner_acc_event_slots": 0.8851674641148325,
+      "slots_over_pool": 0.0
+    },
+    "xgb_mint": {
+      "wape_all": 0.16588912716234797,
+      "n_all": 8208,
+      "wape_big_show": 0.21416132315968409,
+      "n_big_show": 129,
+      "wape_clash": 0.2468070130436058,
+      "n_clash": 46,
+      "wape_big_show_ci": [
+        0.18048519399916158,
+        0.24730706642293832
+      ],
+      "diff_vs_xgb_rival_all_ci": [
+        0.01301351239029493,
+        0.017845651853909777
+      ],
+      "diff_vs_xgb_rival_big_ci": [
+        -0.00742341772071251,
+        0.011067488192804837
+      ],
+      "winner_acc_all": 0.8987573099415205,
+      "winner_acc_event_slots": 0.8803827751196173,
+      "slots_over_pool": 0.0
+    }
+  }
+}
