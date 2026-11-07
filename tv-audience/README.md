@@ -5,7 +5,7 @@ forecasters: XGBoost, a multilayer perceptron, Mistral's Timestral foundation mo
 Competitive Share (JCS) model (slot viewing pool times multinomial-logit shares over all channels),
 and a neurosymbolic JCS. A Nixtla HierarchicalForecast reconciliation is the coherence baseline.
 
-The paper [`papers/tv-audience`](../papers/tv-audience/metadata.md) has the full story;
+The paper [`papers/tv-audience`](../papers/tv-audience/metadata.md) has the full story. A built copy is [`papers/tv-audience/tv-audience.pdf`](../papers/tv-audience/tv-audience.pdf);
 `just paper tv-audience` builds it.
 
 **All data here are simulated.** `python/simulate.py` generates three markets (UK, US, BR) with
