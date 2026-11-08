@@ -1,10 +1,10 @@
 <div align="center">
 
-<img alt="proof: a turnstile (⊢, 'proves') and a tombstone (∎, 'end of proof') whose hatch lines halve the gap that is left, so the box is full only in the limit; drawn from equations" src="docs/logo/proof.svg" width="216"/>
+<img alt="A neural network flowing into the universal quantifier, drawn from Desmos equations, by @h0ffmann" src="docs/logo/logo.svg" width="820"/>
 
 # proof
 
-<sub>⊢ ∎ · <i>it proves, and it is done</i> · <a href="#in-one-minute">in one minute</a> · <a href="#index-of-experiments">experiments</a> · <a href="#papers">papers</a> · <a href="#recipes">recipes</a> · <a href="#structure">structure</a> · <a href="docs/logo/README.md">the logo</a> · <a href="#license">license</a></sub>
+<sub>∀ · <i>for all</i> · <a href="#in-one-minute">in one minute</a> · <a href="#index-of-experiments">experiments</a> · <a href="#papers">papers</a> · <a href="#recipes">recipes</a> · <a href="#structure">structure</a> · <a href="docs/logo/README.md">the logo</a> · <a href="docs/logo/logo.desmos.json">its Desmos equations</a> · <a href="#license">license</a></sub>
 
 [![Lean 4 v4.24.0](https://img.shields.io/badge/Lean_4-v4.24.0-1b3a5c?style=flat-square)](lean/lean-toolchain)
 [![no sorry](https://img.shields.io/badge/sorry-0-2a78d6?style=flat-square)](AGENTS.md)
@@ -255,7 +255,7 @@ just graph            # build the graphify network graph; `just render-graph` se
 just crypto-strength  # rebuild the crypto heatmap and results
 python3 fat-tails/python/fat_tails.py        # fat-tails results and figures
 python3 tv-audience/python/experiment.py     # TV audience benchmark, results and figures
-python3 docs/logo/logo.py                    # draw the logo again
+python3 docs/logo/logo.py                    # draw the logo again (--check to verify)
 ```
 
 ## Structure
@@ -287,7 +287,8 @@ python3 docs/logo/logo.py                    # draw the logo again
 - The paper pipeline is Paper Fabric, from [h0ffmann/closed-source](https://github.com/h0ffmann/closed-source).
 - Diagrams by [archify](https://github.com/tt-a1i/archify) (Apache-2.0), network graphs by
   [graphify](https://graphify.com).
-- The logo is drawn from equations by [`docs/logo/logo.py`](docs/logo/logo.py); see
+- The logo is the drawing from [h0ffmann/awesome-neurosymbolic-ai](https://github.com/h0ffmann/awesome-neurosymbolic-ai),
+  drawn from equations by [`docs/logo/logo.py`](docs/logo/logo.py); see
   [`docs/logo/README.md`](docs/logo/README.md).
 
 ## License

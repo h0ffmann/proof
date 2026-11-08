@@ -1,0 +1,4327 @@
+{
+ "version": 11,
+ "graph": {
+  "viewport": {
+   "xmin": -20,
+   "xmax": 980.0,
+   "ymin": -20,
+   "ymax": 260.0
+  }
+ },
+ "expressions": {
+  "list": [
+   {
+    "type": "expression",
+    "id": "1",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},170.000+1.282t+0.720t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "2",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},171.903+2.423t+0.420t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "3",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},174.646+2.964t+0.121t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "4",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},177.632+2.907t-0.179t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "5",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},180.260+2.250t+0.084t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "6",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},182.554+2.296t-0.038t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "7",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},184.771+2.098t-0.160t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "8",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},186.668+1.655t-0.283t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "9",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},170.000-1.924t-1.080t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "10",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},167.146-3.634t-0.631t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "11",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},163.031-4.447t-0.181t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "12",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},158.552-4.360t+0.268t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "13",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},154.610-3.375t-0.127t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "14",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},151.170-3.445t+0.057t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "15",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},147.843-3.147t+0.240t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "16",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},144.998-2.483t+0.424t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "17",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},170.000-5.201t-2.920t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "18",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},162.284-9.826t-1.705t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "19",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},151.157-12.022t-0.490t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "20",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},139.049-11.788t+0.724t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "21",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},128.390-9.125t-0.342t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "22",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},119.088-9.313t+0.154t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "23",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},110.094-8.509t+0.650t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "24",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},102.401-6.713t+1.146t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "25",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},170.000-8.407t-4.720t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "26",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},157.527-15.884t-2.756t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "27",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},139.541-19.433t-0.793t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "28",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},119.970-19.055t+1.171t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "29",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},102.740-14.750t-0.553t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "30",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},87.704-15.054t+0.249t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "31",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},73.166-13.754t+1.051t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "32",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},60.730-10.850t+1.853t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "33",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},120.000+4.845t+2.720t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "34",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},127.188+9.153t+1.588t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "35",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},137.553+11.199t+0.457t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "36",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},148.831+10.981t-0.675t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "37",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},158.760+8.500t+0.319t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "38",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},167.425+8.675t-0.143t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "39",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},175.803+7.926t-0.606t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "40",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},182.969+6.253t-1.068t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "41",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},120.000+1.639t+0.920t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "42",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},122.431+3.096t+0.537t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "43",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},125.937+3.788t+0.155t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "44",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},129.752+3.714t-0.228t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "45",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},133.110+2.875t+0.108t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "46",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},136.041+2.934t-0.049t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "47",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},138.874+2.681t-0.205t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "48",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},141.298+2.115t-0.361t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "49",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},120.000-1.639t-0.920t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "50",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},117.569-3.096t-0.537t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "51",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},114.063-3.788t-0.155t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "52",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},110.248-3.714t+0.228t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "53",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},106.890-2.875t-0.108t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "54",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},103.959-2.934t+0.049t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "55",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},101.126-2.681t+0.205t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "56",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},98.702-2.115t+0.361t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "57",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},120.000-4.845t-2.720t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "58",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},112.812-9.153t-1.588t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "59",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},102.448-11.199t-0.457t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "60",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},91.169-10.981t+0.675t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "61",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},81.240-8.500t-0.319t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "62",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},72.575-8.675t+0.143t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "63",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},64.197-7.926t+0.606t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "64",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},57.031-6.253t+1.068t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "65",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},70.000+8.408t+4.720t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "66",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},82.473+15.884t+2.756t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "67",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},100.459+19.433t+0.793t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "68",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},120.030+19.055t-1.171t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "69",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},137.260+14.750t+0.553t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "70",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},152.296+15.054t-0.249t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "71",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},166.834+13.754t-1.051t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "72",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},179.270+10.850t-1.853t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "73",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},70.000+5.201t+2.920t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "74",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},77.716+9.826t+1.705t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "75",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},88.843+12.022t+0.490t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "76",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},100.951+11.788t-0.724t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "77",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},111.610+9.125t+0.342t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "78",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},120.912+9.313t-0.154t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "79",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},129.906+8.509t-0.650t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "80",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},137.599+6.713t-1.146t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "81",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},70.000+1.924t+1.080t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "82",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},72.854+3.634t+0.631t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "83",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},76.969+4.447t+0.181t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "84",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},81.448+4.360t-0.268t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "85",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},85.390+3.375t+0.127t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "86",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},88.830+3.445t-0.057t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "87",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},92.157+3.147t-0.240t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "88",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},95.002+2.483t-0.424t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "89",
+    "color": "#1f2328",
+    "latex": "\\left(103.000+5.563t+2.781t^{2}-0.348t^{3},70.000-1.283t-0.720t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "90",
+    "color": "#1f2328",
+    "latex": "\\left(110.996+10.082t+1.738t^{2}-0.348t^{3},68.097-2.423t-0.420t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "91",
+    "color": "#1f2328",
+    "latex": "\\left(122.469+12.516t+0.695t^{2}-0.348t^{3},65.354-2.964t-0.121t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "92",
+    "color": "#1f2328",
+    "latex": "\\left(135.332+12.863t-0.348t^{2}-0.348t^{3},62.368-2.907t+0.179t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "93",
+    "color": "#1f2328",
+    "latex": "\\left(147.500+11.125t+1.391t^{2}-0.348t^{3},59.740-2.250t-0.084t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "94",
+    "color": "#1f2328",
+    "latex": "\\left(159.668+12.863t+0.348t^{2}-0.348t^{3},57.446-2.296t+0.038t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "95",
+    "color": "#1f2328",
+    "latex": "\\left(172.531+12.516t-0.695t^{2}-0.348t^{3},55.229-2.098t+0.160t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "96",
+    "color": "#1f2328",
+    "latex": "\\left(184.004+10.082t-1.738t^{2}-0.348t^{3},53.332-1.655t+0.283t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "97",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},188.000-1.283t-0.720t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "98",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},186.097-2.423t-0.420t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "99",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},183.354-2.964t-0.121t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "100",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},180.368-2.907t+0.179t^{2}+0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "101",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},177.740-2.250t-0.084t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "102",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},175.446-2.296t+0.038t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "103",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},173.229-2.098t+0.160t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "104",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},171.332-1.655t+0.283t^{2}+0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "105",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},188.000-4.845t-2.720t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "106",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},180.812-9.153t-1.588t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "107",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},170.447-11.199t-0.457t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "108",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},159.169-10.981t+0.675t^{2}+0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "109",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},149.240-8.500t-0.319t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "110",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},140.575-8.675t+0.143t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "111",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},132.197-7.926t+0.606t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "112",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},125.031-6.253t+1.068t^{2}+0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "113",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},188.000-8.408t-4.720t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "114",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},175.527-15.884t-2.756t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "115",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},157.541-19.433t-0.793t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "116",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},137.970-19.055t+1.171t^{2}+0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "117",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},120.740-14.750t-0.553t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "118",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},105.704-15.054t+0.249t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "119",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},91.166-13.754t+1.051t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "120",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},78.730-10.850t+1.853t^{2}+0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "121",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},143.000+1.924t+1.080t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "122",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},145.854+3.634t+0.631t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "123",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},149.969+4.447t+0.181t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "124",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},154.448+4.360t-0.268t^{2}-0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "125",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},158.390+3.375t+0.127t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "126",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},161.830+3.445t-0.057t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "127",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},165.157+3.147t-0.240t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "128",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},168.002+2.483t-0.424t^{2}-0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "129",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},143.000-1.639t-0.920t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "130",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},140.569-3.096t-0.537t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "131",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},137.063-3.788t-0.155t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "132",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},133.248-3.714t+0.228t^{2}+0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "133",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},129.890-2.875t-0.108t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "134",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},126.959-2.934t+0.049t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "135",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},124.126-2.681t+0.205t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "136",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},121.702-2.115t+0.361t^{2}+0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "137",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},143.000-5.201t-2.920t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "138",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},135.284-9.826t-1.705t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "139",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},124.157-12.022t-0.490t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "140",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},112.049-11.788t+0.724t^{2}+0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "141",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},101.390-9.125t-0.342t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "142",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},92.088-9.313t+0.154t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "143",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},83.094-8.509t+0.650t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "144",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},75.401-6.713t+1.146t^{2}+0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "145",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},97.000+5.201t+2.920t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "146",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},104.716+9.826t+1.705t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "147",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},115.843+12.022t+0.490t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "148",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},127.951+11.788t-0.724t^{2}-0.405t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "149",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},138.610+9.125t+0.342t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "150",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},147.912+9.313t-0.154t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "151",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},156.906+8.509t-0.650t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "152",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},164.599+6.713t-1.146t^{2}-0.165t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "153",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},97.000+1.639t+0.920t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "154",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},99.431+3.096t+0.537t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "155",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},102.937+3.788t+0.155t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "156",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},106.752+3.714t-0.228t^{2}-0.128t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "157",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},110.110+2.875t+0.108t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "158",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},113.041+2.934t-0.049t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "159",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},115.874+2.681t-0.205t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "160",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},118.298+2.115t-0.361t^{2}-0.052t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "161",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},97.000-1.924t-1.080t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "162",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},94.146-3.634t-0.631t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "163",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},90.031-4.447t-0.181t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "164",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},85.552-4.360t+0.268t^{2}+0.150t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "165",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},81.610-3.375t-0.127t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "166",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},78.170-3.445t+0.057t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "167",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},74.843-3.147t+0.240t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "168",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},71.998-2.483t+0.424t^{2}+0.061t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "169",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},52.000+8.408t+4.720t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "170",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},64.473+15.884t+2.756t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "171",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},82.459+19.433t+0.793t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "172",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},102.030+19.055t-1.171t^{2}-0.655t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "173",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},119.260+14.750t+0.553t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "174",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},134.296+15.054t-0.249t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "175",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},148.834+13.754t-1.051t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "176",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},161.270+10.850t-1.853t^{2}-0.267t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "177",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},52.000+4.845t+2.720t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "178",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},59.188+9.153t+1.588t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "179",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},69.552+11.199t+0.457t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "180",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},80.831+10.981t-0.675t^{2}-0.377t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "181",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},90.760+8.500t+0.319t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "182",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},99.425+8.675t-0.143t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "183",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},107.803+7.926t-0.606t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "184",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},114.969+6.253t-1.068t^{2}-0.154t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "185",
+    "color": "#1f2328",
+    "latex": "\\left(218.000+5.562t+2.781t^{2}-0.348t^{3},52.000+1.283t+0.720t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "186",
+    "color": "#1f2328",
+    "latex": "\\left(225.996+10.082t+1.738t^{2}-0.348t^{3},53.903+2.423t+0.420t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "187",
+    "color": "#1f2328",
+    "latex": "\\left(237.469+12.516t+0.695t^{2}-0.348t^{3},56.646+2.964t+0.121t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "188",
+    "color": "#1f2328",
+    "latex": "\\left(250.332+12.863t-0.348t^{2}-0.348t^{3},59.632+2.907t-0.179t^{2}-0.100t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "189",
+    "color": "#1f2328",
+    "latex": "\\left(262.500+11.125t+1.391t^{2}-0.348t^{3},62.260+2.250t+0.084t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "190",
+    "color": "#1f2328",
+    "latex": "\\left(274.668+12.863t+0.348t^{2}-0.348t^{3},64.554+2.296t-0.038t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "191",
+    "color": "#1f2328",
+    "latex": "\\left(287.531+12.516t-0.695t^{2}-0.348t^{3},66.771+2.098t-0.160t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "192",
+    "color": "#1f2328",
+    "latex": "\\left(299.004+10.082t-1.738t^{2}-0.348t^{3},68.668+1.655t-0.283t^{2}-0.041t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "193",
+    "color": "#1f2328",
+    "latex": "\\left(99.000+0.000t-12.088t^{2}+3.088t^{3},170.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "194",
+    "color": "#1f2328",
+    "latex": "\\left(90.000-14.912t+2.823t^{2}+3.088t^{3},161.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "195",
+    "color": "#1f2328",
+    "latex": "\\left(81.000+0.000t+12.088t^{2}-3.088t^{3},170.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "196",
+    "color": "#1f2328",
+    "latex": "\\left(90.000+14.912t-2.823t^{2}-3.088t^{3},179.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "197",
+    "color": "#1f2328",
+    "latex": "\\left(99.000+0.000t-12.088t^{2}+3.088t^{3},120.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "198",
+    "color": "#1f2328",
+    "latex": "\\left(90.000-14.912t+2.823t^{2}+3.088t^{3},111.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "199",
+    "color": "#1f2328",
+    "latex": "\\left(81.000+0.000t+12.088t^{2}-3.088t^{3},120.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "200",
+    "color": "#1f2328",
+    "latex": "\\left(90.000+14.912t-2.823t^{2}-3.088t^{3},129.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "201",
+    "color": "#1f2328",
+    "latex": "\\left(99.000+0.000t-12.088t^{2}+3.088t^{3},70.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "202",
+    "color": "#1f2328",
+    "latex": "\\left(90.000-14.912t+2.823t^{2}+3.088t^{3},61.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "203",
+    "color": "#1f2328",
+    "latex": "\\left(81.000+0.000t+12.088t^{2}-3.088t^{3},70.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "204",
+    "color": "#1f2328",
+    "latex": "\\left(90.000+14.912t-2.823t^{2}-3.088t^{3},79.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "205",
+    "color": "#1f2328",
+    "latex": "\\left(214.000+0.000t-12.088t^{2}+3.088t^{3},188.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "206",
+    "color": "#1f2328",
+    "latex": "\\left(205.000-14.912t+2.823t^{2}+3.088t^{3},179.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "207",
+    "color": "#1f2328",
+    "latex": "\\left(196.000+0.000t+12.088t^{2}-3.088t^{3},188.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "208",
+    "color": "#1f2328",
+    "latex": "\\left(205.000+14.912t-2.823t^{2}-3.088t^{3},197.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "209",
+    "color": "#1f2328",
+    "latex": "\\left(214.000+0.000t-12.088t^{2}+3.088t^{3},143.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "210",
+    "color": "#1f2328",
+    "latex": "\\left(205.000-14.912t+2.823t^{2}+3.088t^{3},134.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "211",
+    "color": "#1f2328",
+    "latex": "\\left(196.000+0.000t+12.088t^{2}-3.088t^{3},143.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "212",
+    "color": "#1f2328",
+    "latex": "\\left(205.000+14.912t-2.823t^{2}-3.088t^{3},152.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "213",
+    "color": "#1f2328",
+    "latex": "\\left(214.000+0.000t-12.088t^{2}+3.088t^{3},97.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "214",
+    "color": "#1f2328",
+    "latex": "\\left(205.000-14.912t+2.823t^{2}+3.088t^{3},88.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "215",
+    "color": "#1f2328",
+    "latex": "\\left(196.000+0.000t+12.088t^{2}-3.088t^{3},97.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "216",
+    "color": "#1f2328",
+    "latex": "\\left(205.000+14.912t-2.823t^{2}-3.088t^{3},106.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "217",
+    "color": "#1f2328",
+    "latex": "\\left(214.000+0.000t-12.088t^{2}+3.088t^{3},52.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "218",
+    "color": "#1f2328",
+    "latex": "\\left(205.000-14.912t+2.823t^{2}+3.088t^{3},43.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "219",
+    "color": "#1f2328",
+    "latex": "\\left(196.000+0.000t+12.088t^{2}-3.088t^{3},52.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "220",
+    "color": "#1f2328",
+    "latex": "\\left(205.000+14.912t-2.823t^{2}-3.088t^{3},61.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "221",
+    "color": "#1f2328",
+    "latex": "\\left(329.000+0.000t-12.088t^{2}+3.088t^{3},170.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "222",
+    "color": "#1f2328",
+    "latex": "\\left(320.000-14.912t+2.823t^{2}+3.088t^{3},161.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "223",
+    "color": "#1f2328",
+    "latex": "\\left(311.000+0.000t+12.088t^{2}-3.088t^{3},170.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "224",
+    "color": "#1f2328",
+    "latex": "\\left(320.000+14.912t-2.823t^{2}-3.088t^{3},179.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "225",
+    "color": "#1f2328",
+    "latex": "\\left(329.000+0.000t-12.088t^{2}+3.088t^{3},120.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "226",
+    "color": "#1f2328",
+    "latex": "\\left(320.000-14.912t+2.823t^{2}+3.088t^{3},111.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "227",
+    "color": "#1f2328",
+    "latex": "\\left(311.000+0.000t+12.088t^{2}-3.088t^{3},120.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "228",
+    "color": "#1f2328",
+    "latex": "\\left(320.000+14.912t-2.823t^{2}-3.088t^{3},129.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "229",
+    "color": "#1f2328",
+    "latex": "\\left(329.000+0.000t-12.088t^{2}+3.088t^{3},70.000-14.912t+2.823t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "230",
+    "color": "#1f2328",
+    "latex": "\\left(320.000-14.912t+2.823t^{2}+3.088t^{3},61.000+0.000t+12.088t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "231",
+    "color": "#1f2328",
+    "latex": "\\left(311.000+0.000t+12.088t^{2}-3.088t^{3},70.000+14.912t-2.823t^{2}-3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "232",
+    "color": "#1f2328",
+    "latex": "\\left(320.000+14.912t-2.823t^{2}-3.088t^{3},79.000+0.000t-12.088t^{2}+3.088t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "233",
+    "color": "#1f2328",
+    "latex": "\\left(333.000+13.375t+7.375t^{2}-1.008t^{3},170.000-2.000t+0.000t^{2}-0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "234",
+    "color": "#1f2328",
+    "latex": "\\left(352.742+25.102t+4.352t^{2}-1.008t^{3},167.875-2.375t-0.375t^{2}-0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "235",
+    "color": "#1f2328",
+    "latex": "\\left(381.188+30.781t+1.328t^{2}-1.008t^{3},165.000-3.500t-0.750t^{2}-0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "236",
+    "color": "#1f2328",
+    "latex": "\\left(412.289+30.414t-1.695t^{2}-1.008t^{3},160.625-5.375t-1.125t^{2}-0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "237",
+    "color": "#1f2328",
+    "latex": "\\left(440.000+24.000t-1.688t^{2}+0.250t^{3},154.000-8.000t-4.187t^{2}+0.797t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "238",
+    "color": "#1f2328",
+    "latex": "\\left(462.562+21.375t-0.938t^{2}+0.250t^{3},142.609-13.984t-1.797t^{2}+0.797t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "239",
+    "color": "#1f2328",
+    "latex": "\\left(483.250+20.250t-0.188t^{2}+0.250t^{3},127.625-15.188t+0.594t^{2}+0.797t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "240",
+    "color": "#1f2328",
+    "latex": "\\left(503.562+20.625t+0.562t^{2}+0.250t^{3},113.828-11.609t+2.984t^{2}+0.797t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "241",
+    "color": "#1f2328",
+    "latex": "\\left(525.000+22.500t+1.469t^{2}-0.289t^{3},106.000-3.250t+4.969t^{2}-0.695t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "242",
+    "color": "#1f2328",
+    "latex": "\\left(548.680+24.570t+0.602t^{2}-0.289t^{3},107.023+4.602t+2.883t^{2}-0.695t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "243",
+    "color": "#1f2328",
+    "latex": "\\left(573.562+24.906t-0.266t^{2}-0.289t^{3},113.812+8.281t+0.797t^{2}-0.695t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "244",
+    "color": "#1f2328",
+    "latex": "\\left(597.914+23.508t-1.133t^{2}-0.289t^{3},122.195+7.789t-1.289t^{2}-0.695t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "245",
+    "color": "#1f2328",
+    "latex": "\\left(620.000+20.375t+0.438t^{2}-0.320t^{3},128.000+3.125t-1.094t^{2}+0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "246",
+    "color": "#1f2328",
+    "latex": "\\left(640.492+20.289t-0.523t^{2}-0.320t^{3},130.156+1.312t-0.719t^{2}+0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "247",
+    "color": "#1f2328",
+    "latex": "\\left(659.938+18.281t-1.484t^{2}-0.320t^{3},130.875+0.250t-0.344t^{2}+0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "248",
+    "color": "#1f2328",
+    "latex": "\\left(676.414+14.352t-2.445t^{2}-0.320t^{3},130.906-0.062t+0.031t^{2}+0.125t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "249",
+    "color": "#1f2328",
+    "latex": "\\left(333.000+17.750t+9.875t^{2}-1.359t^{3},70.000+1.750t-0.125t^{2}+0.141t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "250",
+    "color": "#1f2328",
+    "latex": "\\left(359.266+33.422t+5.797t^{2}-1.359t^{3},71.766+1.922t+0.297t^{2}+0.141t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "251",
+    "color": "#1f2328",
+    "latex": "\\left(397.125+40.938t+1.719t^{2}-1.359t^{3},74.125+2.938t+0.719t^{2}+0.141t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "252",
+    "color": "#1f2328",
+    "latex": "\\left(438.422+40.297t-2.359t^{2}-1.359t^{3},77.922+4.797t+1.141t^{2}+0.141t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "253",
+    "color": "#1f2328",
+    "latex": "\\left(475.000+31.500t-0.750t^{2}-0.062t^{3},84.000+7.500t+4.125t^{2}-0.781t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "254",
+    "color": "#1f2328",
+    "latex": "\\left(505.688+29.812t-0.938t^{2}-0.062t^{3},94.844+13.406t+1.781t^{2}-0.781t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "255",
+    "color": "#1f2328",
+    "latex": "\\left(534.500+27.750t-1.125t^{2}-0.062t^{3},109.250+14.625t-0.562t^{2}-0.781t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "256",
+    "color": "#1f2328",
+    "latex": "\\left(561.062+25.312t-1.312t^{2}-0.062t^{3},122.531+11.156t-2.906t^{2}-0.781t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "257",
+    "color": "#1f2328",
+    "latex": "\\left(585.000+22.500t-1.594t^{2}+0.086t^{3},130.000+3.000t-4.688t^{2}+0.641t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "258",
+    "color": "#1f2328",
+    "latex": "\\left(605.992+19.570t-1.336t^{2}+0.086t^{3},128.953-4.453t-2.766t^{2}+0.641t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "259",
+    "color": "#1f2328",
+    "latex": "\\left(624.312+17.156t-1.078t^{2}+0.086t^{3},122.375-8.062t-0.844t^{2}+0.641t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "260",
+    "color": "#1f2328",
+    "latex": "\\left(640.477+15.258t-0.820t^{2}+0.086t^{3},114.109-7.828t+1.078t^{2}+0.641t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "261",
+    "color": "#1f2328",
+    "latex": "\\left(655.000+13.875t-0.531t^{2}-0.094t^{3},108.000-3.750t+0.625t^{2}-0.047t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "262",
+    "color": "#1f2328",
+    "latex": "\\left(668.250+12.531t-0.813t^{2}-0.094t^{3},104.828-2.641t+0.484t^{2}-0.047t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "263",
+    "color": "#1f2328",
+    "latex": "\\left(679.875+10.625t-1.094t^{2}-0.094t^{3},102.625-1.813t+0.344t^{2}-0.047t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "264",
+    "color": "#1f2328",
+    "latex": "\\left(689.312+8.156t-1.375t^{2}-0.094t^{3},101.109-1.266t+0.203t^{2}-0.047t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "265",
+    "color": "#1f2328",
+    "latex": "\\left(333.000+14.625t+7.688t^{2}-1.008t^{3},120.000-0.437t-0.406t^{2}+0.074t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "266",
+    "color": "#1f2328",
+    "latex": "\\left(354.305+26.977t+4.664t^{2}-1.008t^{3},119.230-1.027t-0.184t^{2}+0.074t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "267",
+    "color": "#1f2328",
+    "latex": "\\left(384.938+33.281t+1.641t^{2}-1.008t^{3},118.094-1.172t+0.039t^{2}+0.074t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "268",
+    "color": "#1f2328",
+    "latex": "\\left(418.852+33.539t-1.383t^{2}-1.008t^{3},117.035-0.871t+0.262t^{2}+0.074t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "269",
+    "color": "#1f2328",
+    "latex": "\\left(450.000+27.750t-0.125t^{2}-0.062t^{3},116.500-0.125t+0.578t^{2}-0.098t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "270",
+    "color": "#1f2328",
+    "latex": "\\left(477.562+27.313t-0.313t^{2}-0.062t^{3},116.855+0.738t+0.285t^{2}-0.098t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "271",
+    "color": "#1f2328",
+    "latex": "\\left(504.500+26.500t-0.500t^{2}-0.063t^{3},117.781+1.016t-0.008t^{2}-0.098t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "272",
+    "color": "#1f2328",
+    "latex": "\\left(530.438+25.312t-0.688t^{2}-0.062t^{3},118.691+0.707t-0.301t^{2}-0.098t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "273",
+    "color": "#1f2328",
+    "latex": "\\left(555.000+23.750t-0.469t^{2}-0.039t^{3},119.000-0.188t-0.506t^{2}+0.076t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "274",
+    "color": "#1f2328",
+    "latex": "\\left(578.242+22.695t-0.586t^{2}-0.039t^{3},118.382-0.973t-0.279t^{2}+0.076t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "275",
+    "color": "#1f2328",
+    "latex": "\\left(600.312+21.406t-0.703t^{2}-0.039t^{3},117.206-1.303t-0.052t^{2}+0.076t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "276",
+    "color": "#1f2328",
+    "latex": "\\left(620.977+19.883t-0.820t^{2}-0.039t^{3},115.927-1.179t+0.176t^{2}+0.076t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "277",
+    "color": "#1f2328",
+    "latex": "\\left(640.000+18.125t-0.750t^{2}-0.008t^{3},115.000-0.600t+0.197t^{2}-0.024t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "278",
+    "color": "#1f2328",
+    "latex": "\\left(657.367+16.602t-0.773t^{2}-0.008t^{3},114.573-0.279t+0.124t^{2}-0.024t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "279",
+    "color": "#1f2328",
+    "latex": "\\left(673.187+15.031t-0.797t^{2}-0.008t^{3},114.394-0.103t+0.052t^{2}-0.024t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "280",
+    "color": "#1f2328",
+    "latex": "\\left(687.414+13.414t-0.820t^{2}-0.008t^{3},114.318-0.073t-0.021t^{2}-0.024t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "281",
+    "color": "#1f2328",
+    "latex": "\\left(700.000+11.750t-1.719t^{2}+0.227t^{3},114.200-0.188t-0.031t^{2}+0.009t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "282",
+    "color": "#1f2328",
+    "latex": "\\left(710.258+8.992t-1.039t^{2}+0.227t^{3},113.990-0.224t-0.005t^{2}+0.009t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "283",
+    "color": "#1f2328",
+    "latex": "\\left(718.438+7.594t-0.359t^{2}+0.227t^{3},113.769-0.209t+0.020t^{2}+0.009t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "284",
+    "color": "#1f2328",
+    "latex": "\\left(725.898+7.555t+0.320t^{2}+0.227t^{3},113.588-0.143t+0.046t^{2}+0.009t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "285",
+    "color": "#1f2328",
+    "latex": "\\left(734.000+8.875t+0.188t^{2}-0.023t^{3},113.500-0.025t+0.122t^{2}-0.021t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "286",
+    "color": "#1f2328",
+    "latex": "\\left(743.039+9.180t+0.117t^{2}-0.023t^{3},113.576+0.155t+0.059t^{2}-0.021t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "287",
+    "color": "#1f2328",
+    "latex": "\\left(752.313+9.344t+0.047t^{2}-0.023t^{3},113.769+0.209t-0.005t^{2}-0.021t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "288",
+    "color": "#1f2328",
+    "latex": "\\left(761.680+9.367t-0.023t^{2}-0.023t^{3},113.952+0.137t-0.068t^{2}-0.021t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "289",
+    "color": "#1f2328",
+    "latex": "\\left(771.000+9.250t+1.156t^{2}-0.289t^{3},114.000-0.062t-0.125t^{2}+0.020t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "290",
+    "color": "#1f2328",
+    "latex": "\\left(781.117+10.695t+0.289t^{2}-0.289t^{3},113.832-0.254t-0.066t^{2}+0.020t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "291",
+    "color": "#1f2328",
+    "latex": "\\left(791.812+10.406t-0.578t^{2}-0.289t^{3},113.531-0.328t-0.008t^{2}+0.020t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "292",
+    "color": "#1f2328",
+    "latex": "\\left(801.352+8.383t-1.445t^{2}-0.289t^{3},113.215-0.285t+0.051t^{2}+0.020t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "293",
+    "color": "#1f2328",
+    "latex": "\\left(690.000+5.125t+2.562t^{2}-0.320t^{3},188.000-9.000t-4.562t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "294",
+    "color": "#1f2328",
+    "latex": "\\left(697.367+9.289t+1.602t^{2}-0.320t^{3},175.016-16.391t-2.828t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "295",
+    "color": "#1f2328",
+    "latex": "\\left(707.938+11.531t+0.641t^{2}-0.320t^{3},156.375-20.313t-1.094t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "296",
+    "color": "#1f2328",
+    "latex": "\\left(719.789+11.852t-0.320t^{2}-0.320t^{3},135.547-20.766t+0.641t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "297",
+    "color": "#1f2328",
+    "latex": "\\left(731.000+10.250t+1.281t^{2}-0.320t^{3},116.000-17.750t-2.062t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "298",
+    "color": "#1f2328",
+    "latex": "\\left(742.211+11.852t+0.320t^{2}-0.320t^{3},96.719-20.281t-0.469t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "299",
+    "color": "#1f2328",
+    "latex": "\\left(754.062+11.531t-0.641t^{2}-0.320t^{3},76.500-19.625t+1.125t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "300",
+    "color": "#1f2328",
+    "latex": "\\left(764.633+9.289t-1.602t^{2}-0.320t^{3},58.531-15.781t+2.719t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "301",
+    "color": "#1f2328",
+    "latex": "\\left(854.000-5.125t-2.562t^{2}+0.320t^{3},188.000-9.000t-4.562t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "302",
+    "color": "#1f2328",
+    "latex": "\\left(846.633-9.289t-1.602t^{2}+0.320t^{3},175.016-16.391t-2.828t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "303",
+    "color": "#1f2328",
+    "latex": "\\left(836.062-11.531t-0.641t^{2}+0.320t^{3},156.375-20.313t-1.094t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "304",
+    "color": "#1f2328",
+    "latex": "\\left(824.211-11.852t+0.320t^{2}+0.320t^{3},135.547-20.766t+0.641t^{2}+0.578t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "305",
+    "color": "#1f2328",
+    "latex": "\\left(813.000-10.250t-1.281t^{2}+0.320t^{3},116.000-17.750t-2.062t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "306",
+    "color": "#1f2328",
+    "latex": "\\left(801.789-11.852t-0.320t^{2}+0.320t^{3},96.719-20.281t-0.469t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "307",
+    "color": "#1f2328",
+    "latex": "\\left(789.938-11.531t+0.641t^{2}+0.320t^{3},76.500-19.625t+1.125t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   },
+   {
+    "type": "expression",
+    "id": "308",
+    "color": "#1f2328",
+    "latex": "\\left(779.367-9.289t+1.602t^{2}+0.320t^{3},58.531-15.781t+2.719t^{2}+0.531t^{3}\\right)",
+    "parametricDomain": {
+     "min": "0",
+     "max": "1"
+    },
+    "domain": {
+     "min": "0",
+     "max": "1"
+    }
+   }
+  ]
+ }
+}
