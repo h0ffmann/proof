@@ -5,6 +5,7 @@ import qualified Data.Map.Strict as M
 import Text.Printf (printf)
 import ContextualBandit
 import Models
+import Video
 
 ------------------------------------------------------------------------
 -- 0. Spec check: reproduce the Lean #eval outputs from Examples.lean
@@ -37,6 +38,18 @@ specCheck = do
   printf "greedy evening  %s  (Lean: [0, 0, 1])          %s\n" (show g') (ok (g' == [0, 0, 1]))
   printf "eps 0.1 morning %s  (Lean: [1/30, 14/15, 1/30]) %s\n" (show (map (roundTo 4) e))
     (ok (close e [1 / 30, 14 / 15, 1 / 30]))
+  -- Video.lean
+  let est3 = [Estimate 0.5 0, Estimate 0.9 0, Estimate 0.1 0]
+      user = byDistance (355 / 113)
+      s1 = SA 1 (leibniz 1) 0
+  printf "leibniz 5       %s  (Lean: 1052/315)             %s\n" (show (leibniz 5)) (ok (leibniz 5 == 1052 / 315))
+  printf "etc 10 3        %s  (Lean: [1/3, 1/3, 1/3])     %s\n" (show (map (roundTo 4) (etc 10 3 est3)))
+    (ok (close (etc 10 3 est3) [1 / 3, 1 / 3, 1 / 3]))
+  printf "etc 10 10       %s  (Lean: [0, 1, 0])          %s\n" (show (etc 10 10 est3)) (ok (etc 10 10 est3 == [0, 1, 0]))
+  printf "step explore n  %d  (Lean: 2)                  %s\n" (saN (step leibniz user s1 Explore)) (ok (saN (step leibniz user s1 Explore) == 2))
+  printf "step exploit n  %d  (Lean: 1)                  %s\n" (saN (step leibniz user s1 Exploit)) (ok (saN (step leibniz user s1 Exploit) == 1))
+  printf "ramSum 1        %s  (Lean: 1103)               %s\n" (show (ramSum 1)) (ok (ramSum 1 == 1103))
+  printf "leibnizEven 2   %s  (Lean: 304/105)             %s\n" (show (leibnizEven 2)) (ok (leibnizEven 2 == 304 / 105))
   where ok b = if b then "OK" else "MISMATCH" :: String
 
 roundTo :: Int -> Double -> Double

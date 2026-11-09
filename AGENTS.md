@@ -39,10 +39,13 @@ lean/      Lean 4 package `ContextualBandit` (Lake, core Lean only, no Mathlib)
   ContextualBandit/Policies.lean    greedy, ucb, epsGreedy
   ContextualBandit/Theorems.lean    all proofs
   ContextualBandit/Examples.lean    #eval examples (ground truth for the Haskell spec check)
+  ContextualBandit/Video.lean       the video script's invariants (papers/contextual-bandits/roteiro/)
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
   app/Main.hs                       spec check against Lean + simulations
+  src/Video.hs, src/Pi.hs           port of Video.lean; the π series (Leibniz, Gauss-Legendre, Ramanujan)
+  app/Video.hs                      the video's experiments; writes papers/contextual-bandits/roteiro/resultados.md
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
   OceanWaves/Bisection.lean         verified bisection, wavenumber kernel

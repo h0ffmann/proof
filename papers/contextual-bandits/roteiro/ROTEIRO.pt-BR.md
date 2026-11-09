@@ -20,7 +20,7 @@ created: 2026-11-09T02:21Z
 
 Padrão de escrita: português técnico controlado (PTC, kayquer/portugues-tecnico-controlado), nível `leve`, destinatário humano. A fala é em primeira pessoa, porque o vídeo é uma explicação minha. As regras PTC-1 (quem faz, aparece), PTC-7 (número, data e unidade), PTC-8 (ortografia de 1990) e PTC-9 (sem ruído de texto gerado) valem em toda linha. Frase com no máximo 35 palavras. Nota vizinha: [MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md](../../../MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md).
 
-Cada cena é **um take**: um arquivo de áudio (`voz/narrar.py` escreve `cena-N.M.wav`), um arquivo de vídeo (`take-N.M.mp4`) e um corte na edição. Nenhum take depende do anterior; a ordem é a deste arquivo. Cada cena tem quatro partes. **Fala** é o texto que a voz lê. **Tela** é o que aparece. **Desmos**, quando a cena tem um gráfico que um controle deslizante explica melhor que uma animação pronta: a expressão está em [`desmos/`](desmos/), para colar na calculadora gráfica e gravar a tela. **Código** é o arquivo que sustenta a cena: tudo o que a fala afirma sobre o método tem uma função em [`codigo/`](codigo/), e os números citados estão em [`resultados.md`](resultados.md), escrito por `codigo/rodar.sh`. A fonte de verdade do método continua sendo o Lean do repositório; o Python espelha o Lean nome por nome.
+Cada cena é **um take**: um arquivo de áudio (`voz/narrar.py` escreve `cena-N.M.wav`), um arquivo de vídeo (`take-N.M.mp4`) e um corte na edição. Nenhum take depende do anterior; a ordem é a deste arquivo. Cada cena tem quatro partes. **Fala** é o texto que a voz lê. **Tela** é o que aparece. **Desmos**, quando a cena tem um gráfico que um controle deslizante explica melhor que uma animação pronta: a expressão está em [`desmos/`](desmos/), para colar na calculadora gráfica e gravar a tela. **Código** é o arquivo que sustenta a cena: tudo o que a fala afirma sobre o método tem uma função em Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`) ou um teorema em Lean (`lean/ContextualBandit/Video.lean`, as invariantes R1 a R5 dos seus requisitos). Os números citados estão em [`resultados.md`](resultados.md), escrito por `cabal run video`. Python só faz animação (Manim), em [`codigo/`](codigo/).
 
 Duração: 30 minutos, em três blocos de 10 minutos: **CMAB** (0:00 a 10:00), **teste A/B** (10:00 a 20:00) e **RSI** (20:00 a 30:00). A fala tem cerca de 130 palavras por minuto; cada cena traz a duração prevista.
 
@@ -49,7 +49,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Tela.** Duas barras: "crença atual" e "crença nova", com a seta de escolha mudando de uma opção para a outra. Em baixo, os três títulos dos blocos.
 
-**Código.** [`codigo/gancho_crenca.py`](codigo/gancho_crenca.py). A saída em `resultados.md`: a crença atual escolhe a opção 0 (0,67); depois de 4 sinais positivos para a opção 1 e 2 negativos para a 0, a crença nova escolhe a opção 1 (0,62). "Mudou de ideia? True".
+**Código.** `haskell/app/Video.hs`, `beliefs`, com a regra de `betaBernoulli` em `haskell/src/Models.hs`. A saída em `resultados.md`: a crença atual escolhe a opção 0 (0,67); depois de 4 sinais positivos para a opção 1 e 2 negativos para a 0, a crença nova escolhe a opção 1 (0,62). "Mudou de ideia? True". A invariante R1 em Lean: `User`, a recompensa é o input do usuário, em [0, 1].
 
 ### Cena 1.2. Steal like an artist: de onde eu tirei isso (1:00 a 3:00)
 
@@ -61,21 +61,21 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 ### Cena 1.3. O método de escolha, no exemplo simples: π e você, um braço só (3:00 a 5:00)
 
-**Fala.** Vamos começar pelo exemplo mais simples que eu consegui, e com você no meio dele. Dois algoritmos calculam π. O de Leibniz, de 1674: π sobre 4 é 1, menos um terço, mais um quinto, menos um sétimo, e assim por diante. Bonito, e lento: com 100.000 termos ele acerta 5 dígitos. O de Ramanujan, de 1914, o matemático indiano: 1 sobre π é uma soma em que cada termo tem fatoriais e a constante 26.390. Um termo só acerta 7 dígitos; seis termos acertam 48. Guardem Ramanujan para a próxima cena. Agora só Leibniz, um braço só: o *single-armed bandit*. O agente tem uma aproximação, π de N, que você já viu e já avaliou. A cada rodada ele decide uma de duas coisas. Aproveitar: mostrar π de N de novo, e receber a mesma resposta de sempre. Ou explorar: gastar um termo, calcular π de N mais 1, mostrar, e ouvir o que você diz. Você responde: está bom? Com quantos dígitos? Essa resposta é a recompensa. O agente não sabe matemática. Ele não lê a fórmula. Ele só sabe o que você disse da aproximação que ele mostrou. Esse é o dilema inteiro, com um braço só: ficar com o que se tem, ou pagar para saber mais. Na simulação, o usuário dá uma nota pela distância até π, de 0 a 1. Em 20 rodadas o agente aproveitou 10 vezes e explorou 10, e chegou a π de 11; a nota média de explorar foi 0,74, a de aproveitar 0,14. Faz sentido: com Leibniz, cada termo novo ainda agrada um pouco mais, e explorar continua pagando. No modo interativo, você é o usuário, e a tabela é a sua. O ciclo é sempre o mesmo: decidir, mostrar, receber a sua resposta, atualizar a crença, decidir de novo. A regra que decide é a política.
+**Fala.** Vamos começar pelo exemplo mais simples que eu consegui, e com você no meio dele. Dois algoritmos calculam π. O de Leibniz, de 1674: π sobre 4 é 1, menos um terço, mais um quinto, menos um sétimo, e assim por diante. Bonito, e lento: com 100.000 termos ele acerta 5 dígitos. O de Ramanujan, de 1914, o matemático indiano: 1 sobre π é uma soma em que cada termo tem fatoriais e a constante 26.390. Um termo só acerta 7 dígitos; seis termos acertam 48. Guardem Ramanujan para a próxima cena. Agora só Leibniz, um braço só: o *single-armed bandit*. O agente tem uma aproximação, π de N, que você já viu e já avaliou. A cada rodada ele decide uma de duas coisas. Aproveitar: mostrar π de N de novo, e receber a mesma resposta de sempre. Ou explorar: gastar um termo, calcular π de N mais 1, mostrar, e ouvir o que você diz. Você responde: está bom? Com quantos dígitos? Essa resposta é a recompensa. O agente não sabe matemática. Ele não lê a fórmula. Ele só sabe o que você disse da aproximação que ele mostrou. Esse é o dilema inteiro, com um braço só: ficar com o que se tem, ou pagar para saber mais. Na simulação, o usuário dá uma nota pela distância até π, de 0 a 1. Em 20 rodadas o agente aproveitou 9 vezes e explorou 11, e chegou a π de 12; a nota média de explorar foi 0,76, a de aproveitar 0,14. Faz sentido: com Leibniz, cada termo novo ainda agrada um pouco mais, e explorar continua pagando. No modo interativo, você é o usuário, e a tabela é a sua. O ciclo é sempre o mesmo: decidir, mostrar, receber a sua resposta, atualizar a crença, decidir de novo. A regra que decide é a política.
 
 **Tela.** Uma soma de Leibniz crescendo, estilo 3b1b, oscilando em volta de π. Dois botões: "π(N)" e "π(N+1)". Um balão "está bom?" com a resposta do usuário entrando como número. Abaixo, as duas barras de crença do agente, azul, uma por ação, e a seta amarela da escolha.
 
-**Desmos.** [`desmos/1-3-pi.txt`](desmos/1-3-pi.txt): as somas parciais `L(n)` e `R(n)` contra a reta `y = π`, e os dígitos corretos `−log10|L(n) − π|` e `−log10|R(n) − π|`; o controle `N` anda termo a termo.
+**Desmos.** [`desmos/1-3-pi.txt`](desmos/1-3-pi.txt): a soma parcial `L(n)` contra a reta `y = π`, e os dígitos corretos `−log10|L(n) − π|`; o controle `N` anda termo a termo. A cena 1.4 usa o mesmo arquivo com `R(n)`, de Ramanujan.
 
-**Código.** [`codigo/pi.py`](codigo/pi.py), `single_armed`: `Leibniz`, `digitos_corretos`, `usuario_simulado`, `usuario_real` e as duas ações `APROVEITAR` e `EXPLORAR` com `eps_greedy`. `python3 pi.py --interativo` põe você como recompensa. A tabela de dígitos por termo e a de 20 rodadas estão em `resultados.md`.
+**Código.** Lean, `lean/ContextualBandit/Video.lean`: `SA`, `step`, e os teoremas `step_exploit` (aproveitar não gasta termo), `step_explore_n` (explorar gasta exatamente um), `step_explore_reward` (a nota não cai) e `step_reward_bounded` (a nota fica em [0, 1]); `leibnizEven_lt_succ`, as somas pares de Leibniz crescem. Haskell, `haskell/src/Video.hs` (os mesmos nomes) e `haskell/src/Pi.hs` (`leibnizS`, `digitsCorrect`); a simulação é `singleArmed` em `haskell/app/Video.hs`. A tabela de dígitos por termo e a de 20 rodadas estão em `resultados.md`.
 
 ### Cena 1.4. O nome, letra por letra: de um braço a vários (5:00 a 6:30)
 
-**Fala.** B de bandit. A máquina caça-níquel é o "one-armed bandit", o bandido de um braço só, porque ela leva o seu dinheiro. M e A de multi-armed: agora são várias alavancas lado a lado, cada uma com um prêmio médio que ninguém conhece. Herbert Robbins formulou essa versão em 1952. No nosso exemplo, a segunda alavanca é Ramanujan. Agora explorar não é só ir mais fundo em Leibniz: é puxar a outra alavanca para ver o que ela rende. Na simulação, com o mesmo usuário, em 20 rodadas o agente puxou Ramanujan 17 vezes e Leibniz 3, e terminou com 59 dígitos certos de um lado e 1 do outro. Ele não leu as fórmulas; ele ouviu você. C de contextual: antes de puxar, você vê um dado da rodada, por exemplo manhã ou noite. A Wikipedia chama isso de "a useful generalization of the multi-armed bandit". No código, cada letra é um tipo: `Alavanca`, `MultiArmed`, `Contextual`. Esse é o ambiente, o que paga. A escolha fica em outro arquivo, de propósito. O exemplo de π não tem contexto, por isso ele é um MAB e não um CMAB. Uma observação sobre o nome: a palavra bandit assusta, mas ela só diz que a máquina está contra você. A palavra que importa é contextual. Sem contexto, a melhor alavanca é uma só para o mundo inteiro. Com contexto, a melhor alavanca muda a cada rodada, e a política precisa aprender uma função: do contexto para a alavanca. No LinUCB o contexto é um vetor de números, e a função é linear. Na sorveteria o contexto tem dois valores, manhã e noite, e a função é uma tabela.
+**Fala.** B de bandit. A máquina caça-níquel é o "one-armed bandit", o bandido de um braço só, porque ela leva o seu dinheiro. M e A de multi-armed: agora são várias alavancas lado a lado, cada uma com um prêmio médio que ninguém conhece. Herbert Robbins formulou essa versão em 1952. No nosso exemplo entram mais duas alavancas. A de Gauss, o príncipe dos matemáticos: o algoritmo de Gauss-Legendre, pela média aritmético-geométrica, dobra os dígitos a cada passo: 3, 8, 19, 41. E a de Ramanujan, o matemático indiano, que eu chamo de rei: 7 dígitos por termo, 48 em seis. Agora explorar não é só ir mais fundo em Leibniz: é puxar outra alavanca para ver o que ela rende. Na simulação, com o mesmo usuário, em 20 rodadas o agente puxou Ramanujan 16 vezes, Gauss-Legendre 3 e Leibniz 1, e terminou com 61, 19 e 0 dígitos certos. Ele não leu as fórmulas; ele ouviu você. Uma observação honesta: com nota pela distância, Gauss-Legendre e Ramanujan empatam em 1,00 depois do primeiro termo; o agente ficou com Ramanujan porque a regra gulosa desempata pelo primeiro máximo. Para separar os dois, a nota teria de ser por dígito. C de contextual: antes de puxar, você vê um dado da rodada, por exemplo manhã ou noite. A Wikipedia chama isso de "a useful generalization of the multi-armed bandit". No código, cada letra é um tipo: `Alavanca`, `MultiArmed`, `Contextual`. Esse é o ambiente, o que paga. A escolha fica em outro arquivo, de propósito. O exemplo de π não tem contexto, por isso ele é um MAB e não um CMAB. Uma observação sobre o nome: a palavra bandit assusta, mas ela só diz que a máquina está contra você. A palavra que importa é contextual. Sem contexto, a melhor alavanca é uma só para o mundo inteiro. Com contexto, a melhor alavanca muda a cada rodada, e a política precisa aprender uma função: do contexto para a alavanca. No LinUCB o contexto é um vetor de números, e a função é linear. Na sorveteria o contexto tem dois valores, manhã e noite, e a função é uma tabela.
 
-**Tela.** As letras C, M, A, B aparecem uma a uma; cada uma vira uma peça do desenho: uma alavanca (Leibniz), duas alavancas (entra Ramanujan), um relógio ao lado. A soma de Ramanujan cola em π no primeiro termo, ao lado da de Leibniz oscilando.
+**Tela.** As letras C, M, A, B aparecem uma a uma; cada uma vira uma peça do desenho: uma alavanca (Leibniz), três alavancas (entram Gauss-Legendre e Ramanujan), um relógio ao lado. A soma de Ramanujan cola em π no primeiro termo; a de Gauss-Legendre dobra os dígitos a cada passo; a de Leibniz oscila.
 
-**Código.** [`codigo/pi.py`](codigo/pi.py), `rodar`: os dois braços e o usuário como recompensa. [`codigo/nome.py`](codigo/nome.py): as três classes, uma por letra, e a `SORVETERIA`, o ambiente com contexto que o bloco 2 usa.
+**Código.** `haskell/src/Pi.hs`: `leibnizS`, `gaussLegendreS`, `ramanujanS`, `sqrtRat`; a simulação é `multiArmed` em `haskell/app/Video.hs`. Lean: `ramTerm_pos` e `ramSum_lt_succ`, cada termo de Ramanujan é positivo e as somas parciais crescem; `ramApprox_anti`, a aproximação desce para π por cima. O ambiente com contexto do bloco 2 é `rate` e `shop` em `haskell/app/Video.hs`.
 
 ### Cena 1.5. Modelo e regra, separados (6:30 a 7:30)
 
@@ -85,7 +85,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Desmos.** [`desmos/1-5-largura.txt`](desmos/1-5-largura.txt): a largura `1/(n+1)` e a largura real `1/sqrt(n)` no mesmo gráfico, com `n` de 1 a 100. As duas caem; a do Lean é racional, para o `#eval` ser exato.
 
-**Código.** [`codigo/bandit.py`](codigo/bandit.py): `Estimate`, `Tabular.estimate`, `policy`. No Lean: `lean/ContextualBandit/Interface.lean` (`RewardModel`, `DecisionRule`) e `Theorems.lean` (`policy_factors`).
+**Código.** Lean: `lean/ContextualBandit/Interface.lean` (`RewardModel`, `Estimate`, `DecisionRule`, `policy`) e `Theorems.lean` (`policy_factors`). Haskell: `haskell/src/ContextualBandit.hs`, os mesmos nomes; o modelo tabular do vídeo é `tabular` em `haskell/app/Video.hs`.
 
 ### Cena 1.6. Explorar e aproveitar (7:30 a 8:30)
 
@@ -95,7 +95,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Desmos.** [`desmos/1-6-ucb.txt`](desmos/1-6-ucb.txt): três pontos (média, largura) e a pontuação `m + b·w` de cada um; o controle `b` vai de 0 a 3 e o sabor vencedor troca na tela.
 
-**Código.** [`codigo/bandit.py`](codigo/bandit.py): `greedy`, `eps_greedy`, `ucb`. A saída confere com o `#eval` de `lean/ContextualBandit/Examples.lean`: `[0, 1, 0]` de manhã, `[0, 0, 1]` de noite e `[1/30, 14/15, 1/30]` para ε = 1/10 (`resultados.md`).
+**Código.** Lean: `greedy`, `epsGreedy`, `ucb` em `Policies.lean`, `ucb_zero` em `Theorems.lean`. Haskell: os mesmos nomes em `haskell/src/ContextualBandit.hs`; o spec check de `haskell/app/Main.hs` confere o `#eval` de `Examples.lean`: `[0, 1, 0]` de manhã, `[0, 0, 1]` de noite e `[1/30, 14/15, 1/30]` para ε = 1/10.
 
 ### Cena 1.7. O exemplo complexo: a Netflix (8:30 a 10:00)
 
@@ -103,7 +103,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Tela.** Um título, três capas. Um assinante, o histórico dele como uma fita de ícones, o país. A seta amarela escolhe uma capa; o play aparece ou não; a barra azul daquela capa, para aquele perfil, sobe ou desce. Em canto, "20 M pedidos/s".
 
-**Código.** No repositório, o modelo que generaliza é `bayesLinear` em `haskell/src/Models.hs`: a média é um produto escalar entre o contexto e os pesos do braço. Neste vídeo, o espelho em Python é [`codigo/bandit.py`](codigo/bandit.py) com o modelo tabular, que é a mesma interface com um modelo menor. A Netflix: nota [MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md](../../../MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md), seção 4.
+**Código.** O modelo que generaliza é `bayesLinear` em `haskell/src/Models.hs`: a média é um produto escalar entre o contexto e os pesos do braço. O modelo tabular do vídeo (`haskell/app/Video.hs`) é a mesma interface com um modelo menor. A Netflix: nota [MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md](../../../MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md), seção 4.
 
 ## Bloco 2. Teste A/B (10:00 a 20:00)
 
@@ -115,7 +115,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Desmos.** [`desmos/2-1-ab.txt`](desmos/2-1-ab.txt): duas Bernoulli com `p_A` e `p_B` em controles; `n` visitantes por variante; o intervalo de confiança das duas médias encolhe quando `n` cresce.
 
-**Código.** [`codigo/teste_ab.py`](codigo/teste_ab.py), `teste_ab(k)`: devolve 1/K para cada variante.
+**Código.** Lean: `uniform K` em `Policies.lean`; a invariante R3, `etc` em `Video.lean`, com `etc_before`: antes da troca, a alocação é `uniform`. Haskell: `etc` em `haskell/src/Video.hs`.
 
 ### Cena 2.2. O teste A/B é uma regra de bandit (11:30 a 13:00)
 
@@ -125,25 +125,25 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Desmos.** [`desmos/2-2-epsilon.txt`](desmos/2-2-epsilon.txt): a mistura `e/K + (1-e)·[a = melhor]` para três braços; o controle `e` de 0 a 1 é a cena inteira.
 
-**Código.** [`codigo/teste_ab.py`](codigo/teste_ab.py): `eps_greedy(1)(est) == uniform(3)` dá `True` para estimativas quaisquer; `eps_greedy(0)` dá `[1, 0, 0]`, igual a `greedy` (`resultados.md`).
+**Código.** Lean: `epsGreedy_one_is_ab_test` (ε = 1 é o sorteio uniforme), `epsGreedy_zero` (ε = 0 é a gulosa), `etc_after` e `etc_valid` em `Video.lean`. Haskell: `etc 10 3` dá `[1/3, 1/3, 1/3]` e `etc 10 10` dá `[0, 1, 0]`, conferidos contra o `#eval` do Lean no spec check.
 
 ### Cena 2.3. O custo da espera (13:00 a 15:00)
 
-**Fala.** O que o teste A/B custa? Durante toda a fase de sorteio, dois terços dos clientes veem um sabor pior. Esse custo tem nome: arrependimento. É a soma, rodada a rodada, da média do melhor sabor menos a média do sabor escolhido. Tony Jebara, da Netflix, chamou o ciclo "coletar dados por meses, treinar, depois testar" de "a massive amount of regret". Para medir, eu simulei uma sorveteria: três sabores, uma vitrine com espaço para um, e taxas secretas, as do repositório: de manhã, o sabor 1 vende para 12 % dos clientes; de noite, o sabor 2 vende para 15 %. A política não conhece essas taxas; eu conheço porque escrevi a simulação. Com 5.000 clientes, metade na fase de sorteio, o teste A/B acumula 130 de arrependimento. A ε-gulesa com ε igual a 0,1 acumula 73,5. A UCB com β igual a 2 acumula 25,9. Mesma sorveteria, mesmo modelo, só a regra mudou. Por que o teste A/B custa tanto? Porque ele é cego durante metade do tempo, por decisão. Na rodada 100 ele já sabe que o sabor 0 vende mal de manhã, e continua mandando um terço dos clientes para ele até a rodada 2.500. A ε-gulosa manda só um trinta avos. A UCB manda enquanto a largura daquele sabor ainda é grande, e para quando a largura encolhe. A diferença de 130 para 26 é a diferença entre ignorar e usar a informação que já chegou.
+**Fala.** O que o teste A/B custa? Durante toda a fase de sorteio, dois terços dos clientes veem um sabor pior. Esse custo tem nome: arrependimento. É a soma, rodada a rodada, da média do melhor sabor menos a média do sabor escolhido. Tony Jebara, da Netflix, chamou o ciclo "coletar dados por meses, treinar, depois testar" de "a massive amount of regret". Para medir, eu simulei uma sorveteria: três sabores, uma vitrine com espaço para um, e taxas secretas, as do repositório: de manhã, o sabor 1 vende para 12 % dos clientes; de noite, o sabor 2 vende para 15 %. A política não conhece essas taxas; eu conheço porque escrevi a simulação. Com 5.000 clientes, metade na fase de sorteio, o teste A/B acumula 129 de arrependimento. A ε-gulosa com ε igual a 0,1 acumula 76. A UCB com β igual a 2 acumula 20. Mesma sorveteria, mesmo modelo, só a regra mudou. Por que o teste A/B custa tanto? Porque ele é cego durante metade do tempo, por decisão. Na rodada 100 ele já sabe que o sabor 0 vende mal de manhã, e continua mandando um terço dos clientes para ele até a rodada 2.500. A ε-gulosa manda só um trinta avos. A UCB manda enquanto a largura daquele sabor ainda é grande, e para quando a largura encolhe. A diferença de 129 para 20 é a diferença entre ignorar e usar a informação que já chegou.
 
 **Tela.** Quatro curvas de arrependimento acumulado subindo; a do teste A/B sobe reta até a metade e depois quase para; a da UCB fica embaixo.
 
 **Desmos.** [`desmos/2-3-arrependimento.txt`](desmos/2-3-arrependimento.txt): o arrependimento esperado do teste A/B em forma fechada, `(T/2)·g + 0`, contra o da ε-gulosa, `T·e·g`, com `g` o salto médio e `e` em controle; mostra em que ε as duas retas se cruzam.
 
-**Código.** [`codigo/ab_vs_bandit.py`](codigo/ab_vs_bandit.py), média de 20 sementes (`resultados.md`); a sorveteria é `SORVETERIA` em [`codigo/nome.py`](codigo/nome.py), com as taxas de `haskell/app/Main.hs` (`ctr`). A Netflix: a nota do repositório, seção 4.1, fonte [3] de lá.
+**Código.** `abVsBandit` em `haskell/app/Video.hs`, média de 20 sementes (`resultados.md`); a sorveteria é `rate` e `shop`, com as taxas de `haskell/app/Main.hs` (`ctr`). A Netflix: a nota do repositório, seção 4.1, fonte [3] de lá.
 
 ### Cena 2.4. O contexto personaliza o teste (15:00 a 16:30)
 
-**Fala.** Um teste A/B acha uma melhor variante para todo mundo. Mas na sorveteria o melhor sabor de manhã não é o melhor de noite. Um teste A/B que ignora a hora escolhe um sabor só e perde dos dois lados: 180 de arrependimento, contra 130 do teste que separa manhã e noite. Um teste A/B por segmento é um caso particular de bandit contextual. O bandit contextual acha a melhor variante para cada contexto, e o contexto pode ser um vetor com dezenas de dimensões, como em Li, Chu, Langford e Schapire, em 2010, no LinUCB. Com um vetor, não dá mais para ter uma tabela por contexto: há contextos demais, e cada um aparece uma vez. O modelo precisa generalizar entre contextos parecidos. É aí que entra a regressão: a média do sabor é um produto escalar entre o contexto e um vetor de pesos do sabor, e a largura vem da covariância desses pesos. A regra de decisão não muda uma linha.
+**Fala.** Um teste A/B acha uma melhor variante para todo mundo. Mas na sorveteria o melhor sabor de manhã não é o melhor de noite. Um teste A/B que ignora a hora escolhe um sabor só e perde dos dois lados: 179 de arrependimento, contra 129 do teste que separa manhã e noite. Um teste A/B por segmento é um caso particular de bandit contextual. O bandit contextual acha a melhor variante para cada contexto, e o contexto pode ser um vetor com dezenas de dimensões, como em Li, Chu, Langford e Schapire, em 2010, no LinUCB. Com um vetor, não dá mais para ter uma tabela por contexto: há contextos demais, e cada um aparece uma vez. O modelo precisa generalizar entre contextos parecidos. É aí que entra a regressão: a média do sabor é um produto escalar entre o contexto e um vetor de pesos do sabor, e a largura vem da covariância desses pesos. A regra de decisão não muda uma linha.
 
 **Tela.** Duas vitrines, manhã e noite, com o sabor vencedor diferente em cada uma. A linha "sem contexto" com um sabor só nas duas.
 
-**Código.** [`codigo/ab_vs_bandit.py`](codigo/ab_vs_bandit.py), política "A/B sem contexto" (`sem_contexto`, um único contexto "todos").
+**Código.** `abVsBandit` em `haskell/app/Video.hs`, política "A/B sem contexto": o mesmo `etc` sobre um modelo com um único contexto `()`.
 
 ### Cena 2.5. O que o teste A/B ainda faz melhor (16:30 a 18:00)
 
@@ -153,7 +153,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Desmos.** [`desmos/2-5-propensao.txt`](desmos/2-5-propensao.txt): a média simples e a média ponderada por `1/p` de uma amostra em que o braço bom foi escolhido com probabilidade `p`; o controle `p` mostra o viés aparecer e a correção o desfazer.
 
-**Código.** Em [`codigo/bandit.py`](codigo/bandit.py), `policy` devolve a distribuição inteira, não só o braço: essa distribuição é a propensão que o *replay* precisa registrar.
+**Código.** `policy` em `haskell/src/ContextualBandit.hs` (e em `Interface.lean`) devolve a distribuição inteira, não só o braço: essa distribuição é a propensão que o *replay* precisa registrar.
 
 ### Cena 2.6. Resumo do bloco (18:00 a 20:00)
 
@@ -171,15 +171,15 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Tela.** Três círculos concêntricos: melhoria, automelhoria, automelhoria recursiva. Cada palavra acende um anel.
 
-**Código.** [`codigo/rsi_loop.py`](codigo/rsi_loop.py), o cabeçalho: as três definições viram dois ciclos, um dentro do outro.
+**Código.** Lean, `Video.lean`, invariante R4: `outer` e `inner`, a mesma `epsGreedy` nos dois níveis; `rsi_valid` e `outer_explores`. Haskell: `outer` e `inner` em `haskell/src/Video.hs`.
 
 ### Cena 3.2. O menor ciclo recursivo que cabe numa tela (21:30 a 24:00)
 
-**Fala.** Vamos construir o menor exemplo honesto. O agente de dentro é a ε-gulosa da sorveteria. O agente de fora é outro bandit, e os braços dele são valores de ε: 1, 0,5, 0,1 e 0,01. A cada episódio, o de fora escolhe um ε, o de dentro vende 500 sorvetes com esse ε, e o ganho médio volta como recompensa para o de fora. Depois de 200 episódios, o de fora escolheu ε igual a 0,5 em 168 deles, com ganho médio de 0,096 por cliente. O ε igual a 0,01 ficou com 8 episódios e 0,054. O agente de fora aprendeu como o de dentro deve aprender. Nada aqui é novo: é a mesma `epsGreedy` aplicada duas vezes. Esse é o ponto. Agora as três exigências. A métrica é o ganho médio por cliente. O laço fechado é o `update` do agente de fora, alimentado pelo resultado do de dentro, sem ninguém escolher o ε à mão. E a recursão: o de fora muda o parâmetro que define como o de dentro explora. Dá para subir mais um nível, com um terceiro bandit escolhendo o ε do segundo. Em algum nível isso para de valer a pena, porque cada nível custa episódios inteiros do nível de baixo. Essa conta, quanto custa aprender a aprender, é o problema central da RSI. Um detalhe do resultado: ε igual a 0,5 ganhou, e não 0,1. Com 500 clientes por episódio e um modelo que começa do zero, explorar muito ainda compensa. Com 50.000 clientes, o vencedor seria outro. O agente de fora aprende o ε certo para o horizonte que ele tem. É por isso que ninguém fixa o ε de cabeça.
+**Fala.** Vamos construir o menor exemplo honesto. O agente de dentro é a ε-gulosa da sorveteria. O agente de fora é outro bandit, e os braços dele são valores de ε: 1, 0,5, 0,1 e 0,01. A cada episódio, o de fora escolhe um ε, o de dentro vende 500 sorvetes com esse ε, e o ganho médio volta como recompensa para o de fora. Depois de 200 episódios, o de fora escolheu ε igual a 0,5 em 168 deles, com ganho médio de 0,099 por cliente. O ε igual a 0,01 ficou com 9 episódios e 0,057. O agente de fora aprendeu como o de dentro deve aprender. Nada aqui é novo: é a mesma `epsGreedy` aplicada duas vezes. Esse é o ponto. Agora as três exigências. A métrica é o ganho médio por cliente. O laço fechado é o `update` do agente de fora, alimentado pelo resultado do de dentro, sem ninguém escolher o ε à mão. E a recursão: o de fora muda o parâmetro que define como o de dentro explora. Dá para subir mais um nível, com um terceiro bandit escolhendo o ε do segundo. Em algum nível isso para de valer a pena, porque cada nível custa episódios inteiros do nível de baixo. Essa conta, quanto custa aprender a aprender, é o problema central da RSI. Um detalhe do resultado: ε igual a 0,5 ganhou, e não 0,1. Com 500 clientes por episódio e um modelo que começa do zero, explorar muito ainda compensa. Com 50.000 clientes, o vencedor seria outro. O agente de fora aprende o ε certo para o horizonte que ele tem. É por isso que ninguém fixa o ε de cabeça.
 
 **Tela.** Dois ciclos desenhados, o pequeno dentro do grande. A tabela de ε aparece preenchida ao vivo.
 
-**Código.** [`codigo/rsi_loop.py`](codigo/rsi_loop.py), `episodio` (o de dentro) e o laço de `__main__` (o de fora). A tabela está em `resultados.md`.
+**Código.** `rsiLoop` em `haskell/app/Video.hs`: `episode` é o agente de dentro, o laço com `outer 0.2` é o de fora. A tabela está em `resultados.md`.
 
 ### Cena 3.3. Onde o bandit entra na RSI de verdade (24:00 a 26:30)
 
@@ -187,7 +187,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Tela.** O diagrama do laço de fora: braços "editar harness", "atualizar pesos"; a recompensa voltando de um avaliador.
 
-**Código.** A estrutura é a de `codigo/rsi_loop.py`; os braços mudam de nome. ⚠ Eu li o SIA por uma resenha (thersibook.com), não pelo PDF.
+**Código.** A estrutura é a de `rsiLoop` em `haskell/app/Video.hs`; os braços mudam de nome. ⚠ Eu li o SIA por uma resenha (thersibook.com), não pelo PDF.
 
 ### Cena 3.4. Crença atual contra crença nova, de novo (26:30 a 28:00)
 
@@ -197,7 +197,7 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 **Desmos.** [`desmos/3-4-beta.txt`](desmos/3-4-beta.txt): as duas densidades Beta(α, β) das opções; os controles `s` (sucessos) e `f` (fracassos) da opção 1 movem a curva até a média dela passar a da opção 0.
 
-**Código.** [`codigo/gancho_crenca.py`](codigo/gancho_crenca.py), `Crenca.atualizar`, a mesma regra de `betaBernoulli` em `haskell/src/Models.hs`.
+**Código.** `beliefs` em `haskell/app/Video.hs`, a mesma regra de `betaBernoulli` em `haskell/src/Models.hs`.
 
 ### Cena 3.5. O que não é bandit, e o que pode dar errado (28:00 a 29:00)
 
@@ -209,11 +209,11 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 
 ### Cena 3.6. Fecho e créditos (29:00 a 30:00)
 
-**Fala.** Resumo em três frases. Um CMAB é uma regra de decisão em cima de um modelo probabilístico, que escolhe com recompensa parcial. Um teste A/B é um CMAB com três coisas congeladas: sem contexto, 1 sobre K, uma decisão só. E a RSI é esse mesmo laço apontado para o próprio laço. O código de cada frase está no repositório proof, em Lean, Haskell e, para este vídeo, Python. Agora os créditos, porque este vídeo também roubou como um artista. O estilo é o de 3Blue1Brown, de Grant Sanderson. As animações são Manim, a biblioteca dele, mantida pela Manim Community. O roteiro, o código e as animações foram feitos com o Claude Code, da Anthropic: o teste do Manim com o Claude Sonnet 5.5, e o roteiro e o código com o Claude Fable 5.1, a partir dos meus prompts. A lista completa dos prompts está no repositório, e o custo total da produção está na tela. Eu revisei tudo; o que estiver errado é meu. Roubem à vontade; creditem.
+**Fala.** Resumo em três frases. Um CMAB é uma regra de decisão em cima de um modelo probabilístico, que escolhe com recompensa parcial. Um teste A/B é um CMAB com três coisas congeladas: sem contexto, 1 sobre K, uma decisão só. E a RSI é esse mesmo laço apontado para o próprio laço. O código de cada frase está no repositório proof, em Lean e Haskell; o Python só desenha. Agora os créditos, porque este vídeo também roubou como um artista. O estilo é o de 3Blue1Brown, de Grant Sanderson. As animações são Manim, a biblioteca dele, mantida pela Manim Community. O roteiro, o código e as animações foram feitos com o Claude Code, da Anthropic: o teste do Manim com o Claude Sonnet 5.5, e o roteiro e o código com o Claude Fable 5.1, a partir dos meus prompts. A lista completa dos prompts está no repositório, e o custo total da produção está na tela. Eu revisei tudo; o que estiver errado é meu. Roubem à vontade; creditem.
 
 **Tela.** Os três títulos de novo, cada um com o nome do arquivo embaixo. Depois, a tela de créditos: 3Blue1Brown · Manim Community · Claude Code (Sonnet 5.5, Fable 5.1) · custo total `[a confirmar: preencher no fim da produção, em dólares e em horas]` · "prompts: PROMPTS.md".
 
-**Código.** Todo o diretório [`codigo/`](codigo/), `resultados.md` e [`PROMPTS.md`](PROMPTS.md).
+**Código.** `lean/ContextualBandit/Video.lean`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`, `resultados.md` e [`PROMPTS.md`](PROMPTS.md). As animações: [`codigo/`](codigo/).
 
 ## Fontes
 
@@ -239,10 +239,13 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 | Animações | Manim (Manim Community), <https://github.com/ManimCommunity/manim> | `codigo/linha_do_tempo.py` e os takes |
 | Gráficos interativos | Desmos, calculadora gráfica | `desmos/` |
 | Voz | XTTS v2 (Coqui) e OpenVoice V2 (MyShell) | `voz/narrar.py` |
-| Roteiro, código, animações | Claude Code (Anthropic): Claude Sonnet 5.5 (teste do Manim), Claude Fable 5.1 (roteiro e código) | a partir dos prompts em `PROMPTS.md` |
+| Roteiro, código, animações | Claude Code (Anthropic): Claude Sonnet 5.5 (teste do Manim), Claude Fable 5.1 (roteiro, Lean, Haskell) | a partir dos prompts em `PROMPTS.md` |
+| Invariantes | Lean 4 (`lean/ContextualBandit/Video.lean`, R1 a R5, sem `sorry`) e o espelho em Haskell | conferidas pelo spec check de `haskell/app/Main.hs` |
 | Custo total | `[a confirmar: preencher só no fim da produção]` | tela de créditos |
 
 ## A confirmar
+
+- Cena 1.4: os epítetos "príncipe dos matemáticos" (Gauss) e "rei" (Ramanujan, seu) não têm fonte aberta nesta nota. ⚠
 
 - Cena 1.1: a referência de "Side Agents" da Anthropic.
 - Cena 1.2: o nome do amigo e o mês de 2018.

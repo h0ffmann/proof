@@ -88,10 +88,13 @@ lean/                          Lean 4 (core only, no Mathlib), toolchain v4.24.0
   ContextualBandit/Policies.lean    greedy, ucb β, epsGreedy ε
   ContextualBandit/Theorems.lean    the proofs (below)
   ContextualBandit/Examples.lean    a tabular model you can #eval
+  ContextualBandit/Video.lean       the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
 haskell/                       GHC, only base + containers
   src/ContextualBandit.hs           the same interface and rules, plus a pure RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
-  app/Main.hs                       4 runnable examples
+  src/Video.hs                      port of Video.lean; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
+  app/Main.hs                       4 runnable examples and the spec check
+  app/Video.hs                      the experiments of the video script (cabal run video)
 ```
 
 Run:
@@ -130,6 +133,10 @@ plugs into any rule.
 | `ucb_gap` (optimism lemma) | if the model is **calibrated** (`|mean − μ| ≤ β·width` for every arm), UCB's arm is within `2β·width` of the best arm |
 | `greedy_gap` | if every mean is within δ of the truth, greedy loses at most 2δ |
 | `policy_factors` | two histories with the same belief give the same decision |
+| `step_exploit`, `step_explore_n`, `step_explore_reward`, `step_reward_bounded` (`Video.lean`) | one arm: exploitation spends no term; exploration spends one and does not lower the user's reward, which stays in [0, 1] |
+| `epsGreedy_zero`, `etc_before`, `etc_after`, `etc_valid` | the whole A/B test ("explore then commit") is one rule: uniform before the switch, greedy after, valid throughout |
+| `rsi_valid`, `outer_explores` | the outer bandit that picks the inner bandit's ε is `epsGreedy` again, valid, and keeps trying every ε |
+| `leibnizEven_lt_succ`, `ramSum_lt_succ`, `ramApprox_anti` | the even Leibniz sums increase; Ramanujan's sums increase and its approximation of π decreases |
 
 `ucb_gap` is the important one. It says exactly **what the probabilistic model
 owes the decision layer**: calibrated uncertainty. A LinUCB regret bound is

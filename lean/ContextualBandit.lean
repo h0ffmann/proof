@@ -3,3 +3,4 @@ import ContextualBandit.Argmax
 import ContextualBandit.Policies
 import ContextualBandit.Theorems
 import ContextualBandit.Examples
+import ContextualBandit.Video
