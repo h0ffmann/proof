@@ -12,7 +12,7 @@
 [![Haskell](https://img.shields.io/badge/Haskell-base_%2B_containers-1b3a5c?style=flat-square&logo=haskell&logoColor=white)](haskell)
 [![Rust](https://img.shields.io/badge/Rust-std_only-1b3a5c?style=flat-square&logo=rust&logoColor=white)](house-pricing/rust)
 [![Python](https://img.shields.io/badge/Python-experiments-1b3a5c?style=flat-square&logo=python&logoColor=white)](#index-of-experiments)
-[![papers: 4](https://img.shields.io/badge/papers-4-2a78d6?style=flat-square)](papers)
+[![preprints: 3](https://img.shields.io/badge/preprints-3-2a78d6?style=flat-square)](papers)
 [![Nix](https://img.shields.io/badge/toolchain-Nix_flake-1b3a5c?style=flat-square&logo=nixos&logoColor=white)](flake.nix)
 [![license: MPL-2.0](https://img.shields.io/badge/license-MPL--2.0-1b3a5c?style=flat-square)](#license)
 
@@ -39,12 +39,12 @@
 
 | Folder | Problem | Language | Maturity |
 |---|---|---|---|
-| [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([note](MULTI_ARMED_CONTEXTUAL_BANDIT.md), [paper](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
+| [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([note](MULTI_ARMED_CONTEXTUAL_BANDIT.md), [preprint](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
 | [`house-pricing/`](house-pricing/README.md) | California house prices: seven models compared, gradient boosting replicated exactly in Lean and called from Rust | Rust, Lean 4 | **Proved**: output bounds and a monotone variant proved; Rust/Lean parity checked |
 | [`ocean-waves/`](ocean-waves/README.md) | Physics and numerical kernels of a spectral wave model (WAVEWATCH III, WAM Cycle 4) | Lean 4 | **Proved**: kernels and their theorems; no runnable model port yet |
 | [`cycle/`](cycle/README.md) | Eternal return: "time is a flat circle" as a theorem about a clock ([essay](papers/cycle/metadata.md)) | Lean 4, Markdown | **Draft**: theorem proved, essay is a skeleton |
-| [`fat-tails/`](fat-tails/README.md) | Taleb's fat-tail diagnostics on the S&P 500, 1950 to 2026; power-law against Gaussian VaR ([paper](papers/fat-tails/metadata.md)) | Python | **Results**: real data, results committed, paper v0 |
-| [`tv-audience/`](tv-audience/README.md) | Forecasting big-show TV audiences as a competition between channels: XGBoost, DNN, Mistral Timestral, joint competitive share model ([paper](papers/tv-audience/metadata.md)) | Python | **Simulated**: synthetic benchmark and paper v0; Timestral arm not run; real-channel test pending |
+| [`fat-tails/`](fat-tails/README.md) | Taleb's fat-tail diagnostics on the S&P 500, 1950 to 2026; power-law against Gaussian VaR ([preprint](papers/fat-tails/metadata.md)) | Python | **Results**: real data, results committed, preprint v0 |
+| [`tv-audience/`](tv-audience/README.md) | Forecasting big-show TV audiences as a competition between channels: XGBoost, DNN, Mistral Timestral, joint competitive share model ([preprint](papers/tv-audience/metadata.md)) | Python | **Simulated**: synthetic benchmark and preprint v0; Timestral arm not run; real-channel test pending |
 | [`crypto-strength/`](crypto-strength/README.md) | 17 crypto networks scored on nine factors, long-term top 10 | Python, CSV | **Results**: sourced scores, partly judgment |
 | [`port-audit/`](port-audit/README.md) | Audit of [chaceon](https://github.com/h0ffmann/chaceon), the Rust port of WAVEWATCH III: the `f32` division rewrite, Fortran intrinsics, `W3SRCE`'s time step; how much of WW3 is translated and integrated | Z3 (Scala) | **Proved**: 28 statements, 5 with an expected counterexample; two show the time step can exceed its limiter. Coverage: 37% of WW3 translated, 47% of the target build integrated |
 | [`triangle-grids/`](triangle-grids/README.md) | Triangle grids for WAVEWATCH III with Aron Roland's size rules (depth, coast, slope, 5 km floor, 30% growth), and their uses in global, hurricane and nearshore forecasting | Z3 (Scala), Markdown | **Proved**: 13 statements on the size rules and WW3's explicit sub-step count; no WW3 run |
