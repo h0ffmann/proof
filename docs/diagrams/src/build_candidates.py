@@ -63,6 +63,15 @@ T = {
     "b.reward": ("Get reward", "Receber recompensa"), "b.reward.sub": ("chosen arm only", "só do braço escolhido"),
     "b.update": ("Update model", "Atualizar modelo"), "b.update.sub": ("posterior", "posteriori"),
     "w.next": ("next round", "próxima rodada"),
+    "w.eps": ("ε = 1", "ε = 1"),
+    "ph.see": ("Context and belief", "Contexto e crença"), "ph.decide": ("Decide", "Decidir"),
+    "ph.observe": ("Observe", "Observar"), "ph.learn": ("Learn", "Aprender"),
+    "lg.input": ("Input", "Entrada"), "lg.decide": ("Decision", "Decisão"),
+    "lg.observe": ("Feedback", "Retorno"), "lg.model": ("Model update", "Atualização do modelo"),
+    "lg.ship": ("Commit", "Lançamento"),
+    "lg.actor": ("Actor", "Ator"), "lg.page": ("Request and page", "Requisição e página"),
+    "lg.belief": ("Model", "Modelo"), "lg.rule": ("Decision rule", "Regra de decisão"),
+    "lg.proof": ("Proof", "Prova"), "lg.log": ("Log", "Log"),
     "c.wf.1t": ("Same thing at ε = 1", "Igual com ε = 1"),
     "c.wf.1a": ("ε-greedy with ε = 1 is the 1/K split (Z3: epsGreedy_one_is_ab_test)", "ε-gulosa com ε = 1 é a divisão 1/K (Z3: epsGreedy_one_is_ab_test)"),
     "c.wf.1b": ("Split, then ship = explore-then-commit", "Dividir e depois lançar = explorar e depois decidir"),
@@ -132,7 +141,10 @@ def build(lang):
     arch = {
         "schema_version": 1,
         "diagram_type": "architecture",
-        "meta": meta("arch.title", "bandit-architecture"),
+        "meta": {**meta("arch.title", "bandit-architecture"), "legend": {"entries": {
+            "external": {"label": t("lg.actor")}, "frontend": {"label": t("lg.page")},
+            "database": {"label": t("lg.belief")}, "backend": {"label": t("lg.rule")},
+            "security": {"label": t("lg.proof")}, "messagebus": {"label": t("lg.log")}}}},
         "components": [
             {"id": "member", "type": "external", "label": t("member"), "sublabel": t("member.sub"), "pos": [40, 200], "size": [W, H]},
             {"id": "context", "type": "frontend", "label": t("ctx"), "sublabel": t("ctx.sub"), "pos": [270, 200], "size": [W, H]},
@@ -200,17 +212,28 @@ def build(lang):
     wf = {
         "schema_version": 2,
         "diagram_type": "workflow",
-        "meta": meta("wf.title", "ab-test-vs-bandit"),
+        "meta": {**meta("wf.title", "ab-test-vs-bandit"), "legend": {"entries": {
+            "external": {"label": t("lg.input")}, "backend": {"label": t("lg.decide")},
+            "frontend": {"label": t("lg.observe")}, "database": {"label": t("lg.model")},
+            "cloud": {"label": t("lg.ship")}}}},
         "lanes": [
             {"id": "ab", "label": t("lane.ab")},
             {"id": "bandit", "label": t("lane.bandit")},
         ],
+        # Same column, same job: the A/B test starts where the bandit decides, with no context and
+        # no belief, and learns once. Same colour, same job too (the legend says which).
+        "phases": [
+            {"id": "see", "label": t("ph.see"), "fromCol": 0, "toCol": 1},
+            {"id": "decide", "label": t("ph.decide"), "fromCol": 2, "toCol": 2},
+            {"id": "observe", "label": t("ph.observe"), "fromCol": 3, "toCol": 3},
+            {"id": "learn", "label": t("ph.learn"), "fromCol": 4, "toCol": 5},
+        ],
         "mainPath": ["b_ctx", "b_est", "b_pick", "b_reward", "b_update"],
         "nodes": [
-            {"id": "ab_split", "lane": "ab", "col": 0, "type": "frontend", "label": t("ab.split"), "sublabel": t("ab.split.sub")},
-            {"id": "ab_run", "lane": "ab", "col": 1, "type": "backend", "label": t("ab.run"), "sublabel": t("ab.run.sub")},
-            {"id": "ab_analyze", "lane": "ab", "col": 2, "type": "backend", "label": t("ab.analyze"), "sublabel": t("ab.analyze.sub")},
-            {"id": "ab_ship", "lane": "ab", "col": 3, "type": "cloud", "label": t("ab.ship"), "sublabel": t("ab.ship.sub")},
+            {"id": "ab_split", "lane": "ab", "col": 2, "type": "backend", "label": t("ab.split"), "sublabel": t("ab.split.sub")},
+            {"id": "ab_run", "lane": "ab", "col": 3, "type": "frontend", "label": t("ab.run"), "sublabel": t("ab.run.sub")},
+            {"id": "ab_analyze", "lane": "ab", "col": 4, "type": "database", "label": t("ab.analyze"), "sublabel": t("ab.analyze.sub")},
+            {"id": "ab_ship", "lane": "ab", "col": 5, "type": "cloud", "label": t("ab.ship"), "sublabel": t("ab.ship.sub")},
             {"id": "b_ctx", "lane": "bandit", "col": 0, "type": "external", "label": t("b.ctx"), "sublabel": t("b.ctx.sub")},
             {"id": "b_est", "lane": "bandit", "col": 1, "type": "database", "label": t("b.est"), "sublabel": t("b.est.sub")},
             {"id": "b_pick", "lane": "bandit", "col": 2, "type": "backend", "label": t("b.pick"), "sublabel": t("b.pick.sub")},
@@ -226,6 +249,7 @@ def build(lang):
             {"id": "b3", "from": "b_pick", "to": "b_reward"},
             {"id": "b4", "from": "b_reward", "to": "b_update"},
             {"id": "next", "from": "b_update", "to": "b_est", "label": t("w.next"), "variant": "dashed", "role": "return", "route": "bottom-channel"},
+            {"id": "eps", "from": "b_pick", "to": "ab_split", "label": t("w.eps"), "variant": "dashed", "fromSide": "top", "toSide": "bottom"},
         ],
         "cards": [
             {"dot": "cyan", "title": t("c.wf.1t"), "items": [t("c.wf.1a"), t("c.wf.1b")]},

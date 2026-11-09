@@ -468,6 +468,25 @@
       "legend.waterfall.error": "Erro",
       "legend.waterfall.cancelled": "Cancelado",
       "legend.waterfall.incomplete": "Incompleto (fim não registrado)"
+    },
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "Entrada"
+        },
+        "backend": {
+          "label": "Decisão"
+        },
+        "frontend": {
+          "label": "Retorno"
+        },
+        "database": {
+          "label": "Atualização do modelo"
+        },
+        "cloud": {
+          "label": "Lançamento"
+        }
+      }
     }
   },
   "lanes": [
@@ -478,6 +497,32 @@
     {
       "id": "bandit",
       "label": "Bandit contextual"
+    }
+  ],
+  "phases": [
+    {
+      "id": "see",
+      "label": "Contexto e crença",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "decide",
+      "label": "Decidir",
+      "fromCol": 2,
+      "toCol": 2
+    },
+    {
+      "id": "observe",
+      "label": "Observar",
+      "fromCol": 3,
+      "toCol": 3
+    },
+    {
+      "id": "learn",
+      "label": "Aprender",
+      "fromCol": 4,
+      "toCol": 5
     }
   ],
   "mainPath": [
@@ -491,31 +536,31 @@
     {
       "id": "ab_split",
       "lane": "ab",
-      "col": 0,
-      "type": "frontend",
+      "col": 2,
+      "type": "backend",
       "label": "Dividir tráfego",
       "sublabel": "1/K por variante"
     },
     {
       "id": "ab_run",
       "lane": "ab",
-      "col": 1,
-      "type": "backend",
+      "col": 3,
+      "type": "frontend",
       "label": "Rodar o teste",
       "sublabel": "período fixo"
     },
     {
       "id": "ab_analyze",
       "lane": "ab",
-      "col": 2,
-      "type": "backend",
+      "col": 4,
+      "type": "database",
       "label": "Analisar",
       "sublabel": "escolher vencedora"
     },
     {
       "id": "ab_ship",
       "lane": "ab",
-      "col": 3,
+      "col": 5,
       "type": "cloud",
       "label": "Lançar vencedora",
       "sublabel": "100% do tráfego"
@@ -607,6 +652,15 @@
       "variant": "dashed",
       "role": "return",
       "route": "bottom-channel"
+    },
+    {
+      "id": "eps",
+      "from": "b_pick",
+      "to": "ab_split",
+      "label": "ε = 1",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
     }
   ],
   "cards": [

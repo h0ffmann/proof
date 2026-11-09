@@ -119,15 +119,17 @@ just paper-check     # + reference log and STE/pt-BR checks
 All figures are made with [archify](https://github.com/tt-a1i/archify) by tt-a1i
 (Apache-2.0), vendored in [`vendor/archify`](vendor/archify/VENDORED.md).
 Sources for both languages are in [`docs/diagrams/src`](docs/diagrams/src).
+The diagrams are dark whatever the reader's setting: the PNGs are dark captures, and each link
+opens the page with `?theme=dark`.
 
 | Diagram | English | Português (BR) |
 |---|---|---|
-| Model and decision layers (architecture) | [html](docs/diagrams/en/bandit-architecture.html) | [html](docs/diagrams/pt-BR/bandit-architecture.html) |
-| One round (sequence) | [html](docs/diagrams/en/bandit-round.html) | [html](docs/diagrams/pt-BR/bandit-round.html) |
-| A/B test as a special case (workflow) | [html](docs/diagrams/en/ab-test-vs-bandit.html) | [html](docs/diagrams/pt-BR/ab-test-vs-bandit.html) |
-| Timeline, 1952 to 2026, video scene 1.2 (timeline) | [html](docs/diagrams/en/bandit-timeline.html) | [html](docs/diagrams/pt-BR/bandit-timeline.html) |
-| π and you, video scenes 1.3 and 1.4 (workflow) | [html](docs/diagrams/en/pi-arms.html) | [html](docs/diagrams/pt-BR/pi-arms.html) |
-| RSI loop, video scenes 3.1 to 3.3 (workflow) | [html](docs/diagrams/en/rsi-loop.html) | [html](docs/diagrams/pt-BR/rsi-loop.html) |
+| Model and decision layers (architecture) | [html](docs/diagrams/en/bandit-architecture.html?theme=dark) | [html](docs/diagrams/pt-BR/bandit-architecture.html?theme=dark) |
+| One round (sequence) | [html](docs/diagrams/en/bandit-round.html?theme=dark) | [html](docs/diagrams/pt-BR/bandit-round.html?theme=dark) |
+| A/B test as a special case (workflow) | [html](docs/diagrams/en/ab-test-vs-bandit.html?theme=dark) | [html](docs/diagrams/pt-BR/ab-test-vs-bandit.html?theme=dark) |
+| Timeline, 1952 to 2026, video scene 1.2 (timeline) | [html](docs/diagrams/en/bandit-timeline.html?theme=dark) | [html](docs/diagrams/pt-BR/bandit-timeline.html?theme=dark) |
+| π and you, video scenes 1.3 and 1.4 (workflow) | [html](docs/diagrams/en/pi-arms.html?theme=dark) | [html](docs/diagrams/pt-BR/pi-arms.html?theme=dark) |
+| RSI loop, video scenes 3.1 to 3.3 (workflow) | [html](docs/diagrams/en/rsi-loop.html?theme=dark) | [html](docs/diagrams/pt-BR/rsi-loop.html?theme=dark) |
 
 Render and host them (needs [`just`](https://github.com/casey/just), Node ≥ 18, Python 3 and Chrome/Chromium;
 set `ARCHIFY_CHROME` if Chromium is not on `PATH`):
