@@ -141,6 +141,13 @@ just serve      # host everything at http://localhost:8000 (just serve 9000 for 
 To publish them, enable GitHub Pages for the `docs/` folder: the index is
 `docs/diagrams/index.html`.
 
+## Site
+
+[`site/`](site/README.md) builds one browsable folder from the repository: an index of the
+preprints (as PDF), the contextual-bandit page, the Z3 reports, the video script with its preview
+and the diagrams. `just site` builds it with Nix into `result-site/`; any web server can serve it at
+any path.
+
 ## Recipes
 
 ```console
