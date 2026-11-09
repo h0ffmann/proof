@@ -20,6 +20,7 @@ import? 'just/leo.just'
 import? 'just/liquidhaskell.just'
 import? 'just/port-audit.just'
 import? 'just/triangle-grids.just'
+import? 'just/invariants.just'
 
 # List recipes
 default:

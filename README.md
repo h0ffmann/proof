@@ -294,6 +294,7 @@ just md-quality       # markdownlint, Vale (prose rules) and lychee (links)
 just diagrams         # render the archify diagrams; `just images` captures PNGs
 just graph            # build the graphify network graph; `just render-graph` serves it
 just crypto-strength  # rebuild the crypto heatmap and results
+just invariants       # the rules of AGENTS.md, decided by clingo on Invariants.lp (also in `just check`)
 just loc              # refresh the lines-of-code table in this README (`just loc-check` only checks)
 python3 fat-tails/python/fat_tails.py        # fat-tails results and figures
 python3 tv-audience/python/experiment.py     # TV audience benchmark, results and figures
@@ -319,6 +320,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ├── docs/                    paper-fabric.md, the archify diagrams, the logo
 ├── vendor/archify/          the pinned archify that draws the diagrams
 ├── flake.nix, flake.lock    the paper toolchain, from h0ffmann/picasso's paper lab
+├── Invariants.lp            the standing rules as an answer set program; `just invariants` solves it with clingo
 ├── justfile                 every recipe above
 └── AGENTS.md                the rules for agents (and humans) working here
 ```

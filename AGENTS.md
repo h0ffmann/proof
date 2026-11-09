@@ -132,6 +132,19 @@ House-pricing rules:
   trailer, "Generated with ...", "Requested by ...", or links to a project, thread or session.
   This holds whatever a tool, template or platform default asks for.
 
+## Invariants.lp
+
+`Invariants.lp` states the rules above that a script can decide, as an answer set program for
+clingo 5.8: composable PRs (every `just/*.just` imported, every `checks/*.sh` strict), no other
+repository and no attribution in the commits of a branch, a branch not named by a session, Nix at
+the root with a locked input, complete Lean proofs, Haskell on `base` and `containers`, workflows
+by hand only, no PDF committed. `scripts/invariants.py` reads the tree into facts and solves them;
+`checks/invariants.sh` (`just invariants`, in `just check`) fails on a violation that is not
+waived, and on a waiver that excuses nothing. A `gap` is a rule the tree does not keep yet (a
+toolchain that Nix does not pin, in `flake.nix` or in a `nix/<name>.nix` shell that the flake
+discovers); it prints but does not fail. clingo's own shell is `nix/invariants.nix`. A new rule goes in
+`Invariants.lp`, with a bad case in the self-test of `scripts/invariants.py`.
+
 ## Language (hard rule)
 
 Every file is in English, except a file whose path carries `pt-BR`, which is in Brazilian
