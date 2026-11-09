@@ -5,7 +5,29 @@
     "title": "Contextual bandit: model and decision layers",
     "output": "docs/diagrams/en/bandit-architecture.html",
     "quality_profile": "showcase",
-    "locale": "en"
+    "locale": "en",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "Actor"
+        },
+        "frontend": {
+          "label": "Request and page"
+        },
+        "database": {
+          "label": "Model"
+        },
+        "backend": {
+          "label": "Decision rule"
+        },
+        "security": {
+          "label": "Proof"
+        },
+        "messagebus": {
+          "label": "Log"
+        }
+      }
+    }
   },
   "components": [
     {

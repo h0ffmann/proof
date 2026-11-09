@@ -468,6 +468,28 @@
       "legend.waterfall.error": "Erro",
       "legend.waterfall.cancelled": "Cancelado",
       "legend.waterfall.incomplete": "Incompleto (fim não registrado)"
+    },
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "Ator"
+        },
+        "frontend": {
+          "label": "Requisição e página"
+        },
+        "database": {
+          "label": "Modelo"
+        },
+        "backend": {
+          "label": "Regra de decisão"
+        },
+        "security": {
+          "label": "Prova"
+        },
+        "messagebus": {
+          "label": "Log"
+        }
+      }
     }
   },
   "components": [

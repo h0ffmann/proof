@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "fe448a2b-2791-4260-9676-961a6a492661",
+  "receiptId": "f16f7067-7329-4444-b15f-f24b30f16b8f",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
-  "input": "/home/claude/proof/docs/diagrams/src/en/bandit-architecture.architecture.json",
-  "output": "/home/claude/proof/docs/diagrams/en/bandit-architecture.html",
+  "input": "/home/user/proof/docs/diagrams/src/en/bandit-architecture.architecture.json",
+  "output": "/home/user/proof/docs/diagrams/en/bandit-architecture.html",
   "specification": {
-    "sha256": "82247d7e3d541d8d4b31eeef02ad63596b1479d5bd3ddf83fd8962e2bc921fa5",
-    "bytes": 3544
+    "sha256": "250dcf93d519d3bd7b044b5234e16d4d008c7f8f2a15bb6385b8b9a6822ad867",
+    "bytes": 3971
   },
   "artifact": {
-    "sha256": "b49e7ec9ad80e96223d7c06460b3accb463c8c105be866efc580860e41c822a4",
-    "bytes": 841209
+    "sha256": "3154478b52e9fe0e9f76f799126f1c2ffb8638eebc01bc2ec4698fb6246cc299",
+    "bytes": 841204
   }
 }

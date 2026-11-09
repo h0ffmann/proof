@@ -280,6 +280,11 @@ the repository:
   `vendor/archify` (see `VENDORED.md` there). Edit `docs/diagrams/src/build_candidates.py`
   (both languages live there), then `just diagrams` and `just images`. Any figure
   used in the Markdown notes must be an archify capture from `docs/diagrams/img/<lang>/`.
+- **The diagrams are dark, always** (the owner, 2026-11-09). `just images` keeps the dark
+  capture, never a light one. Every link to a diagram page carries `?theme=dark`, which archify
+  reads before the reader's setting. `site/build.py` adds it to the links of the pages it builds.
+  `docs/diagrams/index.html` is dark too. `checks/diagrams.sh` fails on a light PNG or a link
+  without `?theme=dark`.
 
 - Network graphs live in `graphs/<name>/` and are drawn by [graphify](https://graphify.com)
   (`pip install graphifyy==0.9.100`). Edit the `nodes.csv` and `edges.csv` there; every edge

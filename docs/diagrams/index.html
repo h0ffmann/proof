@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>dogma diagrams</title>
 <style>
-  :root { --bg:#fafafa; --fg:#1d1d1f; --muted:#666; --link:#0b63c5; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#141414; --fg:#eee; --muted:#aaa; --link:#6cb0ff; } }
+  /* Dark, whatever the reader's setting: the diagrams are dark (AGENTS.md, "Notes"). */
+  :root { color-scheme:dark; --bg:#141414; --fg:#eee; --muted:#aaa; --link:#6cb0ff; }
   body { margin:0; padding:32px 16px; background:var(--bg); color:var(--fg);
          font:16px/1.5 system-ui, sans-serif; }
   main { max-width:720px; margin:0 auto; }
@@ -21,12 +21,12 @@
   <p>Made with <a href="https://github.com/tt-a1i/archify">archify</a>. Run <code>just diagrams</code> first if a link is missing.</p>
   <table>
     <tr><th>Diagram</th><th>English</th><th>Português (BR)</th></tr>
-    <tr><td>Model and decision layers</td><td><a href="en/bandit-architecture.html">open</a></td><td><a href="pt-BR/bandit-architecture.html">abrir</a></td></tr>
-    <tr><td>One round</td><td><a href="en/bandit-round.html">open</a></td><td><a href="pt-BR/bandit-round.html">abrir</a></td></tr>
-    <tr><td>A/B test as a special case</td><td><a href="en/ab-test-vs-bandit.html">open</a></td><td><a href="pt-BR/ab-test-vs-bandit.html">abrir</a></td></tr>
-    <tr><td>Timeline, 1952 to 2026 (video scene 1.2)</td><td><a href="en/bandit-timeline.html">open</a></td><td><a href="pt-BR/bandit-timeline.html">abrir</a></td></tr>
-    <tr><td>π and you, one arm then three (scenes 1.3, 1.4)</td><td><a href="en/pi-arms.html">open</a></td><td><a href="pt-BR/pi-arms.html">abrir</a></td></tr>
-    <tr><td>RSI, a bandit that tunes a bandit (scenes 3.1 to 3.3)</td><td><a href="en/rsi-loop.html">open</a></td><td><a href="pt-BR/rsi-loop.html">abrir</a></td></tr>
+    <tr><td>Model and decision layers</td><td><a href="en/bandit-architecture.html?theme=dark">open</a></td><td><a href="pt-BR/bandit-architecture.html?theme=dark">abrir</a></td></tr>
+    <tr><td>One round</td><td><a href="en/bandit-round.html?theme=dark">open</a></td><td><a href="pt-BR/bandit-round.html?theme=dark">abrir</a></td></tr>
+    <tr><td>A/B test as a special case</td><td><a href="en/ab-test-vs-bandit.html?theme=dark">open</a></td><td><a href="pt-BR/ab-test-vs-bandit.html?theme=dark">abrir</a></td></tr>
+    <tr><td>Timeline, 1952 to 2026 (video scene 1.2)</td><td><a href="en/bandit-timeline.html?theme=dark">open</a></td><td><a href="pt-BR/bandit-timeline.html?theme=dark">abrir</a></td></tr>
+    <tr><td>π and you, one arm then three (scenes 1.3, 1.4)</td><td><a href="en/pi-arms.html?theme=dark">open</a></td><td><a href="pt-BR/pi-arms.html?theme=dark">abrir</a></td></tr>
+    <tr><td>RSI, a bandit that tunes a bandit (scenes 3.1 to 3.3)</td><td><a href="en/rsi-loop.html?theme=dark">open</a></td><td><a href="pt-BR/rsi-loop.html?theme=dark">abrir</a></td></tr>
   </table>
 </main>
 </body>

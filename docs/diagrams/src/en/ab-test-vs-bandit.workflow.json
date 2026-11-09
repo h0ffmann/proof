@@ -5,7 +5,26 @@
     "title": "A/B test as a special case of a bandit",
     "output": "docs/diagrams/en/ab-test-vs-bandit.html",
     "quality_profile": "showcase",
-    "locale": "en"
+    "locale": "en",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "Input"
+        },
+        "backend": {
+          "label": "Decision"
+        },
+        "frontend": {
+          "label": "Feedback"
+        },
+        "database": {
+          "label": "Model update"
+        },
+        "cloud": {
+          "label": "Commit"
+        }
+      }
+    }
   },
   "lanes": [
     {
@@ -15,6 +34,32 @@
     {
       "id": "bandit",
       "label": "Contextual bandit"
+    }
+  ],
+  "phases": [
+    {
+      "id": "see",
+      "label": "Context and belief",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "decide",
+      "label": "Decide",
+      "fromCol": 2,
+      "toCol": 2
+    },
+    {
+      "id": "observe",
+      "label": "Observe",
+      "fromCol": 3,
+      "toCol": 3
+    },
+    {
+      "id": "learn",
+      "label": "Learn",
+      "fromCol": 4,
+      "toCol": 5
     }
   ],
   "mainPath": [
@@ -28,31 +73,31 @@
     {
       "id": "ab_split",
       "lane": "ab",
-      "col": 0,
-      "type": "frontend",
+      "col": 2,
+      "type": "backend",
       "label": "Split traffic",
       "sublabel": "1/K per variant"
     },
     {
       "id": "ab_run",
       "lane": "ab",
-      "col": 1,
-      "type": "backend",
+      "col": 3,
+      "type": "frontend",
       "label": "Run test",
       "sublabel": "fixed period"
     },
     {
       "id": "ab_analyze",
       "lane": "ab",
-      "col": 2,
-      "type": "backend",
+      "col": 4,
+      "type": "database",
       "label": "Analyze",
       "sublabel": "pick winner"
     },
     {
       "id": "ab_ship",
       "lane": "ab",
-      "col": 3,
+      "col": 5,
       "type": "cloud",
       "label": "Ship winner",
       "sublabel": "100% traffic"
@@ -144,6 +189,15 @@
       "variant": "dashed",
       "role": "return",
       "route": "bottom-channel"
+    },
+    {
+      "id": "eps",
+      "from": "b_pick",
+      "to": "ab_split",
+      "label": "ε = 1",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
     }
   ],
   "cards": [

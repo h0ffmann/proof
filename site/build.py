@@ -51,6 +51,9 @@ PAGES = [
 # Files and folders copied into the site as they are.
 COPY = ["docs/diagrams/index.html", "docs/diagrams/en", "docs/diagrams/pt-BR", "docs/diagrams/img", "docs/logo/logo.svg"]
 
+# An archify page of COPY: the links to it carry ?theme=dark.
+DIAGRAM_PAGE = re.compile(r"^docs/diagrams/(en|pt-BR)/[^/]+\.html$")
+
 # The video script: a paper outside papers/ (just/contextual-bandits.just, `script`).
 SCRIPT = ("contextual-bandits/script", "prose-pt-BR", "contextual-bandits-script-pt-BR")
 EDITIONS = [("prose", "", "English"), ("prose-ste", "-ste", "English, ASD-STE100"), ("prose-pt-BR", "-pt-BR", "Português (BR)")]
@@ -165,13 +168,18 @@ class Links:
             return url
         path, _, frag = url.partition("#")
         frag = "#" + frag if frag else ""
+        path, _, query = path.partition("?")
+        query = "?" + query if query else ""
         base = str(PurePosixPath(page_src).parent)
         base = "" if base == "." else base
         target = normal(f"{base}/{path}" if base else path)
         if not target:
             return url
         if target in self.site:
-            return relative(self.site[target], base) + frag
+            # An archify page opens dark, whatever the reader's setting (AGENTS.md, "Notes").
+            if DIAGRAM_PAGE.match(target):
+                query = "?theme=dark"
+            return relative(self.site[target], base) + query + frag
         if image and (self.root / target).is_file():
             self.copies.add(target)
             return relative(target, base) + frag
