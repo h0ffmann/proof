@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "9adb6e21-c844-4d46-b16d-addb56d59a6e",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/claude/proof/docs/diagrams/src/en/rsi-loop.workflow.json",
+  "output": "/home/claude/proof/docs/diagrams/en/rsi-loop.html",
+  "specification": {
+    "sha256": "00d77abceb2f362ac9aa539da75f2bd9b49794a9e6cf314d536d6cc1babc6e84",
+    "bytes": 2118
+  },
+  "artifact": {
+    "sha256": "de7c8b0fd905b12dee9ea40cdcd6788775d56ecd2a0a0f5d72e6506d65edc9c8",
+    "bytes": 830825
+  }
+}

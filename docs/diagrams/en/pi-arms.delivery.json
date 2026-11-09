@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "0aa75cc6-f299-4768-93dd-fa1172ee76a2",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/claude/proof/docs/diagrams/src/en/pi-arms.workflow.json",
+  "output": "/home/claude/proof/docs/diagrams/en/pi-arms.html",
+  "specification": {
+    "sha256": "34c7366ec20c8cb88072bcea8b82902384b44d02353ee333728528e7a84d3cc4",
+    "bytes": 2373
+  },
+  "artifact": {
+    "sha256": "10fe09f00a2c67b426bbb18ec9ba865d5e60a98d486e742af9777c5a6e61ca87",
+    "bytes": 832788
+  }
+}

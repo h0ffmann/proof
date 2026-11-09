@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "diagram_type": "timeline",
+  "meta": {
+    "title": "Steal like an artist: the bandit, from 1952 to 2026",
+    "output": "docs/diagrams/en/bandit-timeline.html",
+    "quality_profile": "showcase",
+    "locale": "en",
+    "subtitle": "Video scene 1.2. Dates to the year or the month; the day is the first one.",
+    "evidence": "observed",
+    "timezone": "UTC"
+  },
+  "layout": {
+    "breaks": "auto"
+  },
+  "lanes": [
+    {
+      "id": "theory",
+      "label": "Theory"
+    },
+    {
+      "id": "industry",
+      "label": "Industry"
+    },
+    {
+      "id": "ideas",
+      "label": "Ideas"
+    }
+  ],
+  "events": [
+    {
+      "id": "robbins",
+      "at": "1952-01-01T00:00Z",
+      "title": "1952 Robbins",
+      "detail": "States the multi-armed bandit problem",
+      "lane": "theory",
+      "kind": "change"
+    },
+    {
+      "id": "linucb",
+      "at": "2010-01-01T00:00Z",
+      "title": "2010 LinUCB",
+      "detail": "Li, Chu, Langford, Schapire: context as a vector",
+      "lane": "theory",
+      "kind": "change"
+    },
+    {
+      "id": "kleon",
+      "at": "2012-01-01T00:00Z",
+      "title": "2012 Steal Like an Artist",
+      "detail": "Austin Kleon: nothing is original",
+      "lane": "ideas",
+      "kind": "default"
+    },
+    {
+      "id": "hackday",
+      "at": "2017-01-01T00:00Z",
+      "title": "2017 globo.com hackday",
+      "detail": "Bandit service in Scala (Tiago Motta)",
+      "lane": "industry",
+      "kind": "action"
+    },
+    {
+      "id": "netflix",
+      "at": "2017-12-01T00:00Z",
+      "title": "2017-12 Netflix artwork",
+      "detail": "One image per title, per member",
+      "lane": "industry",
+      "kind": "action"
+    },
+    {
+      "id": "slides",
+      "at": "2018-01-01T00:00Z",
+      "title": "2018 globo.com slides",
+      "detail": "Renan Moreira de Oliveira: MAB ML PARA AB RL",
+      "lane": "industry",
+      "kind": "default"
+    },
+    {
+      "id": "motta",
+      "at": "2024-09-28T00:00Z",
+      "title": "2024 Tiago Motta's post",
+      "detail": "The service is still in use",
+      "lane": "industry",
+      "kind": "default"
+    },
+    {
+      "id": "rsi",
+      "at": "2026-01-01T00:00Z",
+      "title": "2026 RSI",
+      "detail": "The bandit inside the agent's self-improvement loop",
+      "lane": "ideas",
+      "kind": "change"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Read it in the video",
+      "items": [
+        "One event at a time, each with its source in small type",
+        "The 58-year gap from Robbins to LinUCB is compressed"
+      ]
+    }
+  ]
+}

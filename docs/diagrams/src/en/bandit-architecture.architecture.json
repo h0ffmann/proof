@@ -82,7 +82,7 @@
     {
       "id": "spec",
       "type": "security",
-      "label": "Lean spec",
+      "label": "Z3 spec",
       "sublabel": "proved invariants",
       "pos": [
         730,
@@ -182,7 +182,7 @@
     },
     {
       "dot": "rose",
-      "title": "Lean guarantees",
+      "title": "Z3 guarantees",
       "items": [
         "Every rule returns a valid distribution",
         "Calibrated model ⇒ UCB loses at most 2β·width"

@@ -69,6 +69,50 @@ T = {
     "c.wf.2t": ("What the bandit adds", "O que o bandit acrescenta"),
     "c.wf.2a": ("Moves traffic to better arms during the test", "Move tráfego para os braços melhores durante o teste"),
     "c.wf.2b": ("Uses context: a winner per member, not one for all", "Usa contexto: uma vencedora por assinante, não uma para todos"),
+    # timeline (video scene 1.2)
+    "tl.title": ("Steal like an artist: the bandit, from 1952 to 2026", "Steal like an artist: o bandit, de 1952 a 2026"),
+    "tl.sub": ("Video scene 1.2. Dates to the year or the month; the day is the first one.", "Cena 1.2 do vídeo. Datas no ano ou no mês; o dia é o primeiro."),
+    "tl.theory": ("Theory", "Teoria"), "tl.industry": ("Industry", "Indústria"), "tl.ideas": ("Ideas", "Ideias"),
+    "tl.robbins": ("1952 Robbins", "1952 Robbins"), "tl.robbins.d": ("States the multi-armed bandit problem", "Formula o problema do bandit de múltiplos braços"),
+    "tl.linucb": ("2010 LinUCB", "2010 LinUCB"), "tl.linucb.d": ("Li, Chu, Langford, Schapire: context as a vector", "Li, Chu, Langford, Schapire: o contexto como vetor"),
+    "tl.kleon": ("2012 Steal Like an Artist", "2012 Steal Like an Artist"), "tl.kleon.d": ("Austin Kleon: nothing is original", "Austin Kleon: nada é original"),
+    "tl.hackday": ("2017 globo.com hackday", "2017 hackday da globo.com"), "tl.hackday.d": ("Bandit service in Scala (Tiago Motta)", "Serviço de bandit em Scala (Tiago Motta)"),
+    "tl.netflix": ("2017-12 Netflix artwork", "2017-12 imagens da Netflix"), "tl.netflix.d": ("One image per title, per member", "Uma imagem por título, por assinante"),
+    "tl.slides": ("2018 globo.com slides", "2018 slides da globo.com"), "tl.slides.d": ("Renan Moreira de Oliveira: MAB ML PARA AB RL", "Renan Moreira de Oliveira: MAB ML PARA AB RL"),
+    "tl.motta": ("2024 Tiago Motta's post", "2024 post de Tiago Motta"), "tl.motta.d": ("The service is still in use", "O serviço ainda é usado"),
+    "tl.rsi": ("2026 RSI", "2026 RSI"), "tl.rsi.d": ("The bandit inside the agent's self-improvement loop", "O bandit dentro do laço de automelhoria do agente"),
+    "c.tl.t": ("Read it in the video", "Como entra no vídeo"),
+    "c.tl.1": ("One event at a time, each with its source in small type", "Um marco por vez, cada um com a fonte em letra pequena"),
+    "c.tl.2": ("The 58-year gap from Robbins to LinUCB is compressed", "O buraco de 58 anos entre Robbins e o LinUCB aparece comprimido"),
+    # pi as a bandit (video scenes 1.3 and 1.4)
+    "pi.title": ("π and you: one arm, then three", "π e você: um braço, depois três"),
+    "pi.lane.agent": ("Agent", "Agente"), "pi.lane.you": ("You, the reward", "Você, a recompensa"),
+    "pi.belief": ("Belief", "Crença"), "pi.belief.sub": ("mean grade per action", "nota média por ação"),
+    "pi.pick": ("Exploit or explore", "Aproveitar ou explorar"), "pi.pick.sub": ("π(N), π(N+1), another lever", "π(N), π(N+1), outra alavanca"),
+    "pi.show": ("Show π", "Mostrar π"), "pi.show.sub": ("one approximation", "uma aproximação"),
+    "pi.grade": ("Is it good?", "Está bom?"), "pi.grade.sub": ("grade in [0, 1]", "nota em [0, 1]"),
+    "pi.update": ("Update belief", "Atualizar crença"), "pi.update.sub": ("chosen action only", "só da ação escolhida"),
+    "pi.next": ("next round", "próxima rodada"),
+    "c.pi.1t": ("One arm: Leibniz (scene 1.3)", "Um braço: Leibniz (cena 1.3)"),
+    "c.pi.1a": ("20 rounds: exploit 9 times (0.14), explore 11 times (0.76)", "20 rodadas: aproveitar 9 vezes (0,14), explorar 11 vezes (0,76)"),
+    "c.pi.1b": ("Z3: step_exploit, step_explore_n, step_reward_bounded", "Z3: step_exploit, step_explore_n, step_reward_bounded"),
+    "c.pi.2t": ("Three arms (scene 1.4)", "Três braços (cena 1.4)"),
+    "c.pi.2a": ("Ramanujan 16 pulls, Gauss-Legendre 3, Leibniz 1", "Ramanujan 16 vezes, Gauss-Legendre 3, Leibniz 1"),
+    "c.pi.2b": ("The agent never reads the formula; it hears you", "O agente não lê a fórmula; ele ouve você"),
+    # RSI loop (video scenes 3.1 to 3.3)
+    "rsi.title": ("Recursive self-improvement: a bandit that tunes a bandit", "Automelhoria recursiva: um bandit que ajusta um bandit"),
+    "rsi.lane.outer": ("Outer agent", "Agente de fora"), "rsi.lane.inner": ("Inner agent", "Agente de dentro"),
+    "rsi.pick": ("Select ε", "Escolher ε"), "rsi.pick.sub": ("arms 1, 0.5, 0.1, 0.01", "braços 1; 0,5; 0,1; 0,01"),
+    "rsi.run": ("ε-greedy shop", "Sorveteria ε-gulosa"), "rsi.run.sub": ("500 customers", "500 clientes"),
+    "rsi.gain": ("Mean gain", "Ganho médio"), "rsi.gain.sub": ("per customer", "por cliente"),
+    "rsi.update": ("Update belief on ε", "Atualizar crença sobre ε"), "rsi.update.sub": ("no human in the loop", "sem pessoa no laço"),
+    "rsi.next": ("next episode", "próximo episódio"),
+    "c.rsi.1t": ("Result (scene 3.2)", "Resultado (cena 3.2)"),
+    "c.rsi.1a": ("200 episodes: ε = 0.5 selected 168 times, gain 0.099", "200 episódios: ε = 0,5 escolhido 168 vezes, ganho 0,099"),
+    "c.rsi.1b": ("ε = 0.01 selected 9 times, gain 0.057", "ε = 0,01 escolhido 9 vezes, ganho 0,057"),
+    "c.rsi.2t": ("Same rule at both levels", "A mesma regra nos dois níveis"),
+    "c.rsi.2a": ("Z3: rsi_valid, outer_explores (z3/video.py, R4)", "Z3: rsi_valid, outer_explores (z3/video.py, R4)"),
+    "c.rsi.2b": ("In real systems the arms are edits to the agent itself", "Em sistemas reais, os braços são mudanças no próprio agente"),
 }
 
 
@@ -189,9 +233,91 @@ def build(lang):
         ],
     }
 
+    timeline = {
+        "schema_version": 1,
+        "diagram_type": "timeline",
+        "meta": {**meta("tl.title", "bandit-timeline"), "subtitle": t("tl.sub"), "evidence": "observed", "timezone": "UTC"},
+        "layout": {"breaks": "auto"},
+        "lanes": [
+            {"id": "theory", "label": t("tl.theory")},
+            {"id": "industry", "label": t("tl.industry")},
+            {"id": "ideas", "label": t("tl.ideas")},
+        ],
+        "events": [
+            {"id": "robbins", "at": "1952-01-01T00:00Z", "title": t("tl.robbins"), "detail": t("tl.robbins.d"), "lane": "theory", "kind": "change"},
+            {"id": "linucb", "at": "2010-01-01T00:00Z", "title": t("tl.linucb"), "detail": t("tl.linucb.d"), "lane": "theory", "kind": "change"},
+            {"id": "kleon", "at": "2012-01-01T00:00Z", "title": t("tl.kleon"), "detail": t("tl.kleon.d"), "lane": "ideas", "kind": "default"},
+            {"id": "hackday", "at": "2017-01-01T00:00Z", "title": t("tl.hackday"), "detail": t("tl.hackday.d"), "lane": "industry", "kind": "action"},
+            {"id": "netflix", "at": "2017-12-01T00:00Z", "title": t("tl.netflix"), "detail": t("tl.netflix.d"), "lane": "industry", "kind": "action"},
+            {"id": "slides", "at": "2018-01-01T00:00Z", "title": t("tl.slides"), "detail": t("tl.slides.d"), "lane": "industry", "kind": "default"},
+            {"id": "motta", "at": "2024-09-28T00:00Z", "title": t("tl.motta"), "detail": t("tl.motta.d"), "lane": "industry", "kind": "default"},
+            {"id": "rsi", "at": "2026-01-01T00:00Z", "title": t("tl.rsi"), "detail": t("tl.rsi.d"), "lane": "ideas", "kind": "change"},
+        ],
+        "cards": [
+            {"dot": "amber", "title": t("c.tl.t"), "items": [t("c.tl.1"), t("c.tl.2")]},
+        ],
+    }
+
+    pi = {
+        "schema_version": 2,
+        "diagram_type": "workflow",
+        "meta": meta("pi.title", "pi-arms"),
+        "lanes": [
+            {"id": "agent", "label": t("pi.lane.agent")},
+            {"id": "you", "label": t("pi.lane.you")},
+        ],
+        "mainPath": ["pi_belief", "pi_pick", "pi_show", "pi_grade", "pi_update"],
+        "nodes": [
+            {"id": "pi_belief", "lane": "agent", "col": 0, "type": "database", "label": t("pi.belief"), "sublabel": t("pi.belief.sub")},
+            {"id": "pi_pick", "lane": "agent", "col": 1, "type": "backend", "label": t("pi.pick"), "sublabel": t("pi.pick.sub")},
+            {"id": "pi_show", "lane": "agent", "col": 2, "type": "frontend", "label": t("pi.show"), "sublabel": t("pi.show.sub")},
+            {"id": "pi_grade", "lane": "you", "col": 3, "type": "external", "label": t("pi.grade"), "sublabel": t("pi.grade.sub")},
+            {"id": "pi_update", "lane": "agent", "col": 4, "type": "database", "label": t("pi.update"), "sublabel": t("pi.update.sub")},
+        ],
+        "edges": [
+            {"id": "p1", "from": "pi_belief", "to": "pi_pick", "variant": "emphasis"},
+            {"id": "p2", "from": "pi_pick", "to": "pi_show"},
+            {"id": "p3", "from": "pi_show", "to": "pi_grade"},
+            {"id": "p4", "from": "pi_grade", "to": "pi_update", "variant": "emphasis"},
+            {"id": "pnext", "from": "pi_update", "to": "pi_belief", "label": t("pi.next"), "variant": "dashed", "role": "return"},
+        ],
+        "cards": [
+            {"dot": "cyan", "title": t("c.pi.1t"), "items": [t("c.pi.1a"), t("c.pi.1b")]},
+            {"dot": "amber", "title": t("c.pi.2t"), "items": [t("c.pi.2a"), t("c.pi.2b")]},
+        ],
+    }
+
+    rsi = {
+        "schema_version": 2,
+        "diagram_type": "workflow",
+        "meta": meta("rsi.title", "rsi-loop"),
+        "lanes": [
+            {"id": "outer", "label": t("rsi.lane.outer")},
+            {"id": "inner", "label": t("rsi.lane.inner")},
+        ],
+        "mainPath": ["rsi_pick", "rsi_run", "rsi_gain", "rsi_update"],
+        "nodes": [
+            {"id": "rsi_pick", "lane": "outer", "col": 0, "type": "backend", "label": t("rsi.pick"), "sublabel": t("rsi.pick.sub")},
+            {"id": "rsi_run", "lane": "inner", "col": 1, "type": "backend", "label": t("rsi.run"), "sublabel": t("rsi.run.sub")},
+            {"id": "rsi_gain", "lane": "inner", "col": 2, "type": "frontend", "label": t("rsi.gain"), "sublabel": t("rsi.gain.sub")},
+            {"id": "rsi_update", "lane": "outer", "col": 3, "type": "database", "label": t("rsi.update"), "sublabel": t("rsi.update.sub")},
+        ],
+        "edges": [
+            {"id": "r1", "from": "rsi_pick", "to": "rsi_run", "variant": "emphasis"},
+            {"id": "r2", "from": "rsi_run", "to": "rsi_gain"},
+            {"id": "r3", "from": "rsi_gain", "to": "rsi_update", "variant": "emphasis"},
+            {"id": "rnext", "from": "rsi_update", "to": "rsi_pick", "label": t("rsi.next"), "variant": "dashed", "role": "return"},
+        ],
+        "cards": [
+            {"dot": "emerald", "title": t("c.rsi.1t"), "items": [t("c.rsi.1a"), t("c.rsi.1b")]},
+            {"dot": "violet", "title": t("c.rsi.2t"), "items": [t("c.rsi.2a"), t("c.rsi.2b")]},
+        ],
+    }
+
     d = HERE / lang
     d.mkdir(exist_ok=True)
-    for name, obj in [("bandit-architecture.architecture", arch), ("bandit-round.sequence", seq), ("ab-test-vs-bandit.workflow", wf)]:
+    for name, obj in [("bandit-architecture.architecture", arch), ("bandit-round.sequence", seq), ("ab-test-vs-bandit.workflow", wf),
+                      ("bandit-timeline.timeline", timeline), ("pi-arms.workflow", pi), ("rsi-loop.workflow", rsi)]:
         (d / f"{name}.json").write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
