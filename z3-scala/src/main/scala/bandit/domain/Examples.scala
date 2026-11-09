@@ -10,9 +10,13 @@
 // rationals fed to the same Z3 rules as the theorems, so a change in a rule shows up here first.
 //
 //     z3-scala/z3.sh examples
-package z3scala
+package z3scala.bandit.domain
 
-import Z.*
+import z3scala.kernel.proof.Script.*
+import z3scala.kernel.proof.{Item, Script}
+import z3scala.kernel.smt.*
+import z3scala.kernel.smt.Z.*
+
 import Bandit.*
 
 object Examples:
@@ -60,7 +64,9 @@ object Examples:
     ("evening", 2, 1)
   )
 
-  def run(args: Seq[String]): Int =
+  val title = "examples of the tabular model"
+
+  def statements: Vector[Item] = Script:
     val expected: List[(String, List[Estimate] => Decision, String, List[Rational])] = List(
       ("greedy morning", greedy, "morning", List(0, 1, 0)),
       ("greedy evening", greedy, "evening", List(0, 0, 1)),
@@ -74,4 +80,3 @@ object Examples:
     for (name, rule, context, values) <- expected do
       val decision = policy(rule, history, context, arms = 3)
       for ((p, v), arm) <- decision.zip(values).zipWithIndex do evaluates(s"$name [$arm]", p, v)
-    finish("examples of the tabular model")

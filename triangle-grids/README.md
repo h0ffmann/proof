@@ -68,7 +68,7 @@ grid goes to `ww3_grid` as a Gmsh file with grid type `'UNST'`.
 
 ## What Z3 proves
 
-`z3-scala/src/main/scala/grids/Grids.scala`, in exact real arithmetic:
+`z3-scala/src/main/scala/grids/domain/Grids.scala`, in exact real arithmetic:
 
 | Statement | Result |
 |---|---|

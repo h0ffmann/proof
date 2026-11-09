@@ -1,9 +1,10 @@
 // What the checks need to print and read text exactly as they did when they were Python: Z3's
 // values in the Python printer's notation, Python's whitespace and line rules, and its regular
 // expressions (Unicode word classes and case folding, which Java turns on by a flag).
-package z3scala
+package z3scala.kernel.text
 
 import com.microsoft.z3.*
+import z3scala.kernel.smt.given
 
 import java.util.regex.{MatchResult, Matcher, Pattern}
 
@@ -78,8 +79,8 @@ object Py:
       if lineBreak.matcher(s).find() && parts.last.isEmpty then parts.init else parts
 
   /** Path.read_text(): universal newlines. */
-  def readText(path: java.nio.file.Path, replace: Boolean = false): String =
-    val bytes = java.nio.file.Files.readAllBytes(path)
+  /** A file's bytes as Python's text mode reads them: UTF-8, universal newlines. */
+  def decode(bytes: Array[Byte], replace: Boolean = false): String =
     val action = if replace then java.nio.charset.CodingErrorAction.REPLACE
     else java.nio.charset.CodingErrorAction.REPORT
     val dec = java.nio.charset.StandardCharsets.UTF_8

@@ -14,9 +14,9 @@ Each figure below is an archify diagram. Use the PNG as a reference when you edi
 |---|---|---|---|---|
 | 1.1 Hook | 0:00 to 1:00 | [bandit-round](docs/diagrams/img/en/bandit-round.png) ([html](docs/diagrams/en/bandit-round.html)) | — | `beliefs` in `haskell/app/Video.hs` |
 | 1.2 Steal like an artist | 1:00 to 3:00 | [bandit-timeline](docs/diagrams/img/en/bandit-timeline.png) ([html](docs/diagrams/en/bandit-timeline.html)) | — | `animation/timeline.py` (not made yet) |
-| 1.3 π and you, one arm | 3:00 to 5:00 | [pi-arms](docs/diagrams/img/en/pi-arms.png) ([html](docs/diagrams/en/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `singleArmed`; `step` in `z3-scala/src/main/scala/Video.scala` |
+| 1.3 π and you, one arm | 3:00 to 5:00 | [pi-arms](docs/diagrams/img/en/pi-arms.png) ([html](docs/diagrams/en/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `singleArmed`; `step` in `z3-scala/src/main/scala/bandit/domain/Video.scala` |
 | 1.4 The name, letter by letter | 5:00 to 6:30 | [pi-arms](docs/diagrams/img/en/pi-arms.png) ([html](docs/diagrams/en/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `multiArmed`; `haskell/src/Pi.hs` |
-| 1.5 Model and rule | 6:30 to 7:30 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | [`1-5-width.txt`](papers/contextual-bandits/script/desmos/1-5-width.txt) | `policy_factors` in `z3-scala/src/main/scala/Theorems.scala` |
+| 1.5 Model and rule | 6:30 to 7:30 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | [`1-5-width.txt`](papers/contextual-bandits/script/desmos/1-5-width.txt) | `policy_factors` in `z3-scala/src/main/scala/bandit/domain/Theorems.scala` |
 | 1.6 Explore and exploit | 7:30 to 8:30 | — | [`1-6-ucb.txt`](papers/contextual-bandits/script/desmos/1-6-ucb.txt) | `greedy`, `epsGreedy`, `ucb`; `ucb_zero` |
 | 1.7 Netflix | 8:30 to 10:00 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | — | `bayesLinear` in `haskell/src/Models.hs` |
 | 2.1 What an A/B test is | 10:00 to 11:30 | [ab-test-vs-bandit](docs/diagrams/img/en/ab-test-vs-bandit.png) ([html](docs/diagrams/en/ab-test-vs-bandit.html)) | [`2-1-ab.txt`](papers/contextual-bandits/script/desmos/2-1-ab.txt) | `uniform`; `etc_before` |
@@ -24,8 +24,8 @@ Each figure below is an archify diagram. Use the PNG as a reference when you edi
 | 2.3 The cost of the wait | 13:00 to 15:00 | — | [`2-3-regret.txt`](papers/contextual-bandits/script/desmos/2-3-regret.txt) | `abVsBandit` |
 | 2.4 Context makes the test personal | 15:00 to 16:30 | [ab-test-vs-bandit](docs/diagrams/img/en/ab-test-vs-bandit.png) ([html](docs/diagrams/en/ab-test-vs-bandit.html)) | — | `abVsBandit`, "A/B without context" |
 | 2.5 What the A/B test does better | 16:30 to 18:00 | [bandit-round](docs/diagrams/img/en/bandit-round.png) ([html](docs/diagrams/en/bandit-round.html)) | [`2-5-propensity.txt`](papers/contextual-bandits/script/desmos/2-5-propensity.txt) | `policy` |
-| 2.6 Summary of the block | 18:00 to 20:00 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | — | `z3-scala/src/main/scala/Theorems.scala` |
-| 3.1 Three words | 20:00 to 21:30 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `outer`, `innerEps` in `z3-scala/src/main/scala/Video.scala` |
+| 2.6 Summary of the block | 18:00 to 20:00 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | — | `z3-scala/src/main/scala/bandit/domain/Theorems.scala` |
+| 3.1 Three words | 20:00 to 21:30 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `outer`, `innerEps` in `z3-scala/src/main/scala/bandit/domain/Video.scala` |
 | 3.2 The smallest recursive loop | 21:30 to 24:00 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `rsiLoop` |
 | 3.3 The bandit in real RSI | 24:00 to 26:30 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `rsiLoop` |
 | 3.4 Current belief against new belief | 26:30 to 28:00 | [bandit-round](docs/diagrams/img/en/bandit-round.png) ([html](docs/diagrams/en/bandit-round.html)) | [`3-4-beta.txt`](papers/contextual-bandits/script/desmos/3-4-beta.txt) | `beliefs`; `betaBernoulli` |
@@ -179,9 +179,9 @@ The A/B test has three good properties: it is simple to set up, simple to read a
 
 ### 2.2 The A/B test is a bandit rule (scene 2.2)
 
-1. **The test period is ε-greedy with ε = 1.** Each arm gets probability `1/K`. This is uniform random allocation. The Z3 statement `epsGreedy_one_is_ab_test` (`z3-scala/src/main/scala/Theorems.scala`) proves this.
+1. **The test period is ε-greedy with ε = 1.** Each arm gets probability `1/K`. This is uniform random allocation. The Z3 statement `epsGreedy_one_is_ab_test` (`z3-scala/src/main/scala/bandit/domain/Theorems.scala`) proves this.
 2. **The decision phase is ε-greedy with ε = 0**, which is greedy. The statement `epsGreedy_zero` proves this.
-3. **The full A/B test is an ε that changes from 1 to 0 on a fixed day.** The invariant R3 (`etc` in `z3-scala/src/main/scala/Video.scala`) proves the two phases: `etc_before` and `etc_after`.
+3. **The full A/B test is an ε that changes from 1 to 0 on a fixed day.** The invariant R3 (`etc` in `z3-scala/src/main/scala/bandit/domain/Video.scala`) proves the two phases: `etc_before` and `etc_after`.
 
 With this view, the question "A/B or bandit?" becomes a different question: how must ε decrease over time?
 

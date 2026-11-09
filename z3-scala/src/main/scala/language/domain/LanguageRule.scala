@@ -17,17 +17,16 @@
 // that do, from the model.
 //
 //     z3-scala/z3.sh language   # one line per file that breaks the rule; exit code 1 if any
-package z3scala
+package z3scala.language.domain
 
 import com.microsoft.z3.Status
+import z3scala.kernel.proof.Report
+import z3scala.kernel.proof.Report.say
+import z3scala.kernel.smt.Z.*
+import z3scala.kernel.smt.{Bool, given}
+import z3scala.kernel.text.Py
 
-import java.nio.file.{Path, Paths}
-
-import Z.*
-
-object Language:
-  val ROOT: Path = Paths.get("").toAbsolutePath
-
+object LanguageRule:
   val PORTUGUESE = Py.re(
     "\\b(de|que|não|para|uma|com|é|os|as|do|da|em|um|são|mais|por|como|se|dos|das|ao|pela|pelo" +
       "|cada|também|mesmo|isso|essa|esse)\\b",
@@ -47,17 +46,11 @@ object Language:
 
   val MINIMUM = 20 // stop words of both languages together, below which a file is not judged
 
-  def trackedTextFiles(): List[String] =
-    val p = new ProcessBuilder("git", "ls-files").directory(ROOT.toFile).start()
-    val out = new String(p.getInputStream.readAllBytes(), "UTF-8")
-    if p.waitFor() != 0 then sys.error("git ls-files failed")
-    Py.split(out).filterNot(Py.search(SKIPPED, _))
+  /** The files of `git ls-files` that are judged. */
+  def judged(tracked: String): List[String] = Py.split(tracked).filterNot(Py.search(SKIPPED, _))
 
   /** Some(true), Some(false), or None when the file has too few stop words to judge. */
-  def isPortuguese(path: String): Option[Boolean] =
-    val text =
-      try Some(Py.readText(ROOT.resolve(path)))
-      catch case _: java.io.IOException => None
+  def isPortuguese(text: Option[String]): Option[Boolean] =
     text.flatMap: t =>
       val prose = Py.sub(CODE, " ", t)
       val pt = Py.findAll(PORTUGUESE, prose).size
@@ -66,11 +59,12 @@ object Language:
 
   def isMarked(path: String): Boolean = path.contains("pt-BR")
 
-  def run(args: Seq[String]): Int =
+  /** The rule over the files, given as (path, text, or None when it cannot be read as UTF-8). */
+  def check(files: List[(String, Option[String])]): Report = Report:
     val solver = ctx.mkSolver()
     val broken = List.newBuilder[(String, Bool, Bool)]
     var judged = 0
-    for path <- trackedTextFiles(); portuguese <- isPortuguese(path) do
+    for (path, text) <- files; portuguese <- isPortuguese(text) do
       judged += 1
       val p = bool(s"portuguese[$path]")
       val m = bool(s"marked[$path]")
@@ -85,14 +79,14 @@ object Language:
       var count = 0
       for ((name, p, _), x) <- all.zip(negations) if model.eval(x, false).isTrue do
         count += 1
-        println(
+        say(
           s"FAIL  $name: " + (if model.eval(p, false).isTrue then "Portuguese, but its path has no pt-BR"
                               else "marked pt-BR, but not Portuguese")
         )
-      println(s"\n$count file(s) break the language rule")
+      say(s"\n$count file(s) break the language rule")
       1
     else
-      println(
+      say(
         s"OK    $judged files judged: every Portuguese file is marked pt-BR, and only those (${Py.status(result)})"
       )
       0

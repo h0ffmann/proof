@@ -62,7 +62,18 @@ The same day, the owner asked that the Z3 checks leave Python for a Scala applic
 dependency is Z3's official Java binding: "convert z3-solver, to scala application, using only ad
 dependency the this java library (latest)". `z3/` became `z3-scala/` (Scala 3.9.0, Z3 5.3.3), with
 the same statements and the same output, and the Python files and their `z3-solver` requirements
-were deleted. The names above map one to one: `bandit.py` is `src/main/scala/Bandit.scala`,
-`theorems.py` is `Theorems.scala`, and so on; `refute.py` is `Z.scala`. Function names moved to
+were deleted. The names above map one to one: `bandit.py` is `src/main/scala/bandit/domain/Bandit.scala`,
+`theorems.py` is `Theorems.scala`, and so on; `refute.py` is `kernel/proof/Proof.scala`. Function names moved to
 camelCase (`argmax_first` is `argmaxFirst`); the statement names did not change.
 "One toolchain" now means a JDK and sbt; `z3-scala/z3.sh` fetches Z3.
+
+Later that day the owner asked for two more changes. The first: "this repository must
+reproducible, with nix at the root (pinning scala, JDK version)". The `scala` shell of the root flake (`nix/scala.nix`) now pins
+the JDK (25) and builds Z3 5.3.3 with its Java binding from the release tag. `nix develop .#scala`
+gives both, and sbt's version and Scala's are pinned in `z3-scala/`. The second: "it should use
+DDD approach for folder structure. Use Kyo latest as effect system". The sources are now a shared
+kernel and one bounded context per family of checks, each with a domain, an application and,
+where it reads the world, an infrastructure layer. The domains build statements or reports as
+values; Kyo runs them, and files, processes and the console are its `Sync` and `Abort` effects.
+Kyo is the second dependency, so "only the Java binding" no longer holds. The statements and the
+output did not change.

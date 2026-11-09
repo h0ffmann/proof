@@ -23,29 +23,18 @@
 // needed, or that the code allows more than its comment says. Each one says why.
 //
 //     z3-scala/z3.sh chaceon
-package z3scala.portaudit
+package z3scala.portaudit.domain
 
 import com.microsoft.z3.*
-import z3scala.Z.{*, given}
-import z3scala.{BV, Bool, FP, Py, Real, Z, given}
+import z3scala.kernel.proof.Script.*
+import z3scala.kernel.proof.{Item, Script}
+import z3scala.kernel.smt.*
+import z3scala.kernel.smt.Z.{*, given}
 
 object Chaceon:
   val CHACEON_COMMIT = "fe531e1e64950c0f3ce7987ae4ed0325a56adfbe"
 
   private def c = Z.ctx
-
-  /** The statement must fail: Z3 must find a model of the premises and the negated conclusion. */
-  def counterexample(name: String, premises: Seq[Bool], conclusion: Bool, why: String): scala.Unit =
-    val s = c.mkSolver()
-    premises.foreach(s.add(_))
-    s.add(not(conclusion))
-    val found = s.check() == Status.SATISFIABLE
-    report(
-      name,
-      found,
-      if found then s"counterexample ${Py.model(s.getModel)} ($why)"
-      else "no counterexample, but one was expected"
-    )
 
   // ------------------------------------------------------------------------------------------
   // Bit-vectors and IEEE f32, in the words of the statements
@@ -59,7 +48,9 @@ object Chaceon:
   private def pow2(k: Int): BigInt = BigInt(2).pow(k)
   private def pow2r(k: Int): Real = num(pow2(k).toString)
 
-  def run(args: Seq[String]): Int =
+  val title = "chaceon (Z3)"
+
+  def statements: Vector[Item] = Script:
     // ======================================================================================
     // D. spirv_exact: f32 division through f64 (rust/tools/spirv_exact/src/main.rs:3-7, 57-64)
     //
@@ -290,5 +281,3 @@ object Chaceon:
     val step = split ++ List(dtmin > 0, dtf === ite(dtn >= least, dtn, least))
     proves("step_never_past_dtg (srce.rs:607)", step, dtf <= rem)
     proves("step_progress (srce.rs:607)", step, dtf >= least)
-
-    finish("chaceon (Z3)")

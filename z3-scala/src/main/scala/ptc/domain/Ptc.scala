@@ -21,20 +21,21 @@
 // or a label on the screen). A sentence keeps all its words for the length check.
 //
 // What Z3 cannot decide, and why, is in z3-scala/README.md, "PTC rules that Z3 cannot prove".
-package z3scala
+package z3scala.ptc.domain
 
 import com.microsoft.z3.Status
+import z3scala.kernel.proof.Report.say
+import z3scala.kernel.proof.{Lines, Report}
+import z3scala.kernel.smt.Z.*
+import z3scala.kernel.smt.given
+import z3scala.kernel.text.Py
+import z3scala.kernel.text.Py.re
 
-import java.nio.file.{Files, Path, Paths}
 import java.util.regex.Pattern
-import scala.jdk.CollectionConverters.*
-
-import Z.*
-import Py.re
 
 object Ptc:
-  val ROOT: Path = Paths.get("").toAbsolutePath
-  val SCRIPT: Path = ROOT.resolve("papers/contextual-bandits/script/prose-pt-BR")
+  /** The script's folder, from the repository root; the application reads its Markdown files. */
+  val SCRIPT = "papers/contextual-bandits/script/prose-pt-BR"
   val LEVEL = "leve" // 00-como-ler.md, line 4
   val MAX_WORDS = 35 // PTC-5 at level leve, and 00-como-ler.md, line 6
   val MAX_SENTENCES = 6 // sentences per paragraph (recommended at level leve)
@@ -47,9 +48,9 @@ object Ptc:
    * quotations masked as one word each; prose: the same, with the quotations taken out too (what the rules
    * apply to); raw: the sentence as written, for the report.
    */
-  final case class Unit(file: String, line: Int, text: String, prose: String, raw: String = "")
+  final case class Sentence(file: String, line: Int, text: String, prose: String, raw: String = "")
 
-  type Lines = List[(Int, String)]
+  type Block = List[(Int, String)]
 
   val FENCE = re("^(```|~~~)")
   val DIV = re("^:::")
@@ -85,7 +86,7 @@ object Ptc:
     Py.sub(CITATION, " ", t) // a citation is not a word of the sentence
 
   /** The prose of a YAML front matter: title, subtitle and abstract. Returns (lines, end). */
-  def frontMatter(lines: Vector[String]): (Lines, Int) =
+  def frontMatter(lines: Vector[String]): (Block, Int) =
     if lines.isEmpty || Py.strip(lines(0)) != "---" then (Nil, 0)
     else
       val out = List.newBuilder[(Int, String)]
@@ -105,14 +106,14 @@ object Ptc:
       (out.result(), end.getOrElse(lines.size))
 
   /** Blocks of prose lines, with line numbers. A list item and a table cell are blocks. */
-  def paragraphs(path: Path): List[Lines] =
-    val lines = Py.splitlines(Py.readText(path)).toVector
+  def paragraphs(text: String): List[Block] =
+    val lines = Py.splitlines(text).toVector
     val (head, start) = frontMatter(lines)
     val numbered = head ++ lines.drop(start).zipWithIndex.map((l, i) => (i + start + 1, l))
-    val blocks = List.newBuilder[Lines]
+    val blocks = List.newBuilder[Block]
     var current = List.empty[(Int, String)] // reversed
     var inCode = false
-    def flush(): scala.Unit =
+    def flush(): Unit =
       if current.nonEmpty then blocks += current.reverse
       current = Nil
     for (n, line) <- numbered do
@@ -145,7 +146,7 @@ object Ptc:
    * The sentences of one block, each with the line where it starts, and the number of sentences (an inline
    * list gives one unit per item, but it is one sentence).
    */
-  def splitSentences(block: Lines, file: String): (List[Unit], Int) =
+  def splitSentences(block: Block, file: String): (List[Sentence], Int) =
     val sb = new StringBuilder
     val starts = List.newBuilder[(Int, Int)]
     for (n, line) <- block do
@@ -154,7 +155,7 @@ object Ptc:
     val text = sb.toString
     val startList = starts.result()
     val offset = Py.matchStart(LABEL, text).map(_.end).getOrElse(0)
-    val units = List.newBuilder[Unit]
+    val units = List.newBuilder[Sentence]
     var count = 0
     var pieceStart = offset
     val m = SENTENCE_END.matcher(text)
@@ -174,26 +175,23 @@ object Ptc:
           for item <- INLINE_LIST.split(piece, -1) do
             val masked = mask(Py.sub(EMPHASIS, "$1", item))
             val prose = Py.sub(ITALIC, " Q ", Py.sub(QUOTE, " Q ", masked))
-            units += Unit(file, line, Py.sub(ITALIC, "$1", masked), prose, item)
+            units += Sentence(file, line, Py.sub(ITALIC, "$1", masked), prose, item)
         e.foreach(x => pieceStart = x._2)
     (units.result(), count)
 
-  /** (sentences, paragraphs) of every Markdown file of the script. */
-  def readScript(): (List[Unit], List[Unit]) =
-    val sentences = List.newBuilder[Unit]
-    val paras = List.newBuilder[Unit]
-    val files =
-      Files.list(SCRIPT).iterator.asScala.filter(_.toString.endsWith(".md")).toList.sortBy(_.toString)
-    for path <- files do
-      val name = ROOT.relativize(path).toString
-      for block <- paragraphs(path) do
+  /** (sentences, paragraphs) of the script's Markdown files, given as (name, text) in path order. */
+  def readScript(files: List[(String, String)]): (List[Sentence], List[Sentence]) =
+    val sentences = List.newBuilder[Sentence]
+    val paras = List.newBuilder[Sentence]
+    for (name, text) <- files do
+      for block <- paragraphs(text) do
         val (units, count) = splitSentences(block, name)
         sentences ++= units
         if units.nonEmpty then
-          paras += Unit(name, units.head.line, units.map(_.text).mkString(" "), count.toString)
+          paras += Sentence(name, units.head.line, units.map(_.text).mkString(" "), count.toString)
     (sentences.result(), paras.result())
 
-  def words(unit: Unit): Int = Py.findAll(WORD, unit.text).count(w => Py.search(HAS_WORD, w))
+  def words(unit: Sentence): Int = Py.findAll(WORD, unit.text).count(w => Py.search(HAS_WORD, w))
 
   // -------------------------------------------------------------------------------------------
   // The rules, as patterns over the prose (the protected zone is already out)
@@ -396,9 +394,9 @@ object Ptc:
       name: String,
       required: Boolean,
       over: String,
-      measure: Unit => Int,
+      measure: Sentence => Int,
       limit: Int,
-      explain: Unit => String
+      explain: Sentence => String
   )
 
   def hitsCheck(rule: String, name: String, required: Boolean, find: String => List[String]): Check =
@@ -445,7 +443,7 @@ object Ptc:
   )
 
   /** Ask Z3 for a unit with measure > limit. Returns (holds, the units of the model). */
-  def prove(check: Check, units: List[Unit]): (Boolean, List[Unit]) =
+  def prove(check: Check, units: List[Sentence]): (Boolean, List[Sentence]) =
     val solver = ctx.mkSolver()
     val limit = int("limit")
     solver.add(limit === intVal(check.limit))
@@ -549,14 +547,14 @@ object Ptc:
 
   def snippet(raw: String): String = if Py.len(raw) <= 100 then raw else Py.take(raw, 97) + "..."
 
-  def review(sentences: List[Unit]): scala.Unit =
-    println("\nRules (or parts of rules) that Z3 cannot decide: read these sentences.")
+  def review(sentences: List[Sentence])(using Lines): Unit =
+    say("\nRules (or parts of rules) that Z3 cannot decide: read these sentences.")
     for (rule, why, candidates) <- REVIEW do
-      println(s"\n$rule: $why")
+      say(s"\n$rule: $why")
       for p <- candidates do
         val found = sentences.filter(u => Py.search(p, u.prose))
-        for u <- found do println(s"  ${u.file}:${u.line}  ${snippet(u.raw)}")
-        println(s"  (${found.size} sentences)")
+        for u <- found do say(s"  ${u.file}:${u.line}  ${snippet(u.raw)}")
+        say(s"  (${found.size} sentences)")
 
   // Each required check must reject its BAD text and accept its GOOD text (--self-test). GOOD holds
   // the right forms that look like a break: a scene number, a model version, an ISO month, a hyphen
@@ -582,7 +580,7 @@ object Ptc:
     "PTC-6" -> ("O manim desenha as API's no ecrã.", "O Manim desenha as APIs na tela.")
   )
 
-  def selfTest(): Int =
+  def selfTest(): Report = Report:
     var bad = 0
     for check <- CHECKS if check.required do
       val (reject, accept) = SELF_TEST(check.rule)
@@ -591,33 +589,30 @@ object Ptc:
         val (holds, _) = prove(check, units)
         if holds != shouldHold then
           bad += 1
-          println(
+          say(
             s"FAIL  self-test ${check.rule}: ${if holds then "accepts" else "rejects"} ${Py.repr(text)}"
           )
-    println(
+    say(
       if bad == 0 then "OK    self-test: every required check rejects its bad text and accepts its good text"
       else s"\n$bad self-test failure(s)"
     )
     if bad > 0 then 1 else 0
 
-  def run(args: Seq[String]): Int =
-    if args.contains("--self-test") then selfTest() else check(args)
-
-  def check(args: Seq[String]): Int =
-    val (sentences, paras) = readScript()
+  def check(script: List[(String, String)], review: Boolean): Report = Report:
+    val (sentences, paras) = readScript(script)
     var failed = 0
-    println(
-      s"PTC, level $LEVEL: ${sentences.size} sentences and ${paras.size} paragraphs in ${ROOT.relativize(SCRIPT)}/"
+    say(
+      s"PTC, level $LEVEL: ${sentences.size} sentences and ${paras.size} paragraphs in $SCRIPT/"
     )
     for check <- CHECKS do
       val units = if check.over == "sentence" then sentences else paras
       val (holds, broken) = prove(check, units)
       val status = if holds then "OK  " else if check.required then "FAIL" else "NOTE"
-      println(s"$status  ${check.rule}: ${check.name} (${if holds then "unsat" else "sat"})")
-      for u <- broken do println(s"        ${u.file}:${u.line}: ${check.explain(u)}")
+      say(s"$status  ${check.rule}: ${check.name} (${if holds then "unsat" else "sat"})")
+      for u <- broken do say(s"        ${u.file}:${u.line}: ${check.explain(u)}")
       if !holds && check.required then failed += 1
-    if args.contains("--review") then review(sentences)
+    if review then this.review(sentences)
     if failed > 0 then
-      println(s"\n$failed required PTC check(s) fail")
+      say(s"\n$failed required PTC check(s) fail")
       1
     else 0

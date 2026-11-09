@@ -16,10 +16,12 @@
 //    NOTE lines, numbers and not proofs.
 //
 //     z3-scala/z3.sh grids
-package z3scala.grids
+package z3scala.grids.domain
 
-import z3scala.Z.{*, given}
-import z3scala.{*, given}
+import z3scala.kernel.proof.Script.*
+import z3scala.kernel.proof.{Item, Script}
+import z3scala.kernel.smt.*
+import z3scala.kernel.smt.Z.{*, given}
 
 object Grids:
   private val hMin = 5 // km, "a minimum grid spacing of 5 km"
@@ -29,19 +31,9 @@ object Grids:
   private def min(a: Real, b: Real): Real = ite(a <= b, a, b)
   private def max(a: Real, b: Real): Real = ite(a >= b, a, b)
 
-  def counterexample(name: String, premises: Seq[Bool], conclusion: Bool, why: String): Unit =
-    val s = ctx.mkSolver()
-    premises.foreach(s.add(_))
-    s.add(not(conclusion))
-    val found = s.check() == com.microsoft.z3.Status.SATISFIABLE
-    report(
-      name,
-      found,
-      if found then s"counterexample ${Py.model(s.getModel)} ($why)"
-      else "no counterexample, but one was expected"
-    )
+  val title = "grids (Z3)"
 
-  def run(args: Seq[String]): Int =
+  def statements: Vector[Item] = Script:
     // 1. The size rule.
     val List(hDepth, hCoast, slope, cg) = reals("hDepth hCoast slope cg"): @unchecked
     val size = ite(slope > Rational(1, 10), hMin, max(hMin, min(hDepth, hCoast)))
@@ -91,24 +83,23 @@ object Grids:
     proves("iter_at_least_1_above_thr8", ww3 :+ (cfl > thr8), iter >= 1)
 
     roomMesh()
-    finish("grids (Z3)")
 
   // ------------------------------------------------------------------------------------------
   // 5. piabrota/room, scripts/grid.mjs at 66e38a7: spacing [9, 70] km, reach 550 km,
   //    spacingAt(d) = S0 + (S1 - S0) * min(1, d / REACH)^1.4, one lattice per distance band.
 
-  private def roomMesh(): Unit =
+  private def roomMesh()(using Script): Unit =
     val (s0, s1, reach) = (9.0, 70.0, 550.0)
     def spacingAt(d: Double) = s0 + (s1 - s0) * math.pow(math.min(1, math.max(0, d) / reach), 1.4)
     val bands = List((0.5 * s0, 40.0), (40.0, 130.0), (130.0, 300.0), (300.0, reach))
     val sizes = bands.map((a, b) => spacingAt((a + b) / 2))
-    println()
-    println(
+    line()
+    line(
       f"NOTE  room coast spacing $s0%.0f km: above the 5 km floor, so no coast is finer than the paper's"
     )
-    for ((a, b), hh) <- bands.zip(sizes) do println(f"NOTE  room band $a%.1f-$b%.0f km: lattice $hh%.2f km")
+    for ((a, b), hh) <- bands.zip(sizes) do line(f"NOTE  room band $a%.1f-$b%.0f km: lattice $hh%.2f km")
     for (x, y) <- sizes.zip(sizes.tail) do
       val ratio = y / x
-      println(f"NOTE  room band step ${x}%.2f -> ${y}%.2f km: ratio $ratio%.2f, ${
+      line(f"NOTE  room band step ${x}%.2f -> ${y}%.2f km: ratio $ratio%.2f, ${
           if ratio <= 1.3 then "within" else "above"
         } the 30%% growth rate")

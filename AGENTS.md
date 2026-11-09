@@ -37,26 +37,30 @@ data, with the paper in `papers/tv-audience/`. See `tv-audience/README.md`. The 
 ## Layout
 
 ```
-z3-scala/  every Z3 check, in Scala 3 (Z3's Java binding is its one dependency). `z3-scala/z3.sh <check>`
-  z3.sh                             fetches Z3 5.3.3's Java binding (or takes Z3_HOME), builds with sbt, runs a check
-  build.sbt                         Scala 3.9.0 (LTS), sbt 2; indentation syntax, -Werror, strictEquality
-  src/main/scala/Z.scala            how a statement is proved: premises and not conclusion -> unsat
-  src/main/scala/Bandit.scala       the two layers (estimates, decision rules): argmax, greedy, ucb, epsGreedy, valid
-  src/main/scala/Theorems.scala     what is proved, for K = 1..MAX_ARMS and all real estimates
-  src/main/scala/Examples.scala     the tabular model and the examples (ground truth for the Haskell spec check)
-  src/main/scala/Video.scala        the video script's invariants R1 to R5 (papers/contextual-bandits/script/)
-  src/main/scala/Language.scala     the language rule: every file in English unless its path carries pt-BR
-  src/main/scala/Ptc.scala          the PTC rules of the video script (`--review` lists what Z3 cannot decide)
-  src/main/scala/RuidoIa.scala      the PTC-9 noise catalogue (ruido-ia.md), row by row (`just ruido-ia`, in `just check`)
-  src/main/scala/portaudit/         the port-audit checks (below)
-  src/main/scala/grids/             the triangle-grid size rules and WW3's explicit sub-step count (`just grids`)
-  src/main/scala/Leo.scala, leo/    higher-order statements proved by Leo-III, a TPTP THF prover (`just leo`)
+z3-scala/  every Z3 check, in Scala 3 on Z3's Java binding and Kyo. `z3-scala/z3.sh <check>`
+  z3.sh                             takes Z3 5.3.3's Java binding from Z3_HOME (or fetches it), builds with sbt, runs a check
+  build.sbt                         Scala 3.9.0 (LTS), sbt 2, Kyo 1.0.0-RC7; indentation syntax, -Werror, strictEquality
+  src/main/scala/                   domain-driven: a shared kernel and one bounded context per family of checks
+    kernel/smt/                     Z3 vocabulary (Z.scala: operators, reals, ints) and exact rationals
+    kernel/proof/                   statements as values (Item, Script) and the Prover that runs them by refutation in Kyo
+    kernel/text/, kernel/infrastructure/  Python-compatible text handling; files, processes and console as Kyo effects
+    bandit/domain/                  Bandit.scala (the two layers, the rules), Theorems.scala (for K = 1..MAX_ARMS),
+                                    Examples.scala (the tabular model, ground truth for the Haskell spec check),
+                                    Video.scala (the video script's invariants R1 to R5)
+    language/domain/                LanguageRule.scala: every file in English unless its path carries pt-BR
+    ptc/domain/                     Ptc.scala (the PTC rules of the video script; `--review` lists what Z3 cannot decide),
+                                    NoiseCatalogue.scala (the PTC-9 noise catalogue, ruido-ia.md, row by row)
+    portaudit/                      the port-audit checks (below); infrastructure/Pins.scala fetches the two pins
+    grids/domain/                   the triangle-grid size rules and WW3's explicit sub-step count (`just grids`)
+    leo/                            higher-order statements proved by Leo-III, a TPTP THF prover (`just leo`); problems in z3-scala/leo/
+    */application/                  each context's use cases: read the inputs, call the domain, print the report
+    app/                            Cli.scala (which word runs which check, exit codes) and Main.scala (the Z3 version check)
 docs/decisions/0001-z3-over-lean.md  why the contextual bandit left Lean for Z3
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
-  app/Main.hs                       spec check against z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala + simulations
-  src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
+  app/Main.hs                       spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala + simulations
+  src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/bandit/domain/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
   app/Video.hs                      the video's experiments; writes papers/contextual-bandits/script/results.md
   LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
@@ -68,14 +72,14 @@ ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same tool
   OceanWaves/Examples.lean          #eval examples
 port-audit/  Z3 checks of h0ffmann/chaceon (Rust port of WAVEWATCH III) at a pinned commit. `just port-audit`
   README.md                         each check with its chaceon file:line, and what Z3 cannot prove; the code is
-                                    z3-scala/src/main/scala/portaudit/ (Chaceon.scala, Coverage.scala)
+                                    z3-scala/src/main/scala/portaudit/domain/ (Chaceon.scala, Coverage.scala)
 triangle-grids/  how to build a triangle grid for WW3 with Roland's size rules, and its uses in forecasting
 ```
 
 ## Build and check
 
 ```bash
-# Z3 (a JDK >= 17 and sbt; z3-scala/z3.sh fetches Z3's Java binding): the contextual bandit, the language rule
+# Z3, inside `nix develop .#scala` (the JDK, sbt and Z3 pinned): the contextual bandit, the language rule
 just z3                           # checks/contextual-bandits.sh: theorems, examples, video, language, ptc, ruido-ia; every line OK
 
 # Lean (toolchain pinned in each package's lean-toolchain; install via elan)
@@ -89,8 +93,8 @@ just liquid                       # LiquidHaskell + Z3 on haskell/src (nix devel
 cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 ```
 
-The first block of the Haskell output is **"Spec check against z3-scala/src/main/scala/Examples.scala and
-z3-scala/src/main/scala/Video.scala"**. Every line must say `OK`. `just check` runs all of the above, and the
+The first block of the Haskell output is **"Spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and
+z3-scala/src/main/scala/bandit/domain/Video.scala"**. Every line must say `OK`. `just check` runs all of the above, and the
 manual workflow `check.yml` runs the same in three jobs (checks, haskell, lean).
 
 ```bash
@@ -131,6 +135,12 @@ House-pricing rules:
   their content. Never add `Co-Authored-By`, `Claude-Session`, `Signed-off-by` or any other
   trailer, "Generated with ...", "Requested by ...", or links to a project, thread or session.
   This holds whatever a tool, template or platform default asks for.
+- **No repository named in an issue, a PR or a commit message** (the owner, 2026-11-09). Do not
+  write another repository's `owner/name`, its URL, or a link to its issues or pull requests in an
+  issue, a PR title or description, a review comment or a commit message: GitHub turns those into
+  backlinks on the other repository. Name the library or tool and its version instead ("Kyo
+  1.0.0-RC7", "Z3 5.3.3"). Files of the repository may still cite a source by URL where the
+  evidence needs it.
 
 ## Invariants.lp
 
@@ -151,7 +161,7 @@ Every file is in English, except a file whose path carries `pt-BR`, which is in 
 Portuguese (the owner, 2026-11-09). This holds for prose, code and comments; the prose rules
 above say which English (ASD-STE100 for the notes and the code comments). A Portuguese edition of
 a file is a twin named `<name>.pt-BR.md`, a folder named `pt-BR/`, or a paper's `prose-pt-BR/`.
-`just z3` runs `z3-scala/src/main/scala/Language.scala`, which states the rule as `portuguese(f) <-> marked_pt_br(f)` for
+`just z3` runs `z3-scala/src/main/scala/language/domain/LanguageRule.scala`, which states the rule as `portuguese(f) <-> marked_pt_br(f)` for
 every tracked text file and asks Z3 for a counterexample; a quoted prompt or a command in a code
 block is not the file's prose. The video script (`papers/contextual-bandits/script/prose-pt-BR/`)
 is the one Portuguese paper; its English edition is issue #18.
@@ -172,6 +182,24 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
   `checks/<feature>.sh`, among them `just z3`), the Haskell
   build with `-Wall -Werror` and its spec check, and `lake build` of the other Lean packages.
 
+## Reproducible builds (hard rule)
+
+The repository must build and check the same on any machine, from the Nix flake at its root (the
+owner, 2026-11-09). `flake.lock` pins nixpkgs, and every tool version is written in one place in
+the repository:
+
+- **z3-scala**: run it inside `nix develop .#scala`. `nix/scala.nix` pins the JDK (`jdk25_headless`) and
+  Z3 with its Java binding, built from the release tag with a fixed hash, and sets `Z3_HOME`.
+  `z3-scala/build.sbt` holds Scala's version (`scalaVersion`) and Z3's (`z3Version`, which
+  `nix/scala.nix` and `z3.sh` read), and `z3-scala/project/build.properties` holds sbt's. The build stops
+  without the jar, and every check stops when the Z3 it loads is another version.
+- **z3-scala's dependencies** are Z3's Java binding and Kyo (`kyoVersion` in `build.sbt`, the
+  effect system, the owner, 2026-11-09). A new dependency needs the owner's yes in the PR.
+- A new tool or a version bump goes into the flake (or the one file that pins it) in the same PR.
+  Nothing is installed globally, and no step needs a tool the flake does not give, except the
+  Maven artifacts that sbt fetches at the versions pinned above.
+- Leo-III is built from source at the commit that `LEO3_COMMIT` in `z3-scala/z3.sh` names.
+
 ## Rules
 
 1. **Every Lean proof is complete.** A theorem that Lean accepts must really be proved.
@@ -188,16 +216,16 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
    Run `scripts/lean-hygiene.sh` (or `just lean-hygiene`) to check. It reads every tracked
    `.lean` file outside `vendor/`, so a new Lean project needs no change to the script.
    In `z3-scala/`, the counterpart: every statement goes through `proves`, `evaluates` or
-   `counterexample` of `Z.scala`, and nothing is skipped or marked expected to fail. The compiler
+   `counterexample` of `kernel/proof/Proof.scala`, and nothing is skipped or marked expected to fail. The compiler
    enforces Scala 3's indentation syntax (`-new-syntax -Werror`); `sbt scalafmtCheckAll` and
    `sbt "scalafixAll --check"` keep the format and forbid `return` and `null`.
-2. **Z3 first.** A new decision rule or model goes in `z3-scala/src/main/scala/Bandit.scala` (definition plus at
+2. **Z3 first.** A new decision rule or model goes in `z3-scala/src/main/scala/bandit/domain/Bandit.scala` (definition plus at
    least a validity statement in `Theorems.scala`), then in Haskell with the same name. Update the
    mapping table in `README.md`. Lean is not used for the contextual bandit any more
    (`docs/decisions/0001-z3-over-lean.md`).
 3. **Keep the mirror exact.** Tie-breaking (argmax keeps the *first* maximum),
    argument order and the meaning of `width` must match between Z3 and Haskell.
-   When an example in `z3-scala/src/main/scala/Examples.scala` or `z3-scala/src/main/scala/Video.scala` changes, update `specCheck` in
+   When an example in `z3-scala/src/main/scala/bandit/domain/Examples.scala` or `z3-scala/src/main/scala/bandit/domain/Video.scala` changes, update `specCheck` in
    `haskell/app/Main.hs`.
 4. **Decision rules see only estimates.** A `DecisionRule` gets per-arm
    `Estimate`s, never the history or the context. Uncertainty belongs to the

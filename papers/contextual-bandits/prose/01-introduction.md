@@ -18,7 +18,7 @@ repository's `docs/decisions/0001-z3-over-lean.md` records why it moved.) [@Sec:
 | `epsGreedy_one_is_ab_test` | ε-greedy with $\varepsilon = 1$ is the uniform allocation of an A/B/n test |
 | `ucb_gap` | with a calibrated model, UCB's arm is within $2\beta \cdot w$ of the best arm |
 
-: Three of the statements in `z3-scala/src/main/scala/Theorems.scala`. {#tbl:proved}
+: Three of the statements in `z3-scala/src/main/scala/bandit/domain/Theorems.scala`. {#tbl:proved}
 
 [@Tbl:proved] is a sample of the list in the repository's README. Mechanised work on
 stochastic bandits in Lean is in progress elsewhere [@degenne2026leanbandits].

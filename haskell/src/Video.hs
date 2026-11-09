@@ -1,5 +1,5 @@
 -- | The invariants of the video script, as Haskell. This module is the twin of
--- ../z3-scala/src/main/scala/Video.scala, name for name, so that the spec check in
+-- ../z3-scala/src/main/scala/bandit/domain/Video.scala, name for name, so that the spec check in
 -- app/Main.hs can compare the two. The owner gave the requirements on 2026-11-09:
 --
 --   * R1. The reward is the input of the user: 'User'.

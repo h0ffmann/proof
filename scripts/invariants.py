@@ -121,8 +121,8 @@ def facts():
         for text in sources:
             for p in re.findall(r"\bpkgs\.([A-Za-z0-9_-]+)", text):
                 names.add(p)
-                # jdk25, temurin-bin-21, z3_4_13: the tool without its version.
-                names.add(re.sub(r"(-bin)?([-_]?\d+)+$", "", p))
+                # jdk25, jdk25_headless, temurin-bin-21, z3_4_13: the tool without its version.
+                names.add(re.sub(r"(-bin)?([-_]?\d+)+$", "", re.sub(r"_headless$", "", p)))
         for p in sorted(names):
             out.append(f"nix_package({q(p)}).")
 

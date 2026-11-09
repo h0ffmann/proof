@@ -1,11 +1,11 @@
 # z3-scala: every Z3 check of this repository, in Scala
 
-The Z3 checks of this repository are one Scala 3 application whose one dependency is Z3's official
-Java binding (`com.microsoft.z3`, Z3 5.3.3). They were Python over `z3-solver` until 2026-11-09;
+The Z3 checks of this repository are one Scala 3 application with two dependencies: Z3's official
+Java binding (`com.microsoft.z3`, Z3 5.3.3) and Kyo, the effect system the checks run in. They were Python over `z3-solver` until 2026-11-09;
 the port keeps every statement and gives the same output, line for line, except the
 counterexamples of `chaceon` (below).
 
-Every statement is proved by refutation (`Z.scala`): the premises and the negation of the
+Every statement is proved by refutation (`kernel/proof/Proof.scala`): the premises and the negation of the
 conclusion are asserted, and Z3 is asked for a model. `unsat` means that no counterexample exists
 in exact real arithmetic. A model, when there is one, is printed: it is the counterexample.
 
@@ -15,16 +15,16 @@ z3-scala/z3.sh <check> [options]    # from the repository root; exit 1 when a st
 
 | Check | File | What it holds | Statements |
 |---|---|---|---|
-| (the method) | `Z.scala` | `proves(name, premises, conclusion)`, `evaluates(name, term, rational)`, `finish()`, and Z3's Java API with operators, so a statement reads as its sentence | |
-| (the definitions) | `Bandit.scala` | the two layers: K estimates `(mean, width)` as Z3 reals; the rules `greedy`, `ucb(beta)`, `epsGreedy(eps)` built from `argmaxFirst` (ties to the first arm), `point`, `uniform`, `mix`; `valid`, `same` | |
-| `theorems` | `Theorems.scala` | validity of the three rules, `epsGreedy_prob`, `epsGreedy_explores`, `epsGreedy_one_is_ab_test`, `greedy_is_argmax`, `ucb_is_argmax`, `ucb_zero`, the optimism lemma `ucb_gap` under calibration, `greedy_gap`, `policy_factors` (an uninterpreted estimate function) | 60, for K = 1..5 |
-| `examples` | `Examples.scala` | the tabular model over exact rationals (`update`, `estimate`, `posterior`, `policy`) and the values the Haskell spec check reproduces | 9 |
-| `video` | `Video.scala` | the video script's invariants R1 to R5 (`papers/contextual-bandits/script/`): the user as reward, the one-armed agent, explore-then-commit as one rule, RSI as the same rule, the series of pi; and the examples of the spec check | 31 |
-| `language` | `Language.scala` | the language rule of `AGENTS.md`: every tracked text file is in English unless its path carries `pt-BR`, as `portuguese(f) <-> marked_pt_br(f)` | one per file |
-| `ptc`, `ruido-ia` | `Ptc.scala`, `RuidoIa.scala` | the PTC rules and the PTC-9 noise catalogue on the video script (below) | one per rule |
+| (the method) | `kernel/proof/Proof.scala`, `kernel/smt/Z.scala` | `proves(name, premises, conclusion)`, `evaluates(name, term, rational)`, `counterexample`, `verdict` as values (`Item`), run by the `Prover`; Z3's Java API with operators, so a statement reads as its sentence | |
+| (the definitions) | `bandit/domain/Bandit.scala` | the two layers: K estimates `(mean, width)` as Z3 reals; the rules `greedy`, `ucb(beta)`, `epsGreedy(eps)` built from `argmaxFirst` (ties to the first arm), `point`, `uniform`, `mix`; `valid`, `same` | |
+| `theorems` | `bandit/domain/Theorems.scala` | validity of the three rules, `epsGreedy_prob`, `epsGreedy_explores`, `epsGreedy_one_is_ab_test`, `greedy_is_argmax`, `ucb_is_argmax`, `ucb_zero`, the optimism lemma `ucb_gap` under calibration, `greedy_gap`, `policy_factors` (an uninterpreted estimate function) | 60, for K = 1..5 |
+| `examples` | `bandit/domain/Examples.scala` | the tabular model over exact rationals (`update`, `estimate`, `posterior`, `policy`) and the values the Haskell spec check reproduces | 9 |
+| `video` | `bandit/domain/Video.scala` | the video script's invariants R1 to R5 (`papers/contextual-bandits/script/`): the user as reward, the one-armed agent, explore-then-commit as one rule, RSI as the same rule, the series of pi; and the examples of the spec check | 31 |
+| `language` | `language/domain/LanguageRule.scala` | the language rule of `AGENTS.md`: every tracked text file is in English unless its path carries `pt-BR`, as `portuguese(f) <-> marked_pt_br(f)` | one per file |
+| `ptc`, `ruido-ia` | `ptc/domain/Ptc.scala`, `ptc/domain/NoiseCatalogue.scala` | the PTC rules and the PTC-9 noise catalogue on the video script (below) | one per rule |
 | `chaceon`, `coverage` | `portaudit/` | the audit of chaceon, the Rust port of WAVEWATCH III ([`port-audit/README.md`](../port-audit/README.md)) | 28; a table |
-| `grids` | `grids/Grids.scala` | the size rules of a triangle grid and WW3's explicit sub-step count ([`triangle-grids/README.md`](../triangle-grids/README.md)) | 13 |
-| `leo` | `Leo.scala`, `leo/*.p` | higher-order statements proved by Leo-III (below) | 5 |
+| `grids` | `grids/domain/Grids.scala` | the size rules of a triangle grid and WW3's explicit sub-step count ([`triangle-grids/README.md`](../triangle-grids/README.md)) | 13 |
+| `leo` | `leo/` (domain, infrastructure, application), `z3-scala/leo/*.p` | higher-order statements proved by Leo-III (below) | 5 |
 
 The Haskell spec check (`cabal run examples`, block 0) compares its values with `Examples.scala`
 and `Video.scala`. It was a Lean 4 package until 2026-11-09; `docs/decisions/0001-z3-over-lean.md`
@@ -42,20 +42,36 @@ What Z3 cannot do, and how it is bounded:
 
 ## Build and run
 
-It needs a JDK (17 or newer; 21 was used) and [sbt](https://www.scala-sbt.org). `z3.sh` does the
-rest:
+Run it inside the root flake's `scala` shell (`nix/scala.nix`), which pins every tool (`AGENTS.md`, "Reproducible builds"):
 
-1. **Z3.** The first run puts Z3's Java binding in place: `lib/com.microsoft.z3.jar` and the native
-   libraries in `.z3/`. They come from `Z3_HOME` when it is set (a directory with
-   `com.microsoft.z3.jar` and `libz3java`, for example a Z3 built with
-   `-DZ3_BUILD_JAVA_BINDINGS=ON`), or else from the `z3-5.3.3` release on GitHub for this platform,
-   checked against the SHA-256 that GitHub publishes for the asset. ⚠ The release download was not
-   tested: the machine this was written on cannot reach GitHub's release files, so every run here
-   used `Z3_HOME`.
-2. **The build.** sbt 2.0.12, Scala 3.9.0 (the LTS line), the settings of
-   [marola-dev/marola-app](https://github.com/marola-dev/marola-app) with the current versions of
-   the plugins. The classpath is cached in `target/classpath` and rebuilt when a source is newer.
-3. **The run.** `java -cp <classpath> z3scala.main <check>`, from the repository root.
+```sh
+nix develop .#scala      # JDK 25, sbt, and Z3 with its Java binding (Z3_HOME), from flake.lock's nixpkgs
+```
+
+| What | Pinned in | Version |
+|---|---|---|
+| JDK | `nix/scala.nix` (`jdk25_headless`) | 25.0.4.1 at the locked nixpkgs |
+| Z3 and its Java binding | `build.sbt` (`z3Version`); `nix/scala.nix` builds that tag with a fixed source hash | 5.3.3 |
+| Scala | `build.sbt` (`scalaVersion`) | 3.9.0, the LTS line |
+| Kyo (`kyo-core`) | `build.sbt` (`kyoVersion`), from Maven Central | 1.0.0-RC7, the latest release on 2026-11-09; compiled for Java 25 |
+| sbt | `project/build.properties` (the flake's sbt launcher fetches it) | 2.0.12 |
+| scalafmt, scalafix | `project/plugins.sbt`, `.scalafmt.conf` | sbt-scalafmt 2.6.2 (scalafmt 3.11.5), sbt-scalafix 0.14.10 |
+
+`z3.sh` does the rest:
+
+1. **Z3.** Z3 ships its Java binding in its release archives, not on Maven, so no resolver fetches
+   it. The first run puts it in place: `lib/com.microsoft.z3.jar` and the native libraries in
+   `.z3/`. They come from `Z3_HOME`, which the Nix shell sets, or else, outside the shell, from the
+   `z3-<z3Version>` release on GitHub for this platform, checked against the SHA-256 that GitHub
+   publishes for the asset. ⚠ The release download was not tested: the machine this was written
+   on cannot reach GitHub's release files.
+2. **The build.** `build.sbt` names the jar as its unmanaged dependency and stops when it is
+   missing, and takes Kyo from Maven Central; `Main` stops when the Z3 it loads (`com.microsoft.z3.Version`) is not `z3Version`. The
+   settings follow [marola-dev/marola-app](https://github.com/marola-dev/marola-app) with the
+   current plugin versions. The classpath is cached in `target/classpath` and rebuilt when a
+   source is newer.
+3. **The run.** `java -cp <classpath> z3scala.app.main <check>`, from the repository root, with
+   standard output and error in UTF-8 whatever the locale.
 
 ```sh
 just z3        # theorems, examples, video, language, ptc, ruido-ia (checks/contextual-bandits.sh)
@@ -75,6 +91,35 @@ reads as before.
 **One difference from the Python output.** `chaceon` prints the same 28 verdicts, but a
 counterexample is any model Z3 finds: the Java binding finds other witnesses than z3py did, and
 prints a function interpretation inside a model in its own notation. The verdicts are the evidence; the witnesses are examples.
+
+## Layout
+
+The sources follow domain-driven design: a shared kernel, and one bounded context per family of
+checks. A context's `domain` is pure: it builds its statements as values (`Vector[Item]`) or its
+report as lines and an exit code (`Report`), from texts it is given. Its `application` reads what
+the domain needs, calls it and prints the result. Its `infrastructure`, where it has one, is the
+outside world that only it uses (the pins of `portaudit`, the Leo-III process). Kyo runs the
+application: reading a file, running git or java and printing are `Sync` effects, and a failure
+(a missing file, a git error, a stale README) is an `Abort[Failure]` that `app/Cli.scala` turns
+into a message on standard error and its exit code.
+
+```
+src/main/scala/
+  kernel/smt/              Z.scala (the Z3 vocabulary), Rational.scala
+  kernel/proof/            Proof.scala (Item, Script, Prover: refutation, the tally in a Kyo Var), Report.scala
+  kernel/text/             Py.scala (Python-compatible text: regexes, splitlines, formats), Json.scala
+  kernel/infrastructure/   Host.scala (files, processes, environment, console as Kyo effects; Failure)
+  bandit/                  domain: Bandit, Theorems, Examples, Video; application: BanditChecks
+  language/                domain: LanguageRule; application: LanguageCheck (git ls-files)
+  ptc/                     domain: Ptc, NoiseCatalogue; application: PtcChecks (the script's Markdown)
+  portaudit/               domain: Chaceon, Coverage (Sources); infrastructure: Pins; application: PortAudit
+  grids/                   domain: Grids; application: GridsCheck
+  leo/                     domain: Problem; infrastructure: Leo3; application: LeoCheck
+  app/                     Cli.scala (check names, exit codes 0, 1, 2, 64), Main.scala (the Z3 version check)
+```
+
+`Main` is not a `KyoApp`, because a `KyoApp` exits with 1 on any error and the checks have their
+own exit codes; it runs the Kyo computation once, at the edge of the program.
 
 ## Higher-order statements: Leo-III
 
@@ -114,7 +159,7 @@ z3-scala/z3.sh leo 30     # another limit
 
 The script's prose (`papers/contextual-bandits/script/prose-pt-BR/`) follows Português Técnico
 Controlado (PTC, [kayquer/portugues-tecnico-controlado](https://github.com/kayquer/portugues-tecnico-controlado),
-version 1.2.0), level `leve`, for a human reader (`00-como-ler.md`, lines 3 to 6). `Ptc.scala` takes
+version 1.2.0), level `leve`, for a human reader (`00-como-ler.md`, lines 3 to 6). `ptc/domain/Ptc.scala` takes
 the part of each rule that a program can measure, measures it on every sentence, gives the values
 to Z3 as constants and asks for a model of the negation of the rule. `unsat` means that no sentence
 breaks it.
@@ -129,7 +174,7 @@ Code, file names, URLs, citation keys, quotations and italic foreign words are t
 of PTC (its SKILL.md, "Processo", step 3) and are taken out first; a sentence keeps all its words
 for the length check.
 
-| Rule (level `leve`) | Required? | What Z3 checks | In `Ptc.scala` |
+| Rule (level `leve`) | Required? | What Z3 checks | In `ptc/domain/Ptc.scala` |
 |---|---|---|---|
 | PTC-5, sentence length | yes | every sentence has at most 35 words | `MAX_WORDS`, `words` |
 | PTC-7, number, date, unit | yes | no decimal point (a scene, a version, an ISO month are not decimals), no `1,000,000`, no `DD/MM/YYYY`, no AM/PM, a space before a unit symbol, no symbol in the plural, no `10-20` range | `NUMBER_FORMAT`, `DECIMAL_POINT`, `NUMBER_ID` |
@@ -148,7 +193,7 @@ PTC-5 chains of `de`, the PTC-6 avoid-and-use lexicon, the vertical list.
 
 These need the meaning of the sentence, a parse or a dictionary, which no formula over the
 measured values holds. `z3-scala/z3.sh ptc --review` lists the sentences of the script that a
-person must read for each one (the `REVIEW` list in `Ptc.scala`):
+person must read for each one (the `REVIEW` list in `ptc/domain/Ptc.scala`):
 
 | Rule | Required at `leve`? | Why Z3 cannot decide it | Sentences listed by `--review` |
 |---|---|---|---|
@@ -164,9 +209,9 @@ person must read for each one (the `REVIEW` list in `Ptc.scala`):
 
 ## The PTC-9 noise catalogue
 
-`RuidoIa.scala` checks the catalogue of PTC-9 itself, `references/ruido-ia.md` of
+`ptc/domain/NoiseCatalogue.scala` checks the catalogue of PTC-9 itself, `references/ruido-ia.md` of
 [kayquer/portugues-tecnico-controlado](https://github.com/kayquer/portugues-tecnico-controlado/blob/main/references/ruido-ia.md),
-on the same sentences as `Ptc.scala` (it uses its reader). Each row of a table of the catalogue is one
+on the same sentences as `ptc/domain/Ptc.scala` (it uses its reader). Each row of a table of the catalogue is one
 row of `CATALOGUE`. For a row that Z3 decides, every sentence gets a constant `h[row][sentence]`,
 the number of hits, and Z3 is asked for a model of "some `h` > 0". The forms that the catalogue's
 "O que fica" keeps (`estimador robusto`, `teorema fundamental`, `estado fundamental`,
