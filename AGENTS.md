@@ -82,11 +82,11 @@ triangle-grids/  how to build a triangle grid for WW3 with Roland's size rules, 
 # Z3, inside `nix develop .#scala` (the JDK, sbt and Z3 pinned): the contextual bandit, the language rule
 just z3                           # checks/contextual-bandits.sh: theorems, examples, video, language, ptc, ruido-ia; every line OK
 
-# Lean (toolchain pinned in each package's lean-toolchain; install via elan)
+# Lean, inside `nix develop .#lean` (the release each package's lean-toolchain names)
 cd ocean-waves/lean && lake build # must finish with no errors; prints the #eval outputs
 cd cycle/lean && lake build       # the same for the cycle package
 
-# Haskell (GHC >= 9.4)
+# Haskell, inside `nix develop .#haskell` (GHC and cabal-install)
 cd haskell && cabal run examples
 just liquid                       # LiquidHaskell + Z3 on haskell/src (nix develop .#liquidhaskell); SAFE per module
 # or, without cabal:
@@ -98,7 +98,7 @@ z3-scala/src/main/scala/bandit/domain/Video.scala"**. Every line must say `OK`. 
 manual workflow `check.yml` runs the same in three jobs (checks, haskell, lean).
 
 ```bash
-# House pricing (Rust >= 1.82, Lean toolchain in house-pricing/lean/lean-toolchain)
+# House pricing, inside `nix develop .#house-pricing` (Rust, Lean, curl)
 just house-pricing   # fetch data, train, lake build (+ static lib), parity; must end with "parity OK"
 ```
 
@@ -199,6 +199,19 @@ the repository:
   Nothing is installed globally, and no step needs a tool the flake does not give, except the
   Maven artifacts that sbt fetches at the versions pinned above.
 - Leo-III is built from source at the commit that `LEO3_COMMIT` in `z3-scala/z3.sh` names.
+- **Lean**: each package's `lean-toolchain` names the Lean release, and `nix/lean.nix` gives that
+  release from GitHub with a fixed hash per platform (no elan, no download at run time). The three
+  files must name the same release, or the evaluation stops; a new release needs the four hashes.
+- **One shell per feature**, each a `nix/<name>.nix` that `flake.nix` finds by itself: `scala`,
+  `liquidhaskell`, `invariants`, `lean`, `haskell`, `house-pricing` (Rust, Lean, curl), `data`
+  (Python with NumPy, pandas, SciPy, Matplotlib, XGBoost for `fat-tails/` and `tv-audience/`),
+  `diagrams` (Node and Chromium for archify), `graph` (graphify 0.9.100, Node, Playwright,
+  Chromium), `roteiro-preview` (Pillow, ffmpeg, espeak-ng, DejaVu fonts), `pomodoro` (Zig 0.14),
+  `manim` (Manim Community 0.21, ffmpeg and LaTeX for the 3Blue1Brown-style takes of the video
+  script), and `check`, which joins the shells `just check` needs: `nix develop .#check --command just
+  check`. The default shell (the paper toolchain, Gleam) and `md` are in `flake.nix`.
+- Outside Nix: the voice of the video script (`papers/contextual-bandits/script/voice/`, XTTS and
+  OpenVoice on PyTorch) has its own `requirements.txt`; nixpkgs does not package OpenVoice.
 
 ## Rules
 

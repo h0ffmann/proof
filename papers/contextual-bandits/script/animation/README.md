@@ -6,5 +6,8 @@ folder holds the Manim scenes, one per take, made after the script is approved:
 
 - `timeline.py`: scene 1.2, *steal like an artist*.
 
+Render a take inside `nix develop .#manim` (Manim, ffmpeg and LaTeX, pinned by `flake.lock`):
+`manim -qh papers/contextual-bandits/script/animation/<take>.py <Scene>`.
+
 The numbers the animations show come from [`../results.md`](../results.md),
 written by `cabal run video`.

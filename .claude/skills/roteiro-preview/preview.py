@@ -201,7 +201,8 @@ BLUE = (88, 196, 221)
 YELLOW = (255, 255, 0)
 WHITE = (236, 236, 236)
 GREY = (150, 156, 166)
-FONT_DIRS = ["/usr/share/fonts", "/usr/local/share/fonts", "/Library/Fonts", "/System/Library/Fonts",
+# ROTEIRO_FONT_DIR first: `nix develop .#roteiro-preview` sets it to the pinned DejaVu fonts.
+FONT_DIRS = [d for d in [os.environ.get("ROTEIRO_FONT_DIR")] if d] + ["/usr/share/fonts", "/usr/local/share/fonts", "/Library/Fonts", "/System/Library/Fonts",
              str(Path.home() / ".fonts"), str(Path.home() / ".local/share/fonts")]
 
 

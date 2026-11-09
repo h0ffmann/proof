@@ -77,6 +77,11 @@ needs(scala) :- file("z3-scala/build.sbt").
 needs(z3) :- file("z3-scala/build.sbt").
 needs(lean) :- lean_package(_).
 needs(clingo).
+needs(rust) :- file("house-pricing/rust/Cargo.toml").
+needs(gleam) :- file("tools/gleam.toml").
+needs(node) :- file("vendor/archify/package.json").
+needs(zig) :- file("pomodoro/pomodoro.zig").
+needs(ffmpeg) :- file(".claude/skills/roteiro-preview/preview.py").
 in_nix(ghc) :- nix_package("ghc").
 in_nix(ghc) :- nix_package("haskellPackages").
 in_nix(ghc) :- nix_package("haskell").
@@ -90,7 +95,14 @@ in_nix(scala) :- nix_package("scala_3").
 in_nix(scala) :- nix_package("scala-cli").
 in_nix(z3) :- nix_package("z3").
 in_nix(lean) :- nix_package("elan").
+in_nix(lean) :- nix_package("lean4").
 in_nix(clingo) :- nix_package("clingo").
+in_nix(rust) :- nix_package("cargo").
+in_nix(gleam) :- nix_package("gleam").
+in_nix(node) :- nix_package("nodejs").
+in_nix(zig) :- nix_package("zig").
+in_nix(ffmpeg) :- nix_package("ffmpeg").
+in_nix(ffmpeg) :- nix_package("ffmpeg-headless").
 % Pinned in the tree, but not by Nix: a gap, until flake.nix gives the tool.
 gap(toolchain_not_in_nix, T) :- needs(T), not in_nix(T).
 % Every Lean package pins its toolchain, Nix or not.
