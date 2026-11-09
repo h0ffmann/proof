@@ -121,6 +121,7 @@ haskell/                       GHC, only base + containers
   src/Video.hs                      port of z3-scala/src/main/scala/bandit/domain/Video.scala; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
   app/Main.hs                       4 runnable examples and the spec check
   app/Video.hs                      the experiments of the video script (cabal run video)
+  LIQUIDHASKELL.md                  the refinement types LiquidHaskell checks (`just liquid`), and what they trust
 ```
 
 Run:
@@ -284,6 +285,7 @@ To publish them, enable GitHub Pages for the `docs/` folder: the index is
 ```console
 just check            # every checks/<feature>.sh (`just z3` among them), the other Lean packages, the Haskell spec check
 just z3               # the Z3 specification of the contextual bandit, and the language rule
+just liquid           # LiquidHaskell: the refinement types of the Haskell port (nix develop .#liquidhaskell)
 just house-pricing    # fetch data, train, lake build, Rust/Lean parity
 just paper [slug]     # build every paper, or one, to pdf/<slug>.pdf (inside `nix develop`)
 just paper-check      # papers + reference log + STE/pt-BR checks
@@ -291,6 +293,7 @@ just md-quality       # markdownlint, Vale (prose rules) and lychee (links)
 just diagrams         # render the archify diagrams; `just images` captures PNGs
 just graph            # build the graphify network graph; `just render-graph` serves it
 just crypto-strength  # rebuild the crypto heatmap and results
+just invariants       # the rules of AGENTS.md, decided by clingo on Invariants.lp (also in `just check`)
 just loc              # refresh the lines-of-code table in this README (`just loc-check` only checks)
 python3 fat-tails/python/fat_tails.py        # fat-tails results and figures
 python3 tv-audience/python/experiment.py     # TV audience benchmark, results and figures
@@ -316,6 +319,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ├── docs/                    paper-fabric.md, the archify diagrams, the logo
 ├── vendor/archify/          the pinned archify that draws the diagrams
 ├── flake.nix, flake.lock    the paper toolchain, from h0ffmann/picasso's paper lab
+├── Invariants.lp            the standing rules as an answer set program; `just invariants` solves it with clingo
 ├── justfile                 every recipe above
 └── AGENTS.md                the rules for agents (and humans) working here
 ```

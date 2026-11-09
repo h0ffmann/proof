@@ -62,6 +62,7 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
   app/Main.hs                       spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala + simulations
   src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/bandit/domain/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
   app/Video.hs                      the video's experiments; writes papers/contextual-bandits/script/results.md
+  LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
   OceanWaves/Bisection.lean         verified bisection, wavenumber kernel
@@ -87,6 +88,7 @@ cd cycle/lean && lake build       # the same for the cycle package
 
 # Haskell (GHC >= 9.4)
 cd haskell && cabal run examples
+just liquid                       # LiquidHaskell + Z3 on haskell/src (nix develop .#liquidhaskell); SAFE per module
 # or, without cabal:
 cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 ```
@@ -140,6 +142,19 @@ House-pricing rules:
   1.0.0-RC7", "Z3 5.3.3"). Files of the repository may still cite a source by URL where the
   evidence needs it.
 
+## Invariants.lp
+
+`Invariants.lp` states the rules above that a script can decide, as an answer set program for
+clingo 5.8: composable PRs (every `just/*.just` imported, every `checks/*.sh` strict), no other
+repository and no attribution in the commits of a branch, a branch not named by a session, Nix at
+the root with a locked input, complete Lean proofs, Haskell on `base` and `containers`, workflows
+by hand only, no PDF committed. `scripts/invariants.py` reads the tree into facts and solves them;
+`checks/invariants.sh` (`just invariants`, in `just check`) fails on a violation that is not
+waived, and on a waiver that excuses nothing. A `gap` is a rule the tree does not keep yet (a
+toolchain that Nix does not pin, in `flake.nix` or in a `nix/<name>.nix` shell that the flake
+discovers); it prints but does not fail. clingo's own shell is `nix/invariants.nix`. A new rule goes in
+`Invariants.lp`, with a bad case in the self-test of `scripts/invariants.py`.
+
 ## Language (hard rule)
 
 Every file is in English, except a file whose path carries `pt-BR`, which is in Brazilian
@@ -173,10 +188,10 @@ The repository must build and check the same on any machine, from the Nix flake 
 owner, 2026-11-09). `flake.lock` pins nixpkgs, and every tool version is written in one place in
 the repository:
 
-- **z3-scala**: run it inside `nix develop .#scala`. The flake pins the JDK (`jdk25_headless`) and
+- **z3-scala**: run it inside `nix develop .#scala`. `nix/scala.nix` pins the JDK (`jdk25_headless`) and
   Z3 with its Java binding, built from the release tag with a fixed hash, and sets `Z3_HOME`.
-  `z3-scala/build.sbt` holds Scala's version (`scalaVersion`) and Z3's (`z3Version`, which the
-  flake and `z3.sh` read), and `z3-scala/project/build.properties` holds sbt's. The build stops
+  `z3-scala/build.sbt` holds Scala's version (`scalaVersion`) and Z3's (`z3Version`, which
+  `nix/scala.nix` and `z3.sh` read), and `z3-scala/project/build.properties` holds sbt's. The build stops
   without the jar, and every check stops when the Z3 it loads is another version.
 - **z3-scala's dependencies** are Z3's Java binding and Kyo (`kyoVersion` in `build.sbt`, the
   effect system, the owner, 2026-11-09). A new dependency needs the owner's yes in the PR.
@@ -224,6 +239,9 @@ the repository:
    working.
 6. **Haskell stays dependency-light**: `base` and `containers` only, unless agreed.
    Build with `-Wall` and leave no warnings.
+   LiquidHaskell refinements live in `{-@ ... @-}` comments, so they add no dependency;
+   `just liquid` must say `SAFE` for every module it checks. A new `ignore`, `assume` or `lazy`
+   gets a row in `haskell/LIQUIDHASKELL.md` that says why, or the check fails.
 7. **Exact vs float**: Z3 works over the reals and exact rationals, Haskell uses `Double`
    (and `Rational` in `Video.hs`). Don't claim a Z3 statement covers floating-point behaviour.
 

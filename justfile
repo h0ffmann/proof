@@ -17,8 +17,10 @@ graphify := env_var_or_default("GRAPHIFY", "graphify")
 import? 'just/contextual-bandits.just'
 import? 'just/loc.just'
 import? 'just/leo.just'
+import? 'just/liquidhaskell.just'
 import? 'just/port-audit.just'
 import? 'just/triangle-grids.just'
+import? 'just/invariants.just'
 
 # List recipes
 default:

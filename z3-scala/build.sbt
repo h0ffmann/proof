@@ -8,7 +8,7 @@ scalaVersion := "3.9.0"
 name := "z3-scala"
 
 // The one dependency, named here although no resolver can fetch it. z3.sh reads this line to
-// fetch the release, the root flake.nix builds the same version, the build stops when the jar is
+// fetch the release, nix/scala.nix builds the same version, the build stops when the jar is
 // missing from lib/, and Main stops when the jar and its native library report another version.
 val z3Version = "5.3.3"
 val z3Jar = settingKey[File]("Z3's Java binding, put in lib/ by z3.sh")
@@ -21,7 +21,7 @@ Compile / unmanagedJars := {
 
 // Kyo, the effect system: files, processes and the console are Sync and Abort effects, the
 // domains are pure. 1.0.0-RC7 is the latest release on Maven Central (read 2026-11-09); it is
-// compiled for Java 25, the JDK the root flake pins.
+// compiled for Java 25, the JDK that nix/scala.nix pins.
 val kyoVersion = "1.0.0-RC7"
 libraryDependencies += "io.getkyo" %% "kyo-core" % kyoVersion
 

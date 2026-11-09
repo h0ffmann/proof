@@ -68,7 +68,7 @@ camelCase (`argmax_first` is `argmaxFirst`); the statement names did not change.
 "One toolchain" now means a JDK and sbt; `z3-scala/z3.sh` fetches Z3.
 
 Later that day the owner asked for two more changes. The first: "this repository must
-reproducible, with nix at the root (pinning scala, JDK version)". The root `flake.nix` now pins
+reproducible, with nix at the root (pinning scala, JDK version)". The `scala` shell of the root flake (`nix/scala.nix`) now pins
 the JDK (25) and builds Z3 5.3.3 with its Java binding from the release tag. `nix develop .#scala`
 gives both, and sbt's version and Scala's are pinned in `z3-scala/`. The second: "it should use
 DDD approach for folder structure. Use Kyo latest as effect system". The sources are now a shared

@@ -42,7 +42,7 @@ What Z3 cannot do, and how it is bounded:
 
 ## Build and run
 
-Run it inside the root flake's shell, which pins every tool (`AGENTS.md`, "Reproducible builds"):
+Run it inside the root flake's `scala` shell (`nix/scala.nix`), which pins every tool (`AGENTS.md`, "Reproducible builds"):
 
 ```sh
 nix develop .#scala      # JDK 25, sbt, and Z3 with its Java binding (Z3_HOME), from flake.lock's nixpkgs
@@ -50,8 +50,8 @@ nix develop .#scala      # JDK 25, sbt, and Z3 with its Java binding (Z3_HOME), 
 
 | What | Pinned in | Version |
 |---|---|---|
-| JDK | `flake.nix` (`jdk25_headless`) | 25.0.4.1 at the locked nixpkgs |
-| Z3 and its Java binding | `build.sbt` (`z3Version`); `flake.nix` builds that tag with a fixed source hash | 5.3.3 |
+| JDK | `nix/scala.nix` (`jdk25_headless`) | 25.0.4.1 at the locked nixpkgs |
+| Z3 and its Java binding | `build.sbt` (`z3Version`); `nix/scala.nix` builds that tag with a fixed source hash | 5.3.3 |
 | Scala | `build.sbt` (`scalaVersion`) | 3.9.0, the LTS line |
 | Kyo (`kyo-core`) | `build.sbt` (`kyoVersion`), from Maven Central | 1.0.0-RC7, the latest release on 2026-11-09; compiled for Java 25 |
 | sbt | `project/build.properties` (the flake's sbt launcher fetches it) | 2.0.12 |

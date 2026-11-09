@@ -21,19 +21,37 @@ import ContextualBandit
 -- | (alpha, beta) per (context, arm). Missing entries mean the prior Beta(1,1).
 type BetaBelief c = M.Map (c, Arm) (Double, Double)
 
+-- | A Beta count: the prior's 1 plus the rewards seen, so at least 1.
+{-@ type Count = {n:Double | n >= 1} @-}
+
+-- | Not checked as a whole: 'Obs' lets a reward be any 'Double', and a reward outside
+-- [0, 1] takes a count below 1 (then 'sqrt' gets a negative number). The two
+-- helpers below are checked, under the condition that the reward is in [0, 1].
+{-@ ignore betaBernoulli @-}
 betaBernoulli :: Ord c => Int -> RewardModel c (BetaBelief c)
 betaBernoulli k = RewardModel
   { numArms  = k
   , prior    = M.empty
   , update   = \b (Obs c a r) ->
       let (al, be) = M.findWithDefault (1, 1) (c, a) b
-      in M.insert (c, a) (al + r, be + 1 - r) b
+      in M.insert (c, a) (betaUpdate al be r) b
   , estimate = \b c a ->
       let (al, be) = M.findWithDefault (1, 1) (c, a) b
-          n = al + be
-      in Estimate (al / n) (sqrt (al * be / (n * n * (n + 1))))   -- posterior std
+      in betaEstimate al be
   , sample   = \b c a -> let (al, be) = M.findWithDefault (1, 1) (c, a) b in beta al be
   }
+
+-- | A 0/1 reward (or any reward in [0, 1]) keeps both counts at 1 or more.
+{-@ betaUpdate :: Count -> Count -> {r:Double | 0 <= r && r <= 1} -> (Count, Count) @-}
+betaUpdate :: Double -> Double -> Double -> (Double, Double)
+betaUpdate al be r = (al + r, be + 1 - r)
+
+-- | Posterior mean, a probability, and posterior std, not negative.
+{-@ betaEstimate :: Count -> Count -> {e:Estimate | 0 <= mean e && mean e <= 1 && width e >= 0} @-}
+betaEstimate :: Double -> Double -> Estimate
+betaEstimate al be =
+  let n = al + be
+  in Estimate (al / n) (sqrt (al * be / (n * n * (n + 1))))   -- posterior std
 
 ------------------------------------------------------------------------
 -- 2. Bayesian linear regression per arm (LinUCB / LinTS)
@@ -55,6 +73,9 @@ scaleM :: Double -> Mat -> Mat
 scaleM s = map (map (* s))
 
 -- | Sherman-Morrison: (A + x xᵀ)⁻¹ from A⁻¹.
+-- Not checked: denom is at least 1 only when A⁻¹ is positive semi-definite, which a
+-- refinement over lists cannot state.
+{-@ ignore shermanMorrison @-}
 shermanMorrison :: Mat -> Vec -> Mat
 shermanMorrison ainv x =
   let ax = mulMV ainv x
@@ -62,6 +83,9 @@ shermanMorrison ainv x =
   in [[aij - ai * aj / denom | (aij, aj) <- zip row ax] | (row, ai) <- zip ainv ax]
 
 -- | Cholesky factor L with L Lᵀ = M (M symmetric positive definite).
+-- Not checked: LiquidHaskell does not see the length of @[0 .. n - 1]@, so it cannot
+-- bound the indices of (!!), and ls refers to itself lazily.
+{-@ ignore cholesky @-}
 cholesky :: Mat -> Mat
 cholesky m = ls
   where
@@ -75,6 +99,10 @@ cholesky m = ls
 
 -- | Per arm: A⁻¹ and b = Σ r x.
 type LinBelief = [(Mat, Vec)]
+
+-- Not checked: @bs !! a@ needs @a < k@, which 'Obs' and 'estimate' do not say, and
+-- the width needs @x · A⁻¹ x >= 0@ (A⁻¹ positive semi-definite).
+{-@ ignore bayesLinear @-}
 
 -- | @bayesLinear k d phi lambda noise@: @d@-dimensional features @phi c@,
 -- ridge / prior precision @lambda@, observation noise std @noise@ (which
