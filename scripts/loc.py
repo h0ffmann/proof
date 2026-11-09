@@ -1,8 +1,7 @@
-"""Lines of code per language, as badges written into README.md between two markers.
+"""Lines of code in the repository, as one badge written into README.md between two markers.
 
-The badges sit between `<!-- loc:start -->` and `<!-- loc:end -->` in README.md, one per language
-with the most code first, and a last one for the total. They are generated: edit this script, not
-the badges. The mechanism follows h0ffmann/awesome-neurosymbolic-ai (a
+The badge sits between `<!-- loc:start -->` and `<!-- loc:end -->` in README.md and gives the total
+over every language below. It is generated: edit this script, not the badge. The mechanism follows h0ffmann/awesome-neurosymbolic-ai (a
 standard-library Python script fills a marker in the README, and a workflow runs it and commits
 the result).
 
@@ -11,9 +10,9 @@ names a programming language below. A line of code is a line that is not blank a
 comment. Line comments and block comments are recognised per language; a block comment that opens
 after code on the same line leaves that line counted.
 
-    python3 scripts/loc.py           # rewrite the badges in README.md
-    python3 scripts/loc.py --check   # exit code 1 if the badges in README.md are out of date
-    python3 scripts/loc.py --print   # print the badges only
+    python3 scripts/loc.py           # rewrite the badge in README.md
+    python3 scripts/loc.py --check   # exit code 1 if the badge in README.md is out of date
+    python3 scripts/loc.py --print   # print the badge only
 """
 
 from __future__ import annotations
@@ -49,20 +48,6 @@ LANGUAGES: dict[str, tuple[tuple[str, ...], tuple[str, ...], tuple[tuple[str, st
     "TPTP": ((".p",), ("%",), (("/*", "*/"),)),
 }
 
-# Simple Icons slugs for the badges' logos, where one exists
-LOGOS = {
-    "Scala": "scala",
-    "Python": "python",
-    "Haskell": "haskell",
-    "Rust": "rust",
-    "Gleam": "gleam",
-    "Zig": "zig",
-    "Erlang": "erlang",
-    "Shell": "gnubash",
-    "Nix": "nixos",
-    "JavaScript": "javascript",
-    "TeX": "latex",
-}
 
 
 def language_of(path: str) -> str | None:
@@ -122,26 +107,18 @@ def measure() -> dict[str, tuple[int, int]]:
     return totals
 
 
-def badge(label: str, message: str, logo: str | None) -> str:
+def badge(label: str, message: str) -> str:
     """A shields.io static badge in Markdown; `-` and `_` are doubled as shields asks."""
     def esc(t: str) -> str:
         return quote(t.replace("-", "--").replace("_", "__").replace(" ", "_"), safe="_")
     url = f"https://img.shields.io/badge/{esc(label)}-{esc(message)}-{COLOR}?style=flat-square"
-    if logo:
-        url += f"&logo={logo}&logoColor=white"
     return f"![{label}: {message}]({url})"
 
 
 def render(totals: dict[str, tuple[int, int]]) -> list[str]:
-    ranked = sorted(totals.items(), key=lambda kv: (-kv[1][1], kv[0]))
-    all_loc = sum(loc for _, (_, loc) in ranked)
-    all_files = sum(files for _, (files, _) in ranked)
-    lines = [
-        badge(lang, f"{loc:,} lines · {100 * loc / all_loc:.1f}%", LOGOS.get(lang))
-        for lang, (files, loc) in ranked
-    ]
-    lines.append(badge("total", f"{all_loc:,} lines in {all_files} files", None))
-    return lines
+    all_loc = sum(loc for _, loc in totals.values())
+    all_files = sum(files for files, _ in totals.values())
+    return [badge("lines of code", f"{all_loc:,} in {all_files} files")]
 
 
 def splice(readme: str, badges: list[str]) -> str:
@@ -164,15 +141,15 @@ def main(argv: list[str]) -> int:
     new = splice(old, badges)
     if "--check" in argv:
         if new != old:
-            print("README.md: the lines-of-code badges are out of date; run `just loc`")
+            print("README.md: the lines-of-code badge is out of date; run `just loc`")
             return 1
-        print("README.md: the lines-of-code badges are current")
+        print("README.md: the lines-of-code badge is current")
         return 0
     if new != old:
         README.write_text(new, encoding="utf-8")
-        print("README.md: lines-of-code badges updated")
+        print("README.md: lines-of-code badge updated")
     else:
-        print("README.md: lines-of-code badges already current")
+        print("README.md: lines-of-code badge already current")
     return 0
 
 
