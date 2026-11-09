@@ -164,3 +164,7 @@ shell:
 # Remove the paper build outputs.
 clean:
     rm -rf build pdf tools/build
+
+# Screenplay preview: the first 1:30 of a roteiro to build/roteiro-preview/ (skill roteiro-preview)
+sp-preview *args:
+    python3 .claude/skills/roteiro-preview/preview.py {{args}}
