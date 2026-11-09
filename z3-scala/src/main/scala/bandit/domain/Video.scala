@@ -1,4 +1,4 @@
-// The invariants of the video script (papers/contextual-bandits/script/), checked with Z3.
+// The invariants of the video script (contextual-bandits/script/), checked with Z3.
 //
 // The requirements of the owner for the 30-minute video, as statements. Each R is one sentence
 // of the owner, 2026-11-09:

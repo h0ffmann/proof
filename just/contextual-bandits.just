@@ -1,4 +1,4 @@
-# Contextual bandits: the Z3 specification (z3-scala/) and the video script (papers/contextual-bandits/script/).
+# Contextual bandits: the Z3 specification (z3-scala/) and the video script (contextual-bandits/script/).
 
 # Z3 (needs a JDK and sbt; z3-scala/z3.sh fetches Z3's Java binding): the contextual bandit's
 # theorems, its examples, the video script's invariants, the language rule (every file in English
@@ -14,9 +14,9 @@ ruido-ia:
     z3-scala/z3.sh ruido-ia --self-test
     z3-scala/z3.sh ruido-ia
 
-# The video script (papers/contextual-bandits/script/), a paper inside the paper's folder, in its
-# Brazilian Portuguese edition: pdf/contextual-bandits-script-pt-BR.pdf. Run inside `nix develop`.
+# The video script (contextual-bandits/script/), a paper that lives in the bandit's folder and not
+# under papers/, so `_pdf` gets its path relative to papers/. Its Brazilian Portuguese edition: pdf/contextual-bandits-script-pt-BR.pdf. Run inside `nix develop`.
 script:
     mkdir -p build/tex pdf
     printf '%s+%s' "$(git rev-parse --short HEAD)" "$(git rev-list --count HEAD)" > build/.current-revision
-    just _pdf contextual-bandits/script prose-pt-BR contextual-bandits-script-pt-BR
+    just _pdf ../contextual-bandits/script prose-pt-BR contextual-bandits-script-pt-BR
