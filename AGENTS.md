@@ -137,12 +137,21 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 
 ## Rules
 
-1. **No `sorry`, `admit` or new `axiom`** in `house-pricing/lean/`,
-   `ocean-waves/lean/` or `cycle/lean/`. Check with
-   `grep -rnE "sorry|admit|^axiom" house-pricing/lean/HousePricing ocean-waves/lean/OceanWaves cycle/lean/Cycle`.
-   `native_decide` is allowed only in `Examples.lean`. In `z3/`, the counterpart: every
-   statement goes through `proves` or `evaluates` of `refute.py`, and nothing is skipped
-   or marked expected to fail.
+1. **Every Lean proof is complete.** A theorem that Lean accepts must really be proved.
+   Lean has three ways to accept a statement without a proof, and none of them is allowed in
+   any Lean project in this repository (house-pricing, ocean-waves, cycle):
+   - `sorry` and `admit` close any goal and leave a hole in the proof.
+   - `axiom` adds a statement that Lean takes as true without a proof. A wrong axiom lets you
+     prove anything.
+
+   `native_decide` proves a statement by running compiled code, so the proof trusts the
+   compiler and not only Lean's kernel. Use it only in an `Examples.lean` file, for checks on
+   concrete numbers, and never in a file of general theorems.
+
+   Run `scripts/lean-hygiene.sh` (or `just lean-hygiene`) to check. It reads every tracked
+   `.lean` file outside `vendor/`, so a new Lean project needs no change to the script.
+   In `z3/`, the counterpart: every statement goes through `proves` or `evaluates` of
+   `refute.py`, and nothing is skipped or marked expected to fail.
 2. **Z3 first.** A new decision rule or model goes in `z3/bandit.py` (definition plus at
    least a validity statement in `theorems.py`), then in Haskell with the same name. Update the
    mapping table in `README.md`. Lean is not used for the contextual bandit any more

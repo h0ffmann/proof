@@ -75,12 +75,17 @@ render-graph port=port:
 crypto-strength:
     python3 crypto-strength/build.py
 
-# The checks: the Z3 specification (`just z3`), the Lean proofs of the other experiments, and the
-# Haskell examples, whose spec check compares with z3/examples.py and z3/video.py
-check: z3
+# The checks: the Z3 specification (`just z3`), the Lean proofs of the other experiments (and their
+# hygiene), and the Haskell examples, whose spec check compares with z3/examples.py and z3/video.py
+check: z3 lean-hygiene
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+
+# No sorry, admit or axiom in any Lean file; native_decide only in Examples.lean (AGENTS.md rule 1)
+lean-hygiene:
+    scripts/lean-hygiene.sh --self-test
+    scripts/lean-hygiene.sh
 
 # Z3 (needs python3 with z3-solver): the contextual bandit's theorems (z3/theorems.py), its examples
 # (z3/examples.py), the video script's invariants (z3/video.py) and the language rule, every file in
