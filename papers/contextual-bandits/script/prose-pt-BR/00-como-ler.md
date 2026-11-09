@@ -12,7 +12,7 @@ de vídeo (`take-N.M.mp4`) e um corte na edição. Nenhum take depende do anteri
 deste documento. Cada cena tem quatro partes. **Fala** é o texto que a voz lê. **Tela** é o que
 aparece. **Desmos**, quando a cena tem um gráfico que um controle deslizante explica melhor que
 uma animação pronta: a expressão está em `desmos/`, para colar na calculadora gráfica e gravar a
-tela. **Código** é o arquivo que sustenta a cena: tudo o que a fala afirma sobre o método tem uma
+tela. **Código** é o arquivo que sustenta a cena. Tudo o que a fala afirma sobre o método tem uma
 função em Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`) ou um
 teorema em Lean (`lean/ContextualBandit/Video.lean`, as invariantes R1 a R5 dos requisitos do
 autor). Os números citados estão em `results.md`, escrito por `cabal run video`. Python só faz

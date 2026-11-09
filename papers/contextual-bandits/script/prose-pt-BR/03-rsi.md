@@ -50,12 +50,12 @@ vivo.
 **Fala.** Nos sistemas reais, o laço de fora escolhe entre coisas maiores que um ε. Lembrem do π:
 lá o agente escolhia entre duas fórmulas e a recompensa era você. Aqui o agente escolhe entre
 mudanças em si mesmo. O artigo SIA, de 2026, descreve um "Feedback-Agent" que a cada passo decide
-entre editar o *scaffold*, os prompts e as ferramentas, ou atualizar os pesos do modelo, e
-escolhe entre algoritmos como PPO, GRPO e DPO [@bhavsar2026sia]. A recompensa vem de um avaliador
-determinístico. Quando a recompensa estaciona, ele troca de tipo de mudança. Isso é uma escolha
+entre editar o *scaffold*, os prompts e as ferramentas, ou atualizar os pesos do modelo
+[@bhavsar2026sia]. O "Feedback-Agent" também escolhe entre algoritmos como PPO, GRPO e DPO
+[@bhavsar2026sia]. A recompensa vem de um avaliador determinístico. Quando a recompensa estaciona, ele troca de tipo de mudança. Isso é uma escolha
 entre braços com uma recompensa observada só para o braço escolhido: a estrutura de um bandit,
-mesmo quando o artigo não usa a palavra. A Anthropic relata, no mesmo ensaio, laços de
-experimento com objetivo fixo: a aceleração de um código de treino foi de cerca de 3 vezes, em
+mesmo quando o artigo não usa a palavra. A Anthropic relata, no mesmo ensaio, laços de experimento
+com objetivo fixo. Num deles, a aceleração de um código de treino foi de cerca de 3 vezes, em
 maio de 2025, para cerca de 52 vezes, em abril de 2026 [@anthropic2026builds]. E diz que
 "direction-setting was the only meaningful role a human played" num estudo de pesquisa aberta.
 Vamos olhar a estrutura de recompensa com cuidado, porque é nela que a RSI vive ou morre. No SIA,
@@ -102,8 +102,8 @@ ela tenta a resposta longa algumas vezes antes de desistir dela.
 **Fala.** Dois limites. Primeiro: o bandit vê a recompensa de uma rodada e não planeja a próxima.
 Quando a escolha de hoje muda o estado de amanhã, o problema é de aprendizado por reforço
 completo, e o bandit é o caso de um passo. Segundo: a estrutura de recompensa é o ponto mais
-frágil. Se a recompensa for fácil de enganar, o laço aprende a enganá-la. O repositório tem um
-lema que diz o que o modelo deve à regra: incerteza calibrada. Sem isso, o otimismo da UCB vira
+frágil. Se a recompensa for fácil de enganar, o laço aprende a enganar a recompensa. O
+repositório tem um lema que diz o que o modelo deve à regra: incerteza calibrada. Sem isso, o otimismo da UCB vira
 chute.
 
 **Tela.** Um aviso simples: "recompensa de um passo" e "recompensa fácil de enganar", com o lema
@@ -121,9 +121,9 @@ congeladas: sem contexto, 1 sobre K, uma decisão só. E a RSI é esse mesmo la�
 próprio laço. O código de cada frase está no repositório proof, em Lean e Haskell; o Python só
 desenha. Agora os créditos, porque este vídeo também roubou como um artista. O estilo é o de
 3Blue1Brown, de Grant Sanderson. As animações são Manim, a biblioteca dele, mantida pela Manim
-Community [@manim]. O roteiro, o código e as animações foram feitos com o Claude Code, da
-Anthropic: o teste do Manim com o Claude Sonnet 5.5, e o roteiro e o código com o Claude Fable
-5.1, a partir dos meus prompts. A lista completa dos prompts está no repositório, e o custo total
+Community [@manim]. O roteiro, o código e as animações foram feitos com o Claude Code, da Anthropic,
+a partir dos meus prompts. O teste do Manim foi feito com o Claude Sonnet 5.5, e o roteiro e o
+código com o Claude Fable 5.1. A lista completa dos prompts está no repositório, e o custo total
 da produção está na tela. Eu revisei tudo; o que estiver errado é meu. Roubem à vontade;
 creditem.
 

@@ -24,8 +24,8 @@
 
 # Declaração sobre o uso de IA {.unnumbered}
 
-Este roteiro, o código em Lean e em Haskell que o sustenta e este documento foram escritos com o
-Claude Code (Anthropic), pelos modelos Claude Sonnet 5.5 e Claude Fable 5.1, a partir dos prompts
-do autor, listados em `PROMPTS.md` com a hora de cada um. O autor revisou e aprovou o rascunho em
-9 de novembro de 2026. Toda fonte citada foi lida antes de ser citada; `REFERENCES.md`, ao lado
+Este roteiro, o código em Lean e em Haskell que sustenta o roteiro e este documento foram escritos
+com o Claude Code (Anthropic), pelos modelos Claude Sonnet 5.5 e Claude Fable 5.1. Os modelos
+partiram dos prompts do autor, listados em `PROMPTS.md` com a hora de cada um. O autor revisou e
+aprovou o rascunho em 9 de novembro de 2026. Toda fonte citada foi lida antes de ser citada; `REFERENCES.md`, ao lado
 deste documento, diz o que foi conferido em cada uma.

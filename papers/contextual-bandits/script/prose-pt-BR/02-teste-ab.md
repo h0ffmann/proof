@@ -49,7 +49,7 @@ um sabor pior. Esse custo tem nome: arrependimento. É a soma, rodada a rodada, 
 sabor menos a média do sabor escolhido. Tony Jebara, da Netflix, chamou o ciclo "coletar dados
 por meses, treinar, depois testar" de "a massive amount of regret" [@jebara2018artwork]. Para
 medir, eu simulei uma sorveteria: três sabores, uma vitrine com espaço para um, e taxas secretas,
-as do repositório: de manhã, o sabor 1 vende para 12 % dos clientes; de noite, o sabor 2 vende
+as do repositório. De manhã, o sabor 1 vende para 12 % dos clientes; de noite, o sabor 2 vende
 para 15 %. A política não conhece essas taxas; eu conheço porque escrevi a simulação. Com 5.000
 clientes, metade na fase de sorteio, o teste A/B acumula 129 de arrependimento. A ε-gulosa com ε
 igual a 0,1 acumula 76. A UCB com β igual a 2 acumula 20. Mesma sorveteria, mesmo modelo, só a
@@ -127,10 +127,10 @@ só e precisa ser defendida: um preço, uma mudança de marca, algo que vai para
 bandit quando a decisão se repete milhares de vezes por dia e o custo de errar em cada uma é
 pequeno: uma imagem, uma posição, uma frase de abertura. E use os dois quando puder: o bandit por
 dentro, o teste A/B por fora, como a Netflix. Essa combinação é a que a maioria das equipes acaba
-adotando, porque ela fica com a velocidade de um e a defesa do outro. E para fechar o bloco, o
-que está provado sobre tudo isso, em Lean 4 e sem `sorry`: toda regra devolve uma distribuição de
-probabilidade; a ε-gulosa dá a cada braço pelo menos ε sobre K; a gulosa e a UCB escolhem um
-máximo de verdade; a ε-gulosa com ε igual a 1 é o teste A/B; e o lema do otimismo, `ucb_gap`: se
+adotando, porque ela fica com a velocidade de um e a defesa do outro. E para fechar o bloco, cinco
+fatos sobre tudo isso estão provados em Lean 4, sem `sorry`. Toda regra devolve uma distribuição de
+probabilidade. A ε-gulosa dá a cada braço pelo menos ε sobre K. A gulosa e a UCB escolhem um máximo
+de verdade. A ε-gulosa com ε igual a 1 é o teste A/B. E o lema do otimismo, `ucb_gap`: se
 o modelo é calibrado, o braço da UCB perde no máximo 2 β vezes a largura para o melhor. A parte
 probabilística da cota de arrependimento precisa de Mathlib e está aberta. Eu digo isso para
 separar o que este vídeo mostra, a parte determinística e executável, do que ele não mostra.

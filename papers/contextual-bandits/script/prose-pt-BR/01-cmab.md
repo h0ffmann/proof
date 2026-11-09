@@ -84,8 +84,8 @@ com `R(n)`, de Ramanujan.
 
 **Código.** Lean, `lean/ContextualBandit/Video.lean`: `SA`, `step`, e os teoremas `step_exploit`
 (aproveitar não gasta termo), `step_explore_n` (explorar gasta exatamente um),
-`step_explore_reward` (a nota não cai) e `step_reward_bounded` (a nota fica em [0, 1]);
-`leibnizEven_lt_succ`, as somas pares de Leibniz crescem. Haskell, `haskell/src/Video.hs` (os
+`step_explore_reward` (a nota não cai) e `step_reward_bounded` (a nota fica em [0, 1]).
+`leibnizEven_lt_succ`: as somas pares de Leibniz crescem. Haskell, `haskell/src/Video.hs` (os
 mesmos nomes) e `haskell/src/Pi.hs` (`leibnizS`, `digitsCorrect`); a simulação é `singleArmed`
 em `haskell/app/Video.hs`. A tabela de dígitos por termo e a de 20 rodadas estão em
 `results.md`.
@@ -93,7 +93,7 @@ em `haskell/app/Video.hs`. A tabela de dígitos por termo e a de 20 rodadas est�
 ## O nome, letra por letra: de um braço a vários (5:00 a 6:30)
 
 **Fala.** B de bandit. A máquina caça-níquel é o "one-armed bandit", o bandido de um braço só,
-porque ela leva o seu dinheiro. M e A de multi-armed: agora são várias alavancas lado a lado,
+porque ela leva o seu dinheiro. M e A de *multi-armed*: agora são várias alavancas lado a lado,
 cada uma com um prêmio médio que ninguém conhece. Herbert Robbins formulou essa versão em 1952
 [@wikipedia2026mab]. No nosso exemplo entram mais duas alavancas. A de Gauss, o príncipe dos
 matemáticos: o algoritmo de Gauss-Legendre, pela média aritmético-geométrica, dobra os dígitos a
