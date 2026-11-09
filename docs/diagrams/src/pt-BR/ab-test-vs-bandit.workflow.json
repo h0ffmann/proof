@@ -614,7 +614,7 @@
       "dot": "cyan",
       "title": "Igual com ε = 1",
       "items": [
-        "ε-gulosa com ε = 1 é a divisão 1/K (Lean: epsGreedy_one_is_ab_test)",
+        "ε-gulosa com ε = 1 é a divisão 1/K (Z3: epsGreedy_one_is_ab_test)",
         "Dividir e depois lançar = explorar e depois decidir"
       ]
     },

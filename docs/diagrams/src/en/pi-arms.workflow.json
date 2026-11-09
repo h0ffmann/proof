@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "π and you: one arm, then three",
+    "output": "docs/diagrams/en/pi-arms.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "lanes": [
+    {
+      "id": "agent",
+      "label": "Agent"
+    },
+    {
+      "id": "you",
+      "label": "You, the reward"
+    }
+  ],
+  "mainPath": [
+    "pi_belief",
+    "pi_pick",
+    "pi_show",
+    "pi_grade",
+    "pi_update"
+  ],
+  "nodes": [
+    {
+      "id": "pi_belief",
+      "lane": "agent",
+      "col": 0,
+      "type": "database",
+      "label": "Belief",
+      "sublabel": "mean grade per action"
+    },
+    {
+      "id": "pi_pick",
+      "lane": "agent",
+      "col": 1,
+      "type": "backend",
+      "label": "Exploit or explore",
+      "sublabel": "π(N), π(N+1), another lever"
+    },
+    {
+      "id": "pi_show",
+      "lane": "agent",
+      "col": 2,
+      "type": "frontend",
+      "label": "Show π",
+      "sublabel": "one approximation"
+    },
+    {
+      "id": "pi_grade",
+      "lane": "you",
+      "col": 3,
+      "type": "external",
+      "label": "Is it good?",
+      "sublabel": "grade in [0, 1]"
+    },
+    {
+      "id": "pi_update",
+      "lane": "agent",
+      "col": 4,
+      "type": "database",
+      "label": "Update belief",
+      "sublabel": "chosen action only"
+    }
+  ],
+  "edges": [
+    {
+      "id": "p1",
+      "from": "pi_belief",
+      "to": "pi_pick",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p2",
+      "from": "pi_pick",
+      "to": "pi_show"
+    },
+    {
+      "id": "p3",
+      "from": "pi_show",
+      "to": "pi_grade"
+    },
+    {
+      "id": "p4",
+      "from": "pi_grade",
+      "to": "pi_update",
+      "variant": "emphasis"
+    },
+    {
+      "id": "pnext",
+      "from": "pi_update",
+      "to": "pi_belief",
+      "label": "next round",
+      "variant": "dashed",
+      "role": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "One arm: Leibniz (scene 1.3)",
+      "items": [
+        "20 rounds: exploit 9 times (0.14), explore 11 times (0.76)",
+        "Z3: step_exploit, step_explore_n, step_reward_bounded"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Three arms (scene 1.4)",
+      "items": [
+        "Ramanujan 16 pulls, Gauss-Legendre 3, Leibniz 1",
+        "The agent never reads the formula; it hears you"
+      ]
+    }
+  ]
+}

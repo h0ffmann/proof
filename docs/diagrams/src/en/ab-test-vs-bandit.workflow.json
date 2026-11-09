@@ -151,7 +151,7 @@
       "dot": "cyan",
       "title": "Same thing at ε = 1",
       "items": [
-        "ε-greedy with ε = 1 is the 1/K split (Lean: epsGreedy_one_is_ab_test)",
+        "ε-greedy with ε = 1 is the 1/K split (Z3: epsGreedy_one_is_ab_test)",
         "Split, then ship = explore-then-commit"
       ]
     },

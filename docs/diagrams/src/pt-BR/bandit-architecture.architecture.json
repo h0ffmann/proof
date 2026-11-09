@@ -545,7 +545,7 @@
     {
       "id": "spec",
       "type": "security",
-      "label": "Spec em Lean",
+      "label": "Spec em Z3",
       "sublabel": "invariantes provadas",
       "pos": [
         730,
@@ -645,7 +645,7 @@
     },
     {
       "dot": "rose",
-      "title": "Garantias em Lean",
+      "title": "Garantias em Z3",
       "items": [
         "Toda regra devolve uma distribuição válida",
         "Modelo calibrado ⇒ UCB perde no máximo 2β·largura"

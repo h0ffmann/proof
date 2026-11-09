@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "241203b5-7b4d-4927-8e9d-b107b0ae76da",
+  "receiptId": "813c6357-a826-4a0b-9322-dd673ad28319",
   "status": "current",
   "command": "deliver",
   "type": "workflow",
-  "input": "/home/runner/work/dogma/dogma/docs/diagrams/src/pt-BR/ab-test-vs-bandit.workflow.json",
-  "output": "/home/runner/work/dogma/dogma/docs/diagrams/pt-BR/ab-test-vs-bandit.html",
+  "input": "/home/claude/proof/docs/diagrams/src/pt-BR/ab-test-vs-bandit.workflow.json",
+  "output": "/home/claude/proof/docs/diagrams/pt-BR/ab-test-vs-bandit.html",
   "specification": {
-    "sha256": "35124dedba977af2e1713697bddb7cbdee6baa915a2a5dcfc384fc912b4b3732",
-    "bytes": 33689
+    "sha256": "43e3777e1a5835c6ae016eab7cd60dd2cb042c5b8afccdbf8165e0dc0f3d8c39",
+    "bytes": 33687
   },
   "artifact": {
-    "sha256": "437895feac4bb92644bef4851640f384290a171771f90950fdc69895d917d3e0",
-    "bytes": 841700
+    "sha256": "dab759dd29a32a4c6aeec2dbddfaf3d204b7c698d766652378c772de4f66e403",
+    "bytes": 841698
   }
 }

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "receiptId": "d878fe1e-dd4c-4e9b-9b6c-e01606042ec9",
+  "receiptId": "a7cd73e8-24da-4e8f-b449-766b02d2a2ff",
   "status": "current",
   "command": "deliver",
   "type": "sequence",
-  "input": "/home/runner/work/dogma/dogma/docs/diagrams/src/en/bandit-round.sequence.json",
-  "output": "/home/runner/work/dogma/dogma/docs/diagrams/en/bandit-round.html",
+  "input": "/home/claude/proof/docs/diagrams/src/en/bandit-round.sequence.json",
+  "output": "/home/claude/proof/docs/diagrams/en/bandit-round.html",
   "specification": {
     "sha256": "041512b4ababf47d4ccea8d2069e4ce91b51bed1be4505f0401b8fbe468933ed",
     "bytes": 3223

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "55e60c59-32b5-4d1d-b8d8-dca3f2bf3376",
+  "status": "current",
+  "command": "deliver",
+  "type": "timeline",
+  "input": "/home/claude/proof/docs/diagrams/src/en/bandit-timeline.timeline.json",
+  "output": "/home/claude/proof/docs/diagrams/en/bandit-timeline.html",
+  "specification": {
+    "sha256": "e750a7fe5d5c1a96d1e99987581f38fd7b00790def01bdd24571ed514e2dc2ed",
+    "bytes": 2587
+  },
+  "artifact": {
+    "sha256": "12f9cb22779aef296e900d84019524e97752d232f5a5af2c1a1072a73f4aa179",
+    "bytes": 841866
+  }
+}

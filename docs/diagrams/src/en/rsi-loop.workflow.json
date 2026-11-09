@@ -1,0 +1,105 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Recursive self-improvement: a bandit that tunes a bandit",
+    "output": "docs/diagrams/en/rsi-loop.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "lanes": [
+    {
+      "id": "outer",
+      "label": "Outer agent"
+    },
+    {
+      "id": "inner",
+      "label": "Inner agent"
+    }
+  ],
+  "mainPath": [
+    "rsi_pick",
+    "rsi_run",
+    "rsi_gain",
+    "rsi_update"
+  ],
+  "nodes": [
+    {
+      "id": "rsi_pick",
+      "lane": "outer",
+      "col": 0,
+      "type": "backend",
+      "label": "Select ε",
+      "sublabel": "arms 1, 0.5, 0.1, 0.01"
+    },
+    {
+      "id": "rsi_run",
+      "lane": "inner",
+      "col": 1,
+      "type": "backend",
+      "label": "ε-greedy shop",
+      "sublabel": "500 customers"
+    },
+    {
+      "id": "rsi_gain",
+      "lane": "inner",
+      "col": 2,
+      "type": "frontend",
+      "label": "Mean gain",
+      "sublabel": "per customer"
+    },
+    {
+      "id": "rsi_update",
+      "lane": "outer",
+      "col": 3,
+      "type": "database",
+      "label": "Update belief on ε",
+      "sublabel": "no human in the loop"
+    }
+  ],
+  "edges": [
+    {
+      "id": "r1",
+      "from": "rsi_pick",
+      "to": "rsi_run",
+      "variant": "emphasis"
+    },
+    {
+      "id": "r2",
+      "from": "rsi_run",
+      "to": "rsi_gain"
+    },
+    {
+      "id": "r3",
+      "from": "rsi_gain",
+      "to": "rsi_update",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rnext",
+      "from": "rsi_update",
+      "to": "rsi_pick",
+      "label": "next episode",
+      "variant": "dashed",
+      "role": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Result (scene 3.2)",
+      "items": [
+        "200 episodes: ε = 0.5 selected 168 times, gain 0.099",
+        "ε = 0.01 selected 9 times, gain 0.057"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Same rule at both levels",
+      "items": [
+        "Z3: rsi_valid, outer_explores (z3/video.py, R4)",
+        "In real systems the arms are edits to the agent itself"
+      ]
+    }
+  ]
+}
