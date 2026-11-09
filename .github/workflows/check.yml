@@ -1,7 +1,7 @@
 # check: the checks of AGENTS.md, in three jobs. z3: the specification of the contextual bandit
 # (theorems, examples, the video's invariants) and the language rule, `just z3`. haskell: the port
-# builds with -Wall and its spec check matches the Z3 examples. lean: the proofs of the other
-# experiments (ocean-waves, cycle), which still live in Lean.
+# builds with -Wall and its spec check matches the Z3 examples. lean: the hygiene script and the
+# proofs of the other experiments (ocean-waves, cycle), which still live in Lean.
 name: check
 
 # DISABLED (owner, 2026-11-09): the repository is private, so no workflow runs on its own.
@@ -54,6 +54,8 @@ jobs:
         package: [ocean-waves/lean, cycle/lean]
     steps:
       - uses: actions/checkout@v4
+      - name: no sorry, admit or axiom; native_decide only in Examples.lean
+        run: scripts/lean-hygiene.sh
       - uses: leanprover/lean-action@v1
         with:
           lake-package-directory: ${{ matrix.package }}
