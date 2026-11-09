@@ -40,7 +40,8 @@ lean/      Lean 4 package `ContextualBandit` (Lake, core Lean only, no Mathlib)
   ContextualBandit/Theorems.lean    all proofs
   ContextualBandit/Examples.lean    #eval examples (ground truth for the Haskell spec check)
   ContextualBandit/Video.lean       the video script's invariants (papers/contextual-bandits/script/)
-z3/        video.py: the same invariants checked by Z3 (refutation); language.py: the language rule. `just z3`
+z3/        video.py: the same invariants checked by Z3 (refutation); language.py: the language rule;
+           ptc.py: the PTC rules of the video script. `just z3`
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
@@ -157,6 +158,9 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
   `just paper <slug>` builds `pdf/<slug>.pdf` inside `nix develop`. Guide: `docs/paper-fabric.md`.
   The video script is a paper inside the bandit paper's folder, `papers/contextual-bandits/script/`,
   with the same four parts; `just script` builds `pdf/contextual-bandits-script-pt-BR.pdf`.
+  Its prose follows PTC (português técnico controlado), level `leve`: `python3 z3/ptc.py` must give
+  no `FAIL`, and `python3 z3/ptc.py --review` lists the sentences to read for the rules Z3 cannot
+  decide (`z3/README.md`).
 - **Fetch before you cite.** Every `refs.bib` key needs a `verified` or `partial` row in
   `REFERENCES.md`; `just paper-check` fails otherwise. Never cite from memory.
 - Do not commit PDFs. `just paper` builds them; `.github/workflows/pdf.yml` runs only by hand.

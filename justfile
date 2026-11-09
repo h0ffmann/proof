@@ -82,11 +82,14 @@ check:
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 
-# Z3 (needs python3 with z3-solver): the video script's invariants (z3/video.py) and the language
-# rule, every file in English unless its path carries pt-BR (z3/language.py)
+# Z3 (needs python3 with z3-solver): the video script's invariants (z3/video.py), the language
+# rule, every file in English unless its path carries pt-BR (z3/language.py), and the PTC rules of
+# the video script (z3/ptc.py; `python3 z3/ptc.py --review` lists what Z3 cannot decide)
 z3:
     python3 z3/video.py
     python3 z3/language.py
+    python3 z3/ptc.py --self-test
+    python3 z3/ptc.py
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:
