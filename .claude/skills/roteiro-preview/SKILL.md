@@ -1,6 +1,6 @@
 ---
 name: roteiro-preview
-description: Render a short preview video (1:30 by default) of a roteiro, a video script in Markdown with scenes, **Fala.** and **Tela.** paragraphs, such as papers/contextual-bandits/script/prose-pt-BR/. Use when the user asks to preview, render, "ver", "prévia" or time a roteiro or screenplay, or a window of it.
+description: Render a short preview video (1:30 by default) of a roteiro, a video script in Markdown with scenes, **Fala.** and **Tela.** paragraphs, such as contextual-bandits/script/prose-pt-BR/. Use when the user asks to preview, render, "ver", "prévia" or time a roteiro or screenplay, or a window of it.
 ---
 
 # Roteiro preview
@@ -16,7 +16,7 @@ pace and order before the Manim takes and the narration exist, not the final vid
 From the repository root (or `just sp-preview ARGS`; the skill `sp-preview` is the English alias):
 
 ```bash
-python3 .claude/skills/roteiro-preview/preview.py papers/contextual-bandits/script/prose-pt-BR
+python3 .claude/skills/roteiro-preview/preview.py contextual-bandits/script/prose-pt-BR
 ```
 
 Options:

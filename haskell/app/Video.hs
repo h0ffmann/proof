@@ -1,6 +1,6 @@
--- | The experiments of the video script (papers/contextual-bandits/script/), in the
+-- | The experiments of the video script (contextual-bandits/script/), in the
 -- order of the scenes. @cabal run video@ prints the numbers that the script quotes, as
--- Markdown; the output is committed as papers/contextual-bandits/script/results.md. The
+-- Markdown; the output is committed as contextual-bandits/script/results.md. The
 -- Portuguese script quotes these numbers with a decimal comma.
 --
 -- The arithmetic of pi is exact ("Pi"). The simulations use 'Double' and the pure RNG

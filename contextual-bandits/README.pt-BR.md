@@ -80,7 +80,7 @@ diagrama interativo).*
 | Porte em Haskell | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, regras, gerador SplitMix), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, linear bayesiano, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (verificação da spec e simulações), [`app/Video.hs`](../haskell/app/Video.hs) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (o que está provado e o que é confiado), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
-| Roteiro do vídeo | [`papers/contextual-bandits/script/`](../papers/contextual-bandits/script/README.md), os números em [`results.md`](../papers/contextual-bandits/script/results.md), os arquivos do Desmos em [`desmos/`](../papers/contextual-bandits/script/desmos/README.md) |
+| Roteiro do vídeo | [`script/`](script/README.md), os números em [`results.md`](script/results.md), os arquivos do Desmos em [`desmos/`](script/desmos/README.md) |
 | Diagramas | [`docs/diagrams/src/build_candidates.py`](../docs/diagrams/src/build_candidates.py) (fonte, nos dois idiomas), [`docs/diagrams/pt-BR/`](../docs/diagrams/index.html) (HTML), `docs/diagrams/img/pt-BR/` (PNG) |
 | Receitas e verificações | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/contextual-bandits.sh`](../checks/contextual-bandits.sh), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |
 
@@ -195,7 +195,7 @@ verificação confia e o que fica de fora.
 
 O vídeo tem três blocos de 10 minutos: **CMAB**, **teste A/B** e **RSI**. Cada parágrafo tem o
 número da cena do roteiro. Os números vêm de
-[`results.md`](../papers/contextual-bandits/script/results.md), que `cabal run video` escreve. O
+[`results.md`](script/results.md), que `cabal run video` escreve. O
 estilo final do vídeo é o do roteiro (Manim, fundo escuro, azul para a crença, amarelo para a
 escolha, vermelho para o arrependimento); as figuras do archify dão a estrutura.
 
@@ -203,7 +203,7 @@ escolha, vermelho para o arrependimento); as figuras do archify dão a estrutura
 
 As figuras estão em `docs/diagrams/img/pt-BR/<nome>.png` e, interativas, em
 [`docs/diagrams/pt-BR/<nome>.html`](../docs/diagrams/index.html). Os arquivos do Desmos estão em
-[`script/desmos/`](../papers/contextual-bandits/script/desmos/README.md).
+[`script/desmos/`](script/desmos/README.md).
 
 | Cena | Tempo | Figura | Desmos | Código |
 |---|---|---|---|---|
@@ -254,7 +254,7 @@ Austin Kleon, de 2012.
 | 2026 | O bandit aparece no laço de automelhoria dos agentes (bloco 3). |
 
 O roteiro conferiu as fontes de 1952, de 2012, da globo.com e de 2026
-([`REFERENCES.md`](../papers/contextual-bandits/script/REFERENCES.md)). ⚠ Esta nota não abriu de
+([`REFERENCES.md`](script/REFERENCES.md)). ⚠ Esta nota não abriu de
 novo essas fontes. O amigo de 2018 não entra na figura: o roteiro ainda marca o nome e o mês como
 `[a confirmar]`.
 
@@ -401,7 +401,7 @@ específico de *reward hacking*.
 5. Slides de [4]. <https://www.slideshare.net/slideshow/a-multiarmed-bandit-framework-for-recommendations-at-netflix/102629078>
 6. Li, Chu, Langford e Schapire, "A Contextual-Bandit Approach to Personalized News Article Recommendation" (LinUCB), 2010. <https://arxiv.org/abs/1003.0146>
 7. Lattimore e Szepesvári, *Bandit Algorithms*, Cambridge University Press, 2020.
-8. O roteiro do vídeo e o registro das fontes dele: [`papers/contextual-bandits/script/`](../papers/contextual-bandits/script/README.md), [`refs.bib`](../papers/contextual-bandits/script/refs.bib), [`REFERENCES.md`](../papers/contextual-bandits/script/REFERENCES.md).
+8. O roteiro do vídeo e o registro das fontes dele: [`script/`](script/README.md), [`refs.bib`](script/refs.bib), [`REFERENCES.md`](script/REFERENCES.md).
 9. Tiago Motta, post sobre o serviço de bandit da globo.com, 2024-09-28. Chave `motta2024bandit` em [8].
 10. Renan Moreira de Oliveira, "Machine Learning na globo.com", slides, 2018. Chave `oliveira2018globo` em [8].
 11. Anthropic, "When AI builds itself", 2026. Chave `anthropic2026builds` em [8].

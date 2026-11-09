@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render a short preview video (default 1:30) of a roteiro (a video script in Markdown).
 
-The roteiro format is the one of papers/contextual-bandits/script/prose-pt-BR/:
+The roteiro format is the one of contextual-bandits/script/prose-pt-BR/:
 
     # Block title (0:00 a 10:00)
     ## Scene title (0:00 a 1:00)

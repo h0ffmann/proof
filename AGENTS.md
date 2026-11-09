@@ -62,7 +62,7 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
   app/Main.hs                       spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala + simulations
   src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/bandit/domain/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
-  app/Video.hs                      the video's experiments; writes papers/contextual-bandits/script/results.md
+  app/Video.hs                      the video's experiments; writes contextual-bandits/script/results.md
   LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
@@ -164,7 +164,7 @@ above say which English (ASD-STE100 for the notes and the code comments). A Port
 a file is a twin named `<name>.pt-BR.md`, a folder named `pt-BR/`, or a paper's `prose-pt-BR/`.
 `just z3` runs `z3-scala/src/main/scala/language/domain/LanguageRule.scala`, which states the rule as `portuguese(f) <-> marked_pt_br(f)` for
 every tracked text file and asks Z3 for a counterexample; a quoted prompt or a command in a code
-block is not the file's prose. The video script (`papers/contextual-bandits/script/prose-pt-BR/`)
+block is not the file's prose. The video script (`contextual-bandits/script/prose-pt-BR/`)
 is the one Portuguese paper; its English edition is issue #18.
 
 ## CI is disabled (hard rule)
@@ -250,7 +250,7 @@ the repository:
 
 - A paper is `papers/<slug>/` (`metadata.md`, `prose/NN-*.md`, `refs.bib`, `REFERENCES.md`).
   `just paper <slug>` builds `pdf/<slug>.pdf` inside `nix develop`. Guide: `docs/paper-fabric.md`.
-  The video script is a paper inside the bandit paper's folder, `papers/contextual-bandits/script/`,
+  The video script is a paper in the bandit's folder, `contextual-bandits/script/`,
   with the same four parts; `just script` builds `pdf/contextual-bandits-script-pt-BR.pdf`.
   Its prose follows PTC (português técnico controlado), level `leve`: `z3-scala/z3.sh ptc` must give
   no `FAIL`, and `z3-scala/z3.sh ptc --review` lists the sentences to read for the rules Z3 cannot

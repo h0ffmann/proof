@@ -19,7 +19,7 @@ os teoremas das regras de decisão, em `z3-scala/src/main/scala/bandit/domain/Th
 escrito por `cabal run video`. Python só faz
 animação (Manim), em `animation/`. Todos os caminhos são relativos à raiz do repositório
 h0ffmann/proof [@hoffmann2026proof], ou à pasta deste roteiro,
-`papers/contextual-bandits/script/`.
+`contextual-bandits/script/`.
 
 Duração: 30 minutos, em três blocos de 10 minutos: **CMAB** (0:00 a 10:00), **teste A/B** (10:00
 a 20:00) e **RSI** (20:00 a 30:00). A fala tem cerca de 130 palavras por minuto; cada cena traz a

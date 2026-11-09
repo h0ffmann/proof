@@ -9,8 +9,8 @@ This skill only redirects. Read and follow `.claude/skills/roteiro-preview/SKILL
 options, the script format and how to deliver the result.
 
 ```bash
-just sp-preview papers/contextual-bandits/script/prose-pt-BR           # first 1:30
-just sp-preview papers/contextual-bandits/script/prose-pt-BR --start 10:00 --length 0:45
+just sp-preview contextual-bandits/script/prose-pt-BR           # first 1:30
+just sp-preview contextual-bandits/script/prose-pt-BR --start 10:00 --length 0:45
 ```
 
 `just sp-preview ARGS` runs `python3 .claude/skills/roteiro-preview/preview.py ARGS`.

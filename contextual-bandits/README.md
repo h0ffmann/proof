@@ -66,7 +66,7 @@ diagram).*
 | Haskell port | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, rules, SplitMix RNG), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, Bayesian linear, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (spec check and simulations), [`app/Video.hs`](../haskell/app/Video.hs) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (what is proved and trusted), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
-| Video script (pt-BR) | [`papers/contextual-bandits/script/`](../papers/contextual-bandits/script/README.md), its numbers in [`results.md`](../papers/contextual-bandits/script/results.md), its Desmos files in [`desmos/`](../papers/contextual-bandits/script/desmos/README.md) |
+| Video script (pt-BR) | [`script/`](script/README.md), its numbers in [`results.md`](script/results.md), its Desmos files in [`desmos/`](script/desmos/README.md) |
 | Diagrams | [`docs/diagrams/src/build_candidates.py`](../docs/diagrams/src/build_candidates.py) (source, both languages), [`docs/diagrams/en/`](../docs/diagrams/index.html) (HTML), `docs/diagrams/img/en/` (PNG) |
 | Recipes and checks | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/contextual-bandits.sh`](../checks/contextual-bandits.sh), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |
 
@@ -177,7 +177,7 @@ cover.
 
 The video has three blocks of 10 minutes: **CMAB**, **A/B test** and **RSI**. Each heading gives
 its scene in the script. The numbers come from
-[`results.md`](../papers/contextual-bandits/script/results.md), which `cabal run video` writes. The
+[`results.md`](script/results.md), which `cabal run video` writes. The
 final style of the video is the script's (Manim, dark background, blue for the belief, yellow for
 the selection, red for the regret); the archify figures give the structure.
 
@@ -185,7 +185,7 @@ the selection, red for the regret); the archify figures give the structure.
 
 Figures are in `docs/diagrams/img/en/<name>.png` and, interactive, in
 [`docs/diagrams/en/<name>.html`](../docs/diagrams/index.html). Desmos files are in
-[`script/desmos/`](../papers/contextual-bandits/script/desmos/README.md).
+[`script/desmos/`](script/desmos/README.md).
 
 | Scene | Time | Figure | Desmos | Code |
 |---|---|---|---|---|
@@ -235,7 +235,7 @@ Then 4 positive signals for option 1 and 2 negative signals for option 0 come in
 | 2026 | The bandit is in the self-improvement loop of agents (block 3). |
 
 The script checked the sources for 1952, 2012, globo.com and 2026
-([`REFERENCES.md`](../papers/contextual-bandits/script/REFERENCES.md)). This note did not open them
+([`REFERENCES.md`](script/REFERENCES.md)). This note did not open them
 again. The friend of 2018 is not in the figure: the script still marks the name and month
 `[a confirmar]`.
 
@@ -382,7 +382,7 @@ hacking.
 5. Slides of [4]. <https://www.slideshare.net/slideshow/a-multiarmed-bandit-framework-for-recommendations-at-netflix/102629078>
 6. Li, Chu, Langford, Schapire, "A Contextual-Bandit Approach to Personalized News Article Recommendation" (LinUCB), 2010. <https://arxiv.org/abs/1003.0146>
 7. Lattimore and Szepesvári, *Bandit Algorithms*, Cambridge University Press, 2020.
-8. The video script and the record of its sources: [`papers/contextual-bandits/script/`](../papers/contextual-bandits/script/README.md), [`refs.bib`](../papers/contextual-bandits/script/refs.bib), [`REFERENCES.md`](../papers/contextual-bandits/script/REFERENCES.md).
+8. The video script and the record of its sources: [`script/`](script/README.md), [`refs.bib`](script/refs.bib), [`REFERENCES.md`](script/REFERENCES.md).
 9. Tiago Motta, post about the bandit service of globo.com, 2024-09-28. Key `motta2024bandit` in [8].
 10. Renan Moreira de Oliveira, "Machine Learning na globo.com", slides, 2018. Key `oliveira2018globo` in [8].
 11. Anthropic, "When AI builds itself", 2026. Key `anthropic2026builds` in [8].

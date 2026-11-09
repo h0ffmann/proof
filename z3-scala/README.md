@@ -19,7 +19,7 @@ z3-scala/z3.sh <check> [options]    # from the repository root; exit 1 when a st
 | (the definitions) | `bandit/domain/Bandit.scala` | the two layers: K estimates `(mean, width)` as Z3 reals; the rules `greedy`, `ucb(beta)`, `epsGreedy(eps)` built from `argmaxFirst` (ties to the first arm), `point`, `uniform`, `mix`; `valid`, `same` | |
 | `theorems` | `bandit/domain/Theorems.scala` | validity of the three rules, `epsGreedy_prob`, `epsGreedy_explores`, `epsGreedy_one_is_ab_test`, `greedy_is_argmax`, `ucb_is_argmax`, `ucb_zero`, the optimism lemma `ucb_gap` under calibration, `greedy_gap`, `policy_factors` (an uninterpreted estimate function) | 60, for K = 1..5 |
 | `examples` | `bandit/domain/Examples.scala` | the tabular model over exact rationals (`update`, `estimate`, `posterior`, `policy`) and the values the Haskell spec check reproduces | 9 |
-| `video` | `bandit/domain/Video.scala` | the video script's invariants R1 to R5 (`papers/contextual-bandits/script/`): the user as reward, the one-armed agent, explore-then-commit as one rule, RSI as the same rule, the series of pi; and the examples of the spec check | 31 |
+| `video` | `bandit/domain/Video.scala` | the video script's invariants R1 to R5 (`contextual-bandits/script/`): the user as reward, the one-armed agent, explore-then-commit as one rule, RSI as the same rule, the series of pi; and the examples of the spec check | 31 |
 | `language` | `language/domain/LanguageRule.scala` | the language rule of `AGENTS.md`: every tracked text file is in English unless its path carries `pt-BR`, as `portuguese(f) <-> marked_pt_br(f)` | one per file |
 | `ptc`, `ruido-ia` | `ptc/domain/Ptc.scala`, `ptc/domain/NoiseCatalogue.scala` | the PTC rules and the PTC-9 noise catalogue on the video script (below) | one per rule |
 | `chaceon`, `coverage` | `portaudit/` | the audit of chaceon, the Rust port of WAVEWATCH III ([`port-audit/README.md`](../port-audit/README.md)) | 28; a table |
@@ -157,7 +157,7 @@ z3-scala/z3.sh leo 30     # another limit
 
 ## The PTC rules of the video script
 
-The script's prose (`papers/contextual-bandits/script/prose-pt-BR/`) follows Português Técnico
+The script's prose (`contextual-bandits/script/prose-pt-BR/`) follows Português Técnico
 Controlado (PTC, [kayquer/portugues-tecnico-controlado](https://github.com/kayquer/portugues-tecnico-controlado),
 version 1.2.0), level `leve`, for a human reader (`00-como-ler.md`, lines 3 to 6). `ptc/domain/Ptc.scala` takes
 the part of each rule that a program can measure, measures it on every sentence, gives the values
