@@ -5,7 +5,7 @@ author:
   - name: Matheus Hoffmann
     orcid: 0009-0009-1056-7661
 date: "November 2026"
-version: "v0 (draft, not peer reviewed)"
+version: "Preprint v0 (draft, not peer reviewed)"
 keywords:
   - audience forecasting
   - television ratings

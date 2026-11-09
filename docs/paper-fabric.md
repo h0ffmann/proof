@@ -8,6 +8,9 @@ one directory and one command.
 
 1. Copy `papers/contextual-bandits/` to `papers/<slug>/`.
 2. Edit `metadata.md`: title, authors (name, ORCID, affiliation), date, version, abstract, keywords.
+   A paper that is shared before peer review is a preprint, and its version says so:
+   `version: "Preprint v0 (draft, not peer reviewed)"`. The version prints under the title and in
+   the footer of every page.
 3. Write one file for each section: `prose/01-introduction.md`, `prose/02-....md`. Keep
    `prose/99-references.md` last: it places the reference list.
 4. Put each source in `refs.bib`, and log it in `REFERENCES.md` after you fetched it.

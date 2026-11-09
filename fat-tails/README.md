@@ -6,8 +6,8 @@ run on daily S&P 500 closes from 1950 to 30 October 2026, plus the Nasdaq 100
 and Nikkei 225 since 2015. The question: how wrong is a Gaussian risk number
 for the S&P 500 right now?
 
-The paper [`papers/fat-tails`](../papers/fat-tails/metadata.md) tells the same story in full,
-with every figure. A built copy is
+The preprint [`papers/fat-tails`](../papers/fat-tails/metadata.md) tells the same story in full,
+with every figure. It is not peer reviewed. A built copy is
 [`papers/fat-tails/fat-tails.pdf`](../papers/fat-tails/fat-tails.pdf); `just paper fat-tails`
 rebuilds it.
 
