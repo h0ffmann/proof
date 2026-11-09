@@ -40,6 +40,7 @@
 | Folder | Problem | Language | Maturity |
 |---|---|---|---|
 | [`z3/`](z3), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([note](MULTI_ARMED_CONTEXTUAL_BANDIT.md), [paper](papers/contextual-bandits/metadata.md)) | Z3 (Python), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
+| [`port-audit/`](port-audit/README.md) | Audit of [chaceon](https://github.com/h0ffmann/chaceon), the Rust port of WAVEWATCH III: the `f32` division rewrite, Fortran intrinsics, `W3SRCE`'s time step | Z3 (Python) | **Proved**: 28 statements, 5 with an expected counterexample; two show the time step can exceed its limiter |
 | [`house-pricing/`](house-pricing/README.md) | California house prices: seven models compared, gradient boosting replicated exactly in Lean and called from Rust | Rust, Lean 4 | **Proved**: output bounds and a monotone variant proved; Rust/Lean parity checked |
 | [`ocean-waves/`](ocean-waves/README.md) | Physics and numerical kernels of a spectral wave model (WAVEWATCH III, WAM Cycle 4) | Lean 4 | **Proved**: kernels and their theorems; no runnable model port yet |
 | [`cycle/`](cycle/README.md) | Eternal return: "time is a flat circle" as a theorem about a clock ([essay](papers/cycle/metadata.md)) | Lean 4, Markdown | **Draft**: theorem proved, essay is a skeleton |
@@ -280,6 +281,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ```
 .
 ├── z3/, haskell/            contextual bandits: Z3 spec and proofs (and the language rule), Haskell port
+├── port-audit/              Z3 checks of chaceon, the Rust port of WAVEWATCH III
 ├── house-pricing/           Rust trains, Lean replicates and proves; Rust calls Lean through its C ABI
 ├── ocean-waves/             spectral wave model physics and kernels, Lean only
 ├── cycle/                   eternal return: a clock theorem in Lean, for the essay in papers/cycle

@@ -46,6 +46,9 @@ z3/        the specification of the contextual bandit, in Z3 (python3 + z3-solve
   language.py                       the language rule: every file in English unless its path carries pt-BR
   ptc.py                            the PTC rules of the video script (`--review` lists what Z3 cannot decide)
 docs/decisions/0001-z3-over-lean.md  why the contextual bandit left Lean for Z3
+port-audit/  Z3 checks of h0ffmann/chaceon (Rust port of WAVEWATCH III) at a pinned commit. `just port-audit`
+  chaceon.py                        division rewrite, Fortran intrinsics over IEEE f32, W3SRCE's time step
+  README.md                         each check with its chaceon file:line, and what Z3 cannot prove
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor

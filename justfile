@@ -90,7 +90,8 @@ lean-hygiene:
 # Z3 (needs python3 with z3-solver): the contextual bandit's theorems (z3/theorems.py), its examples
 # (z3/examples.py), the video script's invariants (z3/video.py) and the language rule, every file in
 # English unless its path carries pt-BR (z3/language.py), and the PTC rules of the video script (z3/ptc.py;
-# `python3 z3/ptc.py --review` lists what Z3 cannot decide). docs/decisions/0001-z3-over-lean.md says why Z3.
+# `python3 z3/ptc.py --review` lists what Z3 cannot decide), and the audit of chaceon's port (port-audit/).
+# docs/decisions/0001-z3-over-lean.md says why Z3.
 z3:
     python3 z3/theorems.py
     python3 z3/examples.py
@@ -98,6 +99,12 @@ z3:
     python3 z3/language.py
     python3 z3/ptc.py --self-test
     python3 z3/ptc.py
+    python3 port-audit/chaceon.py
+
+# Z3 checks of chaceon, the Rust port of WAVEWATCH III: division rewrite, Fortran intrinsics, W3SRCE's
+# time step. port-audit/README.md lists what Z3 cannot prove there.
+port-audit:
+    python3 port-audit/chaceon.py
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:

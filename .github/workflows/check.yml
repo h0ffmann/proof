@@ -1,6 +1,6 @@
 # check: the checks of AGENTS.md, in three jobs. z3: the specification of the contextual bandit
-# (theorems, examples, the video's invariants) and the language rule, `just z3`. haskell: the port
-# builds with -Wall and its spec check matches the Z3 examples. lean: the hygiene script and the
+# (theorems, examples, the video's invariants), the language rule and the chaceon audit (port-audit/),
+# `just z3`. haskell: the port builds with -Wall and its spec check matches the Z3 examples. lean: the hygiene script and the
 # proofs of the other experiments (ocean-waves, cycle), which still live in Lean.
 name: check
 
