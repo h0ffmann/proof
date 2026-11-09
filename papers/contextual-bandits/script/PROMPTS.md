@@ -12,6 +12,8 @@ English, as the language rule of `AGENTS.md` asks.
 | 2026-11-09 02:41 to 02:58 | Claude Fable 5.1 | `lean/ContextualBandit/Video.lean` (R1 to R5), `haskell/src/Video.hs`, `Pi.hs`, `app/Video.hs`; the Python of the script left, it stays for the animation only; issues #18 to #21 and piabrota/nix-os#172 |
 | 2026-11-09 03:03 to 03:15 | Claude Fable 5.1 | the PR in the `bipr` format; the script became a paper (`metadata.md`, `prose-pt-BR/`, `refs.bib`, `REFERENCES.md`, `just script`); the Haskell rewritten for reading; `z3/video.py` |
 | 2026-11-09 03:24 | Claude Fable 5.1 | the language rule in `AGENTS.md` and `z3/language.py`; every file of this folder except the script itself in English; the Portuguese files renamed with `pt-BR` |
+| 2026-11-09 03:35 | Claude Fable 5.1 | the folder, the files, the Desmos names, the Haskell output and the takes in English (`script/`, `animation/`, `voice/`, `results.md`, `scene-N.M.wav`) |
+| 2026-11-09 03:50 to 03:53 | Claude Fable 5.1 | the contextual bandit left Lean for Z3: `z3/bandit.py`, `theorems.py`, `examples.py`, `video.py` (100 statements), `lean/` deleted, `docs/decisions/0001-z3-over-lean.md`, the manual workflow `check.yml`; an answer on Haskell validators (LiquidHaskell) |
 
 Total cost: `[a confirmar: fill in at the end]`.
 
@@ -199,4 +201,26 @@ add z3 implementation
 
 ```text
 tem varios arquivos em portugues ainda no repositorio, achava que isso era uma invariant no AGENTS.md, faca essa invariant em z3 tb
+```
+
+## 23. 2026-11-09 03:35
+
+```text
+I still see PTBR in some SRC
+```
+
+## 24. 2026-11-09 03:50
+
+```text
+na verdade se possivel queria que todas as invariantes fossem no z3, nao quero mais lean code, pelo menos nao contextual-bandit, faca esse refactor grande geral por favor. Tb no mesmo deve ter um CI sem disparo automatico pra fazer z3 / check / language etc. Quesito de interpretabiliddade, codigo z3 é muito mais human readable (document this decision)
+```
+
+## 25. 2026-11-09 03:53
+
+```text
+existe algum validador de codigo haskell?
+```
+
+```text
+liquidhaskell, agda sei la
 ```

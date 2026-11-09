@@ -78,7 +78,7 @@ digitsTable = do
 ------------------------------------------------------------------------
 -- Scenes 1.3 and 1.4: pi, with the user as the reward
 
--- | The simulated user grades by the distance to pi (Lean: @byDistance@). Pi is the
+-- | The simulated user grades by the distance to pi (Z3: @by_distance@). Pi is the
 -- 60-digit reference of "Pi", as a rational.
 viewer :: User Rational
 viewer = byDistance (read (filter (/= '.') digitsOfPi) % 10 ^ (60 :: Int))
@@ -215,7 +215,7 @@ rsiLoop = do
     | (i, e) <- zip [0 ..] epsilons ]
 
 ------------------------------------------------------------------------
--- The tabular model of Examples.lean, for any context:
+-- The tabular model of z3/examples.py, for any context:
 -- mean = sum / count, width = 1 / (count + 1).
 
 type Tab c = M.Map (c, Arm) (Double, Int)   -- ^ (sum of rewards, count) per (context, arm)

@@ -1,7 +1,7 @@
 cabal-version:      2.4
 name:               contextual-bandit
 version:            0.1.0.0
-synopsis:           Contextual bandit interface, ported from a verified Lean 4 spec
+synopsis:           Contextual bandit interface, ported from a Z3-checked spec (z3/)
 build-type:         Simple
 
 library

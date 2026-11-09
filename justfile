@@ -75,16 +75,19 @@ render-graph port=port:
 crypto-strength:
     python3 crypto-strength/build.py
 
-# Check the Lean proofs (every package) and run the Haskell examples
-check:
-    cd lean && lake build
+# The checks: the Z3 specification (`just z3`), the Lean proofs of the other experiments, and the
+# Haskell examples, whose spec check compares with z3/examples.py and z3/video.py
+check: z3
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 
-# Z3 (needs python3 with z3-solver): the video script's invariants (z3/video.py) and the language
-# rule, every file in English unless its path carries pt-BR (z3/language.py)
+# Z3 (needs python3 with z3-solver): the contextual bandit's theorems (z3/theorems.py), its examples
+# (z3/examples.py), the video script's invariants (z3/video.py) and the language rule, every file in
+# English unless its path carries pt-BR (z3/language.py). docs/decisions/0001-z3-over-lean.md says why Z3.
 z3:
+    python3 z3/theorems.py
+    python3 z3/examples.py
     python3 z3/video.py
     python3 z3/language.py
 
