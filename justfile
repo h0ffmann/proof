@@ -11,6 +11,13 @@ port := "8000"
 # graphify (https://graphify.com), pinned: `pip install graphifyy==0.9.100`. Override with GRAPHIFY=...
 graphify := env_var_or_default("GRAPHIFY", "graphify")
 
+# One file per feature, so that pull requests do not collide here (AGENTS.md, "Composable PRs").
+# A feature keeps its recipes in just/<feature>.just and its checks in checks/<feature>.sh;
+# `just check` and .github/workflows/check.yml find the checks without a list.
+import? 'just/contextual-bandits.just'
+import? 'just/loc.just'
+import? 'just/port-audit.just'
+
 # List recipes
 default:
     @just --list
@@ -75,35 +82,23 @@ render-graph port=port:
 crypto-strength:
     python3 crypto-strength/build.py
 
-# The checks: the Z3 specification (`just z3`), the PTC-9 noise catalogue (`just ruido-ia`), the Lean proofs of the other experiments (and their
-# hygiene), and the Haskell examples, whose spec check compares with z3/examples.py and z3/video.py
-check: z3 ruido-ia lean-hygiene
+# The checks: the Lean proofs of the other experiments (and their hygiene), the Haskell examples,
+# whose spec check compares with z3/examples.py and z3/video.py, and every checks/<feature>.sh
+# (the Z3 specification of the contextual bandit is checks/contextual-bandits.sh, `just z3`)
+check: lean-hygiene
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+    scripts/checks.sh
+
+# Run every checks/<feature>.sh, or only the ones named (`just checks port-audit`)
+checks *names:
+    scripts/checks.sh {{names}}
 
 # No sorry, admit or axiom in any Lean file; native_decide only in Examples.lean (AGENTS.md rule 1)
 lean-hygiene:
     scripts/lean-hygiene.sh --self-test
     scripts/lean-hygiene.sh
-
-# Z3 (needs python3 with z3-solver): the contextual bandit's theorems (z3/theorems.py), its examples
-# (z3/examples.py), the video script's invariants (z3/video.py) and the language rule, every file in
-# English unless its path carries pt-BR (z3/language.py), and the PTC rules of the video script (z3/ptc.py;
-# `python3 z3/ptc.py --review` lists what Z3 cannot decide). docs/decisions/0001-z3-over-lean.md says why Z3.
-z3:
-    python3 z3/theorems.py
-    python3 z3/examples.py
-    python3 z3/video.py
-    python3 z3/language.py
-    python3 z3/ptc.py --self-test
-    python3 z3/ptc.py
-
-# The PTC-9 noise catalogue (references/ruido-ia.md of PTC) on the video script, row by row
-# (z3/ruido_ia.py; `python3 z3/ruido_ia.py --review` lists the rows Z3 cannot decide)
-ruido-ia:
-    python3 z3/ruido_ia.py --self-test
-    python3 z3/ruido_ia.py
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:
@@ -133,13 +128,6 @@ paper *slugs:
       if [ -d "papers/$p/prose-ste" ]; then just _pdf "$p" prose-ste "$p-ste"; fi
       if [ -d "papers/$p/prose-pt-BR" ]; then just _pdf "$p" prose-pt-BR "$p-pt-BR"; fi
     done
-
-# The video script (papers/contextual-bandits/script/), a paper inside the paper's folder, in its
-# Brazilian Portuguese edition: pdf/contextual-bandits-script-pt-BR.pdf. Run inside `nix develop`.
-script:
-    mkdir -p build/tex pdf
-    printf '%s+%s' "$(git rev-parse --short HEAD)" "$(git rev-list --count HEAD)" > build/.current-revision
-    just _pdf contextual-bandits/script prose-pt-BR contextual-bandits-script-pt-BR
 
 # One PDF: papers/<slug>/<dir>/*.md -> build/tex/<out>.tex -> pdf/<out>.pdf (XeLaTeX twice).
 _pdf slug dir out:

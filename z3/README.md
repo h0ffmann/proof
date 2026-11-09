@@ -28,7 +28,7 @@ What Z3 cannot do, and how it is bounded:
 Run it:
 
 ```sh
-just z3          # theorems.py, examples.py, video.py, language.py; every line OK, exit 1 otherwise
+just z3          # theorems, examples, video, language, ptc, ruido_ia (checks/contextual-bandits.sh); exit 1 on FAIL
 ```
 
 It needs `z3-solver` (`pip install z3-solver`, or `python3-z3` from the distribution). The Haskell

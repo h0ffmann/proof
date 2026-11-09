@@ -262,7 +262,7 @@ To publish them, enable GitHub Pages for the `docs/` folder: the index is
 ## Recipes
 
 ```console
-just check            # `just z3`, the other Lean packages, and the Haskell spec check
+just check            # every checks/<feature>.sh (`just z3` among them), the other Lean packages, the Haskell spec check
 just z3               # the Z3 specification of the contextual bandit, and the language rule
 just house-pricing    # fetch data, train, lake build, Rust/Lean parity
 just paper [slug]     # build every paper, or one, to pdf/<slug>.pdf (inside `nix develop`)

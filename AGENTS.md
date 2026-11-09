@@ -66,7 +66,7 @@ ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same tool
 
 ```bash
 # Z3 (python3 with z3-solver): the specification of the contextual bandit, and the language rule
-just z3                           # theorems.py, examples.py, video.py, language.py; every line must say OK
+just z3                           # checks/contextual-bandits.sh: theorems, examples, video, language, ptc, ruido_ia; every line OK
 
 # Lean (toolchain pinned in each package's lean-toolchain; install via elan)
 cd ocean-waves/lean && lake build # must finish with no errors; prints the #eval outputs
@@ -80,7 +80,7 @@ cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/ex
 
 The first block of the Haskell output is **"Spec check against z3/examples.py and
 z3/video.py"**. Every line must say `OK`. `just check` runs all of the above, and the
-manual workflow `check.yml` runs the same in three jobs (z3, haskell, lean).
+manual workflow `check.yml` runs the same in three jobs (checks, haskell, lean).
 
 ```bash
 # House pricing (Rust >= 1.82, Lean toolchain in house-pricing/lean/lean-toolchain)
@@ -102,6 +102,16 @@ House-pricing rules:
 
 - **Never commit directly to `main`.** Every change goes on its own branch and
   lands through a pull request. Do not push to `main`, not even for docs.
+- **Composable PRs.** Every PR branches from `main` and merges into it in any order with no
+  conflict, so nobody has to rebase. No stacked PRs: when one change needs another, put both in one
+  PR. A feature owns its files and does not edit a shared file where another open PR edits it:
+  - recipes go in `just/<feature>.just`; the `justfile` only imports it (one `import?` line);
+  - checks go in `checks/<feature>.sh` (with `checks/<feature>.requirements.txt` for its pip
+    packages); `just check` and `.github/workflows/check.yml` run every one, so no list changes;
+  - in `README.md`, add one block (a table row, a section) at a place no other open PR touches,
+    and keep the details in the feature's own `README.md`.
+
+  Before you open a PR, test-merge it into `main` together with the other open PRs.
 - **Name branches and PRs by the goal.** The PR title and branch name are a short
   statement of the goal (for example `Render bandit diagrams with archify`,
   branch `render-bandit-diagrams`). Never start a PR title, branch name or the
@@ -134,8 +144,9 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 - Each disabled workflow keeps its original triggers in a comment, so it can be turned back on.
 - `diagrams.yml` is manual by design: run it on a PR branch to render the archify diagrams and
   commit them there (it refuses `main`).
-- `check.yml` is manual too (the owner, 2026-11-09): from the Actions tab it runs `just z3`, the
-  Haskell build with `-Wall -Werror` and its spec check, and `lake build` of the other Lean packages.
+- `check.yml` is manual too (the owner, 2026-11-09): from the Actions tab it runs `just checks` (every
+  `checks/<feature>.sh`, among them `just z3`), the Haskell
+  build with `-Wall -Werror` and its spec check, and `lake build` of the other Lean packages.
 
 ## Rules
 

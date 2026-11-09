@@ -1,8 +1,8 @@
-# check: the checks of AGENTS.md, in three jobs. z3: the specification of the contextual bandit
-# (theorems, examples, the video's invariants) and the language rule, `just z3`, and the PTC-9 noise
-# catalogue of the video script, `just ruido-ia`. haskell: the port
-# builds with -Wall and its spec check matches the Z3 examples. lean: the hygiene script and the
-# proofs of the other experiments (ocean-waves, cycle), which still live in Lean.
+# check: the checks of AGENTS.md, in three jobs. checks: every checks/<feature>.sh
+# (scripts/checks.sh), with the pip packages of every checks/<feature>.requirements.txt, so a new
+# check needs no change here. haskell: the port builds with -Wall -Werror and its spec check says OK.
+# lean: the hygiene script and `lake build` of each Lean package; a package that is not in the tree
+# is skipped, so removing one needs no change here either.
 name: check
 
 # DISABLED (owner, 2026-11-09): the repository is private, so no workflow runs on its own.
@@ -18,20 +18,21 @@ permissions:
   contents: read
 
 jobs:
-  z3:
+  checks:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - uses: extractions/setup-just@v2
-      - run: pip install z3-solver
-      - name: the specification holds (theorems, examples, video), and every file is in English
-        run: just z3
-      - name: the video script has no PTC-9 noise (ruido-ia.md, row by row)
-        run: just ruido-ia
+      - name: install the pip packages of every check
+        run: |
+          shopt -s nullglob
+          for r in checks/*.requirements.txt; do pip install -r "$r"; done
+      - name: every checks/<feature>.sh holds
+        run: just checks
 
   haskell:
     runs-on: ubuntu-latest
@@ -41,7 +42,7 @@ jobs:
       - uses: haskell-actions/setup@v2
         with:
           ghc-version: "9.4"
-      - name: the port builds with -Wall and its spec check matches z3/examples.py and z3/video.py
+      - name: the port builds with -Wall -Werror and every line of its spec check says OK
         working-directory: haskell
         run: |
           mkdir -p build
@@ -54,12 +55,14 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        package: [ocean-waves/lean, cycle/lean]
+        package: [lean, ocean-waves/lean, cycle/lean]
     steps:
       - uses: actions/checkout@v4
       - name: no sorry, admit or axiom; native_decide only in Examples.lean
         run: scripts/lean-hygiene.sh
-      - uses: leanprover/lean-action@v1
+      - name: lake build, when the package is in the tree
+        if: hashFiles(format('{0}/lakefile.toml', matrix.package)) != ''
+        uses: leanprover/lean-action@v1
         with:
           lake-package-directory: ${{ matrix.package }}
           use-mathlib-cache: true
