@@ -19,7 +19,7 @@ frase.
 para a outra. Em baixo, os três títulos dos blocos.
 
 **Código.** `haskell/app/Video.hs`, `beliefs`, com a regra de `betaBernoulli` em
-`haskell/src/Models.hs`. A saída em `resultados.pt-BR.md`: a crença atual escolhe a opção 0 (0,67);
+`haskell/src/Models.hs`. A saída em `results.md`: a crença atual escolhe a opção 0 (0,67);
 depois de 4 sinais positivos para a opção 1 e 2 negativos para a 0, a crença nova escolhe a
 opção 1 (0,62). "Mudou de ideia? True". A invariante R1 em Lean: `User`, a recompensa é o input
 do usuário, em [0, 1].
@@ -51,7 +51,7 @@ coisa: o contexto, a escala, a infraestrutura, e agora o alvo do laço.
 hackday da globo.com · 2018 o amigo, e os slides da globo.com · 2024 o post de Tiago Motta · 2026
 RSI. Cada marco entra com a fonte em letra pequena.
 
-**Código.** `codigo/linha_do_tempo.py`, uma cena Manim com os marcos acima, a fazer depois da
+**Código.** `animation/timeline.py`, uma cena Manim com os marcos acima, a fazer depois da
 aprovação deste roteiro. As fontes estão na lista de referências.
 
 ## O método de escolha, no exemplo simples: π e você, um braço só (3:00 a 5:00)
@@ -88,7 +88,7 @@ com `R(n)`, de Ramanujan.
 `leibnizEven_lt_succ`, as somas pares de Leibniz crescem. Haskell, `haskell/src/Video.hs` (os
 mesmos nomes) e `haskell/src/Pi.hs` (`leibnizS`, `digitsCorrect`); a simulação é `singleArmed`
 em `haskell/app/Video.hs`. A tabela de dígitos por termo e a de 20 rodadas estão em
-`resultados.pt-BR.md`.
+`results.md`.
 
 ## O nome, letra por letra: de um braço a vários (5:00 a 6:30)
 
@@ -106,8 +106,9 @@ Gauss-Legendre e Ramanujan empatam em 1,00 depois do primeiro termo; o agente fi
 porque a regra gulosa desempata pelo primeiro máximo. Para separar os dois, a nota teria de ser
 por dígito. C de contextual: antes de puxar, você vê um dado da rodada, por exemplo manhã ou
 noite. A Wikipedia chama isso de "a useful generalization of the multi-armed bandit"
-[@wikipedia2026mab]. No código, cada letra é um tipo: `Alavanca`, `MultiArmed`, `Contextual`.
-Esse é o ambiente, o que paga. A escolha fica em outro arquivo, de propósito. O exemplo de π não
+[@wikipedia2026mab]. No código, cada letra é um tipo: M e A são a lista de braços, `Arm`, e C é o tipo do
+contexto `c` em `RewardModel c b`. Esse é o ambiente, o que paga. A escolha fica em outro
+arquivo, `DecisionRule`, de propósito. O exemplo de π não
 tem contexto, por isso ele é um MAB e não um CMAB. Uma observação sobre o nome: a palavra bandit
 assusta, mas ela só diz que a máquina está contra você. A palavra que importa é contextual. Sem
 contexto, a melhor alavanca é uma só para o mundo inteiro. Com contexto, a melhor alavanca muda a
@@ -141,7 +142,7 @@ que a fronteira compra.
 **Tela.** Duas caixas: "modelo" à esquerda, "regra" à direita, ligadas só por uma seta "(média,
 largura) por sabor". O histórico entra só na caixa da esquerda.
 
-**Desmos.** `desmos/1-5-largura.txt`: a largura `1/(n+1)` e a largura real `1/sqrt(n)` no mesmo
+**Desmos.** `desmos/1-5-width.txt`: a largura `1/(n+1)` e a largura real `1/sqrt(n)` no mesmo
 gráfico, com `n` de 1 a 100. As duas caem; a do Lean é racional, para o `#eval` ser exato.
 
 **Código.** Lean: `lean/ContextualBandit/Interface.lean` (`RewardModel`, `Estimate`,

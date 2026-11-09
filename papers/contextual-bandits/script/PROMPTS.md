@@ -8,9 +8,9 @@ English, as the language rule of `AGENTS.md` asks.
 | Time (UTC) | Model | What it did |
 |---|---|---|
 | 2026-11-09 01:35 | Claude Sonnet 5.5 | installed Manim and rendered `SquareToCircle` (a test) |
-| 2026-11-09 02:15 to 02:30 | Claude Fable 5.1 | researched, wrote the script (today in `prose-pt-BR/`), `voz/`, `desmos/` |
+| 2026-11-09 02:15 to 02:30 | Claude Fable 5.1 | researched, wrote the script (today in `prose-pt-BR/`), `voice/`, `desmos/` |
 | 2026-11-09 02:41 to 02:58 | Claude Fable 5.1 | `lean/ContextualBandit/Video.lean` (R1 to R5), `haskell/src/Video.hs`, `Pi.hs`, `app/Video.hs`; the Python of the script left, it stays for the animation only; issues #18 to #21 and piabrota/nix-os#172 |
-| 2026-11-09 03:03 to 03:15 | Claude Fable 5.1 | the PR in the `bipr` format; the script became a paper (`metadata.md`, `prose-pt-BR/`, `refs.bib`, `REFERENCES.md`, `just roteiro`); the Haskell rewritten for reading; `z3/video.py` |
+| 2026-11-09 03:03 to 03:15 | Claude Fable 5.1 | the PR in the `bipr` format; the script became a paper (`metadata.md`, `prose-pt-BR/`, `refs.bib`, `REFERENCES.md`, `just script`); the Haskell rewritten for reading; `z3/video.py` |
 | 2026-11-09 03:24 | Claude Fable 5.1 | the language rule in `AGENTS.md` and `z3/language.py`; every file of this folder except the script itself in English; the Portuguese files renamed with `pt-BR` |
 
 Total cost: `[a confirmar: fill in at the end]`.

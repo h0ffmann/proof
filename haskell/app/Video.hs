@@ -1,6 +1,7 @@
--- | The experiments of the video script (papers/contextual-bandits/roteiro/), in the
+-- | The experiments of the video script (papers/contextual-bandits/script/), in the
 -- order of the scenes. @cabal run video@ prints the numbers that the script quotes, as
--- Markdown; the output is committed as papers/contextual-bandits/roteiro/resultados.pt-BR.md.
+-- Markdown; the output is committed as papers/contextual-bandits/script/results.md. The
+-- Portuguese script quotes these numbers with a decimal comma.
 --
 -- The arithmetic of pi is exact ("Pi"). The simulations use 'Double' and the pure RNG
 -- of "ContextualBandit", so every run prints the same numbers.
@@ -17,19 +18,19 @@ import Video
 
 main :: IO ()
 main = do
-  putStrLn "# Saídas do código do roteiro\n"
-  putStrLn "Feito por `cabal run video` (haskell/app/Video.hs). Aritmética exata para π; Double para as simulações."
-  section "Cena 1.1 e 3.4: crença atual contra crença nova (`beliefs`)"
+  putStrLn "# Output of the video's code\n"
+  putStrLn "Written by `cabal run video` (haskell/app/Video.hs). Exact arithmetic for pi; Double for the simulations."
+  section "Scenes 1.1 and 3.4: the current belief against the new belief (`beliefs`)"
   beliefs
-  section "Cena 1.3: dígitos certos por termo (`Pi.hs`)"
+  section "Scene 1.3: correct digits per term (`Pi.hs`)"
   digitsTable
-  section "Cena 1.3: um braço, Leibniz: aproveitar π(N) ou explorar π(N+1) (`singleArmed`, 20 rodadas, ε = 0,2)"
+  section "Scene 1.3: one arm, Leibniz: exploit pi(N) or explore pi(N+1) (`singleArmed`, 20 rounds, epsilon = 0.2)"
   singleArmed 20
-  section "Cena 1.4: três braços, Leibniz, Gauss-Legendre, Ramanujan (`multiArmed`, 20 rodadas, ε = 0,2)"
+  section "Scene 1.4: three arms, Leibniz, Gauss-Legendre, Ramanujan (`multiArmed`, 20 rounds, epsilon = 0.2)"
   multiArmed 20
-  section "Cenas 2.3 e 2.4: teste A/B contra as regras de bandit (`abVsBandit`)"
+  section "Scenes 2.3 and 2.4: the A/B test against the bandit rules (`abVsBandit`)"
   abVsBandit
-  section "Cena 3.2: o laço de fora escolhe o ε do laço de dentro (`rsiLoop`, 200 episódios de 500 rodadas)"
+  section "Scene 3.2: the outer loop selects the epsilon of the inner loop (`rsiLoop`, 200 episodes of 500 rounds)"
   rsiLoop
 
 ------------------------------------------------------------------------
@@ -54,11 +55,11 @@ beliefs = do
   let current = [(8, 4), (6, 6)]                              -- short answer, long answer
       new     = [ foldl' observe (8, 4) [0, 0]                 -- two signals against the short one
                 , foldl' observe (6, 6) [1, 1, 1, 1] ]         -- four signals for the long one
-      line label bs = putStrLn (label ++ "  " ++ decimals 2 (map betaMean bs) ++ " -> escolhe " ++ show (pick bs))
+      line label bs = putStrLn (label ++ "  " ++ decimals 2 (map betaMean bs) ++ " -> selects " ++ show (pick bs))
   putStrLn "```text"
-  line "crença atual" current
-  line "crença nova " new
-  putStrLn ("mudou de ideia? " ++ show (pick current /= pick new))
+  line "current belief" current
+  line "new belief    " new
+  putStrLn ("changed its mind? " ++ show (pick current /= pick new))
   putStrLn "```"
 
 ------------------------------------------------------------------------
@@ -66,13 +67,13 @@ beliefs = do
 
 digitsTable :: IO ()
 digitsTable = do
-  table ["termos", "Leibniz", "Gauss-Legendre", "Ramanujan"]
+  table ["terms", "Leibniz", "Gauss-Legendre", "Ramanujan"]
     [ show n : [ show (digitsCorrect (approximation s n)) | s <- [leibnizSeries, gaussLegendreSeries, ramanujanSeries] ]
     | n <- [1 .. 6] ]
   -- 100.000 terms of Leibniz: exact fractions are slow here, and Double has the 5 digits.
   let leibniz100k = 4 * sum [ (-1) ^ k / (2 * fromIntegral k + 1) | k <- [0 .. 99999 :: Int] ] :: Double
       agree = length (takeWhile id (zipWith (==) digitsOfPi (show leibniz100k))) - 1   -- minus the point
-  row ["100.000", show agree, "·", "·"]
+  row ["100,000", show agree, "·", "·"]
 
 ------------------------------------------------------------------------
 -- Scenes 1.3 and 1.4: pi, with the user as the reward
@@ -100,10 +101,10 @@ singleArmed rounds = do
 
       (agentEnd, beliefEnd, chosen) = runRand 3 (times rounds round' (start, belief0, []))
 
-  table ["ação", "vezes", "média da nota do usuário"]
+  table ["action", "times", "mean grade of the user"]
     [ [label, show (count arm chosen), decimal2 (mean (estimate model beliefEnd () arm))]
-    | (arm, label) <- [(0, "aproveitar π(N)"), (1, "explorar π(N+1)")] ]
-  printf "\nπ(N) no fim: N = %d, %d dígitos certos\n" (terms agentEnd) (digitsCorrect (shown agentEnd))
+    | (arm, label) <- [(0, "exploit pi(N)"), (1, "explore pi(N+1)")] ]
+  printf "\npi(N) at the end: N = %d, %d correct digits\n" (terms agentEnd) (digitsCorrect (shown agentEnd))
 
 -- | Scene 1.4, three arms, one term per pull. The first three rounds pull each arm once.
 multiArmed :: Int -> IO ()
@@ -120,7 +121,7 @@ multiArmed rounds = do
 
       (pulledEnd, beliefEnd, chosen) = runRand 3 (times rounds round' (map (const 0) arms, M.empty, []))
 
-  table ["braço", "puxadas", "média da nota do usuário", "dígitos certos no fim"]
+  table ["arm", "pulls", "mean grade of the user", "correct digits at the end"]
     [ [name s, show (count arm chosen), decimal2 (mean (estimate model beliefEnd () arm)), show (digitsCorrect (approximation s n))]
     | (arm, s, n) <- zip3 [0 ..] arms pulledEnd ]
 
@@ -153,10 +154,10 @@ data Contender = Contender
 
 contenders :: Int -> [Contender]
 contenders horizon =
-  [ Contender "teste A/B (T/2, depois commit)"        True  (etc (horizon `div` 2))
-  , Contender "A/B sem contexto (T/2, depois commit)" False (etc (horizon `div` 2))
-  , Contender "eps-gulosa 0,1"                        True  (const (epsGreedy 0.1))
-  , Contender "UCB beta=2"                            True  (const (ucb 2))
+  [ Contender "A/B test (T/2, then commit)"            True  (etc (horizon `div` 2))
+  , Contender "A/B without context (T/2, then commit)" False (etc (horizon `div` 2))
+  , Contender "epsilon-greedy 0.1"                     True  (const (epsGreedy 0.1))
+  , Contender "UCB beta = 2"                           True  (const (ucb 2))
   ]
 
 -- | The regret of one contender over @horizon@ rounds: the sum, round by round, of the
@@ -179,8 +180,8 @@ regret horizon contender seed = runRand (fromIntegral seed) $ do
 abVsBandit :: IO ()
 abVsBandit = do
   let horizon = 5000; seeds = 20
-  printf "T = %d, média de %d sementes, 2 contextos x 3 braços\n\n" horizon seeds
-  table ["política", "arrependimento"]
+  printf "T = %d, mean of %d seeds, 2 contexts x 3 arms\n\n" horizon seeds
+  table ["policy", "regret"]
     [ [label c, decimal1 (average [ regret horizon c seed | seed <- [1 .. seeds] ])] | c <- contenders horizon ]
 
 ------------------------------------------------------------------------
@@ -209,8 +210,8 @@ rsiLoop = do
         gain <- episode (epsilons !! i) clients
         pure (update model belief (Obs () i (gain / fromIntegral clients)), i : history)
       (beliefEnd, chosen) = runRand 2026 (times 200 run (M.empty, []))
-  table ["ε do agente de dentro", "vezes escolhido", "ganho médio por rodada"]
-    [ [ptBR (printf "%g" e), show (count i chosen), decimal3 (mean (estimate model beliefEnd () i))]
+  table ["epsilon of the inner agent", "times selected", "mean gain per round"]
+    [ [printf "%g" e, show (count i chosen), decimal3 (mean (estimate model beliefEnd () i))]
     | (i, e) <- zip [0 ..] epsilons ]
 
 ------------------------------------------------------------------------
@@ -271,15 +272,11 @@ row cells = putStrLn ("| " ++ foldr1 (\c acc -> c ++ " | " ++ acc) cells ++ " |"
 section :: String -> IO ()
 section title = putStrLn ("\n## " ++ title ++ "\n")
 
--- | Numbers as Brazil writes them: a comma before the decimals.
-ptBR :: String -> String
-ptBR = map (\ch -> if ch == '.' then ',' else ch)
-
 decimal1, decimal2, decimal3 :: Double -> String
-decimal1 = ptBR . printf "%.1f"
-decimal2 = ptBR . printf "%.2f"
-decimal3 = ptBR . printf "%.3f"
+decimal1 = printf "%.1f"
+decimal2 = printf "%.2f"
+decimal3 = printf "%.3f"
 
--- | A list of numbers with @n@ decimals, as @[0,67, 0,50]@.
+-- | A list of numbers with @n@ decimals, as @[0.67, 0.50]@.
 decimals :: Int -> [Double] -> String
-decimals n xs = "[" ++ foldr1 (\x acc -> x ++ ", " ++ acc) (map (ptBR . printf "%.*f" n) xs) ++ "]"
+decimals n xs = "[" ++ foldr1 (\x acc -> x ++ ", " ++ acc) (map (printf "%.*f" n) xs) ++ "]"

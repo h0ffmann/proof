@@ -1,5 +1,5 @@
 -- | Three ways to compute pi, exactly. They are the arms of the simple example of the
--- video (papers/contextual-bandits/roteiro/, scenes 1.3 and 1.4).
+-- video (papers/contextual-bandits/script/, scenes 1.3 and 1.4).
 --
 --   * Leibniz (Gottfried Wilhelm Leibniz, 1674). About 10^n terms for n digits.
 --   * Gauss-Legendre (Carl Friedrich Gauss, "the prince of mathematicians", 1799; the

@@ -62,11 +62,11 @@ enquanto a largura daquele sabor ainda é grande, e para quando a largura encolh
 **Tela.** Quatro curvas de arrependimento acumulado subindo; a do teste A/B sobe reta até a
 metade e depois quase para; a da UCB fica embaixo.
 
-**Desmos.** `desmos/2-3-arrependimento.txt`: o arrependimento esperado do teste A/B em forma
+**Desmos.** `desmos/2-3-regret.txt`: o arrependimento esperado do teste A/B em forma
 fechada, `(T/2)·g + 0`, contra o da ε-gulosa, `T·e·g`, com `g` o salto médio e `e` em controle;
 mostra em que ε as duas retas se cruzam.
 
-**Código.** `abVsBandit` em `haskell/app/Video.hs`, média de 20 sementes (`resultados.pt-BR.md`); a
+**Código.** `abVsBandit` em `haskell/app/Video.hs`, média de 20 sementes (`results.md`); a
 sorveteria é `rate` e `shop`, com as taxas de `haskell/app/Main.hs` (`ctr`). A Netflix: a nota do
 repositório, seção 4.1 [@hoffmann2026note], e a palestra de Jebara [@jebara2018artwork].
 
@@ -107,7 +107,7 @@ rodadas.
 **Tela.** Dois gráficos: "alocação fixa, média sem viés" e "alocação que muda, média com viés", e
 a correção por propensão.
 
-**Desmos.** `desmos/2-5-propensao.txt`: a média simples e a média ponderada por `1/p` de uma
+**Desmos.** `desmos/2-5-propensity.txt`: a média simples e a média ponderada por `1/p` de uma
 amostra em que o braço bom foi escolhido com probabilidade `p`; o controle `p` mostra o viés
 aparecer e a correção o desfazer.
 

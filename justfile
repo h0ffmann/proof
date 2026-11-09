@@ -117,12 +117,12 @@ paper *slugs:
       if [ -d "papers/$p/prose-pt-BR" ]; then just _pdf "$p" prose-pt-BR "$p-pt-BR"; fi
     done
 
-# The video script (papers/contextual-bandits/roteiro/), a paper inside the paper's folder, in its
-# Brazilian Portuguese edition: pdf/contextual-bandits-roteiro-pt-BR.pdf. Run inside `nix develop`.
-roteiro:
+# The video script (papers/contextual-bandits/script/), a paper inside the paper's folder, in its
+# Brazilian Portuguese edition: pdf/contextual-bandits-script-pt-BR.pdf. Run inside `nix develop`.
+script:
     mkdir -p build/tex pdf
     printf '%s+%s' "$(git rev-parse --short HEAD)" "$(git rev-list --count HEAD)" > build/.current-revision
-    just _pdf contextual-bandits/roteiro prose-pt-BR contextual-bandits-roteiro-pt-BR
+    just _pdf contextual-bandits/script prose-pt-BR contextual-bandits-script-pt-BR
 
 # One PDF: papers/<slug>/<dir>/*.md -> build/tex/<out>.tex -> pdf/<out>.pdf (XeLaTeX twice).
 _pdf slug dir out:
@@ -137,7 +137,7 @@ _pdf slug dir out:
 
 # Build the papers, then check that every cited reference was fetched and logged (REFERENCES.md)
 # and that each STE text and pt-BR translation keeps its citations, quotations and numbers.
-paper-check: paper roteiro
+paper-check: paper script
     tools/fabric refs-check papers/*/refs.bib papers/*/*/refs.bib
     for p in papers/*/prose-ste; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check "${p%/prose-ste}"; done
     for p in papers/*/prose-pt-BR; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check --translation "${p%/prose-pt-BR}"; done

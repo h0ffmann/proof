@@ -81,8 +81,8 @@ def main(script: Path, reference: Path, out: Path) -> None:
     target_se, _ = se_extractor.get_se(str(reference), converter, vad=False)
 
     for scene, text in speeches(script):
-        raw = out / f"cena-{scene}.base.wav"
-        final = out / f"cena-{scene}.wav"
+        raw = out / f"scene-{scene}.base.wav"
+        final = out / f"scene-{scene}.wav"
         base.tts_to_file(text=text, file_path=str(raw), speaker_wav=[str(reference)], language="pt")
         source_se, _ = se_extractor.get_se(str(raw), converter, vad=False)
         converter.convert(audio_src_path=str(raw), src_se=source_se, tgt_se=target_se,

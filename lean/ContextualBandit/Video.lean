@@ -3,7 +3,7 @@ import ContextualBandit.Theorems
 /-!
 # Invariants of the video script
 
-The requirements of the owner for the 30-minute video (`papers/contextual-bandits/roteiro/`),
+The requirements of the owner for the 30-minute video (`papers/contextual-bandits/script/`),
 as definitions and theorems. Each `R` is one sentence of the owner, 2026-11-09.
 
 * **R1. The reward is the input of the user.** A `User` gives a reward in `[0, 1]` for
