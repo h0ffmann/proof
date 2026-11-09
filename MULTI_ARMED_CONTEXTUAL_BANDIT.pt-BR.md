@@ -13,7 +13,7 @@ created: 2026-11-01T00:13Z
 
 # Bandits contextuais de múltiplos braços
 
-Padrão de escrita: gramatico, nível `smart-note + descritivo`. Versão em inglês: [MULTI_ARMED_CONTEXTUAL_BANDIT.md](MULTI_ARMED_CONTEXTUAL_BANDIT.md). Nota vizinha: [README.md](README.md).
+Padrão de escrita: gramatico, nível `smart-note + descritivo`. Versão em inglês: [MULTI_ARMED_CONTEXTUAL_BANDIT.md](MULTI_ARMED_CONTEXTUAL_BANDIT.md). Nota vizinha: [README.md](README.md). Roteiro do vídeo de 30 minutos: [papers/contextual-bandits/roteiro/ROTEIRO.pt-BR.md](papers/contextual-bandits/roteiro/ROTEIRO.pt-BR.md).
 
 Leitura estimada: ~6 min (1213 palavras, 8 links, 0 blocos de código)
 

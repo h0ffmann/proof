@@ -1,0 +1,10 @@
+p_A = 0.10
+p_B = 0.12
+n = 100
+n_{min}=10, n_{max}=5000, step 10
+e_A = 1.96 sqrt(p_A (1 - p_A) / n)
+e_B = 1.96 sqrt(p_B (1 - p_B) / n)
+(1, p_A)
+(2, p_B)
+polygon((0.9, p_A - e_A), (1.1, p_A - e_A), (1.1, p_A + e_A), (0.9, p_A + e_A))
+polygon((1.9, p_B - e_B), (2.1, p_B - e_B), (2.1, p_B + e_B), (1.9, p_B + e_B))

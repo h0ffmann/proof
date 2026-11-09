@@ -1,0 +1,9 @@
+p = 0.5
+p_{min}=0.05, p_{max}=0.95, step 0.01
+m_{bom} = 0.15
+m_{ruim} = 0.05
+simples = p m_{bom} + (1 - p) m_{ruim}
+ponderada = (p m_{bom} / p + (1 - p) m_{ruim} / (1 - p)) / 2
+(1, simples)
+(2, ponderada)
+y = (m_{bom} + m_{ruim}) / 2
