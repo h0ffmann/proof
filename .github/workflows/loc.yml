@@ -1,4 +1,4 @@
-# loc: count the lines of code per language (top 5) with scripts/loc.py, write the table between
+# loc: count the lines of code per language with scripts/loc.py, write the badges between
 # the loc markers in README.md and commit it when it changed. The mechanism of the Metrics workflow
 # of h0ffmann/awesome-neurosymbolic-ai: a standard-library Python script fills a README marker and
 # the workflow commits the result as github-actions[bot].
@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   readme:
-    name: Refresh the lines-of-code table in README
+    name: Refresh the lines-of-code badges in README
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Count lines of code and write the README table
+      - name: Count lines of code and write the README badges
         run: python scripts/loc.py
 
       - name: Commit if changed
@@ -41,6 +41,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "README.md already up to date."
           else
-            git commit -m "Refresh the lines-of-code table in README"
+            git commit -m "Refresh the lines-of-code badges in README"
             git push
           fi
