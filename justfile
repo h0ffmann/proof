@@ -82,6 +82,10 @@ check:
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 
+# The video script's invariants checked by Z3 (z3/video.py; needs python3 with z3-solver)
+z3:
+    python3 z3/video.py
+
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:
     house-pricing/data/fetch.sh
@@ -111,6 +115,13 @@ paper *slugs:
       if [ -d "papers/$p/prose-pt-BR" ]; then just _pdf "$p" prose-pt-BR "$p-pt-BR"; fi
     done
 
+# The video script (papers/contextual-bandits/roteiro/), a paper inside the paper's folder:
+# pdf/contextual-bandits-roteiro.pdf. Run inside `nix develop`.
+roteiro:
+    mkdir -p build/tex pdf
+    printf '%s+%s' "$(git rev-parse --short HEAD)" "$(git rev-list --count HEAD)" > build/.current-revision
+    just _pdf contextual-bandits/roteiro prose contextual-bandits-roteiro
+
 # One PDF: papers/<slug>/<dir>/*.md -> build/tex/<out>.tex -> pdf/<out>.pdf (XeLaTeX twice).
 _pdf slug dir out:
     pandoc {{pandoc_opts}} --bibliography papers/{{slug}}/refs.bib -o build/tex/{{out}}.tex \
@@ -124,8 +135,8 @@ _pdf slug dir out:
 
 # Build the papers, then check that every cited reference was fetched and logged (REFERENCES.md)
 # and that each STE text and pt-BR translation keeps its citations, quotations and numbers.
-paper-check: paper
-    tools/fabric refs-check papers/*/refs.bib
+paper-check: paper roteiro
+    tools/fabric refs-check papers/*/refs.bib papers/*/*/refs.bib
     for p in papers/*/prose-ste; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check "${p%/prose-ste}"; done
     for p in papers/*/prose-pt-BR; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check --translation "${p%/prose-pt-BR}"; done
 
