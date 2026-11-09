@@ -6,8 +6,9 @@ modelo que respondeu está na segunda coluna. O custo total entra aqui no fim da
 | Hora (UTC) | Modelo | O que fez |
 |---|---|---|
 | 2026-11-09 01:35 | Claude Sonnet 5.5 | instalou o Manim e renderizou `SquareToCircle` (teste) |
-| 2026-11-09 02:15 a 02:30 | Claude Fable 5.1 | pesquisou, escreveu `ROTEIRO.pt-BR.md`, `voz/`, `desmos/` |
+| 2026-11-09 02:15 a 02:30 | Claude Fable 5.1 | pesquisou, escreveu o roteiro (hoje em `prose/`), `voz/`, `desmos/` |
 | 2026-11-09 02:41 a 02:58 | Claude Fable 5.1 | `lean/ContextualBandit/Video.lean` (R1 a R5), `haskell/src/Video.hs`, `Pi.hs`, `app/Video.hs`; o Python do roteiro saiu, fica só para animação; issues #18 a #21 e piabrota/nix-os#172 |
+| 2026-11-09 03:03 a 03:15 | Claude Fable 5.1 | o PR no padrão `bipr`; o roteiro virou paper (`metadata.md`, `prose/`, `refs.bib`, `REFERENCES.md`, `just roteiro`); o Haskell reescrito para ler; `z3/video.py` |
 
 Custo total: `[a confirmar: preencher no fim]`.
 
@@ -153,4 +154,40 @@ symbolic invariant
 ```text
 create issue to add my own record on mac about the claude project behind CMAB conscruction without Claude Code CLI
 create another issue to index this youtube final video in piabrota/nix-os website to be exposed in cmab.piabrota.art. This cite must index the h0ffmann/proof repository (SRC) (create issue in piabrota/nix-os as well), have a explanation of 10 minutes about CMAB and the video
+```
+
+## 18. 2026-11-09 03:03
+
+```text
+use piabrota gramatico bipr skill
+```
+
+```text
+por this PR
+```
+
+## 19. 2026-11-09 03:07
+
+```text
+renderize o MD como paper, com paper quality do h0ffmann/proof (pandoc)
+```
+
+```text
+md do roteiro
+```
+
+## 20. 2026-11-09 03:12 a 03:13
+
+```text
+the haskell code in the PR is horrivel, impossivel to read. Improve it. Write like a Sr. Haskell dev (Ponytail audit)
+```
+
+```text
+This equations should be easy to read, ergonomic
+```
+
+## 21. 2026-11-09 03:15
+
+```text
+add z3 implementation
 ```

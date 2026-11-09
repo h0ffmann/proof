@@ -1,12 +1,13 @@
-"""Narra o ROTEIRO.pt-BR.md: XTTS v2 diz as palavras em pt-BR; o OpenVoice troca o timbre.
+"""Narra o roteiro (os arquivos de ../prose/): XTTS v2 diz as palavras em pt-BR; o OpenVoice troca o timbre.
 
 Uso:
-    python3 narrar.py ../ROTEIRO.pt-BR.md referencia.wav saida/
+    python3 narrar.py ../prose referencia.wav saida/
+    python3 narrar.py ../prose              # só conta as palavras de cada fala
 
 Para cada cena, o script lê o parágrafo que começa com "**Fala.**", sintetiza com o
 XTTS v2 (`language="pt"`, com a própria referência como `speaker_wav`) e passa o áudio
 pelo conversor de timbre do OpenVoice V2 (`ToneColorConverter`). O OpenVoice V2 não tem
-base em português; por isso a base vem do XTTS (ver ROTEIRO, seção 0).
+base em português; por isso a base vem do XTTS (ver o roteiro, seção "Voz").
 
 Checkpoints: `checkpoints_v2/converter/{config.json,checkpoint.pth}` do OpenVoice V2.
 Este arquivo não foi executado no ambiente em que foi escrito (sem GPU, modelos de GB).
@@ -19,20 +20,46 @@ import sys
 from pathlib import Path
 
 FALA = re.compile(r"^\*\*Fala\.\*\*\s*(.+)$")
-CENA = re.compile(r"^### Cena (\d+\.\d+)\.")
+BLOCO = re.compile(r"^# (?!.*\{\.unnumbered\})")   # um bloco numerado do roteiro (CMAB, A/B, RSI)
+CENA = re.compile(r"^## ")                           # uma cena dentro do bloco
+
+
+def arquivos(roteiro: Path) -> list[Path]:
+    """Os arquivos do roteiro: a pasta prose/ em ordem, ou um arquivo só."""
+    return sorted(roteiro.glob("*.md")) if roteiro.is_dir() else [roteiro]
 
 
 def falas(roteiro: Path) -> list[tuple[str, str]]:
-    """[(número da cena, texto da fala)] na ordem do arquivo."""
+    """[(número da cena, "N.M"), texto da fala)] na ordem do roteiro.
+
+    O pandoc numera as seções; aqui a numeração é a mesma: o primeiro bloco numerado é 1,
+    a primeira cena dele é 1.1. Uma fala pode ocupar mais de uma linha no arquivo.
+    """
     out: list[tuple[str, str]] = []
-    cena = "0"
-    for linha in roteiro.read_text(encoding="utf-8").splitlines():
-        if m := CENA.match(linha):
-            cena = m.group(1)
-        elif m := FALA.match(linha):
-            texto = re.sub(r"\[a confirmar:[^\]]*\]", "", m.group(1))  # não se lê o marcador
+    bloco = cena = 0
+    atual: list[str] | None = None
+
+    def fecha() -> None:
+        nonlocal atual
+        if atual is not None:
+            texto = re.sub(r"\[a confirmar:[^\]]*\]", "", " ".join(atual))  # não se lê o marcador
             texto = texto.replace("⚠", "").replace("*", "")
-            out.append((cena, " ".join(texto.split())))
+            out.append((f"{bloco}.{cena}", " ".join(texto.split())))
+            atual = None
+
+    for arquivo in arquivos(roteiro):
+        for linha in arquivo.read_text(encoding="utf-8").splitlines():
+            if not linha.strip():
+                fecha()
+            elif BLOCO.match(linha):
+                fecha(); bloco += 1; cena = 0
+            elif CENA.match(linha):
+                fecha(); cena += 1
+            elif m := FALA.match(linha):
+                atual = [m.group(1)]
+            elif atual is not None:
+                atual.append(linha)
+        fecha()
     return out
 
 
@@ -61,10 +88,13 @@ def main(roteiro: Path, referencia: Path, saida: Path) -> None:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2 and sys.argv[1].endswith(".md"):
+    if len(sys.argv) == 2:
+        total = 0
         for cena, texto in falas(Path(sys.argv[1])):
             print(f"{cena}: {len(texto.split())} palavras")
+            total += len(texto.split())
+        print(f"total: {total} palavras, cerca de {total / 130:.0f} min a 130 palavras/min")
         sys.exit(0)
     if len(sys.argv) != 4:
-        sys.exit("uso: narrar.py ROTEIRO.pt-BR.md referencia.wav saida/")
+        sys.exit("uso: narrar.py ../prose referencia.wav saida/")
     main(Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]))

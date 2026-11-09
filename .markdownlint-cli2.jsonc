@@ -20,6 +20,8 @@
   "ignores": [
     "vendor/**", "LICENSES/**", "build/**", "tools/build/**", "lean/.lake/**", "haskell/dist-newstyle/**",
     // pandoc sources: their syntax is pandoc's, and ste-check is their check.
-    "papers/*/prose*/**", "papers/*/metadata.md"
+    "papers/*/prose*/**", "papers/*/metadata.md",
+    // the video script is a paper inside a paper's folder (papers/contextual-bandits/roteiro/)
+    "papers/*/*/prose*/**", "papers/*/*/metadata.md"
   ]
 }

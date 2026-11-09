@@ -1,6 +1,6 @@
 # Multi-armed contextual bandits
 
-Writing standard: ASD-STE100 (Simplified Technical English). Portuguese version: [MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md](MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md). Script of the 30-minute video, in Portuguese: [papers/contextual-bandits/roteiro/ROTEIRO.pt-BR.md](papers/contextual-bandits/roteiro/ROTEIRO.pt-BR.md).
+Writing standard: ASD-STE100 (Simplified Technical English). Portuguese version: [MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md](MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md). Script of the 30-minute video, in Portuguese: [papers/contextual-bandits/roteiro/](papers/contextual-bandits/roteiro/README.md).
 
 Estimated reading time: ~6 min (1133 words, 7 links, 0 code blocks)
 
