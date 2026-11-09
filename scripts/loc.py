@@ -1,0 +1,162 @@
+"""Lines of code per language, top 5, written into README.md between two markers.
+
+The table sits between `<!-- loc:start -->` and `<!-- loc:end -->` in README.md and is generated:
+edit this script, not the table. The mechanism follows h0ffmann/awesome-neurosymbolic-ai (a
+standard-library Python script fills a marker in the README, and a workflow runs it and commits
+the result).
+
+What counts: every file tracked by git, outside `vendor/` (other people's code), whose extension
+names a programming language below. A line of code is a line that is not blank and not only a
+comment. Line comments and block comments are recognised per language; a block comment that opens
+after code on the same line leaves that line counted.
+
+    python3 scripts/loc.py           # rewrite the table in README.md
+    python3 scripts/loc.py --check   # exit code 1 if the table in README.md is out of date
+    python3 scripts/loc.py --print   # print the table only
+"""
+
+from __future__ import annotations
+
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+README = ROOT / "README.md"
+START = "<!-- loc:start -->"
+END = "<!-- loc:end -->"
+TOP = 5
+SKIP_DIRS = ("vendor/",)
+
+# language: (extensions or file names, line comment prefixes, block comment (open, close) pairs)
+LANGUAGES: dict[str, tuple[tuple[str, ...], tuple[str, ...], tuple[tuple[str, str], ...]]] = {
+    "Python": ((".py",), ("#",), ()),
+    "Lean 4": ((".lean",), ("--",), (("/-", "-/"),)),
+    "Haskell": ((".hs",), ("--",), (("{-", "-}"),)),
+    "Rust": ((".rs",), ("//",), (("/*", "*/"),)),
+    "Gleam": ((".gleam",), ("//",), ()),
+    "Zig": ((".zig",), ("//",), ()),
+    "Erlang": ((".erl",), ("%",), ()),
+    "Shell": ((".sh",), ("#",), ()),
+    "Nix": ((".nix",), ("#",), (("/*", "*/"),)),
+    "JavaScript": ((".js", ".mjs"), ("//",), (("/*", "*/"),)),
+    "TeX": ((".tex",), ("%",), ()),
+    "just": (("justfile",), ("#",), ()),
+}
+
+
+def language_of(path: str) -> str | None:
+    name = path.rsplit("/", 1)[-1]
+    for lang, (exts, _, _) in LANGUAGES.items():
+        if name in exts or any(name.endswith(e) for e in exts if e.startswith(".")):
+            return lang
+    return None
+
+
+def count_code(text: str, line: tuple[str, ...], blocks: tuple[tuple[str, str], ...]) -> int:
+    """Lines that are not blank and not only a comment."""
+    n = 0
+    close: str | None = None  # the closing token of the block comment we are in, if any
+    for raw in text.splitlines():
+        s = raw.strip()
+        code = False
+        while s:
+            if close is not None:
+                i = s.find(close)
+                if i < 0:
+                    s = ""
+                    break
+                s = s[i + len(close):].strip()
+                close = None
+                continue
+            if any(s.startswith(p) for p in line):
+                break
+            opened = next(((o, c) for o, c in blocks if s.startswith(o)), None)
+            if opened is not None:
+                close = opened[1]
+                s = s[len(opened[0]):]
+                continue
+            code = True  # code first; a comment later on the line does not matter
+            break
+        n += code
+    return n
+
+
+def tracked_files() -> list[str]:
+    out = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True)
+    return [p for p in out.stdout.decode().split("\0") if p and not p.startswith(SKIP_DIRS)]
+
+
+def measure() -> dict[str, tuple[int, int]]:
+    """language -> (files, lines of code)."""
+    totals: dict[str, tuple[int, int]] = {}
+    for path in tracked_files():
+        lang = language_of(path)
+        if lang is None:
+            continue
+        _, line, blocks = LANGUAGES[lang]
+        text = (ROOT / path).read_text(encoding="utf-8", errors="replace")
+        files, loc = totals.get(lang, (0, 0))
+        totals[lang] = (files + 1, loc + count_code(text, line, blocks))
+    return totals
+
+
+def render(totals: dict[str, tuple[int, int]]) -> list[str]:
+    ranked = sorted(totals.items(), key=lambda kv: (-kv[1][1], kv[0]))
+    top = ranked[:TOP]
+    rest = ranked[TOP:]
+    all_loc = sum(loc for _, (_, loc) in ranked)
+    lines = [
+        "| # | Language | Files | Lines of code | Share |",
+        "|--:|---|--:|--:|--:|",
+    ]
+    for i, (lang, (files, loc)) in enumerate(top, 1):
+        lines.append(f"| {i} | {lang} | {files} | {loc:,} | {100 * loc / all_loc:.1f}% |")
+    others = ""
+    if rest:
+        names = ", ".join(lang for lang, _ in rest)
+        rest_loc = sum(loc for _, (_, loc) in rest)
+        others = f"; the other {len(rest)} languages ({names}) add {rest_loc:,}"
+    lines.append("")
+    lines.append(
+        f"A line of code is a line that is not blank and not only a comment, in a file tracked by "
+        f"git, with `vendor/` left out. {all_loc:,} lines in all{others}. Generated by `just loc` "
+        f"([`scripts/loc.py`](scripts/loc.py)); do not edit the table by hand."
+    )
+    return lines
+
+
+def splice(readme: str, table: list[str]) -> str:
+    lines = readme.splitlines()
+    try:
+        a, b = lines.index(START), lines.index(END)
+    except ValueError:
+        sys.exit(f"README.md needs the markers {START} and {END}, on lines of their own")
+    if b < a:
+        sys.exit(f"{END} comes before {START} in README.md")
+    return "\n".join(lines[: a + 1] + table + lines[b:]) + "\n"
+
+
+def main(argv: list[str]) -> int:
+    table = render(measure())
+    if "--print" in argv:
+        print("\n".join(table))
+        return 0
+    old = README.read_text(encoding="utf-8")
+    new = splice(old, table)
+    if "--check" in argv:
+        if new != old:
+            print("README.md: the lines-of-code table is out of date; run `just loc`")
+            return 1
+        print("README.md: the lines-of-code table is current")
+        return 0
+    if new != old:
+        README.write_text(new, encoding="utf-8")
+        print("README.md: lines-of-code table updated")
+    else:
+        print("README.md: lines-of-code table already current")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

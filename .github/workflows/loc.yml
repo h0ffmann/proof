@@ -1,0 +1,46 @@
+# loc: count the lines of code per language (top 5) with scripts/loc.py, write the table between
+# the loc markers in README.md and commit it when it changed. The mechanism of the Metrics workflow
+# of h0ffmann/awesome-neurosymbolic-ai: a standard-library Python script fills a README marker and
+# the workflow commits the result as github-actions[bot].
+name: loc
+
+# DISABLED (owner, 2026-11-01): the repository is private, so no workflow runs on its own.
+# Only a manual run from the Actions tab starts it. To turn it back on, restore:
+#   on:
+#     schedule:
+#       - cron: "43 5 * * 1"
+#     push:
+#       branches: [main]
+#     workflow_dispatch:
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  readme:
+    name: Refresh the lines-of-code table in README
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Count lines of code and write the README table
+        run: python scripts/loc.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if git diff --cached --quiet; then
+            echo "README.md already up to date."
+          else
+            git commit -m "Refresh the lines-of-code table in README"
+            git push
+          fi
