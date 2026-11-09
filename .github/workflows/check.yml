@@ -1,0 +1,68 @@
+# check: the checks of AGENTS.md, in three jobs. checks: every checks/<feature>.sh
+# (scripts/checks.sh), with the pip packages of every checks/<feature>.requirements.txt, so a new
+# check needs no change here. haskell: the port builds with -Wall -Werror and its spec check says OK.
+# lean: the hygiene script and `lake build` of each Lean package; a package that is not in the tree
+# is skipped, so removing one needs no change here either.
+name: check
+
+# DISABLED (owner, 2026-11-09): the repository is private, so no workflow runs on its own.
+# Only a manual run from the Actions tab starts it. To turn it back on, restore:
+#   on:
+#     pull_request:
+#     push:
+#       branches: [main]
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: extractions/setup-just@v2
+      - name: install the pip packages of every check
+        run: |
+          shopt -s nullglob
+          for r in checks/*.requirements.txt; do pip install -r "$r"; done
+      - name: every checks/<feature>.sh holds
+        run: just checks
+
+  haskell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: "9.4"
+      - name: the port builds with -Wall -Werror and every line of its spec check says OK
+        working-directory: haskell
+        run: |
+          mkdir -p build
+          ghc -O2 -Wall -Werror -isrc -outputdir build -o build/examples app/Main.hs
+          ./build/examples | tee run.log
+          ! grep -q FAIL run.log
+
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        package: [lean, ocean-waves/lean, cycle/lean]
+    steps:
+      - uses: actions/checkout@v4
+      - name: no sorry, admit or axiom; native_decide only in Examples.lean
+        run: scripts/lean-hygiene.sh
+      - name: lake build, when the package is in the tree
+        if: hashFiles(format('{0}/lakefile.toml', matrix.package)) != ''
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: ${{ matrix.package }}
+          use-mathlib-cache: true

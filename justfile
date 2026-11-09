@@ -11,6 +11,13 @@ port := "8000"
 # graphify (https://graphify.com), pinned: `pip install graphifyy==0.9.100`. Override with GRAPHIFY=...
 graphify := env_var_or_default("GRAPHIFY", "graphify")
 
+# One file per feature, so that pull requests do not collide here (AGENTS.md, "Composable PRs").
+# A feature keeps its recipes in just/<feature>.just and its checks in checks/<feature>.sh;
+# `just check` and .github/workflows/check.yml find the checks without a list.
+import? 'just/contextual-bandits.just'
+import? 'just/loc.just'
+import? 'just/port-audit.just'
+
 # List recipes
 default:
     @just --list
@@ -81,6 +88,11 @@ check: lean-hygiene
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+    scripts/checks.sh
+
+# Run every checks/<feature>.sh, or only the ones named (`just checks port-audit`)
+checks *names:
+    scripts/checks.sh {{names}}
 
 # No sorry, admit or axiom in any Lean file; native_decide only in Examples.lean (AGENTS.md rule 1)
 lean-hygiene:

@@ -89,6 +89,16 @@ House-pricing rules:
 
 - **Never commit directly to `main`.** Every change goes on its own branch and
   lands through a pull request. Do not push to `main`, not even for docs.
+- **Composable PRs.** Every PR branches from `main` and merges into it in any order with no
+  conflict, so nobody has to rebase. No stacked PRs: when one change needs another, put both in one
+  PR. A feature owns its files and does not edit a shared file where another open PR edits it:
+  - recipes go in `just/<feature>.just`; the `justfile` only imports it (one `import?` line);
+  - checks go in `checks/<feature>.sh` (with `checks/<feature>.requirements.txt` for its pip
+    packages); `just check` and `.github/workflows/check.yml` run every one, so no list changes;
+  - in `README.md`, add one block (a table row, a section) at a place no other open PR touches,
+    and keep the details in the feature's own `README.md`.
+
+  Before you open a PR, test-merge it into `main` together with the other open PRs.
 - **Name branches and PRs by the goal.** The PR title and branch name are a short
   statement of the goal (for example `Render bandit diagrams with archify`,
   branch `render-bandit-diagrams`). Never start a PR title, branch name or the
