@@ -20,11 +20,15 @@
 // runs, name for name.
 //
 //     z3-scala/z3.sh video
-package z3scala
+package z3scala.bandit.domain
 
 import com.microsoft.z3.Status
+import z3scala.kernel.proof.Script.*
+import z3scala.kernel.proof.{Item, Script}
+import z3scala.kernel.smt.Z.{*, given}
+import z3scala.kernel.smt.{*, given}
+import z3scala.kernel.text.Py
 
-import Z.{*, given}
 import Bandit.*
 
 object Video:
@@ -65,7 +69,9 @@ object Video:
   def leibnizEven(pairs: Int): Rational =
     (0 until pairs).foldLeft(Rational.zero)((s, j) => s + Rational(4, 4 * j + 1) - Rational(4, 4 * j + 3))
 
-  def run(args: Seq[String]): Int =
+  val title = "invariants of the video"
+
+  def statements: Vector[Item] = Script:
     val List(x, target) = reals("x target"): @unchecked
     proves("clip_nonneg", Nil, clip(x) >= 0)
     proves("clip_le_one", Nil, clip(x) <= 1)
@@ -126,9 +132,9 @@ object Video:
     proves("leibnizPair_pos (real k >= 0)", List(k >= 0), leibnizPair > 0)
 
     val ramTerms = (0 until 10).map(ramanujanTerm)
-    report("ramTerm_pos (k = 0..9)", ramTerms.forall(_ > Rational.zero), "each term is a positive rational")
+    verdict("ramTerm_pos (k = 0..9)", ramTerms.forall(_ > Rational.zero), "each term is a positive rational")
     val ramSums = (0 to 10).map(j => ramTerms.take(j).foldLeft(Rational.zero)(_ + _))
-    report("ramSum_lt_succ (n = 0..9)", ramSums.zip(ramSums.tail).forall(_ < _), "partial sums increase")
+    verdict("ramSum_lt_succ (n = 0..9)", ramSums.zip(ramSums.tail).forall(_ < _), "partial sums increase")
 
     val List(c, sN, sNext) = reals("c s_n s_next"): @unchecked
     proves("ramApprox_anti", List(c > 0, sN > 0, sN < sNext), num(1) / (c * sNext) < num(1) / (c * sN))
@@ -159,7 +165,5 @@ object Video:
     val model = s.getModel
     val explored = model.eval(nExplore, false)
     val exploited = model.eval(nExploit, false)
-    report("step explore n", (explored === 2).simplify().isTrue, s"= ${Py.expr(explored)}  (expected 2)")
-    report("step exploit n", (exploited === 1).simplify().isTrue, s"= ${Py.expr(exploited)}  (expected 1)")
-
-    finish("invariants of the video")
+    verdict("step explore n", (explored === 2).simplify().isTrue, s"= ${Py.expr(explored)}  (expected 2)")
+    verdict("step exploit n", (exploited === 1).simplify().isTrue, s"= ${Py.expr(exploited)}  (expected 1)")

@@ -19,7 +19,7 @@ abstract: |
   de múltiplos braços (CMAB), o teste A/B e a automelhoria recursiva (RSI). Cada cena é um take,
   com a fala, o que aparece na tela, o gráfico interativo quando ele ajuda, e o código que
   sustenta a cena. Tudo o que a fala afirma sobre o método tem uma afirmação provada pelo Z3
-  (`z3-scala/src/main/scala/Video.scala`, as invariantes R1 a R5; `z3-scala/src/main/scala/Theorems.scala`, as regras de decisão) ou uma função
+  (`z3-scala/src/main/scala/bandit/domain/Video.scala`, as invariantes R1 a R5; `z3-scala/src/main/scala/bandit/domain/Theorems.scala`, as regras de decisão) ou uma função
   em Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`).
   Os arquivos estão no repositório h0ffmann/proof. O exemplo simples é o cálculo de π, com o
   espectador como recompensa; o exemplo complexo é a escolha de imagens da Netflix. O texto segue o português

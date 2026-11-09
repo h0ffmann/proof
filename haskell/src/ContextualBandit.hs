@@ -1,5 +1,5 @@
 -- | Contextual bandit interface. This is a direct port of the Z3 spec in
--- ../z3-scala/src/main/scala/Bandit.scala; ../z3-scala/src/main/scala/Theorems.scala says what Z3 proves about it.
+-- ../z3-scala/src/main/scala/bandit/domain/Bandit.scala; ../z3-scala/src/main/scala/bandit/domain/Theorems.scala says what Z3 proves about it.
 --
 -- There are two layers:
 --   * 'RewardModel': the probabilistic part (belief, update, estimate, sample)
@@ -7,10 +7,10 @@
 --
 -- It depends only on GHC's @base@ and @containers@.
 module ContextualBandit
-  ( -- * Interface (mirrors the two layers of z3-scala/src/main/scala/Bandit.scala)
+  ( -- * Interface (mirrors the two layers of z3-scala/src/main/scala/bandit/domain/Bandit.scala)
     Arm, Obs (..), Estimate (..), RewardModel (..), Decision, DecisionRule
   , posterior, policy
-    -- * Decision rules (mirror the rules of z3-scala/src/main/scala/Bandit.scala)
+    -- * Decision rules (mirror the rules of z3-scala/src/main/scala/bandit/domain/Bandit.scala)
   , argmax, point, uniform, mix, ucbScore
   , greedy, ucb, epsGreedy
     -- * Thompson sampling (needs the model's posterior sampler)

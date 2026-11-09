@@ -107,19 +107,18 @@ Both share one idea:
 ### Layout
 
 ```
-z3-scala/                      Scala 3.9.0 on Z3 5.3.3's Java binding (z3-scala/README.md)
-  src/main/scala/Z.scala            how a statement is proved: premises ∧ ¬conclusion is unsat
-  src/main/scala/Bandit.scala       Estimate, the rules: argmaxFirst, greedy, ucb β, epsGreedy ε, valid
-  src/main/scala/Theorems.scala     the proofs (below), for K = 1..5 and all real estimates
-  src/main/scala/Examples.scala     a tabular model you can run, over exact rationals
-  src/main/scala/Video.scala        the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
-  src/main/scala/Language.scala     the language rule: every file in English unless its path carries pt-BR
-  src/main/scala/Ptc.scala          the PTC rules of the video script's prose
-  src/main/scala/RuidoIa.scala      the PTC-9 noise catalogue (ruido-ia.md), row by row
+z3-scala/                      Scala 3.9.0 on Z3 5.3.3's Java binding and Kyo, one bounded context per check family (z3-scala/README.md)
+  src/main/scala/kernel/proof/      how a statement is proved: premises ∧ ¬conclusion is unsat
+  src/main/scala/bandit/domain/     Bandit.scala: Estimate, the rules argmaxFirst, greedy, ucb β, epsGreedy ε, valid
+                                    Theorems.scala: the proofs (below), for K = 1..5 and all real estimates
+                                    Examples.scala: a tabular model you can run, over exact rationals
+                                    Video.scala: the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
+  src/main/scala/language/domain/   the language rule: every file in English unless its path carries pt-BR
+  src/main/scala/ptc/domain/        the PTC rules of the video script's prose, and the PTC-9 noise catalogue (ruido-ia.md), row by row
 haskell/                       GHC, only base + containers
   src/ContextualBandit.hs           the same interface and rules, plus a pure RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
-  src/Video.hs                      port of z3-scala/src/main/scala/Video.scala; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
+  src/Video.hs                      port of z3-scala/src/main/scala/bandit/domain/Video.scala; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
   app/Main.hs                       4 runnable examples and the spec check
   app/Video.hs                      the experiments of the video script (cabal run video)
 ```
@@ -204,7 +203,7 @@ The `width` must be an honest uncertainty. An over-confident model breaks the
 ### Example output (Haskell)
 
 ```
-== 0. Spec check against z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala ==   all OK
+== 0. Spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala ==   all OK
 == 1. Beta-Bernoulli, 2 contexts x 3 arms, T=5000 (avg 20 runs)
 greedy 41.1   eps-greedy 0.1 43.3   UCB beta=2 25.3   Thompson 32.8
 == 2. Bayesian linear, d=3, 4 arms, T=2000 (avg 10 runs)

@@ -85,7 +85,7 @@ crypto-strength:
     python3 crypto-strength/build.py
 
 # The checks: the Lean proofs of the other experiments (and their hygiene), the Haskell examples,
-# whose spec check compares with z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala, and every checks/<feature>.sh
+# whose spec check compares with z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala, and every checks/<feature>.sh
 # (the Z3 specification of the contextual bandit is checks/contextual-bandits.sh, `just z3`)
 check: lean-hygiene
     cd ocean-waves/lean && lake build

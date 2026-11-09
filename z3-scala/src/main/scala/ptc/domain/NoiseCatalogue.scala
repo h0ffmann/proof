@@ -28,16 +28,20 @@
 //
 // The protected zone (code, URLs, quotations, italic foreign words) is taken out first, as in
 // Ptc.scala, whose reader this check uses.
-package z3scala
+package z3scala.ptc.domain
 
 import com.microsoft.z3.Status
+import z3scala.kernel.proof.Report.say
+import z3scala.kernel.proof.{Lines, Report}
+import z3scala.kernel.smt.Z.*
+import z3scala.kernel.smt.given
+import z3scala.kernel.text.Py
 
 import java.util.regex.Pattern
 
-import Z.*
-import Ptc.{LEVEL, ROOT, SCRIPT, Unit, readScript, splitSentences}
+import Ptc.{LEVEL, SCRIPT, Sentence, readScript, splitSentences}
 
-object RuidoIa:
+object NoiseCatalogue:
   val SOURCE = "kayquer/portugues-tecnico-controlado, references/ruido-ia.md (PTC 1.2.0)"
 
   // Section -> {level: "required" | "recommended" | "off"} (the line under each table heading).
@@ -367,7 +371,7 @@ object RuidoIa:
   )
   val CITED: Pattern = Py.re("\\[@[^\\]]*\\]|@[A-Za-z][\\w:-]*|https?://") // "a fonte": the row is satisfied
 
-  def hits(row: Row, unit: Unit, level: String): List[String] =
+  def hits(row: Row, unit: Sentence, level: String): List[String] =
     // "Contamos com vocês" is courtesy that only level leve allows ("O que fica", last item).
     val keep = Py
       .matches(KEEP, unit.prose)
@@ -381,7 +385,7 @@ object RuidoIa:
       .map(m => Py.strip(m.group()))
 
   /** Ask Z3 for a (row, sentence) with a hit. Returns (holds, the pairs of the model). */
-  def prove(rows: List[Row], units: List[Unit], level: String): (Boolean, List[(Unit, Row)]) =
+  def prove(rows: List[Row], units: List[Sentence], level: String): (Boolean, List[(Sentence, Row)]) =
     val solver = ctx.mkSolver()
     val cells = for (row, i) <- rows.zipWithIndex; (unit, j) <- units.zipWithIndex yield
       val h = int(s"h[$i][$j]")
@@ -407,56 +411,46 @@ object RuidoIa:
     "A fila é o gargalo. O relatório de 2026-03 mostra 14 falhas. " +
     "Claro que o cache expira, e o sistema tem 3 nós. Puxe a alavanca do braço 2."
 
-  def selfTest(): Int =
+  def selfTest(): Report = Report:
     var bad = 0
     for row <- CATALOGUE if row.decided do
       val (units, _) = splitSentences(List((1, row.bad)), "self-test")
       if prove(List(row), units, "estrito")._1 then
         bad += 1
-        println(s"FAIL  self-test: ${Py.repr(row.avoid)} accepts ${Py.repr(row.bad)}")
+        say(s"FAIL  self-test: ${Py.repr(row.avoid)} accepts ${Py.repr(row.bad)}")
     val (goodUnits, _) = splitSentences(List((1, GOOD)), "self-test")
     val (holds, pairs) = prove(CATALOGUE.filter(_.decided), goodUnits, "estrito")
     if !holds then
       bad += 1
-      for (unit, row) <- pairs do
-        println(s"FAIL  self-test: ${Py.repr(row.avoid)} rejects ${Py.repr(unit.raw)}")
+      for (unit, row) <- pairs do say(s"FAIL  self-test: ${Py.repr(row.avoid)} rejects ${Py.repr(unit.raw)}")
     val (courtesy, _) = splitSentences(List((1, "Contamos com vocês.")), "self-test")
     if !prove(CATALOGUE.filter(_.avoid.contains("conta com")), courtesy, "leve")._1 then
       bad += 1
-      println("FAIL  self-test: 'Contamos com vocês' is rejected at level leve")
+      say("FAIL  self-test: 'Contamos com vocês' is rejected at level leve")
     val decided = CATALOGUE.count(_.decided)
-    println(if bad == 0 then
+    say(if bad == 0 then
       s"OK    self-test: each of the $decided decided rows rejects its bad text, and the " +
         "'O que fica' text passes"
     else s"\n$bad self-test failure(s)")
     if bad > 0 then 1 else 0
 
-  def review(sentences: List[Unit], level: String): scala.Unit =
-    println("\nRows that Z3 cannot decide (their qualifier is meaning): read these sentences.")
+  def review(sentences: List[Sentence], level: String)(using Lines): Unit =
+    say("\nRows that Z3 cannot decide (their qualifier is meaning): read these sentences.")
     for row <- CATALOGUE if !row.decided do
       val status = SECTIONS.toMap.apply(row.section)(level)
-      println(s"\n${row.section} ($status at $level): ${row.avoid}. ${row.why}.")
+      say(s"\n${row.section} ($status at $level): ${row.avoid}. ${row.why}.")
       val found = sentences.filter(u => hits(row, u, level).nonEmpty)
       for u <- found do
-        println(
+        say(
           s"  ${u.file}:${u.line}  [${hits(row, u, level).distinct.mkString(", ")}]  ${Ptc.snippet(u.raw)}"
         )
-      println(s"  (${found.size} sentences)")
+      say(s"  (${found.size} sentences)")
 
-  def run(args: Seq[String]): Int =
-    if args.contains("--self-test") then selfTest()
-    else
-      levelArg(args) match
-        case Left(message) =>
-          System.err.println(message)
-          1
-        case Right(level) => check(args, level)
-
-  def check(args: Seq[String], level: String): Int =
-    val (sentences, _) = readScript()
-    println(
+  def check(script: List[(String, String)], level: String, review: Boolean): Report = Report:
+    val (sentences, _) = readScript(script)
+    say(
       s"PTC-9 noise catalogue ($SOURCE), level $level: ${sentences.size} sentences in " +
-        s"${ROOT.relativize(SCRIPT)}/"
+        s"$SCRIPT/"
     )
     var failed = 0
     for (section, levels) <- SECTIONS do
@@ -465,19 +459,19 @@ object RuidoIa:
       val status = levels(level)
       val tag =
         if holds then "OK  " else Map("required" -> "FAIL", "recommended" -> "NOTE", "off" -> "OFF ")(status)
-      println(
+      say(
         s"$tag  $section: ${rows.size} decided rows, $status at $level " +
           s"(${if holds then "unsat" else "sat"})"
       )
       for (unit, row) <- broken do
-        println(
+        say(
           s"        ${unit.file}:${unit.line}: ${hits(row, unit, level).distinct.mkString(", ")}  (${row.avoid})"
         )
       if !holds && status == "required" then failed += 1
     val undecided = CATALOGUE.count(!_.decided)
-    println(s"      $undecided rows need a reader: z3-scala/z3.sh ruido-ia --review")
-    if args.contains("--review") then review(sentences, level)
+    say(s"      $undecided rows need a reader: z3-scala/z3.sh ruido-ia --review")
+    if review then this.review(sentences, level)
     if failed > 0 then
-      println(s"\n$failed required table(s) of the noise catalogue fail")
+      say(s"\n$failed required table(s) of the noise catalogue fail")
       1
     else 0

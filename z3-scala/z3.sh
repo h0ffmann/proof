@@ -3,11 +3,12 @@
 #
 #   z3-scala/z3.sh theorems | examples | video | language | ptc | ruido-ia | chaceon | coverage | grids | leo [options]
 #
-# Needs a JDK (17 or newer) and sbt. The first run puts Z3's official Java binding in place: the jar
-# in z3-scala/lib/ and its native libraries in z3-scala/.z3/. They come from Z3_HOME when it is set
-# (a directory that holds com.microsoft.z3.jar and libz3java, for example a Z3 built with
-# -DZ3_BUILD_JAVA_BINDINGS=ON), or else from the Z3 release on GitHub for this platform, checked
-# against the SHA-256 that GitHub publishes for the asset. The classpath is cached in
+# Run it inside `nix develop .#scala`, the root flake's shell: it pins the JDK, sbt and Z3 with its
+# Java binding, and sets Z3_HOME. The first run puts that binding in place: the jar in
+# z3-scala/lib/ and its native libraries in z3-scala/.z3/. They come from Z3_HOME when it is set (a
+# directory that holds com.microsoft.z3.jar and libz3java), or else, outside the shell, from the Z3
+# release on GitHub for this platform, checked against the SHA-256 that GitHub publishes for the
+# asset. The version is build.sbt's z3Version. The classpath is cached in
 # z3-scala/target/classpath and rebuilt by sbt when a source or build file is newer.
 #
 # `leo` also needs Leo-III, a higher-order prover written in Scala that publishes no jar for its
@@ -15,9 +16,11 @@
 # leoprover/Leo-III at LEO3_COMMIT into z3-scala/.leo/.
 set -euo pipefail
 
-Z3_VERSION=5.3.3
+# The Z3 version is build.sbt's z3Version, the one place it is written.
+Z3_VERSION=$(sed -n 's/^val z3Version = "\(.*\)"$/\1/p' "$(dirname "$0")/build.sbt")
 LEO3_COMMIT=d24be031e54f5378d0bc441f5bbd112c96214dfa # version 1.8.1, Scala 3.9.0, 26 October 2026
 here=$(cd "$(dirname "$0")" && pwd)
+[ -n "$Z3_VERSION" ] || { echo "z3-scala: no z3Version in build.sbt" >&2; exit 1; }
 root=$(cd "$here/.." && pwd)
 
 die() { echo "z3-scala: $*" >&2; exit 1; }
@@ -71,6 +74,9 @@ download() {
 }
 
 stamp="$here/.z3/version"
+if [ -z "${IN_NIX_SHELL:-}" ]; then
+  echo "z3-scala: not in \`nix develop .#scala\`; using the JDK and sbt on PATH, which nothing pins" >&2
+fi
 if [ ! -f "$here/lib/com.microsoft.z3.jar" ] || [ "$(cat "$stamp" 2> /dev/null)" != "$Z3_VERSION ${Z3_HOME:-release}" ]; then
   if [ -n "${Z3_HOME:-}" ]; then install_from "$Z3_HOME"; else download; fi
   echo "$Z3_VERSION ${Z3_HOME:-release}" > "$stamp"
@@ -106,4 +112,6 @@ if [ "${1:-}" = leo ] && [ -z "${LEO3_JAR:-}" ]; then
 fi
 
 cd "$root"
-exec java -Djava.library.path="$here/.z3" -cp "$(cat "$cp_file")" z3scala.main "$@"
+# The reports quote Portuguese prose: UTF-8 on standard output and error, whatever the locale.
+exec java --enable-native-access=ALL-UNNAMED -Djava.library.path="$here/.z3" -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8 \
+  -cp "$(cat "$cp_file")" z3scala.app.main "$@"

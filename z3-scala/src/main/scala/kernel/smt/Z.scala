@@ -1,13 +1,7 @@
-// How every check in z3-scala proves a statement: by refutation.
-//
-// A theorem "premises imply conclusion" holds when Z3 finds no model of "premises and not
-// conclusion": the answer `unsat`. A model, when there is one, is a counterexample and is
-// printed. Each check reports one line per statement and ends with `finish`, whose exit code is 1
-// when a statement failed.
-//
-// This file is also the small vocabulary the checks are written in: Z3's Java API with
-// operators, so that a statement reads as the sentence it proves.
-package z3scala
+// The shared kernel's language: Z3's Java API with operators, so that a statement reads as the
+// sentence it proves. Every bounded context writes its statements in it; z3scala.kernel.proof
+// says how a statement is proved.
+package z3scala.kernel.smt
 
 import com.microsoft.z3.*
 
@@ -70,43 +64,3 @@ object Z:
   extension [S <: Sort](a: Expr[S])
     def ===(b: Expr[S]): Bool = ctx.mkEq(a, b)
     def =/=(b: Expr[S]): Bool = ctx.mkDistinct(a, b)
-
-  // ------------------------------------------------------------------------------------------
-  // Refutation
-
-  private var failures = 0
-  private var checked = 0
-
-  def report(name: String, holds: Boolean, note: String = ""): Unit =
-    checked += 1
-    println(s"${if holds then "OK  " else "FAIL"}  ${Py.ljust(name, 34)} $note")
-    if !holds then failures += 1
-
-  /** The theorem: premises imply the conclusion, for every value of the free symbols. */
-  def proves(name: String, premises: Seq[Bool], conclusion: Bool, note: String = ""): Unit =
-    val s = ctx.mkSolver()
-    premises.foreach(s.add(_))
-    s.add(not(conclusion))
-    val result = s.check()
-    val holds = result == Status.UNSATISFIABLE
-    val shown =
-      if holds then note
-      else
-        Py.status(result) + (if result == Status.SATISFIABLE then s", counterexample ${Py.model(s.getModel)}"
-                             else "")
-    report(name, holds, if shown.isEmpty then "no counterexample (unsat)" else shown)
-
-  /** An example: the closed expression equals the expected rational. */
-  def evaluates(name: String, expression: Real, expected: Rational): Unit =
-    val value = expression.simplify()
-    val holds = ctx.mkEq(value, num(expected)).simplify().isTrue
-    report(name, holds, s"= ${Py.expr(value)}  (expected $expected)")
-
-  def finish(what: String): Int =
-    println()
-    if failures > 0 then
-      println(s"$what: $failures of $checked failed")
-      1
-    else
-      println(s"$what: all $checked hold")
-      0

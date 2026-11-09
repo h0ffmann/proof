@@ -82,7 +82,7 @@ as duas barras de crença do agente, azul, uma por ação, e a seta amarela da e
 corretos `−log10|L(n) − π|`; o controle `N` anda termo a termo. A cena 1.4 usa o mesmo arquivo
 com `R(n)`, de Ramanujan.
 
-**Código.** Z3, `z3-scala/src/main/scala/Video.scala`: `step`, e as afirmações `step_exploit`
+**Código.** Z3, `z3-scala/src/main/scala/bandit/domain/Video.scala`: `step`, e as afirmações `step_exploit`
 (aproveitar não gasta termo), `step_explore_n` (explorar gasta exatamente um),
 `step_explore_reward` (a nota não cai) e `step_reward_bounded` (a nota fica em [0, 1]).
 `leibnizPair_pos`: cada par de Leibniz é positivo, logo as somas pares crescem. Haskell, `haskell/src/Video.hs` (os
@@ -145,8 +145,8 @@ largura) por sabor". O histórico entra só na caixa da esquerda.
 **Desmos.** `desmos/1-5-width.txt`: a largura `1/(n+1)` e a largura real `1/sqrt(n)` no mesmo
 gráfico, com `n` de 1 a 100. As duas caem; a do Z3 é racional, para os exemplos serem exatos.
 
-**Código.** Z3: `z3-scala/src/main/scala/Bandit.scala` (as duas camadas, `estimates` e as regras), `z3-scala/src/main/scala/Examples.scala`
-(`update`, `estimate`, `posterior`, `policy`) e `z3-scala/src/main/scala/Theorems.scala` (`policy_factors`). Haskell:
+**Código.** Z3: `z3-scala/src/main/scala/bandit/domain/Bandit.scala` (as duas camadas, `estimates` e as regras), `z3-scala/src/main/scala/bandit/domain/Examples.scala`
+(`update`, `estimate`, `posterior`, `policy`) e `z3-scala/src/main/scala/bandit/domain/Theorems.scala` (`policy_factors`). Haskell:
 `haskell/src/ContextualBandit.hs`, os mesmos nomes; o modelo tabular do vídeo é `tabular` em
 `haskell/app/Video.hs`.
 
@@ -169,9 +169,9 @@ UCB sobe a barra da incerteza.
 **Desmos.** `desmos/1-6-ucb.txt`: três pontos (média, largura) e a pontuação `m + b·w` de cada
 um; o controle `b` vai de 0 a 3 e o sabor vencedor troca na tela.
 
-**Código.** Z3: `greedy`, `epsGreedy`, `ucb` em `z3-scala/src/main/scala/Bandit.scala`, `ucb_zero` em
-`z3-scala/src/main/scala/Theorems.scala`. Haskell: os mesmos nomes em `haskell/src/ContextualBandit.hs`; o spec check de
-`haskell/app/Main.hs` confere os exemplos de `z3-scala/src/main/scala/Examples.scala`: `[0, 1, 0]` de manhã, `[0, 0, 1]` de
+**Código.** Z3: `greedy`, `epsGreedy`, `ucb` em `z3-scala/src/main/scala/bandit/domain/Bandit.scala`, `ucb_zero` em
+`z3-scala/src/main/scala/bandit/domain/Theorems.scala`. Haskell: os mesmos nomes em `haskell/src/ContextualBandit.hs`; o spec check de
+`haskell/app/Main.hs` confere os exemplos de `z3-scala/src/main/scala/bandit/domain/Examples.scala`: `[0, 1, 0]` de manhã, `[0, 0, 1]` de
 noite e `[1/30, 14/15, 1/30]` para ε = 1/10.
 
 ## O exemplo complexo: a Netflix (8:30 a 10:00)

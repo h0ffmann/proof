@@ -22,21 +22,30 @@
 //     z3-scala/z3.sh coverage --write   # also write them into port-audit/README.md
 //     z3-scala/z3.sh coverage --check   # exit 1 when README.md is stale
 //     z3-scala/z3.sh coverage --chaceon DIR --ww3 DIR   # use checkouts already on disk
-package z3scala.portaudit
+package z3scala.portaudit.domain
 
 import com.microsoft.z3.{Expr, Status}
-import z3scala.Z.*
-import z3scala.{Bool, Json, Py, given}
+import z3scala.kernel.smt.Z.*
+import z3scala.kernel.smt.{Bool, given}
+import z3scala.kernel.text.{Json, Py}
 
-import java.nio.file.{Files, Path, Paths}
 import scala.collection.mutable
-import scala.jdk.CollectionConverters.*
+
+/**
+ * What the coverage is measured on, read from the two pins: the Fortran files of WW3's `model/src` as (name,
+ * lines), sorted by name; `switches.json` and `src_list.cmake` of `model/src/cmake`; chaceon's switch files
+ * as (name, text), sorted by name; and its `rust/ports.tsv`.
+ */
+final case class Sources(
+    fortran: List[(String, List[String])],
+    switchesJson: String,
+    srcList: String,
+    switchFiles: List[(String, String)],
+    ports: String
+)
 
 object Coverage:
-  val ROOT: Path = Paths.get("").toAbsolutePath
-  val HERE: Path = ROOT.resolve("port-audit")
-  val CACHE: Path = HERE.resolve(".cache")
-  val README: Path = HERE.resolve("README.md")
+  val README = "port-audit/README.md"
   val BEGIN = "<!-- coverage:begin -->"
   val END = "<!-- coverage:end -->"
 
@@ -47,31 +56,6 @@ object Coverage:
 
   val TARGET = "switch_chaceon_shrd"
   val EVIDENCE = List("translated", "routine", "host", "spirv") // weakest first, as in rust/ports.tsv
-
-  // ------------------------------------------------------------------------------------------
-  // The pins
-
-  private def git(dir: Path, args: String*): (Int, String) =
-    val p = new ProcessBuilder(("git" +: "-C" +: dir.toString +: args)*).redirectErrorStream(true).start()
-    val out = new String(p.getInputStream.readAllBytes(), "UTF-8")
-    (p.waitFor(), out)
-
-  /** A shallow checkout of one commit, only the paths in `sparse`. Reused when it is at the commit. */
-  def fetch(url: String, commit: String, into: Path, sparse: List[String]): Path =
-    val fresh = !Files.exists(into.resolve(".git"))
-    if !fresh && Py.strip(git(into, "rev-parse", "HEAD")._2) == commit then into
-    else
-      Files.createDirectories(into)
-      def run(args: String*): Unit =
-        val (code, out) = git(into, args*)
-        if code != 0 then sys.error(s"git ${args.mkString(" ")} failed in $into:\n$out")
-      if fresh then
-        run("init", "-q")
-        run("remote", "add", "origin", url)
-      run(("sparse-checkout" +: "set" +: "--no-cone" +: sparse)*)
-      run("fetch", "-q", "--depth", "1", "--filter=blob:none", "origin", commit)
-      run("checkout", "-q", "FETCH_HEAD")
-      into
 
   // ------------------------------------------------------------------------------------------
   // The preprocessor, as Z3 formulas
@@ -193,15 +177,14 @@ object Coverage:
    * string of `requires` must be on, and of an array inside it, one. `built(f)` is the condition under which
    * CMake compiles the file f of model/src.
    */
-  final class Rules(ww3: Path):
-    private val cmake = ww3.resolve("model/src/cmake")
+  final class Rules(switchesJson: String, srcList: String):
     private def list(v: Any): List[Any] = v match
       case l: List[?] => l
       case _          => Nil
     private def field(o: Any, k: String): Any = o match
       case m: Map[?, ?] => m.asInstanceOf[Map[String, Any]].getOrElse(k, Nil)
       case _            => Nil
-    private val cats = list(Json.parse(Py.readText(cmake.resolve("switches.json"))))
+    private val cats = list(Json.parse(switchesJson))
     val options: List[String] =
       cats.flatMap(c => list(field(c, "valid-options")).map(o => field(o, "name").toString)).distinct.sorted
     private val validParts = List.newBuilder[Bool]
@@ -228,7 +211,7 @@ object Coverage:
     val valid: Bool = and(validParts.result()*)
     private val core = Py.split(
       Py.re("set\\(ftn_src(.*?)\\)", dotAll = true)
-        .matcher(Py.readText(cmake.resolve("src_list.cmake")))
+        .matcher(srcList)
         .results()
         .findFirst()
         .get()
@@ -243,7 +226,7 @@ object Coverage:
     for f <- List("pdlib_field_vec.F90", "w3profsmd_pdlib.F90") do table(f) = or(built(f), pdlib)
     def built(f: String): Bool = table.getOrElse(f, False)
 
-  def switchFile(path: Path): Set[String] = Py.split(Py.readText(path)).toSet
+  def switchFile(text: String): Set[String] = Py.split(text).toSet
 
   /**
    * Decides, by refutation, which builds keep a line. A switch file fixes every `W3_` macro (on when listed)
@@ -298,8 +281,8 @@ object Coverage:
   val RANGE = Py.re("model/src/([\\w.]+\\.F90)(?::(\\d+)-(\\d+))?")
 
   /** Rows of rust/ports.tsv as (routine, file, first, last, status); last None means the whole file. */
-  def ledger(chaceon: Path): List[(String, String, Int, Option[Int], String)] =
-    Py.splitlines(Py.readText(chaceon.resolve("rust/ports.tsv")))
+  def ledger(ports: String): List[(String, String, Int, Option[Int], String)] =
+    Py.splitlines(ports)
       .filterNot(l => l.startsWith("#") || l.startsWith("routine\t") || Py.strip(l).isEmpty)
       .map: line =>
         val cells = line.split("\t", -1)
@@ -315,16 +298,10 @@ object Coverage:
   private def pct(a: Long, b: Long): String = if b != 0 then Py.round0(100.0 * a / b) + "%" else "-"
   private def n(x: Long): String = Py.thousands(x)
 
-  def measure(chaceon: Path, ww3: Path): String =
-    val src = ww3.resolve("model/src")
-    def sortedFiles(dir: Path, ok: String => Boolean): List[Path] =
-      Files.list(dir).iterator.asScala.filter(p => ok(p.getFileName.toString)).toList.sortBy(_.toString)
-    val files = sortedFiles(src, _.endsWith(".F90")).map(f =>
-      f.getFileName.toString -> Py.splitlines(Py.readText(f, replace = true))
-    )
-    val switches = sortedFiles(chaceon.resolve("switches"), _.startsWith("switch_")).map(p =>
-      p.getFileName.toString -> switchFile(p)
-    )
+  /** The tables of port-audit/README.md, as Markdown. */
+  def measure(sources: Sources): String =
+    val files = sources.fortran
+    val switches = sources.switchFiles.map((name, text) => name -> switchFile(text))
     if !switches.exists(_._1 == TARGET) then sys.error(s"no $TARGET")
 
     val names = (for
@@ -335,13 +312,13 @@ object Coverage:
       name <- Py.findAll(MACRO, arg)
       if name != "defined"
     yield name).toSet
-    val rules = Rules(ww3)
+    val rules = Rules(sources.switchesJson, sources.srcList)
     val builds = Builds(rules, names)
     val fileLines = files.toMap
 
     // The status of each translated line: the strongest row of the ledger that covers it.
     val status = mutable.Map.empty[(String, Int), String]
-    for (_, f, first, last, st) <- ledger(chaceon); i <- first to last.getOrElse(fileLines(f).size) do
+    for (_, f, first, last, st) <- ledger(sources.ports); i <- first to last.getOrElse(fileLines(f).size) do
       if status.get((f, i)).forall(old => EVIDENCE.indexOf(st) > EVIDENCE.indexOf(old)) then
         status((f, i)) = st
 
@@ -422,30 +399,9 @@ object Coverage:
     s.add(rules.valid, switch(option))
     s.check() == Status.SATISFIABLE
 
-  def run(args: Seq[String]): Int =
-    def opt(flag: String): Option[Path] = args.indexOf(flag) match
-      case -1 => None
-      case i  => args.lift(i + 1).map(Paths.get(_).toAbsolutePath)
-    val (write, check) = (args.contains("--write"), args.contains("--check"))
-    if write && check then
-      System.err.println("coverage: --write and --check are exclusive")
-      2
-    else
-      val chaceon = opt("--chaceon").getOrElse(
-        fetch(CHACEON_URL, CHACEON_COMMIT, CACHE.resolve("chaceon"), List("/rust/ports.tsv", "/switches/"))
-      )
-      val ww3 = opt("--ww3").getOrElse(fetch(WW3_URL, WW3_COMMIT, CACHE.resolve("WW3"), List("/model/src/")))
-      val table = measure(chaceon, ww3)
-      print(table)
-      System.out.flush()
-      val text = Files.readString(README)
-      val (head, rest) = text.splitAt(text.indexOf(BEGIN))
-      val tail = rest.substring(rest.indexOf(END) + END.length)
-      val fresh = s"$head$BEGIN\n\n$table\n$END$tail"
-      if write then
-        Files.writeString(README, fresh): Unit
-        0
-      else if check && fresh != text then
-        System.err.println("coverage: README.md is stale; run z3-scala/z3.sh coverage --write")
-        1
-      else 0
+  /** README.md with `table` between the coverage markers. */
+  def splice(readme: String, table: String): String =
+    val (head, rest) = readme.splitAt(readme.indexOf(BEGIN))
+    val tail = rest.substring(rest.indexOf(END) + END.length)
+    s"$head$BEGIN\n\n$table\n$END$tail"
+end Coverage

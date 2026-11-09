@@ -1,5 +1,5 @@
 // An exact rational, the counterpart of Python's fractions.Fraction: the examples are exact.
-package z3scala
+package z3scala.kernel.smt
 
 final case class Rational private (n: BigInt, d: BigInt) extends Ordered[Rational]:
   def +(o: Rational): Rational = Rational(n * o.d + o.n * d, d * o.d)

@@ -1,6 +1,6 @@
 // A small JSON reader: Coverage.scala reads WW3's switches.json, and the build has one dependency,
 // Z3. Objects become Map[String, Any], arrays List[Any], numbers Double, and null None.
-package z3scala
+package z3scala.kernel.text
 
 object Json:
   def parse(text: String): Any =

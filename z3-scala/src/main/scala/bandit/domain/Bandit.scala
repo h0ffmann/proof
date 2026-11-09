@@ -22,9 +22,10 @@
 // says why that trade was made.
 //
 // haskell/src/ContextualBandit.hs is the port that runs, name for name.
-package z3scala
+package z3scala.bandit.domain
 
-import Z.{*, given}
+import z3scala.kernel.smt.*
+import z3scala.kernel.smt.Z.{*, given}
 
 object Bandit:
   val MAX_ARMS = 5

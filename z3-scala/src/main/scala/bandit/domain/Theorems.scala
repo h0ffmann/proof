@@ -17,18 +17,23 @@
 // 6. The agent depends on the history only through the model's belief.
 //
 //     z3-scala/z3.sh theorems
-package z3scala
+package z3scala.bandit.domain
 
 import com.microsoft.z3.{Expr, Sort}
+import z3scala.kernel.proof.Script.*
+import z3scala.kernel.proof.{Item, Script}
+import z3scala.kernel.smt.*
+import z3scala.kernel.smt.Z.{*, given}
 
-import Z.{*, given}
 import Bandit.*
 
 object Theorems:
   /** value when the arm is the chosen one, else 0: the sum over arms picks one value. */
   private def ifChosen(condition: Bool, value: Real): Real = ite(condition, value, 0)
 
-  def run(args: Seq[String]): Int =
+  val title = "theorems of the decision rules"
+
+  def statements: Vector[Item] = Script:
     val List(eps, beta, delta) = reals("eps beta delta"): @unchecked
 
     for k <- 1 to MAX_ARMS do
@@ -101,5 +106,3 @@ object Theorems:
           same(epsGreedy(eps, est1), epsGreedy(eps, est2))
         )
       )
-
-    finish("theorems of the decision rules")
