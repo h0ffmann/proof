@@ -137,7 +137,7 @@ abVsBandit :: IO ()
 abVsBandit = do
   let t = 5000; seeds = 20 :: Int
   printf "T = %d, média de %d sementes, 2 contextos x 3 braços\n" t seeds
-  putStrLn "| política | arrependimento |"
+  putStrLn "\n| política | arrependimento |"
   putStrLn "|---|---|"
   mapM_ (\p -> putStrLn . ptBR $ printf "| %s | %.1f |" p
             (sum [regretRun p t s | s <- [1 .. seeds]] / fromIntegral seeds))

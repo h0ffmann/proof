@@ -42,6 +42,7 @@ mudou de ideia? True
 ## Cenas 2.3 e 2.4: teste A/B contra as regras de bandit (`abVsBandit`)
 
 T = 5000, média de 20 sementes, 2 contextos x 3 braços
+
 | política | arrependimento |
 |---|---|
 | teste A/B (T/2, depois commit) | 128,8 |
