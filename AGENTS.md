@@ -50,6 +50,10 @@ ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same tool
   OceanWaves/Sources.lean           wind input, whitecapping, quadruplet transfer, integration
   OceanWaves/ActionBalance.lean     one model step and its theorems
   OceanWaves/Examples.lean          #eval examples
+port-audit/  Z3 checks of h0ffmann/chaceon (Rust port of WAVEWATCH III) at a pinned commit. `just port-audit`
+  chaceon.py                        division rewrite, Fortran intrinsics over IEEE f32, W3SRCE's time step
+  refute.py                         the refutation helpers (proves, report, finish), the same as z3/refute.py
+  README.md                         each check with its chaceon file:line, and what Z3 cannot prove
 ```
 
 ## Build and check

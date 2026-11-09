@@ -42,6 +42,7 @@
 | [`fat-tails/`](fat-tails/README.md) | Taleb's fat-tail diagnostics on the S&P 500, 1950 to 2026; power-law against Gaussian VaR ([paper](papers/fat-tails/metadata.md)) | Python | **Results**: real data, results committed, paper v0 |
 | [`tv-audience/`](tv-audience/README.md) | Forecasting big-show TV audiences as a competition between channels: XGBoost, DNN, Mistral Timestral, joint competitive share model ([paper](papers/tv-audience/metadata.md)) | Python | **Simulated**: synthetic benchmark and paper v0; Timestral arm not run; real-channel test pending |
 | [`crypto-strength/`](crypto-strength/README.md) | 17 crypto networks scored on nine factors, long-term top 10 | Python, CSV | **Results**: sourced scores, partly judgment |
+| [`port-audit/`](port-audit/README.md) | Audit of [chaceon](https://github.com/h0ffmann/chaceon), the Rust port of WAVEWATCH III: the `f32` division rewrite, Fortran intrinsics, `W3SRCE`'s time step | Z3 (Python) | **Proved**: 28 statements, 5 with an expected counterexample; two show the time step can exceed its limiter |
 | [`graphs/triad/`](graphs/triad/README.md) | Network of Musk, Thiel and Karp: companies, deals and ties | Python, JavaScript (graphify) | **Results**: sourced edges, rendered graph |
 | [`pomodoro/`](pomodoro/README.md) | Interval timer for macOS: native dialogs set the period and the beep sound, remembered in `~/.pomodoro` (`just build-mac`) | Zig | **Tool**: builds for Apple Silicon |
 
@@ -270,6 +271,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ├── tv-audience/             TV audience forecasting as a competition between channels (Python, simulated)
 ├── crypto-strength/         a scored map of 17 crypto networks (Python, CSV)
 ├── graphs/triad/            the Musk, Thiel and Karp network (graphify)
+├── port-audit/              Z3 checks of chaceon, the Rust port of WAVEWATCH III
 ├── papers/<slug>/           one paper each: metadata.md, prose/, refs.bib, REFERENCES.md
 ├── format/, tools/, .vale/  Paper Fabric: LaTeX template, refs and STE checks (Gleam), prose rules
 ├── docs/                    paper-fabric.md, the archify diagrams, the logo
