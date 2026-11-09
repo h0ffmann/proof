@@ -28,8 +28,15 @@
           inherit jdk;
         }).overrideAttrs {
           version = z3Version;
-          # nixpkgs' patch makes the pkg-config file absolute; 5.3.3's is relative already.
+          # nixpkgs' patch for the pkg-config file does not apply to 5.3.3. Its z3.pc.cmake.in joins
+          # a prefix with CMAKE_INSTALL_LIBDIR, which Nix makes absolute, so the path gets a '//'
+          # and the fixup check fails. The full directories are used instead.
           patches = [ ];
+          postPatch = ''
+            substituteInPlace z3.pc.cmake.in \
+              --replace-fail "\''${exec_prefix}/@CMAKE_INSTALL_LIBDIR@" "@CMAKE_INSTALL_FULL_LIBDIR@" \
+              --replace-fail "\''${prefix}/@CMAKE_INSTALL_INCLUDEDIR@" "@CMAKE_INSTALL_FULL_INCLUDEDIR@"
+          '';
           src = pkgs.fetchFromGitHub {
             owner = "Z3Prover";
             repo = "z3";
