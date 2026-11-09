@@ -113,10 +113,19 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 
 ## Rules
 
-1. **No `sorry`, `admit` or new `axiom`** in `lean/`, `house-pricing/lean/`,
-   `ocean-waves/lean/` or `cycle/lean/`. Check with
-   `grep -rnE "sorry|admit|^axiom" lean/ContextualBandit house-pricing/lean/HousePricing ocean-waves/lean/OceanWaves cycle/lean/Cycle`.
-   `native_decide` is allowed only in `Examples.lean`.
+1. **Every Lean proof is complete.** A theorem that Lean accepts must really be proved.
+   Lean has three ways to accept a statement without a proof, and none of them is allowed in
+   any Lean project in this repository:
+   - `sorry` and `admit` close any goal and leave a hole in the proof.
+   - `axiom` adds a statement that Lean takes as true without a proof. A wrong axiom lets you
+     prove anything.
+
+   `native_decide` proves a statement by running compiled code, so the proof trusts the
+   compiler and not only Lean's kernel. Use it only in an `Examples.lean` file, for checks on
+   concrete numbers, and never in a file of general theorems.
+
+   Run `scripts/lean-hygiene.sh` (or `just lean-hygiene`) to check. It reads every tracked
+   `.lean` file outside `vendor/`, so a new Lean project needs no change to the script.
 2. **Lean first.** A new decision rule or model goes in Lean (definition plus at
    least a validity theorem), then in Haskell with the same name. Update the
    mapping table in `README.md`.

@@ -76,11 +76,16 @@ crypto-strength:
     python3 crypto-strength/build.py
 
 # Check the Lean proofs (every package) and run the Haskell examples
-check:
+check: lean-hygiene
     cd lean && lake build
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+
+# No sorry, admit or axiom in any Lean file; native_decide only in Examples.lean (AGENTS.md rule 1)
+lean-hygiene:
+    scripts/lean-hygiene.sh --self-test
+    scripts/lean-hygiene.sh
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:
