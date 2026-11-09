@@ -1,5 +1,6 @@
 # check: the checks of AGENTS.md, in three jobs. z3: the specification of the contextual bandit
-# (theorems, examples, the video's invariants) and the language rule, `just z3`. haskell: the port
+# (theorems, examples, the video's invariants) and the language rule, `just z3`, and the PTC-9 noise
+# catalogue of the video script, `just ruido-ia`. haskell: the port
 # builds with -Wall and its spec check matches the Z3 examples. lean: the hygiene script and the
 # proofs of the other experiments (ocean-waves, cycle), which still live in Lean.
 name: check
@@ -29,6 +30,8 @@ jobs:
       - run: pip install z3-solver
       - name: the specification holds (theorems, examples, video), and every file is in English
         run: just z3
+      - name: the video script has no PTC-9 noise (ruido-ia.md, row by row)
+        run: just ruido-ia
 
   haskell:
     runs-on: ubuntu-latest

@@ -98,7 +98,8 @@ the number of hits, and Z3 is asked for a model of "some `h` > 0". The forms tha
 with a citation key or a URL in its sentence is not a hit.
 
 ```sh
-just ruido-ia                          # --self-test, then the check at level leve
+just ruido-ia                          # --self-test, then the check at level leve (also in just check
+                                       # and in the manual check workflow)
 python3 z3/ruido_ia.py --review        # also the rows a person must read, with their sentences
 python3 z3/ruido_ia.py --level estrito # the same tables at another level
 ```

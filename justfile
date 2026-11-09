@@ -75,9 +75,9 @@ render-graph port=port:
 crypto-strength:
     python3 crypto-strength/build.py
 
-# The checks: the Z3 specification (`just z3`), the Lean proofs of the other experiments (and their
+# The checks: the Z3 specification (`just z3`), the PTC-9 noise catalogue (`just ruido-ia`), the Lean proofs of the other experiments (and their
 # hygiene), and the Haskell examples, whose spec check compares with z3/examples.py and z3/video.py
-check: z3 lean-hygiene
+check: z3 ruido-ia lean-hygiene
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
@@ -98,7 +98,6 @@ z3:
     python3 z3/language.py
     python3 z3/ptc.py --self-test
     python3 z3/ptc.py
-    just ruido-ia
 
 # The PTC-9 noise catalogue (references/ruido-ia.md of PTC) on the video script, row by row
 # (z3/ruido_ia.py; `python3 z3/ruido_ia.py --review` lists the rows Z3 cannot decide)

@@ -45,7 +45,7 @@ z3/        the specification of the contextual bandit, in Z3 (python3 + z3-solve
   video.py                          the video script's invariants R1 to R5 (papers/contextual-bandits/script/)
   language.py                       the language rule: every file in English unless its path carries pt-BR
   ptc.py                            the PTC rules of the video script (`--review` lists what Z3 cannot decide)
-  ruido_ia.py                       the PTC-9 noise catalogue (ruido-ia.md), row by row (`just ruido-ia`)
+  ruido_ia.py                       the PTC-9 noise catalogue (ruido-ia.md), row by row (`just ruido-ia`, in `just check`)
 docs/decisions/0001-z3-over-lean.md  why the contextual bandit left Lean for Z3
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
