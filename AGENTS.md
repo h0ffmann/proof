@@ -45,6 +45,7 @@ z3/        the specification of the contextual bandit, in Z3 (python3 + z3-solve
   video.py                          the video script's invariants R1 to R5 (papers/contextual-bandits/script/)
   language.py                       the language rule: every file in English unless its path carries pt-BR
   ptc.py                            the PTC rules of the video script (`--review` lists what Z3 cannot decide)
+  ruido_ia.py                       the PTC-9 noise catalogue (ruido-ia.md), row by row (`just ruido-ia`)
 docs/decisions/0001-z3-over-lean.md  why the contextual bandit left Lean for Z3
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
@@ -184,7 +185,7 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
   with the same four parts; `just script` builds `pdf/contextual-bandits-script-pt-BR.pdf`.
   Its prose follows PTC (português técnico controlado), level `leve`: `python3 z3/ptc.py` must give
   no `FAIL`, and `python3 z3/ptc.py --review` lists the sentences to read for the rules Z3 cannot
-  decide (`z3/README.md`).
+  decide (`z3/README.md`). `just ruido-ia` checks the PTC-9 noise catalogue the same way.
 - **Fetch before you cite.** Every `refs.bib` key needs a `verified` or `partial` row in
   `REFERENCES.md`; `just paper-check` fails otherwise. Never cite from memory.
 - Do not commit PDFs. `just paper` builds them; `.github/workflows/pdf.yml` runs only by hand.

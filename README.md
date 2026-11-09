@@ -97,6 +97,7 @@ z3/                            Python 3 + z3-solver
   video.py                          the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
   language.py                       the language rule: every file in English unless its path carries pt-BR
   ptc.py                            the PTC rules of the video script's prose
+  ruido_ia.py                       the PTC-9 noise catalogue (ruido-ia.md), row by row
 haskell/                       GHC, only base + containers
   src/ContextualBandit.hs           the same interface and rules, plus a pure RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor

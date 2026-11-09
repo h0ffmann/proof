@@ -98,6 +98,13 @@ z3:
     python3 z3/language.py
     python3 z3/ptc.py --self-test
     python3 z3/ptc.py
+    just ruido-ia
+
+# The PTC-9 noise catalogue (references/ruido-ia.md of PTC) on the video script, row by row
+# (z3/ruido_ia.py; `python3 z3/ruido_ia.py --review` lists the rows Z3 cannot decide)
+ruido-ia:
+    python3 z3/ruido_ia.py --self-test
+    python3 z3/ruido_ia.py
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:

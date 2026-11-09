@@ -85,3 +85,54 @@ person must read for each one (the `REVIEW` list in `ptc.py`):
 | PTC-2, no gerund that joins two clauses | recommended | a gerund after `estar` is fine; only the meaning tells them apart | a gerund after a comma |
 | PTC-3, one meaning per modal, no hedge | recommended | `deve` is obligation or probability, `pode` permission or capacity | sentences with a modal |
 | PTC-5, adjective after the noun | recommended | needs a part-of-speech tag | `um simples`, `um único`, `a nova`… before a noun |
+
+## The PTC-9 noise catalogue
+
+`ruido_ia.py` checks the catalogue of PTC-9 itself, `references/ruido-ia.md` of
+[kayquer/portugues-tecnico-controlado](https://github.com/kayquer/portugues-tecnico-controlado/blob/main/references/ruido-ia.md),
+on the same sentences as `ptc.py` (it uses its reader). Each row of a table of the catalogue is one
+row of `CATALOGUE`. For a row that Z3 decides, every sentence gets a constant `h[row][sentence]`,
+the number of hits, and Z3 is asked for a model of "some `h` > 0". The forms that the catalogue's
+"O que fica" keeps (`estimador robusto`, `teorema fundamental`, `estado fundamental`,
+`proxy transparente`, and `Contamos com vocês` at `leve`) are not hits, and a vague attribution
+with a citation key or a URL in its sentence is not a hit.
+
+```sh
+just ruido-ia                          # --self-test, then the check at level leve
+python3 z3/ruido_ia.py --review        # also the rows a person must read, with their sentences
+python3 z3/ruido_ia.py --level estrito # the same tables at another level
+```
+
+| Table | At `leve` | Rows Z3 decides | Result on the script |
+|---|---|---|---|
+| Sempre sai | required (`FAIL`) | 10 | unsat |
+| Enchimento | recommended (`NOTE`) | 9 | unsat |
+| Evasão de cópula | off (`OFF`, shown only) | 3 | unsat |
+| Inflação | off (`OFF`, shown only) | 4 | unsat |
+
+The script also gives `unsat` for all four tables at `estrito`.
+
+### Rows that Z3 cannot decide
+
+Their "Evite" cell has a qualifier that is meaning, not text. `--review` lists the sentences that
+carry the phrase:
+
+| Table | Row | Why Z3 cannot decide it | Sentences on the script |
+|---|---|---|---|
+| Sempre sai | `Vamos` + a verb that the table does not name | whether the opening delays the subject is meaning; 1st person is allowed at `leve` | `01-cmab.md:59`, `03-rsi.md:25`, `03-rsi.md:61` |
+| Enchimento | `além disso` / `ademais` / `outrossim` inside a sentence | the connector may add a real second item | none |
+| Enchimento | `nesse sentido` / `dessa forma` / `desse modo` (no causal relation) | "O que fica" keeps a real consequence; causality is meaning | none |
+| Evasão de cópula | `apresenta` (in the sense of `tem`) | `apresentar erro` is another sense | none |
+| Evasão de cópula | `representa` (in the sense of `é`) | a symbol that stands for a thing is not a copula | none |
+| Inflação | `robusto` (vague praise) | `estimador robusto` is a term | none |
+| Inflação | `abrangente` / `completo` (without the scope) | out only when the text does not say what it covers | `03-rsi.md:103`, `03-rsi.md:126` |
+| Inflação | `transparente` / `fluido` | `proxy transparente` is a term, `fluido` can be physics | none |
+| Inflação | `crucial` / `fundamental` / `essencial` / `primordial` (as emphasis) | `teorema fundamental` is a term | none |
+| Inflação | `transformador` | a transformer is a thing | none |
+| Inflação | `ecossistema` (metaphor) | an ecosystem in biology is literal | none |
+| Inflação | `não é só X, é Y` (made contrast) | made only if nobody said it was only X | `01-cmab.md:101` |
+
+The verb row `alavancar` / `potencializar` / `impulsionar` is decided on the verb forms only:
+`alavanca` is also the noun, the lever of a bandit, which the script uses. The last section of the
+catalogue, "O que não veio da deai-text", adds no row: the rotation of synonyms is PTC-6 and the
+chained gerund is PTC-2, both in `ptc.py --review`.
