@@ -13,7 +13,7 @@ pace and order before the Manim takes and the narration exist, not the final vid
 
 ## Run
 
-From the repository root:
+From the repository root (or `just sp-preview ARGS`; the skill `sp-preview` is the English alias):
 
 ```bash
 python3 .claude/skills/roteiro-preview/preview.py papers/contextual-bandits/script/prose-pt-BR
