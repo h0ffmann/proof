@@ -211,7 +211,7 @@ the repository:
   `manim` (Manim Community 0.21, ffmpeg and LaTeX for the 3Blue1Brown-style takes of the video
   script), and `check`, which joins the shells `just check` needs: `nix develop .#check --command just
   check`. The default shell (the paper toolchain, Gleam) and `md` are in `flake.nix`.
-- Outside Nix: the voice of the video script (`papers/contextual-bandits/script/voice/`, XTTS and
+- Outside Nix: the voice of the video script (`contextual-bandits/script/voice/`, XTTS and
   OpenVoice on PyTorch) has its own `requirements.txt`; nixpkgs does not package OpenVoice.
 
 ## Rules
