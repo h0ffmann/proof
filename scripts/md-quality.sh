@@ -16,7 +16,7 @@ cd "$(git rev-parse --show-toplevel)"
 # Not checked by any of the three: other people's text (vendored tools).
 skip='^(vendor/|LICENSES/)'
 # The paper's sources are pandoc's Markdown, and `tools/fabric ste-check` is their check.
-paper='^papers/[^/]+/(prose[^/]*/|metadata\.md$)'
+paper='^papers/[^/]+/([^/]+/)?(prose[^/]*/|metadata\.md$)'
 # Vale's rules are for English that this repository writes, not for Portuguese.
 not_prose='(pt-BR)'
 

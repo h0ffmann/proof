@@ -1,6 +1,6 @@
 ---
 title: "Contextual bandits as a verified specification"
-subtitle: "A Lean 4 model of the decision layer, ported to Haskell"
+subtitle: "A Z3 model of the decision layer, ported to Haskell"
 author:
   - name: Matheus Hoffmann
     orcid: 0009-0009-1056-7661
@@ -9,7 +9,7 @@ version: "v0 (draft, not peer reviewed)"
 keywords:
   - contextual bandits
   - LinUCB
-  - Lean 4
+  - Z3
   - formal specification
   - A/B testing
 abstract: |

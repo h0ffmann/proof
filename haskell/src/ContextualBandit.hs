@@ -1,5 +1,5 @@
--- | Contextual bandit interface. This is a direct port of the Lean spec in
--- ../lean/ContextualBandit/{Interface,Policies}.lean.
+-- | Contextual bandit interface. This is a direct port of the Z3 spec in
+-- ../z3/bandit.py; ../z3/theorems.py says what Z3 proves about it.
 --
 -- There are two layers:
 --   * 'RewardModel': the probabilistic part (belief, update, estimate, sample)
@@ -7,10 +7,10 @@
 --
 -- It depends only on GHC's @base@ and @containers@.
 module ContextualBandit
-  ( -- * Interface (mirrors Interface.lean)
+  ( -- * Interface (mirrors the two layers of z3/bandit.py)
     Arm, Obs (..), Estimate (..), RewardModel (..), Decision, DecisionRule
   , posterior, policy
-    -- * Decision rules (mirror Policies.lean)
+    -- * Decision rules (mirror the rules of z3/bandit.py)
   , argmax, point, uniform, mix, ucbScore
   , greedy, ucb, epsGreedy
     -- * Thompson sampling (needs the model's posterior sampler)
@@ -28,7 +28,7 @@ import Data.Word (Word64)
 ------------------------------------------------------------------------
 -- Interface
 
--- | Arms are @0 .. k-1@ (Lean: @Fin K@).
+-- | Arms are @0 .. k-1@ (Z3: a Python index @0 .. K-1@).
 type Arm = Int
 
 data Obs c = Obs { obsContext :: c, obsArm :: Arm, obsReward :: Double }
@@ -50,16 +50,16 @@ data RewardModel c b = RewardModel
   , sample   :: b -> c -> Arm -> Rand Double
   }
 
--- | Probability of each arm, indexed by arm (Lean: @Arm K → Rat@).
+-- | Probability of each arm, indexed by arm (Z3: one real per arm).
 type Decision = [Double]
 
--- | Lean: @(Arm K → Estimate) → Decision K@. It never sees context or history.
+-- | Z3: a function from the list of estimates to the list of probabilities. It never sees context or history.
 type DecisionRule = [Estimate] -> Decision
 
 posterior :: RewardModel c b -> [Obs c] -> b
 posterior m = foldl' (update m) (prior m)
 
--- | @history -> context -> distribution over arms@ (Lean: @CB.policy@).
+-- | @history -> context -> distribution over arms@ (Z3: @policy@ in examples.py).
 policy :: RewardModel c b -> DecisionRule -> [Obs c] -> c -> Decision
 policy m rule h c = rule [estimate m b c a | a <- [0 .. numArms m - 1]]
   where b = posterior m h
@@ -67,7 +67,7 @@ policy m rule h c = rule [estimate m b c a | a <- [0 .. numArms m - 1]]
 ------------------------------------------------------------------------
 -- Decision rules
 
--- | First index with the largest score (same tie-break as Lean's @argmaxFrom@).
+-- | First index with the largest score (same tie-break as Z3's @argmax_first@).
 argmax :: [Double] -> Arm
 argmax [] = error "argmax: no arms"
 argmax (x : xs) = go 0 x 1 xs

@@ -1,0 +1,7 @@
+# The voice of the script. Python 3.9 to 3.11 (OpenVoice asks for 3.9 in its README).
+# The base, in Brazilian Portuguese:
+coqui-tts>=0.24          # XTTS v2, language="pt"
+# The tone colour converter:
+git+https://github.com/myshell-ai/OpenVoice.git
+torch
+soundfile

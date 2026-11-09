@@ -11,6 +11,13 @@ port := "8000"
 # graphify (https://graphify.com), pinned: `pip install graphifyy==0.9.100`. Override with GRAPHIFY=...
 graphify := env_var_or_default("GRAPHIFY", "graphify")
 
+# One file per feature, so that pull requests do not collide here (AGENTS.md, "Composable PRs").
+# A feature keeps its recipes in just/<feature>.just and its checks in checks/<feature>.sh;
+# `just check` and .github/workflows/check.yml find the checks without a list.
+import? 'just/contextual-bandits.just'
+import? 'just/loc.just'
+import? 'just/port-audit.just'
+
 # List recipes
 default:
     @just --list
@@ -75,12 +82,18 @@ render-graph port=port:
 crypto-strength:
     python3 crypto-strength/build.py
 
-# Check the Lean proofs (every package) and run the Haskell examples
+# The checks: the Lean proofs of the other experiments (and their hygiene), the Haskell examples,
+# whose spec check compares with z3/examples.py and z3/video.py, and every checks/<feature>.sh
+# (the Z3 specification of the contextual bandit is checks/contextual-bandits.sh, `just z3`)
 check: lean-hygiene
-    cd lean && lake build
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
+    scripts/checks.sh
+
+# Run every checks/<feature>.sh, or only the ones named (`just checks port-audit`)
+checks *names:
+    scripts/checks.sh {{names}}
 
 # No sorry, admit or axiom in any Lean file; native_decide only in Examples.lean (AGENTS.md rule 1)
 lean-hygiene:
@@ -129,8 +142,8 @@ _pdf slug dir out:
 
 # Build the papers, then check that every cited reference was fetched and logged (REFERENCES.md)
 # and that each STE text and pt-BR translation keeps its citations, quotations and numbers.
-paper-check: paper
-    tools/fabric refs-check papers/*/refs.bib
+paper-check: paper script
+    tools/fabric refs-check papers/*/refs.bib papers/*/*/refs.bib
     for p in papers/*/prose-ste; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check "${p%/prose-ste}"; done
     for p in papers/*/prose-pt-BR; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check --translation "${p%/prose-pt-BR}"; done
 
