@@ -245,6 +245,14 @@ CLEAN = GOOD + ['lean("E/Examples.lean"). lean_examples("E/Examples.lean"). '
                 'cabal_dep("x.cabal", "contextual-bandit"). cabal_dep("x.cabal", "liquidhaskell").',
                 'workflow_trigger("w.yml", "workflow_dispatch").',
                 'branch("add-invariants-lp"). branch_part("add-invariants-lp", "invariants").']
+# A file that makes the tree need a toolchain, a nixpkgs attribute that pins it, the toolchain.
+NEEDS = [('file("house-pricing/rust/Cargo.toml").', "cargo", "rust"),
+         ('file("tools/gleam.toml").', "gleam", "gleam"),
+         ('file("vendor/archify/package.json").', "nodejs", "node"),
+         ('file("pomodoro/pomodoro.zig").', "zig", "zig"),
+         ('file(".claude/skills/roteiro-preview/preview.py").', "ffmpeg-headless", "ffmpeg"),
+         ('lean_package("cycle/lean").', "lean4", "lean")]
+
 
 
 def self_test():
@@ -255,9 +263,16 @@ def self_test():
     atoms = solve(CLEAN)
     if any(a.startswith(("failing(", "stale_waiver(")) for a in atoms):
         sys.exit(f"invariants: self-test: clean facts failed: {atoms}")
+    # A tool the tree needs is a gap until a Nix shell names its package.
+    for need, pkg, tool in NEEDS:
+        if "gap(toolchain_not_in_nix," + tool + ")" not in solve(GOOD + [need]):
+            sys.exit(f"invariants: self-test: {need} gave no gap for {tool}")
+        if "gap(toolchain_not_in_nix," + tool + ")" in solve(GOOD + [need, f'nix_package("{pkg}").']):
+            sys.exit(f"invariants: self-test: nix_package({pkg}) did not close the gap of {tool}")
     if not any(a.startswith("stale_waiver(") for a in solve(GOOD[:3])):
         sys.exit("invariants: self-test: a waiver that excuses nothing passed")
-    print(f"invariants: self-test passed ({len(BAD)} bad cases, 1 clean, 1 stale waiver)")
+    print(f"invariants: self-test passed ({len(BAD)} bad cases, 1 clean, 1 stale waiver, "
+          f"{len(NEEDS)} toolchains)")
 
 
 def main():
