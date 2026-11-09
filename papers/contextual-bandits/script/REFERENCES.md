@@ -31,4 +31,4 @@ could not be confirmed), `unverified` (not fetched; must not be cited).
 | rhasspy2023piper | verified | the folder at tag v1.0.0, 2026-11-09 | `pt/pt_BR/faber/medium` exists; the other pt-BR voices were not listed |
 | manim | verified | the repository, 2026-11-09 | the Manim Community fork of Grant Sanderson's library; the owner gave the address |
 | hoffmann2026note | verified | the file in this repository, 2026-11-09 | sections 3 and 4 and the sources 1 to 5 of the note; the Netflix facts of the script are the note's |
-| hoffmann2026proof | verified | this repository, 2026-11-09 | the code the script points to: `z3/video.py`, `z3/theorems.py`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs` |
+| hoffmann2026proof | verified | this repository, 2026-11-09 | the code the script points to: `z3-scala/src/main/scala/Video.scala`, `z3-scala/src/main/scala/Theorems.scala`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs` |

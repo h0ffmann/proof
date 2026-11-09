@@ -17,7 +17,7 @@ mudar. Cada exigência tem um lugar no código que vem a seguir.
 **Tela.** Três círculos concêntricos: melhoria, automelhoria, automelhoria recursiva. Cada palavra
 acende um anel.
 
-**Código.** Z3, `z3/video.py`, invariante R4: `outer` e `inner_eps`, a mesma `eps_greedy` nos
+**Código.** Z3, `z3-scala/src/main/scala/Video.scala`, invariante R4: `outer` e `innerEps`, a mesma `epsGreedy` nos
 dois níveis; `rsi_valid` e `outer_explores`. Haskell: `outer` e `inner` em `haskell/src/Video.hs`.
 
 ## O menor ciclo recursivo que cabe numa tela (21:30 a 24:00)
@@ -109,7 +109,7 @@ chute.
 **Tela.** Um aviso simples: "recompensa de um passo" e "recompensa fácil de enganar", com o lema
 `ucb_gap` ao lado.
 
-**Código.** `z3/theorems.py`, as premissas `calibrated` e `ucb_gap`. ⚠ A frase sobre
+**Código.** `z3-scala/src/main/scala/Theorems.scala`, as premissas `calibrated` e `ucb_gap`. ⚠ A frase sobre
 enganar a recompensa é um resumo meu; o roteiro não cita um trabalho específico de *reward
 hacking*.
 
@@ -131,5 +131,5 @@ creditem.
 créditos: 3Blue1Brown · Manim Community · Claude Code (Sonnet 5.5, Fable 5.1) · custo total `[a
 confirmar: preencher no fim da produção, em dólares e em horas]` · "prompts: PROMPTS.md".
 
-**Código.** `z3/video.py`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`,
+**Código.** `z3-scala/src/main/scala/Video.scala`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`,
 `haskell/app/Video.hs`, `results.md` e `PROMPTS.md`. As animações: `animation/`.

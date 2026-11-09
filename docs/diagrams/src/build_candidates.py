@@ -111,7 +111,7 @@ T = {
     "c.rsi.1a": ("200 episodes: ε = 0.5 selected 168 times, gain 0.099", "200 episódios: ε = 0,5 escolhido 168 vezes, ganho 0,099"),
     "c.rsi.1b": ("ε = 0.01 selected 9 times, gain 0.057", "ε = 0,01 escolhido 9 vezes, ganho 0,057"),
     "c.rsi.2t": ("Same rule at both levels", "A mesma regra nos dois níveis"),
-    "c.rsi.2a": ("Z3: rsi_valid, outer_explores (z3/video.py, R4)", "Z3: rsi_valid, outer_explores (z3/video.py, R4)"),
+    "c.rsi.2a": ("Z3: rsi_valid, outer_explores (z3-scala Video.scala, R4)", "Z3: rsi_valid, outer_explores (z3-scala Video.scala, R4)"),
     "c.rsi.2b": ("In real systems the arms are edits to the agent itself", "Em sistemas reais, os braços são mudanças no próprio agente"),
 }
 

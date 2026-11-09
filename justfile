@@ -16,7 +16,9 @@ graphify := env_var_or_default("GRAPHIFY", "graphify")
 # `just check` and .github/workflows/check.yml find the checks without a list.
 import? 'just/contextual-bandits.just'
 import? 'just/loc.just'
+import? 'just/leo.just'
 import? 'just/port-audit.just'
+import? 'just/triangle-grids.just'
 
 # List recipes
 default:
@@ -83,7 +85,7 @@ crypto-strength:
     python3 crypto-strength/build.py
 
 # The checks: the Lean proofs of the other experiments (and their hygiene), the Haskell examples,
-# whose spec check compares with z3/examples.py and z3/video.py, and every checks/<feature>.sh
+# whose spec check compares with z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala, and every checks/<feature>.sh
 # (the Z3 specification of the contextual bandit is checks/contextual-bandits.sh, `just z3`)
 check: lean-hygiene
     cd ocean-waves/lean && lake build

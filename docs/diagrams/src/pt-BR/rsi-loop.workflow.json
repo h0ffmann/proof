@@ -560,7 +560,7 @@
       "dot": "violet",
       "title": "A mesma regra nos dois níveis",
       "items": [
-        "Z3: rsi_valid, outer_explores (z3/video.py, R4)",
+        "Z3: rsi_valid, outer_explores (z3-scala Video.scala, R4)",
         "Em sistemas reais, os braços são mudanças no próprio agente"
       ]
     }

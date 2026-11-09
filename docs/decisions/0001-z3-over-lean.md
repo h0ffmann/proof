@@ -55,3 +55,14 @@ What is lost, and how it is paid for:
   function) and all of Video.lean (R1 to R5 and the examples) are in `z3/`, 100 statements.
 
 The Haskell port is unchanged in code; its comments and spec check now point to `z3/`.
+
+## Update, 2026-11-09: the Z3 code is Scala
+
+The same day, the owner asked that the Z3 checks leave Python for a Scala application whose one
+dependency is Z3's official Java binding: "convert z3-solver, to scala application, using only ad
+dependency the this java library (latest)". `z3/` became `z3-scala/` (Scala 3.9.0, Z3 5.3.3), with
+the same statements and the same output, and the Python files and their `z3-solver` requirements
+were deleted. The names above map one to one: `bandit.py` is `src/main/scala/Bandit.scala`,
+`theorems.py` is `Theorems.scala`, and so on; `refute.py` is `Z.scala`. Function names moved to
+camelCase (`argmax_first` is `argmaxFirst`); the statement names did not change.
+"One toolchain" now means a JDK and sbt; `z3-scala/z3.sh` fetches Z3.

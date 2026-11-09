@@ -215,7 +215,7 @@ rsiLoop = do
     | (i, e) <- zip [0 ..] epsilons ]
 
 ------------------------------------------------------------------------
--- The tabular model of z3/examples.py, for any context:
+-- The tabular model of z3-scala/src/main/scala/Examples.scala, for any context:
 -- mean = sum / count, width = 1 / (count + 1).
 
 type Tab c = M.Map (c, Arm) (Double, Int)   -- ^ (sum of rewards, count) per (context, arm)
