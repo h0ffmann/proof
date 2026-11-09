@@ -58,6 +58,7 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
   app/Main.hs                       spec check against z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala + simulations
   src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
   app/Video.hs                      the video's experiments; writes papers/contextual-bandits/script/results.md
+  LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
   OceanWaves/Bisection.lean         verified bisection, wavenumber kernel
@@ -83,6 +84,7 @@ cd cycle/lean && lake build       # the same for the cycle package
 
 # Haskell (GHC >= 9.4)
 cd haskell && cabal run examples
+just liquid                       # LiquidHaskell + Z3 on haskell/src (nix develop .#liquidhaskell); SAFE per module
 # or, without cabal:
 cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 ```
@@ -196,6 +198,9 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
    working.
 6. **Haskell stays dependency-light**: `base` and `containers` only, unless agreed.
    Build with `-Wall` and leave no warnings.
+   LiquidHaskell refinements live in `{-@ ... @-}` comments, so they add no dependency;
+   `just liquid` must say `SAFE` for every module it checks. A new `ignore`, `assume` or `lazy`
+   gets a row in `haskell/LIQUIDHASKELL.md` that says why, or the check fails.
 7. **Exact vs float**: Z3 works over the reals and exact rationals, Haskell uses `Double`
    (and `Rational` in `Video.hs`). Don't claim a Z3 statement covers floating-point behaviour.
 

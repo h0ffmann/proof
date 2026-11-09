@@ -122,6 +122,7 @@ haskell/                       GHC, only base + containers
   src/Video.hs                      port of z3-scala/src/main/scala/Video.scala; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
   app/Main.hs                       4 runnable examples and the spec check
   app/Video.hs                      the experiments of the video script (cabal run video)
+  LIQUIDHASKELL.md                  the refinement types LiquidHaskell checks (`just liquid`), and what they trust
 ```
 
 Run:
@@ -285,6 +286,7 @@ To publish them, enable GitHub Pages for the `docs/` folder: the index is
 ```console
 just check            # every checks/<feature>.sh (`just z3` among them), the other Lean packages, the Haskell spec check
 just z3               # the Z3 specification of the contextual bandit, and the language rule
+just liquid           # LiquidHaskell: the refinement types of the Haskell port (nix develop .#liquidhaskell)
 just house-pricing    # fetch data, train, lake build, Rust/Lean parity
 just paper [slug]     # build every paper, or one, to pdf/<slug>.pdf (inside `nix develop`)
 just paper-check      # papers + reference log + STE/pt-BR checks
