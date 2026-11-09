@@ -75,6 +75,14 @@ render-graph port=port:
 crypto-strength:
     python3 crypto-strength/build.py
 
+# Lines of code per language, top 5: rewrite the table between the loc markers in README.md
+loc:
+    python3 scripts/loc.py
+
+# Fail if the lines-of-code table in README.md is out of date
+loc-check:
+    python3 scripts/loc.py --check
+
 # The checks: the Z3 specification (`just z3`), the Lean proofs of the other experiments (and their
 # hygiene), and the Haskell examples, whose spec check compares with z3/examples.py and z3/video.py
 check: z3 lean-hygiene
