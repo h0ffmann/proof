@@ -138,6 +138,6 @@ separar o que este vídeo mostra, a parte determinística e executável, do que 
 **Tela.** Tabela de três linhas: contexto, alocação, decisão; coluna A/B e coluna CMAB. Depois, a
 tabela de teoremas do README, uma linha por vez.
 
-**Código.** A tabela é a seção 3 da nota `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md`
+**Código.** A tabela é o parágrafo 2.6 da nota `contextual-bandits/README.pt-BR.md`
 [@hoffmann2026note]. Os teoremas estão em `z3-scala/src/main/scala/bandit/domain/Theorems.scala`, provados para até cinco braços e
 todo valor real das estimativas. O Python do Manim não prova nada; ele só desenha o que o Z3 provou.

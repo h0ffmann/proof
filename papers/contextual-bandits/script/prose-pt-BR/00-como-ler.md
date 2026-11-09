@@ -4,7 +4,7 @@ Padrão de escrita: português técnico controlado (PTC, kayquer/portugues-tecni
 leve, destinatário humano. A fala é em primeira pessoa, porque o vídeo é uma explicação minha. As
 regras PTC-1 (quem faz, aparece), PTC-7 (número, data e unidade), PTC-8 (ortografia de 1990) e
 PTC-9 (sem ruído de texto gerado) valem em toda linha. Frase com no máximo 35 palavras. A nota
-vizinha deste roteiro é `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md`, na raiz do repositório
+vizinha deste roteiro é `contextual-bandits/README.pt-BR.md`, a página única do bandit
 [@hoffmann2026note].
 
 Cada cena é **um take**: um arquivo de áudio (`voice/narrate.py` escreve `scene-N.M.wav`), um arquivo

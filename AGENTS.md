@@ -55,6 +55,7 @@ z3-scala/  every Z3 check, in Scala 3 on Z3's Java binding and Kyo. `z3-scala/z3
     leo/                            higher-order statements proved by Leo-III, a TPTP THF prover (`just leo`); problems in z3-scala/leo/
     */application/                  each context's use cases: read the inputs, call the domain, print the report
     app/                            Cli.scala (which word runs which check, exit codes) and Main.scala (the Z3 version check)
+contextual-bandits/  README.md (+ README.pt-BR.md): the one page for the bandit, with an index of its files
 docs/decisions/0001-z3-over-lean.md  why the contextual bandit left Lean for Z3
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
@@ -221,7 +222,7 @@ the repository:
    `sbt "scalafixAll --check"` keep the format and forbid `return` and `null`.
 2. **Z3 first.** A new decision rule or model goes in `z3-scala/src/main/scala/bandit/domain/Bandit.scala` (definition plus at
    least a validity statement in `Theorems.scala`), then in Haskell with the same name. Update the
-   mapping table in `README.md`. Lean is not used for the contextual bandit any more
+   interface and theorem tables in `contextual-bandits/README.md` (and its pt-BR twin). Lean is not used for the contextual bandit any more
    (`docs/decisions/0001-z3-over-lean.md`).
 3. **Keep the mirror exact.** Tie-breaking (argmax keeps the *first* maximum),
    argument order and the meaning of `width` must match between Z3 and Haskell.
@@ -271,9 +272,12 @@ the repository:
   (`pip install graphifyy==0.9.100`). Edit the `nodes.csv` and `edges.csv` there; every edge
   needs a source URL. `just graph` builds `out/` (not committed), `just render-graph` serves it.
 
-- `MULTI_ARMED_CONTEXTUAL_BANDIT.md` is written in ASD-STE100 (Simplified
-  Technical English). `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md` follows the
-  piabrota/gramatico rules (level `smart-note + descritivo`). Keep the two in sync.
+- `contextual-bandits/README.md` is the one page for the contextual bandit: the idea, an index
+  of every bandit file, the commands, the interface, the theorems, the Haskell port and the note
+  for the video. A new bandit file gets a row in its "Files" table; the bandit's details go there,
+  not in the root `README.md`. The code stays where it is (`z3-scala/`, `haskell/`). The page is
+  written in ASD-STE100 (Simplified Technical English). `contextual-bandits/README.pt-BR.md`
+  follows the gramatico rules (level `smart-note + descritivo`). Keep the two in sync.
   Cite only sources that you have opened. Mark unchecked claims with ⚠ in pt-BR.
 
 - `crypto-strength/` scores crypto networks. Edit `data/scores.csv` (every row needs
