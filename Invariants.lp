@@ -22,7 +22,9 @@
 %   commit_url(C, A, B)          C has a link to github.com/A/B
 %   branch(B), branch_part(B, W) the branch and each word of its name
 %   flake_input_locked(I)        flake.lock pins input I to a revision
-%   nix_package(P)               flake.nix names pkgs.P
+%   nix_package(P)               flake.nix, or a nix/*.nix shell it discovers, names pkgs.P
+%                                (also P without its version: jdk25 gives jdk)
+%   nix_shells_discovered        flake.nix makes a shell of each nix/<name>.nix
 %   just_import(F), just_file(F) the justfile imports F; F is a tracked just/*.just
 %   check_script(F), strict(F)   F is checks/*.sh; F sets -euo pipefail
 %   workflow_trigger(W, T)       workflow W runs on T (triggers in comments are not counted)
@@ -41,6 +43,8 @@ session_word("claude"). session_word("session"). session_word("thread"). session
 lean_hole(sorry). lean_hole(admit). lean_hole(axiom).
 
 haskell_dep_allowed("base"). haskell_dep_allowed("containers").
+% LiquidHaskell checks refinements written in comments; its plugin is allowed in a build.
+haskell_dep_allowed("liquidhaskell"). haskell_dep_allowed("liquid-prelude"). haskell_dep_allowed("liquid-base").
 haskell_dep_allowed(N) :- cabal_package(N).
 
 % ── 1. Composable pull requests ─────────────────────────────────────────
@@ -74,9 +78,16 @@ needs(z3) :- file("z3-scala/build.sbt").
 needs(lean) :- lean_package(_).
 needs(clingo).
 in_nix(ghc) :- nix_package("ghc").
+in_nix(ghc) :- nix_package("haskellPackages").
+in_nix(ghc) :- nix_package("haskell").
 in_nix(jdk) :- nix_package("jdk").
-in_nix(jdk) :- nix_package("jdk21").
+in_nix(jdk) :- nix_package("openjdk").
+in_nix(jdk) :- nix_package("temurin").
+in_nix(jdk) :- nix_package("zulu").
 in_nix(scala) :- nix_package("sbt").
+in_nix(scala) :- nix_package("scala").
+in_nix(scala) :- nix_package("scala_3").
+in_nix(scala) :- nix_package("scala-cli").
 in_nix(z3) :- nix_package("z3").
 in_nix(lean) :- nix_package("elan").
 in_nix(clingo) :- nix_package("clingo").

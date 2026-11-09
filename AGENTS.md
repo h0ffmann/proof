@@ -139,7 +139,8 @@ the root with a locked input, complete Lean proofs, Haskell on `base` and `conta
 by hand only, no PDF committed. `scripts/invariants.py` reads the tree into facts and solves them;
 `checks/invariants.sh` (`just invariants`, in `just check`) fails on a violation that is not
 waived, and on a waiver that excuses nothing. A `gap` is a rule the tree does not keep yet (a
-toolchain that Nix does not pin); it prints but does not fail. A new rule goes in
+toolchain that Nix does not pin, in `flake.nix` or in a `nix/<name>.nix` shell that the flake
+discovers); it prints but does not fail. clingo's own shell is `nix/invariants.nix`. A new rule goes in
 `Invariants.lp`, with a bad case in the self-test of `scripts/invariants.py`.
 
 ## Language (hard rule)

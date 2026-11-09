@@ -111,8 +111,19 @@ def facts():
             if node.get("locked", {}).get("rev") or node.get("locked", {}).get("narHash"):
                 out.append(f"flake_input_locked({q(name)}).")
     if "flake.nix" in fs:
-        nix = "\n".join(l.split("#", 1)[0] for l in read("flake.nix").splitlines())
-        for p in sorted(set(re.findall(r"\bpkgs\.([A-Za-z0-9_-]+)", nix))):
+        flake = uncomment(read("flake.nix"))
+        sources = [flake]
+        # A shell in nix/<name>.nix counts once flake.nix turns each such file into a shell.
+        if re.search(r"readDir\s+\./nix", flake):
+            out.append("nix_shells_discovered.")
+            sources += [uncomment(read(f)) for f in files if re.fullmatch(r"nix/[^/]+\.nix", f)]
+        names = set()
+        for text in sources:
+            for p in re.findall(r"\bpkgs\.([A-Za-z0-9_-]+)", text):
+                names.add(p)
+                # jdk25, temurin-bin-21, z3_4_13: the tool without its version.
+                names.add(re.sub(r"(-bin)?([-_]?\d+)+$", "", p))
+        for p in sorted(names):
             out.append(f"nix_package({q(p)}).")
 
     imports = re.findall(r"^\s*import\??\s+['\"]([^'\"]+)['\"]", read("justfile"), re.M) \
@@ -144,6 +155,10 @@ def facts():
                     if name:
                         out.append(f"cabal_dep({q(f)}, {q(name)}).")
     return out
+
+
+def uncomment(nix):
+    return "\n".join(l.split("#", 1)[0] for l in nix.splitlines())
 
 
 def triggers(text):
@@ -227,7 +242,7 @@ CLEAN = GOOD + ['lean("E/Examples.lean"). lean_examples("E/Examples.lean"). '
                 'lean_token("E/Examples.lean", 1, native_decide).',
                 'commit("ok"). commit_pair("ok", "h0ffmann", "proof"). commit_pair("ok", "z3-scala", "z3.sh").',
                 'cabal_package("contextual-bandit"). cabal_dep("x.cabal", "base"). '
-                'cabal_dep("x.cabal", "contextual-bandit").',
+                'cabal_dep("x.cabal", "contextual-bandit"). cabal_dep("x.cabal", "liquidhaskell").',
                 'workflow_trigger("w.yml", "workflow_dispatch").',
                 'branch("add-invariants-lp"). branch_part("add-invariants-lp", "invariants").']
 

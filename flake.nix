@@ -7,8 +7,7 @@
   outputs = { paper, ... }: {
     # default: pandoc, pandoc-crossref, XeLaTeX, pdfLaTeX and just (the paper lab), plus Gleam on
     # Erlang for tools/ (refs-check, ste-check). md: the three Markdown analysers of
-    # `just md-quality`. invariants: clingo for Invariants.lp. Everything comes from the paper lab's
-    # nixpkgs, so flake.lock pins it all.
+    # `just md-quality`. Everything comes from the paper lab's nixpkgs, so flake.lock pins it all.
     devShells = builtins.mapAttrs
       (system: shells:
         let pkgs = paper.inputs.nixpkgs.legacyPackages.${system}; in {
@@ -17,8 +16,6 @@
             packages = [ pkgs.gleam pkgs.beamPackages.erlang pkgs.beamPackages.rebar3 ];
           };
           md = pkgs.mkShell { packages = [ pkgs.markdownlint-cli2 pkgs.vale pkgs.lychee ]; };
-          # invariants: clingo for Invariants.lp (`just invariants`).
-          invariants = pkgs.mkShell { packages = [ pkgs.clingo pkgs.python3 pkgs.git ]; };
         })
       paper.devShells;
   };
