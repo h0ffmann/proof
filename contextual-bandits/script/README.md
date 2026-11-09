@@ -1,6 +1,6 @@
 # The video script: CMAB, A/B tests and RSI, in 30 minutes
 
-The script is a Paper Fabric paper inside the folder of the paper on bandits: `metadata.md`, one
+The script is a Paper Fabric paper in the bandit's folder, `contextual-bandits/`: `metadata.md`, one
 file per block in `prose-pt-BR/`, `refs.bib` and `REFERENCES.md`. `just script` builds
 `pdf/contextual-bandits-script-pt-BR.pdf` with pandoc and XeLaTeX (inside `nix develop`). The PDF
 is not committed. The Brazilian Portuguese edition is the one written so far (the owner asked for

@@ -30,5 +30,5 @@ could not be confirmed), `unverified` (not fetched; must not be cited).
 | coqui2024xtts | verified | the documentation, 2026-11-09 | 17 languages, `pt` among them |
 | rhasspy2023piper | verified | the folder at tag v1.0.0, 2026-11-09 | `pt/pt_BR/faber/medium` exists; the other pt-BR voices were not listed |
 | manim | verified | the repository, 2026-11-09 | the Manim Community fork of Grant Sanderson's library; the owner gave the address |
-| hoffmann2026note | verified | the file in this repository, 2026-11-09 | sections 3 and 4 and the sources 1 to 5 of the note; the Netflix facts of the script are the note's |
+| hoffmann2026note | verified | the file in this repository, 2026-11-09 | paragraphs 1.7 and 2.6 of section 8 and the sources 1 to 5 of `contextual-bandits/README.pt-BR.md`; the Netflix facts of the script are the note's |
 | hoffmann2026proof | verified | this repository, 2026-11-09 | the code the script points to: `z3-scala/src/main/scala/bandit/domain/Video.scala`, `z3-scala/src/main/scala/bandit/domain/Theorems.scala`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs` |

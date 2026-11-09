@@ -195,4 +195,4 @@ perfil, sobe ou desce. Em canto, "20 M pedidos/s".
 **Código.** O modelo que generaliza é `bayesLinear` em `haskell/src/Models.hs`: a média é um
 produto escalar entre o contexto e os pesos do braço. O modelo tabular do vídeo
 (`haskell/app/Video.hs`) é a mesma interface com um modelo menor. A Netflix: a nota
-`MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md`, seção 4 [@hoffmann2026note].
+`contextual-bandits/README.pt-BR.md`, seção 8, parágrafo 1.7 [@hoffmann2026note].

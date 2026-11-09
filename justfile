@@ -19,6 +19,7 @@ import? 'just/loc.just'
 import? 'just/leo.just'
 import? 'just/liquidhaskell.just'
 import? 'just/port-audit.just'
+import? 'just/site.just'
 import? 'just/triangle-grids.just'
 import? 'just/invariants.just'
 
@@ -147,7 +148,7 @@ _pdf slug dir out:
 # Build the papers, then check that every cited reference was fetched and logged (REFERENCES.md)
 # and that each STE text and pt-BR translation keeps its citations, quotations and numbers.
 paper-check: paper script
-    tools/fabric refs-check papers/*/refs.bib papers/*/*/refs.bib
+    tools/fabric refs-check papers/*/refs.bib papers/*/*/refs.bib contextual-bandits/script/refs.bib
     for p in papers/*/prose-ste; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check "${p%/prose-ste}"; done
     for p in papers/*/prose-pt-BR; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check --translation "${p%/prose-pt-BR}"; done
 

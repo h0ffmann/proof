@@ -40,7 +40,7 @@
 
 | Folder | Problem | Language | Maturity |
 |---|---|---|---|
-| [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([note](MULTI_ARMED_CONTEXTUAL_BANDIT.md), [preprint](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
+| [`contextual-bandits/`](contextual-bandits/README.md), [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([page](contextual-bandits/README.md), [preprint](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
 | [`house-pricing/`](house-pricing/README.md) | California house prices: seven models compared, gradient boosting replicated exactly in Lean and called from Rust | Rust, Lean 4 | **Proved**: output bounds and a monotone variant proved; Rust/Lean parity checked |
 | [`ocean-waves/`](ocean-waves/README.md) | Physics and numerical kernels of a spectral wave model (WAVEWATCH III, WAM Cycle 4) | Lean 4 | **Proved**: kernels and their theorems; no runnable model port yet |
 | [`cycle/`](cycle/README.md) | Eternal return: "time is a flat circle" as a theorem about a clock ([essay](papers/cycle/metadata.md)) | Lean 4, Markdown | **Draft**: theorem proved, essay is a skeleton |
@@ -78,147 +78,13 @@ multinomial logit. On a simulated benchmark it has the lowest error on big shows
 with rival features is best over all slots. The paper names nine channels with public ratings
 in the UK, US and Brazil for a real-data test. All data so far are synthetic.
 
-## Contextual bandits: Z3 spec, Haskell implementation
+## Contextual bandits
 
-The Z3 side is the *specification with proofs*: Scala that builds each rule as a term over the
-reals and asks Z3 for a counterexample to each statement. The Haskell side is a line-by-line port
-that runs. (It was Lean 4 until 2026-11-09; [the decision](docs/decisions/0001-z3-over-lean.md)
-says why it moved and what the move cost: K is checked up to `MAX_ARMS` = 5, not by induction.)
-Both share one idea:
-
-> **The bandit is a decision rule on top of a probabilistic model.**
-> The model turns history into beliefs. The decision rule turns beliefs into an action.
-
-```
-           context c
-               │
-               ▼
- history ─► RewardModel ──estimate(b, c, a) = (mean, width)──► DecisionRule ──► action a
-   ▲        (belief b)    sample(b, c, a)  ~ posterior          greedy / ε-greedy /      │
-   │                                                            UCB / Thompson           ▼
-   └────────────── update(b, (c, a, r)) ◄────────────── reward r ◄──────────────── environment
-```
-
-### Layout
-
-```
-z3-scala/                      Scala 3.9.0 on Z3 5.3.3's Java binding and Kyo, one bounded context per check family (z3-scala/README.md)
-  src/main/scala/kernel/proof/      how a statement is proved: premises ∧ ¬conclusion is unsat
-  src/main/scala/bandit/domain/     Bandit.scala: Estimate, the rules argmaxFirst, greedy, ucb β, epsGreedy ε, valid
-                                    Theorems.scala: the proofs (below), for K = 1..5 and all real estimates
-                                    Examples.scala: a tabular model you can run, over exact rationals
-                                    Video.scala: the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
-  src/main/scala/language/domain/   the language rule: every file in English unless its path carries pt-BR
-  src/main/scala/ptc/domain/        the PTC rules of the video script's prose, and the PTC-9 noise catalogue (ruido-ia.md), row by row
-haskell/                       GHC, only base + containers
-  src/ContextualBandit.hs           the same interface and rules, plus a pure RNG
-  src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
-  src/Video.hs                      port of z3-scala/src/main/scala/bandit/domain/Video.scala; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
-  app/Main.hs                       4 runnable examples and the spec check
-  app/Video.hs                      the experiments of the video script (cabal run video)
-  LIQUIDHASKELL.md                  the refinement types LiquidHaskell checks (`just liquid`), and what they trust
-```
-
-Run:
-
-```bash
-just z3                                      # checks every statement; 100 lines of OK
-cd haskell && runghc -isrc app/Main.hs       # or: cabal run examples
-```
-
-### The interface
-
-| Concept | Z3 (`Bandit.scala`, `Examples.scala`) | Haskell |
-|---|---|---|
-| Arm | index `0..K-1` of a Scala `List` | `Int` in `0..k-1` |
-| Observation | `(context, arm, reward)` | `Obs c` |
-| Model output | `(mean, width)`, two Z3 reals | `Estimate {mean, width}` |
-| Probabilistic model | `update`, `estimate`, `posterior` (the tabular model) | `RewardModel c b {numArms, prior, update, estimate, sample}` |
-| Decision | one Z3 real per arm | `[Double]` |
-| Decision rule | `List[Estimate] => List[Real]` | `[Estimate] -> [Double]` |
-| Agent's policy | `policy(rule, history, context, arms)` | `policy m rule history ctx` |
-
-The decision rule never sees the raw history or the context, only the model's
-per-arm estimates. So any model that can report a mean and an uncertainty
-plugs into any rule.
-
-### What is proved (`Theorems.scala` and `Video.scala`, every statement `unsat`)
-
-| Theorem | Statement |
-|---|---|
-| `greedy_valid`, `ucb_valid`, `epsGreedy_valid` | the output is a probability distribution (non-negative, sums to 1) when `0 ≤ ε ≤ 1` |
-| `epsGreedy_prob` | greedy arm gets `1 - ε + ε/K`, every other arm gets `ε/K` |
-| `epsGreedy_explores` | every arm has probability ≥ `ε/K` |
-| `epsGreedy_one_is_ab_test` | ε-greedy with ε = 1 is the uniform allocation of an A/B/n test |
-| `greedy_is_argmax`, `ucb_is_argmax` | the chosen arm maximises its score |
-| `ucb_zero` | UCB with β = 0 is greedy |
-| `ucb_gap` (optimism lemma) | if the model is **calibrated** (`|mean − μ| ≤ β·width` for every arm), UCB's arm is within `2β·width` of the best arm |
-| `greedy_gap` | if every mean is within δ of the truth, greedy loses at most 2δ |
-| `policy_factors` | two histories with the same belief give the same decision |
-| `step_exploit`, `step_explore_n`, `step_explore_reward`, `step_reward_bounded` (`Video.scala`) | one arm: exploitation spends no term; exploration spends one and does not lower the user's reward, which stays in [0, 1] |
-| `epsGreedy_zero`, `etc_before`, `etc_after`, `etc_valid` | the whole A/B test ("explore then commit") is one rule: uniform before the switch, greedy after, valid throughout |
-| `rsi_valid`, `outer_explores` | the outer bandit that picks the inner bandit's ε is `epsGreedy` again, valid, and keeps trying every ε |
-| `leibnizPair_pos`, `ramTerm_pos`, `ramSum_lt_succ`, `ramApprox_anti` | each Leibniz pair is positive for every real k ≥ 0; Ramanujan's terms are positive (k = 0..9), its sums increase and its approximation of π decreases |
-
-`ucb_gap` is the important one. It says exactly **what the probabilistic model
-owes the decision layer**: calibrated uncertainty. A LinUCB regret bound is
-
-1. `ucb_gap` each round (done here), plus
-2. *the model is calibrated with probability ≥ 1 − δ for all rounds*. This is a
-   self-normalised martingale bound, a probability statement outside what Z3 decides.
-3. *Σ widths = O(√(d T log T))*. This is the elliptical potential lemma, plain
-   linear algebra.
-
-Items 2 and 3 are the natural next steps.
-
-### Connecting your own probabilistic model
-
-Implement four functions, or wrap an existing model with `fromPredictor`:
-
-```haskell
-fromPredictor
-  :: Int                                   -- number of arms
-  -> s                                     -- model state (weights, handle, ...)
-  -> (s -> Obs c -> s)                     -- online update; `const` if frozen
-  -> (s -> c -> Arm -> (Double, Double))   -- predictive (mean, std)
-  -> RewardModel c s
-```
-
-* **Conjugate / closed form** (Beta-Bernoulli, Gaussian, Bayesian linear
-  regression): `update` is the posterior update and `estimate` the
-  posterior mean and std. See `Models.hs`.
-* **Trained offline** (logistic regression, gradient boosting, a neural net
-  with an ensemble or MC dropout, a PyMC/Stan fit): freeze it with `const`,
-  use its predictive mean and std, and retrain in batches outside the loop.
-* **Any rule**: `act m greedy`, `act m (epsGreedy 0.1)`, `act m (ucb 2)`,
-  `thompsonArm m`.
-
-The `width` must be an honest uncertainty. An over-confident model breaks the
-`Calibrated` hypothesis, and UCB/Thompson degrade to greedy.
-
-### Example output (Haskell)
-
-```
-== 0. Spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala ==   all OK
-== 1. Beta-Bernoulli, 2 contexts x 3 arms, T=5000 (avg 20 runs)
-greedy 41.1   eps-greedy 0.1 43.3   UCB beta=2 25.3   Thompson 32.8
-== 2. Bayesian linear, d=3, 4 arms, T=2000 (avg 10 runs)
-greedy 322.9  eps-greedy 0.1 62.0   LinUCB 25.3       LinTS 31.5
-```
-
-These numbers are expected cumulative regret. They come from one small
-simulation each and are not benchmarks.
-
-### Caveats
-
-* Z3 proves over the reals and exact rationals. The Haskell port uses `Double`, so
-  floating-point rounding isn't covered by the proofs. The spec check in
-  `Main.hs` confirms both agree on the shared example.
-* Thompson sampling is specified as "greedy on a posterior sample". Its
-  randomness and its regret aren't formalised here.
-* The tabular example uses width `1/(n+1)`, a rational stand-in for `1/√n`, so that the
-  examples stay in exact arithmetic.
-* Z3 has no induction: each theorem is checked for K = 1 to 5 arms, for all real estimates.
+[`contextual-bandits/`](contextual-bandits/README.md) is the one page for the contextual bandit
+([pt-BR](contextual-bandits/README.pt-BR.md)): the idea, an index of every file, the commands, the
+Z3/Haskell interface, the table of what Z3 proves, the Haskell port and the note for the video.
+The bandit is a decision rule on top of a probabilistic model; Z3 (`z3-scala/`) proves the rules
+for K ≤ 5 arms, and the Haskell port (`haskell/`) is checked against Z3's examples.
 
 ## Fat tails in equity indexes
 
@@ -275,6 +141,13 @@ just serve      # host everything at http://localhost:8000 (just serve 9000 for 
 To publish them, enable GitHub Pages for the `docs/` folder: the index is
 `docs/diagrams/index.html`.
 
+## Site
+
+[`site/`](site/README.md) builds one browsable folder from the repository: an index of the
+preprints (as PDF), the contextual-bandit page, the Z3 reports, the video script with its preview
+and the diagrams. `just site` builds it with Nix into `result-site/`; any web server can serve it at
+any path.
+
 ## Recipes
 
 ```console
@@ -299,6 +172,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 
 ```
 .
+├── contextual-bandits/      the one page for the contextual bandit: idea, file index, proofs, video note
 ├── z3-scala/, haskell/      contextual bandits: Z3 spec and proofs (and the language rule), Haskell port
 ├── house-pricing/           Rust trains, Lean replicates and proves; Rust calls Lean through its C ABI
 ├── ocean-waves/             spectral wave model physics and kernels, Lean only

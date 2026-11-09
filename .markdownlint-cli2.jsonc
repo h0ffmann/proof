@@ -21,7 +21,8 @@
     "vendor/**", "LICENSES/**", "build/**", "tools/build/**", "lean/.lake/**", "haskell/dist-newstyle/**",
     // pandoc sources: their syntax is pandoc's, and ste-check is their check.
     "papers/*/prose*/**", "papers/*/metadata.md",
-    // the video script is a paper inside a paper's folder (papers/contextual-bandits/script/)
-    "papers/*/*/prose*/**", "papers/*/*/metadata.md"
+    // the video script is a paper that lives in the bandit's folder (contextual-bandits/script/)
+    "papers/*/*/prose*/**", "papers/*/*/metadata.md",
+    "contextual-bandits/script/prose*/**", "contextual-bandits/script/metadata.md"
   ]
 }

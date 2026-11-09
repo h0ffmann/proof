@@ -4,7 +4,7 @@ Padrão de escrita: português técnico controlado (PTC, kayquer/portugues-tecni
 leve, destinatário humano. A fala é em primeira pessoa, porque o vídeo é uma explicação minha. As
 regras PTC-1 (quem faz, aparece), PTC-7 (número, data e unidade), PTC-8 (ortografia de 1990) e
 PTC-9 (sem ruído de texto gerado) valem em toda linha. Frase com no máximo 35 palavras. A nota
-vizinha deste roteiro é `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md`, na raiz do repositório
+vizinha deste roteiro é `contextual-bandits/README.pt-BR.md`, a página única do bandit
 [@hoffmann2026note].
 
 Cada cena é **um take**: um arquivo de áudio (`voice/narrate.py` escreve `scene-N.M.wav`), um arquivo
@@ -19,7 +19,7 @@ os teoremas das regras de decisão, em `z3-scala/src/main/scala/bandit/domain/Th
 escrito por `cabal run video`. Python só faz
 animação (Manim), em `animation/`. Todos os caminhos são relativos à raiz do repositório
 h0ffmann/proof [@hoffmann2026proof], ou à pasta deste roteiro,
-`papers/contextual-bandits/script/`.
+`contextual-bandits/script/`.
 
 Duração: 30 minutos, em três blocos de 10 minutos: **CMAB** (0:00 a 10:00), **teste A/B** (10:00
 a 20:00) e **RSI** (20:00 a 30:00). A fala tem cerca de 130 palavras por minuto; cada cena traz a

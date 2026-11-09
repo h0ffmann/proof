@@ -1,6 +1,6 @@
 // The PTC rules of the video script, checked with Z3.
 //
-// The video script (papers/contextual-bandits/script/prose-pt-BR/) is written in Portuguese
+// The video script (contextual-bandits/script/prose-pt-BR/) is written in Portuguese
 // Técnico Controlado (PTC, kayquer/portugues-tecnico-controlado, version 1.2.0), level `leve`, for
 // a human reader (00-como-ler.md, lines 3 to 6). PTC has nine rules. At level `leve` some parts of
 // them are required, some are recommended, and some are off (the level table of the PTC SKILL.md).
@@ -35,7 +35,7 @@ import java.util.regex.Pattern
 
 object Ptc:
   /** The script's folder, from the repository root; the application reads its Markdown files. */
-  val SCRIPT = "papers/contextual-bandits/script/prose-pt-BR"
+  val SCRIPT = "contextual-bandits/script/prose-pt-BR"
   val LEVEL = "leve" // 00-como-ler.md, line 4
   val MAX_WORDS = 35 // PTC-5 at level leve, and 00-como-ler.md, line 6
   val MAX_SENTENCES = 6 // sentences per paragraph (recommended at level leve)
