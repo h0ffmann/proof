@@ -22,7 +22,7 @@
 
 - **proof** (formerly *dogma*) holds specifications checked by a prover, and implementations that
   follow them name for name. The contextual bandit is specified in [Z3](https://github.com/Z3Prover/z3)
-  (`z3/`, since 2026-11-09: [why](docs/decisions/0001-z3-over-lean.md)) and implemented in Haskell;
+  (`z3-scala/`, since 2026-11-09: [why](docs/decisions/0001-z3-over-lean.md)) and implemented in Haskell;
   house pricing, ocean waves and the cycle are proved in [Lean 4](https://lean-lang.org), with Rust
   for house pricing. The specification is the source of truth; the implementations are checked
   against its examples.
@@ -39,14 +39,15 @@
 
 | Folder | Problem | Language | Maturity |
 |---|---|---|---|
-| [`z3/`](z3), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([note](MULTI_ARMED_CONTEXTUAL_BANDIT.md), [paper](papers/contextual-bandits/metadata.md)) | Z3 (Python), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
+| [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([note](MULTI_ARMED_CONTEXTUAL_BANDIT.md), [paper](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
 | [`house-pricing/`](house-pricing/README.md) | California house prices: seven models compared, gradient boosting replicated exactly in Lean and called from Rust | Rust, Lean 4 | **Proved**: output bounds and a monotone variant proved; Rust/Lean parity checked |
 | [`ocean-waves/`](ocean-waves/README.md) | Physics and numerical kernels of a spectral wave model (WAVEWATCH III, WAM Cycle 4) | Lean 4 | **Proved**: kernels and their theorems; no runnable model port yet |
 | [`cycle/`](cycle/README.md) | Eternal return: "time is a flat circle" as a theorem about a clock ([essay](papers/cycle/metadata.md)) | Lean 4, Markdown | **Draft**: theorem proved, essay is a skeleton |
 | [`fat-tails/`](fat-tails/README.md) | Taleb's fat-tail diagnostics on the S&P 500, 1950 to 2026; power-law against Gaussian VaR ([paper](papers/fat-tails/metadata.md)) | Python | **Results**: real data, results committed, paper v0 |
 | [`tv-audience/`](tv-audience/README.md) | Forecasting big-show TV audiences as a competition between channels: XGBoost, DNN, Mistral Timestral, joint competitive share model ([paper](papers/tv-audience/metadata.md)) | Python | **Simulated**: synthetic benchmark and paper v0; Timestral arm not run; real-channel test pending |
 | [`crypto-strength/`](crypto-strength/README.md) | 17 crypto networks scored on nine factors, long-term top 10 | Python, CSV | **Results**: sourced scores, partly judgment |
-| [`port-audit/`](port-audit/README.md) | Audit of [chaceon](https://github.com/h0ffmann/chaceon), the Rust port of WAVEWATCH III: the `f32` division rewrite, Fortran intrinsics, `W3SRCE`'s time step; how much of WW3 is translated and integrated | Z3 (Python) | **Proved**: 28 statements, 5 with an expected counterexample; two show the time step can exceed its limiter. Coverage: 37% of WW3 translated, 47% of the target build integrated |
+| [`port-audit/`](port-audit/README.md) | Audit of [chaceon](https://github.com/h0ffmann/chaceon), the Rust port of WAVEWATCH III: the `f32` division rewrite, Fortran intrinsics, `W3SRCE`'s time step; how much of WW3 is translated and integrated | Z3 (Scala) | **Proved**: 28 statements, 5 with an expected counterexample; two show the time step can exceed its limiter. Coverage: 37% of WW3 translated, 47% of the target build integrated |
+| [`triangle-grids/`](triangle-grids/README.md) | Triangle grids for WAVEWATCH III with Aron Roland's size rules (depth, coast, slope, 5 km floor, 30% growth), and their uses in global, hurricane and nearshore forecasting | Z3 (Scala), Markdown | **Proved**: 13 statements on the size rules and WW3's explicit sub-step count; no WW3 run |
 | [`graphs/triad/`](graphs/triad/README.md) | Network of Musk, Thiel and Karp: companies, deals and ties | Python, JavaScript (graphify) | **Results**: sourced edges, rendered graph |
 | [`pomodoro/`](pomodoro/README.md) | Interval timer for macOS: native dialogs set the period and the beep sound, remembered in `~/.pomodoro` (`just build-mac`) | Zig | **Tool**: builds for Apple Silicon |
 
@@ -84,7 +85,7 @@ in the UK, US and Brazil for a real-data test. All data so far are synthetic.
 
 ## Contextual bandits: Z3 spec, Haskell implementation
 
-The Z3 side is the *specification with proofs*: Python that builds each rule as a term over the
+The Z3 side is the *specification with proofs*: Scala that builds each rule as a term over the
 reals and asks Z3 for a counterexample to each statement. The Haskell side is a line-by-line port
 that runs. (It was Lean 4 until 2026-11-09; [the decision](docs/decisions/0001-z3-over-lean.md)
 says why it moved and what the move cost: K is checked up to `MAX_ARMS` = 5, not by induction.)
@@ -106,19 +107,19 @@ Both share one idea:
 ### Layout
 
 ```
-z3/                            Python 3 + z3-solver
-  refute.py                         how a statement is proved: premises ∧ ¬conclusion is unsat
-  bandit.py                         Estimate, the rules: argmax_first, greedy, ucb β, eps_greedy ε, valid
-  theorems.py                       the proofs (below), for K = 1..5 and all real estimates
-  examples.py                       a tabular model you can run, over exact rationals
-  video.py                          the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
-  language.py                       the language rule: every file in English unless its path carries pt-BR
-  ptc.py                            the PTC rules of the video script's prose
-  ruido_ia.py                       the PTC-9 noise catalogue (ruido-ia.md), row by row
+z3-scala/                      Scala 3.9.0 on Z3 5.3.3's Java binding (z3-scala/README.md)
+  src/main/scala/Z.scala            how a statement is proved: premises ∧ ¬conclusion is unsat
+  src/main/scala/Bandit.scala       Estimate, the rules: argmaxFirst, greedy, ucb β, epsGreedy ε, valid
+  src/main/scala/Theorems.scala     the proofs (below), for K = 1..5 and all real estimates
+  src/main/scala/Examples.scala     a tabular model you can run, over exact rationals
+  src/main/scala/Video.scala        the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
+  src/main/scala/Language.scala     the language rule: every file in English unless its path carries pt-BR
+  src/main/scala/Ptc.scala          the PTC rules of the video script's prose
+  src/main/scala/RuidoIa.scala      the PTC-9 noise catalogue (ruido-ia.md), row by row
 haskell/                       GHC, only base + containers
   src/ContextualBandit.hs           the same interface and rules, plus a pure RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
-  src/Video.hs                      port of z3/video.py; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
+  src/Video.hs                      port of z3-scala/src/main/scala/Video.scala; src/Pi.hs: Leibniz, Gauss-Legendre, Ramanujan, exact
   app/Main.hs                       4 runnable examples and the spec check
   app/Video.hs                      the experiments of the video script (cabal run video)
 ```
@@ -132,21 +133,21 @@ cd haskell && runghc -isrc app/Main.hs       # or: cabal run examples
 
 ### The interface
 
-| Concept | Z3 (`bandit.py`, `examples.py`) | Haskell |
+| Concept | Z3 (`Bandit.scala`, `Examples.scala`) | Haskell |
 |---|---|---|
-| Arm | index `0..K-1` of a Python list | `Int` in `0..k-1` |
+| Arm | index `0..K-1` of a Scala `List` | `Int` in `0..k-1` |
 | Observation | `(context, arm, reward)` | `Obs c` |
 | Model output | `(mean, width)`, two Z3 reals | `Estimate {mean, width}` |
 | Probabilistic model | `update`, `estimate`, `posterior` (the tabular model) | `RewardModel c b {numArms, prior, update, estimate, sample}` |
 | Decision | one Z3 real per arm | `[Double]` |
-| Decision rule | `list[Estimate] -> list[Real]` | `[Estimate] -> [Double]` |
+| Decision rule | `List[Estimate] => List[Real]` | `[Estimate] -> [Double]` |
 | Agent's policy | `policy(rule, history, context, arms)` | `policy m rule history ctx` |
 
 The decision rule never sees the raw history or the context, only the model's
 per-arm estimates. So any model that can report a mean and an uncertainty
 plugs into any rule.
 
-### What is proved (`theorems.py` and `video.py`, every statement `unsat`)
+### What is proved (`Theorems.scala` and `Video.scala`, every statement `unsat`)
 
 | Theorem | Statement |
 |---|---|
@@ -159,7 +160,7 @@ plugs into any rule.
 | `ucb_gap` (optimism lemma) | if the model is **calibrated** (`|mean − μ| ≤ β·width` for every arm), UCB's arm is within `2β·width` of the best arm |
 | `greedy_gap` | if every mean is within δ of the truth, greedy loses at most 2δ |
 | `policy_factors` | two histories with the same belief give the same decision |
-| `step_exploit`, `step_explore_n`, `step_explore_reward`, `step_reward_bounded` (`video.py`) | one arm: exploitation spends no term; exploration spends one and does not lower the user's reward, which stays in [0, 1] |
+| `step_exploit`, `step_explore_n`, `step_explore_reward`, `step_reward_bounded` (`Video.scala`) | one arm: exploitation spends no term; exploration spends one and does not lower the user's reward, which stays in [0, 1] |
 | `epsGreedy_zero`, `etc_before`, `etc_after`, `etc_valid` | the whole A/B test ("explore then commit") is one rule: uniform before the switch, greedy after, valid throughout |
 | `rsi_valid`, `outer_explores` | the outer bandit that picks the inner bandit's ε is `epsGreedy` again, valid, and keeps trying every ε |
 | `leibnizPair_pos`, `ramTerm_pos`, `ramSum_lt_succ`, `ramApprox_anti` | each Leibniz pair is positive for every real k ≥ 0; Ramanujan's terms are positive (k = 0..9), its sums increase and its approximation of π decreases |
@@ -203,7 +204,7 @@ The `width` must be an honest uncertainty. An over-confident model breaks the
 ### Example output (Haskell)
 
 ```
-== 0. Spec check against z3/examples.py and z3/video.py ==   all OK
+== 0. Spec check against z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala ==   all OK
 == 1. Beta-Bernoulli, 2 contexts x 3 arms, T=5000 (avg 20 runs)
 greedy 41.1   eps-greedy 0.1 43.3   UCB beta=2 25.3   Thompson 32.8
 == 2. Bayesian linear, d=3, 4 arms, T=2000 (avg 10 runs)
@@ -301,7 +302,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 
 ```
 .
-├── z3/, haskell/            contextual bandits: Z3 spec and proofs (and the language rule), Haskell port
+├── z3-scala/, haskell/      contextual bandits: Z3 spec and proofs (and the language rule), Haskell port
 ├── house-pricing/           Rust trains, Lean replicates and proves; Rust calls Lean through its C ABI
 ├── ocean-waves/             spectral wave model physics and kernels, Lean only
 ├── cycle/                   eternal return: a clock theorem in Lean, for the essay in papers/cycle
@@ -310,6 +311,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ├── crypto-strength/         a scored map of 17 crypto networks (Python, CSV)
 ├── graphs/triad/            the Musk, Thiel and Karp network (graphify)
 ├── port-audit/              Z3 checks of chaceon, the Rust port of WAVEWATCH III
+├── triangle-grids/          triangle grids for WW3: Roland's size rules, checked by Z3
 ├── papers/<slug>/           one paper each: metadata.md, prose/, refs.bib, REFERENCES.md
 ├── format/, tools/, .vale/  Paper Fabric: LaTeX template, refs and STE checks (Gleam), prose rules
 ├── docs/                    paper-fabric.md, the archify diagrams, the logo

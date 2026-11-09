@@ -97,7 +97,7 @@
       "dot": "violet",
       "title": "Same rule at both levels",
       "items": [
-        "Z3: rsi_valid, outer_explores (z3/video.py, R4)",
+        "Z3: rsi_valid, outer_explores (z3-scala Video.scala, R4)",
         "In real systems the arms are edits to the agent itself"
       ]
     }

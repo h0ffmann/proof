@@ -14,18 +14,18 @@ Each figure below is an archify diagram. Use the PNG as a reference when you edi
 |---|---|---|---|---|
 | 1.1 Hook | 0:00 to 1:00 | [bandit-round](docs/diagrams/img/en/bandit-round.png) ([html](docs/diagrams/en/bandit-round.html)) | — | `beliefs` in `haskell/app/Video.hs` |
 | 1.2 Steal like an artist | 1:00 to 3:00 | [bandit-timeline](docs/diagrams/img/en/bandit-timeline.png) ([html](docs/diagrams/en/bandit-timeline.html)) | — | `animation/timeline.py` (not made yet) |
-| 1.3 π and you, one arm | 3:00 to 5:00 | [pi-arms](docs/diagrams/img/en/pi-arms.png) ([html](docs/diagrams/en/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `singleArmed`; `step` in `z3/video.py` |
+| 1.3 π and you, one arm | 3:00 to 5:00 | [pi-arms](docs/diagrams/img/en/pi-arms.png) ([html](docs/diagrams/en/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `singleArmed`; `step` in `z3-scala/src/main/scala/Video.scala` |
 | 1.4 The name, letter by letter | 5:00 to 6:30 | [pi-arms](docs/diagrams/img/en/pi-arms.png) ([html](docs/diagrams/en/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `multiArmed`; `haskell/src/Pi.hs` |
-| 1.5 Model and rule | 6:30 to 7:30 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | [`1-5-width.txt`](papers/contextual-bandits/script/desmos/1-5-width.txt) | `policy_factors` in `z3/theorems.py` |
-| 1.6 Explore and exploit | 7:30 to 8:30 | — | [`1-6-ucb.txt`](papers/contextual-bandits/script/desmos/1-6-ucb.txt) | `greedy`, `eps_greedy`, `ucb`; `ucb_zero` |
+| 1.5 Model and rule | 6:30 to 7:30 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | [`1-5-width.txt`](papers/contextual-bandits/script/desmos/1-5-width.txt) | `policy_factors` in `z3-scala/src/main/scala/Theorems.scala` |
+| 1.6 Explore and exploit | 7:30 to 8:30 | — | [`1-6-ucb.txt`](papers/contextual-bandits/script/desmos/1-6-ucb.txt) | `greedy`, `epsGreedy`, `ucb`; `ucb_zero` |
 | 1.7 Netflix | 8:30 to 10:00 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | — | `bayesLinear` in `haskell/src/Models.hs` |
 | 2.1 What an A/B test is | 10:00 to 11:30 | [ab-test-vs-bandit](docs/diagrams/img/en/ab-test-vs-bandit.png) ([html](docs/diagrams/en/ab-test-vs-bandit.html)) | [`2-1-ab.txt`](papers/contextual-bandits/script/desmos/2-1-ab.txt) | `uniform`; `etc_before` |
 | 2.2 The A/B test is a bandit rule | 11:30 to 13:00 | [ab-test-vs-bandit](docs/diagrams/img/en/ab-test-vs-bandit.png) ([html](docs/diagrams/en/ab-test-vs-bandit.html)) | [`2-2-epsilon.txt`](papers/contextual-bandits/script/desmos/2-2-epsilon.txt) | `epsGreedy_one_is_ab_test`, `etc_after` |
 | 2.3 The cost of the wait | 13:00 to 15:00 | — | [`2-3-regret.txt`](papers/contextual-bandits/script/desmos/2-3-regret.txt) | `abVsBandit` |
 | 2.4 Context makes the test personal | 15:00 to 16:30 | [ab-test-vs-bandit](docs/diagrams/img/en/ab-test-vs-bandit.png) ([html](docs/diagrams/en/ab-test-vs-bandit.html)) | — | `abVsBandit`, "A/B without context" |
 | 2.5 What the A/B test does better | 16:30 to 18:00 | [bandit-round](docs/diagrams/img/en/bandit-round.png) ([html](docs/diagrams/en/bandit-round.html)) | [`2-5-propensity.txt`](papers/contextual-bandits/script/desmos/2-5-propensity.txt) | `policy` |
-| 2.6 Summary of the block | 18:00 to 20:00 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | — | `z3/theorems.py` |
-| 3.1 Three words | 20:00 to 21:30 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `outer`, `inner_eps` in `z3/video.py` |
+| 2.6 Summary of the block | 18:00 to 20:00 | [bandit-architecture](docs/diagrams/img/en/bandit-architecture.png) ([html](docs/diagrams/en/bandit-architecture.html)) | — | `z3-scala/src/main/scala/Theorems.scala` |
+| 3.1 Three words | 20:00 to 21:30 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `outer`, `innerEps` in `z3-scala/src/main/scala/Video.scala` |
 | 3.2 The smallest recursive loop | 21:30 to 24:00 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `rsiLoop` |
 | 3.3 The bandit in real RSI | 24:00 to 26:30 | [rsi-loop](docs/diagrams/img/en/rsi-loop.png) ([html](docs/diagrams/en/rsi-loop.html)) | — | `rsiLoop` |
 | 3.4 Current belief against new belief | 26:30 to 28:00 | [bandit-round](docs/diagrams/img/en/bandit-round.png) ([html](docs/diagrams/en/bandit-round.html)) | [`3-4-beta.txt`](papers/contextual-bandits/script/desmos/3-4-beta.txt) | `beliefs`; `betaBernoulli` |
@@ -179,9 +179,9 @@ The A/B test has three good properties: it is simple to set up, simple to read a
 
 ### 2.2 The A/B test is a bandit rule (scene 2.2)
 
-1. **The test period is ε-greedy with ε = 1.** Each arm gets probability `1/K`. This is uniform random allocation. The Z3 statement `epsGreedy_one_is_ab_test` (`z3/theorems.py`) proves this.
+1. **The test period is ε-greedy with ε = 1.** Each arm gets probability `1/K`. This is uniform random allocation. The Z3 statement `epsGreedy_one_is_ab_test` (`z3-scala/src/main/scala/Theorems.scala`) proves this.
 2. **The decision phase is ε-greedy with ε = 0**, which is greedy. The statement `epsGreedy_zero` proves this.
-3. **The full A/B test is an ε that changes from 1 to 0 on a fixed day.** The invariant R3 (`etc` in `z3/video.py`) proves the two phases: `etc_before` and `etc_after`.
+3. **The full A/B test is an ε that changes from 1 to 0 on a fixed day.** The invariant R3 (`etc` in `z3-scala/src/main/scala/Video.scala`) proves the two phases: `etc_before` and `etc_after`.
 
 With this view, the question "A/B or bandit?" becomes a different question: how must ε decrease over time?
 
@@ -248,7 +248,7 @@ The inner agent is the ε-greedy rule of the ice-cream shop. The outer agent is 
 | 0.1 | 12 | 0.085 |
 | 0.01 | 9 | 0.057 |
 
-The outer agent learns how the inner agent must learn. The same `eps_greedy` works at the two levels. The invariant R4 in Z3 proves this: `rsi_valid` and `outer_explores`. ε = 0.5 wins because the horizon is short, 500 customers for each episode, and the model starts from zero.
+The outer agent learns how the inner agent must learn. The same `epsGreedy` works at the two levels. The invariant R4 in Z3 proves this: `rsi_valid` and `outer_explores`. ε = 0.5 wins because the horizon is short, 500 customers for each episode, and the model starts from zero.
 
 [![Recursive self-improvement: a bandit that tunes a bandit](docs/diagrams/img/en/rsi-loop.png)](docs/diagrams/en/rsi-loop.html)
 
@@ -273,15 +273,15 @@ The Beta-Bernoulli model keeps two counts for each option: successes and failure
 
 | Concept in this note | Z3 | Haskell |
 |---|---|---|
-| Probabilistic model | `update`, `estimate`, `posterior` (`examples.py`) | `RewardModel`, `Models.hs` |
+| Probabilistic model | `update`, `estimate`, `posterior` (`Examples.scala`) | `RewardModel`, `Models.hs` |
 | Policy | `policy` | `policy`, `act` |
-| A/B/n allocation | `eps_greedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
-| Full A/B test | `etc`, `etc_before`, `etc_after` (`video.py`) | `etc` (`Video.hs`) |
+| A/B/n allocation | `epsGreedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
+| Full A/B test | `etc`, `etc_before`, `etc_after` (`Video.scala`) | `etc` (`Video.hs`) |
 | Exploration guarantee | `epsGreedy_explores` | — |
 | UCB regret, one round | `ucb_gap` | `ucb` |
 | Model gives the only path from history to decision | `policy_factors` | `posterior` |
-| π as a bandit | `step`, `leibnizPair_pos`, `ramTerm_pos` (`video.py`) | `Pi.hs`, `singleArmed`, `multiArmed` |
-| RSI | `outer`, `inner_eps`, `rsi_valid` (`video.py`) | `outer`, `inner`, `rsiLoop` |
+| π as a bandit | `step`, `leibnizPair_pos`, `ramTerm_pos` (`Video.scala`) | `Pi.hs`, `singleArmed`, `multiArmed` |
+| RSI | `outer`, `innerEps`, `rsi_valid` (`Video.scala`) | `outer`, `inner`, `rsiLoop` |
 
 ## 5. Sources
 

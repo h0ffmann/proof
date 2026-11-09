@@ -19,7 +19,7 @@ abstract: |
   multi-armed bandit (CMAB), the A/B test and recursive self-improvement (RSI). Each scene is one
   take, with the words spoken, what the screen shows, the interactive graph when one helps, and
   the code that supports the scene. Everything the narration says about the method has a
-  statement proved by Z3 (`z3/video.py`, the invariants R1 to R5; `z3/theorems.py`, the decision
+  statement proved by Z3 (`z3-scala/src/main/scala/Video.scala`, the invariants R1 to R5; `z3-scala/src/main/scala/Theorems.scala`, the decision
   rules) or a function in Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`,
   `haskell/app/Video.hs`) in the repository h0ffmann/proof. The simple example is the computation
   of pi, with the viewer as the reward; the complex example is the choice of artwork at Netflix.

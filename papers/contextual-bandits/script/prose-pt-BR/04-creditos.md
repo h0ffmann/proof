@@ -7,7 +7,7 @@
 | Gráficos interativos | Desmos, calculadora gráfica | `desmos/` |
 | Voz | XTTS v2 (Coqui) [@coqui2024xtts] e OpenVoice V2 (MyShell) [@myshell2024openvoice2] | `voice/narrate.py` |
 | Roteiro, código, animações | Claude Code (Anthropic): Claude Sonnet 5.5 (teste do Manim), Claude Fable 5.1 (roteiro, Z3, Haskell) | a partir dos prompts em `PROMPTS.md` |
-| Invariantes | Z3 (`z3/video.py`, R1 a R5; `z3/theorems.py`, as regras) e o espelho em Haskell | conferidas pelo spec check de `app/Main.hs` e por `just z3` |
+| Invariantes | Z3 (`z3-scala/src/main/scala/Video.scala`, R1 a R5; `z3-scala/src/main/scala/Theorems.scala`, as regras) e o espelho em Haskell | conferidas pelo spec check de `app/Main.hs` e por `just z3` |
 | Custo total | `[a confirmar: preencher só no fim da produção]` | tela de créditos |
 
 : O que este vídeo tomou emprestado, de quem, e onde isso entra.

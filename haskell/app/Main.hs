@@ -8,11 +8,11 @@ import Models
 import Video
 
 ------------------------------------------------------------------------
--- 0. Spec check: reproduce the examples of z3/examples.py and z3/video.py
+-- 0. Spec check: reproduce the examples of z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala
 
 data Ctx = Morning | Evening deriving (Eq, Ord, Show)
 
--- Same model as z3/examples.py: mean = sum/count, width = 1/(count+1).
+-- Same model as z3-scala/src/main/scala/Examples.scala: mean = sum/count, width = 1/(count+1).
 tabular :: Int -> RewardModel Ctx (M.Map (Ctx, Arm) (Double, Int))
 tabular k = RewardModel
   { numArms = k, prior = M.empty
@@ -29,7 +29,7 @@ specHistory =
 
 specCheck :: IO ()
 specCheck = do
-  putStrLn "== 0. Spec check against z3/examples.py and z3/video.py =="
+  putStrLn "== 0. Spec check against z3-scala/src/main/scala/Examples.scala and z3-scala/src/main/scala/Video.scala =="
   let g  = policy (tabular 3) greedy specHistory Morning
       g' = policy (tabular 3) greedy specHistory Evening
       e  = policy (tabular 3) (epsGreedy 0.1) specHistory Morning
@@ -38,7 +38,7 @@ specCheck = do
   printf "greedy evening  %s  (Z3: [0, 0, 1])          %s\n" (show g') (ok (g' == [0, 0, 1]))
   printf "eps 0.1 morning %s  (Z3: [1/30, 14/15, 1/30]) %s\n" (show (map (roundTo 4) e))
     (ok (close e [1 / 30, 14 / 15, 1 / 30]))
-  -- z3/video.py
+  -- z3-scala/src/main/scala/Video.scala
   let est3 = [Estimate 0.5 0, Estimate 0.9 0, Estimate 0.1 0]
       user = byDistance (355 / 113)
       s1 = OneArm 1 (leibniz 1) 0

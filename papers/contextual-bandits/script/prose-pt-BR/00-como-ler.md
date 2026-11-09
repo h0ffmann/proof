@@ -14,8 +14,8 @@ aparece. **Desmos**, quando a cena tem um gráfico que um controle deslizante ex
 uma animação pronta: a expressão está em `desmos/`, para colar na calculadora gráfica e gravar a
 tela. **Código** é o arquivo que sustenta a cena. Tudo o que a fala afirma sobre o método tem uma
 função em Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`) ou uma
-afirmação provada pelo Z3. As invariantes R1 a R5 dos requisitos do autor estão em `z3/video.py`;
-os teoremas das regras de decisão, em `z3/theorems.py`. Os números citados estão em `results.md`,
+afirmação provada pelo Z3. As invariantes R1 a R5 dos requisitos do autor estão em `z3-scala/src/main/scala/Video.scala`;
+os teoremas das regras de decisão, em `z3-scala/src/main/scala/Theorems.scala`. Os números citados estão em `results.md`,
 escrito por `cabal run video`. Python só faz
 animação (Manim), em `animation/`. Todos os caminhos são relativos à raiz do repositório
 h0ffmann/proof [@hoffmann2026proof], ou à pasta deste roteiro,

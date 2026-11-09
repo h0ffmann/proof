@@ -1,5 +1,5 @@
 -- | Contextual bandit interface. This is a direct port of the Z3 spec in
--- ../z3/bandit.py; ../z3/theorems.py says what Z3 proves about it.
+-- ../z3-scala/src/main/scala/Bandit.scala; ../z3-scala/src/main/scala/Theorems.scala says what Z3 proves about it.
 --
 -- There are two layers:
 --   * 'RewardModel': the probabilistic part (belief, update, estimate, sample)
@@ -7,10 +7,10 @@
 --
 -- It depends only on GHC's @base@ and @containers@.
 module ContextualBandit
-  ( -- * Interface (mirrors the two layers of z3/bandit.py)
+  ( -- * Interface (mirrors the two layers of z3-scala/src/main/scala/Bandit.scala)
     Arm, Obs (..), Estimate (..), RewardModel (..), Decision, DecisionRule
   , posterior, policy
-    -- * Decision rules (mirror the rules of z3/bandit.py)
+    -- * Decision rules (mirror the rules of z3-scala/src/main/scala/Bandit.scala)
   , argmax, point, uniform, mix, ucbScore
   , greedy, ucb, epsGreedy
     -- * Thompson sampling (needs the model's posterior sampler)
@@ -59,7 +59,7 @@ type DecisionRule = [Estimate] -> Decision
 posterior :: RewardModel c b -> [Obs c] -> b
 posterior m = foldl' (update m) (prior m)
 
--- | @history -> context -> distribution over arms@ (Z3: @policy@ in examples.py).
+-- | @history -> context -> distribution over arms@ (Z3: @policy@ in Examples.scala).
 policy :: RewardModel c b -> DecisionRule -> [Obs c] -> c -> Decision
 policy m rule h c = rule [estimate m b c a | a <- [0 .. numArms m - 1]]
   where b = posterior m h
@@ -67,7 +67,7 @@ policy m rule h c = rule [estimate m b c a | a <- [0 .. numArms m - 1]]
 ------------------------------------------------------------------------
 -- Decision rules
 
--- | First index with the largest score (same tie-break as Z3's @argmax_first@).
+-- | First index with the largest score (same tie-break as Z3's @argmaxFirst@).
 argmax :: [Double] -> Arm
 argmax [] = error "argmax: no arms"
 argmax (x : xs) = go 0 x 1 xs

@@ -28,18 +28,18 @@ Cada figura abaixo é um diagrama do archify. O PNG serve de referência na edi�
 |---|---|---|---|---|
 | 1.1 Gancho | 0:00 a 1:00 | [bandit-round](docs/diagrams/img/pt-BR/bandit-round.png) ([html](docs/diagrams/pt-BR/bandit-round.html)) | — | `beliefs` em `haskell/app/Video.hs` |
 | 1.2 Steal like an artist | 1:00 a 3:00 | [bandit-timeline](docs/diagrams/img/pt-BR/bandit-timeline.png) ([html](docs/diagrams/pt-BR/bandit-timeline.html)) | — | `animation/timeline.py` (a fazer) |
-| 1.3 π e você, um braço | 3:00 a 5:00 | [pi-arms](docs/diagrams/img/pt-BR/pi-arms.png) ([html](docs/diagrams/pt-BR/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `singleArmed`; `step` em `z3/video.py` |
+| 1.3 π e você, um braço | 3:00 a 5:00 | [pi-arms](docs/diagrams/img/pt-BR/pi-arms.png) ([html](docs/diagrams/pt-BR/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `singleArmed`; `step` em `z3-scala/src/main/scala/Video.scala` |
 | 1.4 O nome, letra por letra | 5:00 a 6:30 | [pi-arms](docs/diagrams/img/pt-BR/pi-arms.png) ([html](docs/diagrams/pt-BR/pi-arms.html)) | [`1-3-pi.txt`](papers/contextual-bandits/script/desmos/1-3-pi.txt) | `multiArmed`; `haskell/src/Pi.hs` |
-| 1.5 Modelo e regra | 6:30 a 7:30 | [bandit-architecture](docs/diagrams/img/pt-BR/bandit-architecture.png) ([html](docs/diagrams/pt-BR/bandit-architecture.html)) | [`1-5-width.txt`](papers/contextual-bandits/script/desmos/1-5-width.txt) | `policy_factors` em `z3/theorems.py` |
-| 1.6 Explorar e aproveitar | 7:30 a 8:30 | — | [`1-6-ucb.txt`](papers/contextual-bandits/script/desmos/1-6-ucb.txt) | `greedy`, `eps_greedy`, `ucb`; `ucb_zero` |
+| 1.5 Modelo e regra | 6:30 a 7:30 | [bandit-architecture](docs/diagrams/img/pt-BR/bandit-architecture.png) ([html](docs/diagrams/pt-BR/bandit-architecture.html)) | [`1-5-width.txt`](papers/contextual-bandits/script/desmos/1-5-width.txt) | `policy_factors` em `z3-scala/src/main/scala/Theorems.scala` |
+| 1.6 Explorar e aproveitar | 7:30 a 8:30 | — | [`1-6-ucb.txt`](papers/contextual-bandits/script/desmos/1-6-ucb.txt) | `greedy`, `epsGreedy`, `ucb`; `ucb_zero` |
 | 1.7 A Netflix | 8:30 a 10:00 | [bandit-architecture](docs/diagrams/img/pt-BR/bandit-architecture.png) ([html](docs/diagrams/pt-BR/bandit-architecture.html)) | — | `bayesLinear` em `haskell/src/Models.hs` |
 | 2.1 O que é um teste A/B | 10:00 a 11:30 | [ab-test-vs-bandit](docs/diagrams/img/pt-BR/ab-test-vs-bandit.png) ([html](docs/diagrams/pt-BR/ab-test-vs-bandit.html)) | [`2-1-ab.txt`](papers/contextual-bandits/script/desmos/2-1-ab.txt) | `uniform`; `etc_before` |
 | 2.2 O teste A/B é uma regra de bandit | 11:30 a 13:00 | [ab-test-vs-bandit](docs/diagrams/img/pt-BR/ab-test-vs-bandit.png) ([html](docs/diagrams/pt-BR/ab-test-vs-bandit.html)) | [`2-2-epsilon.txt`](papers/contextual-bandits/script/desmos/2-2-epsilon.txt) | `epsGreedy_one_is_ab_test`, `etc_after` |
 | 2.3 O custo da espera | 13:00 a 15:00 | — | [`2-3-regret.txt`](papers/contextual-bandits/script/desmos/2-3-regret.txt) | `abVsBandit` |
 | 2.4 O contexto personaliza | 15:00 a 16:30 | [ab-test-vs-bandit](docs/diagrams/img/pt-BR/ab-test-vs-bandit.png) ([html](docs/diagrams/pt-BR/ab-test-vs-bandit.html)) | — | `abVsBandit`, "A/B sem contexto" |
 | 2.5 O que o A/B faz melhor | 16:30 a 18:00 | [bandit-round](docs/diagrams/img/pt-BR/bandit-round.png) ([html](docs/diagrams/pt-BR/bandit-round.html)) | [`2-5-propensity.txt`](papers/contextual-bandits/script/desmos/2-5-propensity.txt) | `policy` |
-| 2.6 Resumo do bloco | 18:00 a 20:00 | [bandit-architecture](docs/diagrams/img/pt-BR/bandit-architecture.png) ([html](docs/diagrams/pt-BR/bandit-architecture.html)) | — | `z3/theorems.py` |
-| 3.1 Três palavras | 20:00 a 21:30 | [rsi-loop](docs/diagrams/img/pt-BR/rsi-loop.png) ([html](docs/diagrams/pt-BR/rsi-loop.html)) | — | `outer`, `inner_eps` em `z3/video.py` |
+| 2.6 Resumo do bloco | 18:00 a 20:00 | [bandit-architecture](docs/diagrams/img/pt-BR/bandit-architecture.png) ([html](docs/diagrams/pt-BR/bandit-architecture.html)) | — | `z3-scala/src/main/scala/Theorems.scala` |
+| 3.1 Três palavras | 20:00 a 21:30 | [rsi-loop](docs/diagrams/img/pt-BR/rsi-loop.png) ([html](docs/diagrams/pt-BR/rsi-loop.html)) | — | `outer`, `innerEps` em `z3-scala/src/main/scala/Video.scala` |
 | 3.2 O menor ciclo recursivo | 21:30 a 24:00 | [rsi-loop](docs/diagrams/img/pt-BR/rsi-loop.png) ([html](docs/diagrams/pt-BR/rsi-loop.html)) | — | `rsiLoop` |
 | 3.3 O bandit na RSI de verdade | 24:00 a 26:30 | [rsi-loop](docs/diagrams/img/pt-BR/rsi-loop.png) ([html](docs/diagrams/pt-BR/rsi-loop.html)) | — | `rsiLoop` |
 | 3.4 Crença atual contra crença nova | 26:30 a 28:00 | [bandit-round](docs/diagrams/img/pt-BR/bandit-round.png) ([html](docs/diagrams/pt-BR/bandit-round.html)) | [`3-4-beta.txt`](papers/contextual-bandits/script/desmos/3-4-beta.txt) | `beliefs`; `betaBernoulli` |
@@ -193,9 +193,9 @@ O teste A/B tem três virtudes: ele é simples de montar, simples de ler e simpl
 
 ### 2.2 O teste A/B é uma regra de bandit (cena 2.2)
 
-1. **O período de teste é a regra ε-gulosa com ε = 1.** Cada braço recebe probabilidade `1/K`. Essa é a alocação aleatória uniforme. A afirmação `epsGreedy_one_is_ab_test` em Z3 (`z3/theorems.py`) prova isso.
+1. **O período de teste é a regra ε-gulosa com ε = 1.** Cada braço recebe probabilidade `1/K`. Essa é a alocação aleatória uniforme. A afirmação `epsGreedy_one_is_ab_test` em Z3 (`z3-scala/src/main/scala/Theorems.scala`) prova isso.
 2. **A fase de decisão é a regra ε-gulosa com ε = 0**, a gulosa. A afirmação `epsGreedy_zero` prova isso.
-3. **O teste A/B completo é um ε que pula de 1 para 0 num dia marcado.** A invariante R3 (`etc` em `z3/video.py`) prova as duas fases: `etc_before` e `etc_after`.
+3. **O teste A/B completo é um ε que pula de 1 para 0 num dia marcado.** A invariante R3 (`etc` em `z3-scala/src/main/scala/Video.scala`) prova as duas fases: `etc_before` e `etc_after`.
 
 Com essa visão, a pergunta "A/B ou bandit?" vira outra: como ε deve cair ao longo do tempo.
 
@@ -262,7 +262,7 @@ O agente de dentro é a ε-gulosa da sorveteria. O agente de fora é outro bandi
 | 0,1 | 12 | 0,085 |
 | 0,01 | 9 | 0,057 |
 
-O agente de fora aprende como o agente de dentro deve aprender. A mesma `eps_greedy` funciona nos dois níveis. A invariante R4 em Z3 prova isso: `rsi_valid` e `outer_explores`. O ε = 0,5 ganha porque o horizonte é curto, 500 clientes por episódio, e o modelo começa do zero.
+O agente de fora aprende como o agente de dentro deve aprender. A mesma `epsGreedy` funciona nos dois níveis. A invariante R4 em Z3 prova isso: `rsi_valid` e `outer_explores`. O ε = 0,5 ganha porque o horizonte é curto, 500 clientes por episódio, e o modelo começa do zero.
 
 [![Automelhoria recursiva: um bandit que ajusta um bandit](docs/diagrams/img/pt-BR/rsi-loop.png)](docs/diagrams/pt-BR/rsi-loop.html)
 
@@ -287,15 +287,15 @@ O modelo Beta-Bernoulli guarda duas contagens por opção: sucessos e fracassos.
 
 | Conceito desta nota | Z3 | Haskell |
 |---|---|---|
-| Modelo probabilístico | `update`, `estimate`, `posterior` (`examples.py`) | `RewardModel`, `Models.hs` |
+| Modelo probabilístico | `update`, `estimate`, `posterior` (`Examples.scala`) | `RewardModel`, `Models.hs` |
 | Política | `policy` | `policy`, `act` |
-| Alocação A/B/n | `eps_greedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
-| Teste A/B completo | `etc`, `etc_before`, `etc_after` (`video.py`) | `etc` (`Video.hs`) |
+| Alocação A/B/n | `epsGreedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
+| Teste A/B completo | `etc`, `etc_before`, `etc_after` (`Video.scala`) | `etc` (`Video.hs`) |
 | Garantia de exploração | `epsGreedy_explores` | — |
 | Arrependimento do UCB numa rodada | `ucb_gap` | `ucb` |
 | O modelo é o único caminho do histórico até a decisão | `policy_factors` | `posterior` |
-| π como bandit | `step`, `leibnizPair_pos`, `ramTerm_pos` (`video.py`) | `Pi.hs`, `singleArmed`, `multiArmed` |
-| RSI | `outer`, `inner_eps`, `rsi_valid` (`video.py`) | `outer`, `inner`, `rsiLoop` |
+| π como bandit | `step`, `leibnizPair_pos`, `ramTerm_pos` (`Video.scala`) | `Pi.hs`, `singleArmed`, `multiArmed` |
+| RSI | `outer`, `innerEps`, `rsi_valid` (`Video.scala`) | `outer`, `inner`, `rsiLoop` |
 
 ## 5. Fontes
 

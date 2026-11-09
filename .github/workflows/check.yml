@@ -1,6 +1,6 @@
 # check: the checks of AGENTS.md, in three jobs. checks: every checks/<feature>.sh
-# (scripts/checks.sh), with the pip packages of every checks/<feature>.requirements.txt, so a new
-# check needs no change here. haskell: the port builds with -Wall -Werror and its spec check says OK.
+# (scripts/checks.sh), with a JDK and sbt for z3-scala/ and the pip packages of every
+# checks/<feature>.requirements.txt, so a new check needs no change here. haskell: the port builds with -Wall -Werror and its spec check says OK.
 # lean: the hygiene script and `lake build` of each Lean package; a package that is not in the tree
 # is skipped, so removing one needs no change here either.
 name: check
@@ -20,12 +20,17 @@ permissions:
 jobs:
   checks:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: sbt/setup-sbt@v1
       - uses: extractions/setup-just@v2
       - name: install the pip packages of every check
         run: |

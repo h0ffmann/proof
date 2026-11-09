@@ -1,5 +1,5 @@
 -- | The invariants of the video script, as Haskell. This module is the twin of
--- ../z3/video.py, name for name, so that the spec check in
+-- ../z3-scala/src/main/scala/Video.scala, name for name, so that the spec check in
 -- app/Main.hs can compare the two. The owner gave the requirements on 2026-11-09:
 --
 --   * R1. The reward is the input of the user: 'User'.
@@ -94,7 +94,7 @@ etc horizon t
 outer :: Double -> DecisionRule
 outer = epsGreedy
 
--- | The inner agent, after the outer agent selected the arm @i@. (Z3: @inner_eps@)
+-- | The inner agent, after the outer agent selected the arm @i@. (Z3: @innerEps@)
 inner :: [Double] -> Arm -> DecisionRule
 inner epsilons i = epsGreedy (epsilons !! i)
 
