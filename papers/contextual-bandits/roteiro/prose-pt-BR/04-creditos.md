@@ -5,7 +5,7 @@
 | Estilo visual | 3Blue1Brown, Grant Sanderson | citado na fala e na tela de créditos; sem o personagem π |
 | Animações | Manim (Manim Community) [@manim] | `codigo/linha_do_tempo.py` e os takes |
 | Gráficos interativos | Desmos, calculadora gráfica | `desmos/` |
-| Voz | XTTS v2 (Coqui) [@coqui2024xtts] e OpenVoice V2 (MyShell) [@myshell2024openvoice2] | `voz/narrar.py` |
+| Voz | XTTS v2 (Coqui) [@coqui2024xtts] e OpenVoice V2 (MyShell) [@myshell2024openvoice2] | `voz/narrate.py` |
 | Roteiro, código, animações | Claude Code (Anthropic): Claude Sonnet 5.5 (teste do Manim), Claude Fable 5.1 (roteiro, Lean, Haskell) | a partir dos prompts em `PROMPTS.md` |
 | Invariantes | Lean 4 (`Video.lean`, R1 a R5, sem `sorry`), Z3 (`z3/video.py`) e o espelho em Haskell | conferidas pelo spec check de `app/Main.hs` e por `just z3` |
 | Custo total | `[a confirmar: preencher só no fim da produção]` | tela de créditos |

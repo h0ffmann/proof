@@ -1,22 +1,25 @@
-# Roteiro do vídeo: CMAB, teste A/B e RSI, em 30 minutos
+# The video script: CMAB, A/B tests and RSI, in 30 minutes
 
-O roteiro é um paper do Paper Fabric, dentro da pasta do paper sobre bandits: `metadata.md`, um
-arquivo por bloco em `prose/`, `refs.bib` e `REFERENCES.md`. `just roteiro` monta
-`pdf/contextual-bandits-roteiro.pdf` com pandoc e XeLaTeX (dentro de `nix develop`). O PDF não é
-commitado.
+The script is a Paper Fabric paper inside the folder of the paper on bandits: `metadata.md`, one
+file per block in `prose-pt-BR/`, `refs.bib` and `REFERENCES.md`. `just roteiro` builds
+`pdf/contextual-bandits-roteiro-pt-BR.pdf` with pandoc and XeLaTeX (inside `nix develop`). The PDF
+is not committed. The Brazilian Portuguese edition is the one written so far (the owner asked for
+it first); the English edition is issue #18. Every other file of this folder is in English, as the
+language rule of `AGENTS.md` asks.
 
-| Arquivo | O que é |
+| File | What it is |
 |---|---|
-| `prose/00-como-ler.md` | como ler o roteiro, e a seção "Voz" |
-| `prose/01-cmab.md`, `prose/02-teste-ab.md`, `prose/03-rsi.md` | os três blocos de 10 minutos, uma cena por take, com Fala, Tela, Desmos e Código |
-| `prose/04-creditos.md` | os créditos, a lista "a confirmar" e a declaração sobre o uso de IA |
-| `refs.bib`, `REFERENCES.md` | as fontes, e o que foi conferido em cada uma |
-| `resultados.md` | os números que a fala cita, escritos por `cabal run video` (`haskell/app/Video.hs`) |
-| `desmos/` | as expressões dos gráficos interativos, uma por cena que os usa |
-| `voz/narrar.py` | a narração: XTTS v2 em pt-BR, timbre pelo OpenVoice; `python3 voz/narrar.py prose` conta as palavras |
-| `codigo/` | as animações Manim, uma por take (Python só desenha) |
-| `PROMPTS.md` | os prompts que fizeram tudo isto, com a hora de cada um |
+| `prose-pt-BR/00-metadata.md` | the Portuguese title, abstract and keywords; `metadata.md` has the English ones and the shared layout |
+| `prose-pt-BR/00-como-ler.md` | how to read the script, and the section on the voice |
+| `prose-pt-BR/01-cmab.md`, `02-teste-ab.md`, `03-rsi.md` | the three blocks of 10 minutes, one scene per take, each with the words (Fala), the screen (Tela), the Desmos graph and the code (Código) |
+| `prose-pt-BR/04-creditos.md` | the credits, the list of points to confirm, and the statement on the use of AI |
+| `refs.bib`, `REFERENCES.md` | the sources, and what was checked in each one |
+| `resultados.pt-BR.md` | the numbers the narration quotes, as the video's screens show them; written by `cabal run video` (`haskell/app/Video.hs`) |
+| `desmos/` | the expressions of the interactive graphs, one file per scene that uses one |
+| `voz/narrate.py` | the narration: XTTS v2 in pt-BR, the timbre from OpenVoice; `python3 voz/narrate.py prose-pt-BR` counts the words |
+| `codigo/` | the Manim animations, one per take (Python only draws) |
+| `PROMPTS.md` | the prompts that made all of this, as typed, with the time of each one |
 
-O código que sustenta cada frase está em `lean/ContextualBandit/Video.lean` (as invariantes R1 a
-R5, provadas), `z3/video.py` (as mesmas invariantes, por refutação) e `haskell/src/Video.hs`,
-`haskell/src/Pi.hs` e `haskell/app/Video.hs` (o espelho e os experimentos).
+The code behind each sentence is in `lean/ContextualBandit/Video.lean` (the invariants R1 to R5,
+proved), `z3/video.py` (the same invariants, by refutation) and `haskell/src/Video.hs`,
+`haskell/src/Pi.hs` and `haskell/app/Video.hs` (the mirror and the experiments).

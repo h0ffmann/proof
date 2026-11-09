@@ -66,7 +66,7 @@ metade e depois quase para; a da UCB fica embaixo.
 fechada, `(T/2)·g + 0`, contra o da ε-gulosa, `T·e·g`, com `g` o salto médio e `e` em controle;
 mostra em que ε as duas retas se cruzam.
 
-**Código.** `abVsBandit` em `haskell/app/Video.hs`, média de 20 sementes (`resultados.md`); a
+**Código.** `abVsBandit` em `haskell/app/Video.hs`, média de 20 sementes (`resultados.pt-BR.md`); a
 sorveteria é `rate` e `shop`, com as taxas de `haskell/app/Main.hs` (`ctr`). A Netflix: a nota do
 repositório, seção 4.1 [@hoffmann2026note], e a palestra de Jebara [@jebara2018artwork].
 

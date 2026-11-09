@@ -43,7 +43,7 @@ cabeça.
 vivo.
 
 **Código.** `rsiLoop` em `haskell/app/Video.hs`: `episode` é o agente de dentro, o laço com
-`outer 0.2` é o de fora. A tabela está em `resultados.md`.
+`outer 0.2` é o de fora. A tabela está em `resultados.pt-BR.md`.
 
 ## Onde o bandit entra na RSI de verdade (24:00 a 26:30)
 
@@ -132,4 +132,4 @@ créditos: 3Blue1Brown · Manim Community · Claude Code (Sonnet 5.5, Fable 5.1)
 confirmar: preencher no fim da produção, em dólares e em horas]` · "prompts: PROMPTS.md".
 
 **Código.** `lean/ContextualBandit/Video.lean`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`,
-`haskell/app/Video.hs`, `resultados.md` e `PROMPTS.md`. As animações: `codigo/`.
+`haskell/app/Video.hs`, `resultados.pt-BR.md` e `PROMPTS.md`. As animações: `codigo/`.

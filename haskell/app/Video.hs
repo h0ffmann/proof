@@ -1,6 +1,6 @@
 -- | The experiments of the video script (papers/contextual-bandits/roteiro/), in the
 -- order of the scenes. @cabal run video@ prints the numbers that the script quotes, as
--- Markdown; the output is committed as papers/contextual-bandits/roteiro/resultados.md.
+-- Markdown; the output is committed as papers/contextual-bandits/roteiro/resultados.pt-BR.md.
 --
 -- The arithmetic of pi is exact ("Pi"). The simulations use 'Double' and the pure RNG
 -- of "ContextualBandit", so every run prints the same numbers.

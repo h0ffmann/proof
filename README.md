@@ -89,7 +89,7 @@ lean/                          Lean 4 (core only, no Mathlib), toolchain v4.24.0
   ContextualBandit/Theorems.lean    the proofs (below)
   ContextualBandit/Examples.lean    a tabular model you can #eval
   ContextualBandit/Video.lean       the video script's invariants R1 to R5 (user as reward, one arm, explore-then-commit, RSI, the π series)
-z3/                            the same invariants, checked by Z3 (python3 z3/video.py)
+z3/                            the same invariants, checked by Z3 (video.py), and the language rule (language.py)
 haskell/                       GHC, only base + containers
   src/ContextualBandit.hs           the same interface and rules, plus a pure RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor

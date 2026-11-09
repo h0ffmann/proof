@@ -82,9 +82,11 @@ check:
     cd cycle/lean && lake build
     cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 
-# The video script's invariants checked by Z3 (z3/video.py; needs python3 with z3-solver)
+# Z3 (needs python3 with z3-solver): the video script's invariants (z3/video.py) and the language
+# rule, every file in English unless its path carries pt-BR (z3/language.py)
 z3:
     python3 z3/video.py
+    python3 z3/language.py
 
 # House pricing: fetch the data, train in Rust, check the Lean proofs, then Lean vs Rust through the C ABI
 house-pricing:
@@ -115,12 +117,12 @@ paper *slugs:
       if [ -d "papers/$p/prose-pt-BR" ]; then just _pdf "$p" prose-pt-BR "$p-pt-BR"; fi
     done
 
-# The video script (papers/contextual-bandits/roteiro/), a paper inside the paper's folder:
-# pdf/contextual-bandits-roteiro.pdf. Run inside `nix develop`.
+# The video script (papers/contextual-bandits/roteiro/), a paper inside the paper's folder, in its
+# Brazilian Portuguese edition: pdf/contextual-bandits-roteiro-pt-BR.pdf. Run inside `nix develop`.
 roteiro:
     mkdir -p build/tex pdf
     printf '%s+%s' "$(git rev-parse --short HEAD)" "$(git rev-list --count HEAD)" > build/.current-revision
-    just _pdf contextual-bandits/roteiro prose contextual-bandits-roteiro
+    just _pdf contextual-bandits/roteiro prose-pt-BR contextual-bandits-roteiro-pt-BR
 
 # One PDF: papers/<slug>/<dir>/*.md -> build/tex/<out>.tex -> pdf/<out>.pdf (XeLaTeX twice).
 _pdf slug dir out:

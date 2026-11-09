@@ -1,7 +1,0 @@
-# A voz do roteiro. Python 3.9 a 3.11 (o OpenVoice pede 3.9 no README).
-# Base em português do Brasil:
-coqui-tts>=0.24          # XTTS v2, language="pt"
-# Conversor de timbre:
-git+https://github.com/myshell-ai/OpenVoice.git
-torch
-soundfile

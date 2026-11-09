@@ -19,7 +19,7 @@ frase.
 para a outra. Em baixo, os três títulos dos blocos.
 
 **Código.** `haskell/app/Video.hs`, `beliefs`, com a regra de `betaBernoulli` em
-`haskell/src/Models.hs`. A saída em `resultados.md`: a crença atual escolhe a opção 0 (0,67);
+`haskell/src/Models.hs`. A saída em `resultados.pt-BR.md`: a crença atual escolhe a opção 0 (0,67);
 depois de 4 sinais positivos para a opção 1 e 2 negativos para a 0, a crença nova escolhe a
 opção 1 (0,62). "Mudou de ideia? True". A invariante R1 em Lean: `User`, a recompensa é o input
 do usuário, em [0, 1].
@@ -88,7 +88,7 @@ com `R(n)`, de Ramanujan.
 `leibnizEven_lt_succ`, as somas pares de Leibniz crescem. Haskell, `haskell/src/Video.hs` (os
 mesmos nomes) e `haskell/src/Pi.hs` (`leibnizS`, `digitsCorrect`); a simulação é `singleArmed`
 em `haskell/app/Video.hs`. A tabela de dígitos por termo e a de 20 rodadas estão em
-`resultados.md`.
+`resultados.pt-BR.md`.
 
 ## O nome, letra por letra: de um braço a vários (5:00 a 6:30)
 

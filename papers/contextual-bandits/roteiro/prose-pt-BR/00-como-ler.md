@@ -7,7 +7,7 @@ PTC-9 (sem ruído de texto gerado) valem em toda linha. Frase com no máximo 35 
 vizinha deste roteiro é `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md`, na raiz do repositório
 [@hoffmann2026note].
 
-Cada cena é **um take**: um arquivo de áudio (`voz/narrar.py` escreve `cena-N.M.wav`), um arquivo
+Cada cena é **um take**: um arquivo de áudio (`voz/narrate.py` escreve `cena-N.M.wav`), um arquivo
 de vídeo (`take-N.M.mp4`) e um corte na edição. Nenhum take depende do anterior; a ordem é a
 deste documento. Cada cena tem quatro partes. **Fala** é o texto que a voz lê. **Tela** é o que
 aparece. **Desmos**, quando a cena tem um gráfico que um controle deslizante explica melhor que
@@ -15,7 +15,7 @@ uma animação pronta: a expressão está em `desmos/`, para colar na calculador
 tela. **Código** é o arquivo que sustenta a cena: tudo o que a fala afirma sobre o método tem uma
 função em Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`) ou um
 teorema em Lean (`lean/ContextualBandit/Video.lean`, as invariantes R1 a R5 dos requisitos do
-autor). Os números citados estão em `resultados.md`, escrito por `cabal run video`. Python só faz
+autor). Os números citados estão em `resultados.pt-BR.md`, escrito por `cabal run video`. Python só faz
 animação (Manim), em `codigo/`. Todos os caminhos são relativos à raiz do repositório
 h0ffmann/proof [@hoffmann2026proof], ou à pasta deste roteiro,
 `papers/contextual-bandits/roteiro/`.
@@ -56,6 +56,6 @@ A voz de referência é a minha, gravada por mim: 30 s de leitura limpa, sem mú
 `voz/referencia.wav`. `[a confirmar: quer a sua voz, ou uma voz de locutor neutra? Uma voz de
 pessoa real pede autorização dela.]`
 
-**Código.** `voz/narrar.py` lê as cenas deste roteiro (os arquivos de `prose/`), sintetiza cada
-**Fala** com o XTTS v2 e passa o áudio pelo conversor de timbre do OpenVoice. `voz/requisitos.txt`
+**Código.** `voz/narrate.py` lê as cenas deste roteiro (os arquivos de `prose-pt-BR/`), sintetiza cada
+**Fala** com o XTTS v2 e passa o áudio pelo conversor de timbre do OpenVoice. `voz/requirements.txt`
 lista os pacotes. Eu não executei esse arquivo aqui: os modelos pesam alguns GB e pedem GPU.

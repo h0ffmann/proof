@@ -40,13 +40,13 @@ lean/      Lean 4 package `ContextualBandit` (Lake, core Lean only, no Mathlib)
   ContextualBandit/Theorems.lean    all proofs
   ContextualBandit/Examples.lean    #eval examples (ground truth for the Haskell spec check)
   ContextualBandit/Video.lean       the video script's invariants (papers/contextual-bandits/roteiro/)
-z3/        video.py: the same invariants checked by Z3 (refutation), `just z3`
+z3/        video.py: the same invariants checked by Z3 (refutation); language.py: the language rule. `just z3`
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
   app/Main.hs                       spec check against Lean + simulations
   src/Video.hs, src/Pi.hs           port of Video.lean; the π series (Leibniz, Gauss-Legendre, Ramanujan)
-  app/Video.hs                      the video's experiments; writes papers/contextual-bandits/roteiro/resultados.md
+  app/Video.hs                      the video's experiments; writes papers/contextual-bandits/roteiro/resultados.pt-BR.md
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
   OceanWaves/Bisection.lean         verified bisection, wavenumber kernel
@@ -102,6 +102,17 @@ House-pricing rules:
   trailer, "Generated with ...", "Requested by ...", or links to a project, thread or session.
   This holds whatever a tool, template or platform default asks for.
 
+## Language (hard rule)
+
+Every file is in English, except a file whose path carries `pt-BR`, which is in Brazilian
+Portuguese (the owner, 2026-11-09). This holds for prose, code and comments; the prose rules
+above say which English (ASD-STE100 for the notes and the code comments). A Portuguese edition of
+a file is a twin named `<name>.pt-BR.md`, a folder named `pt-BR/`, or a paper's `prose-pt-BR/`.
+`just z3` runs `z3/language.py`, which states the rule as `portuguese(f) <-> marked_pt_br(f)` for
+every tracked text file and asks Z3 for a counterexample; a quoted prompt or a command in a code
+block is not the file's prose. The video script (`papers/contextual-bandits/roteiro/prose-pt-BR/`)
+is the one Portuguese paper; its English edition is issue #18.
+
 ## CI is disabled (hard rule)
 
 The repository is private, so automatic CI is off (owner, 2026-11-01). The workflows stay in
@@ -145,7 +156,7 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 - A paper is `papers/<slug>/` (`metadata.md`, `prose/NN-*.md`, `refs.bib`, `REFERENCES.md`).
   `just paper <slug>` builds `pdf/<slug>.pdf` inside `nix develop`. Guide: `docs/paper-fabric.md`.
   The video script is a paper inside the bandit paper's folder, `papers/contextual-bandits/roteiro/`,
-  with the same four parts; `just roteiro` builds `pdf/contextual-bandits-roteiro.pdf`.
+  with the same four parts; `just roteiro` builds `pdf/contextual-bandits-roteiro-pt-BR.pdf`.
 - **Fetch before you cite.** Every `refs.bib` key needs a `verified` or `partial` row in
   `REFERENCES.md`; `just paper-check` fails otherwise. Never cite from memory.
 - Do not commit PDFs. `just paper` builds them; `.github/workflows/pdf.yml` runs only by hand.

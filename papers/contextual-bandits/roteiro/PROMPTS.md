@@ -1,16 +1,19 @@
 # Prompts
 
-Os prompts que fizeram este diretório, como foram digitados, em ordem, com a hora em UTC. O
-modelo que respondeu está na segunda coluna. O custo total entra aqui no fim da produção.
+The prompts that made this folder, as typed, in order, with the time in UTC. The model that
+answered is in the second column. The total cost goes here at the end of the production. The
+prompts are quoted as they were written, most of them in Portuguese; the prose of this file is
+English, as the language rule of `AGENTS.md` asks.
 
-| Hora (UTC) | Modelo | O que fez |
+| Time (UTC) | Model | What it did |
 |---|---|---|
-| 2026-11-09 01:35 | Claude Sonnet 5.5 | instalou o Manim e renderizou `SquareToCircle` (teste) |
-| 2026-11-09 02:15 a 02:30 | Claude Fable 5.1 | pesquisou, escreveu o roteiro (hoje em `prose/`), `voz/`, `desmos/` |
-| 2026-11-09 02:41 a 02:58 | Claude Fable 5.1 | `lean/ContextualBandit/Video.lean` (R1 a R5), `haskell/src/Video.hs`, `Pi.hs`, `app/Video.hs`; o Python do roteiro saiu, fica só para animação; issues #18 a #21 e piabrota/nix-os#172 |
-| 2026-11-09 03:03 a 03:15 | Claude Fable 5.1 | o PR no padrão `bipr`; o roteiro virou paper (`metadata.md`, `prose/`, `refs.bib`, `REFERENCES.md`, `just roteiro`); o Haskell reescrito para ler; `z3/video.py` |
+| 2026-11-09 01:35 | Claude Sonnet 5.5 | installed Manim and rendered `SquareToCircle` (a test) |
+| 2026-11-09 02:15 to 02:30 | Claude Fable 5.1 | researched, wrote the script (today in `prose-pt-BR/`), `voz/`, `desmos/` |
+| 2026-11-09 02:41 to 02:58 | Claude Fable 5.1 | `lean/ContextualBandit/Video.lean` (R1 to R5), `haskell/src/Video.hs`, `Pi.hs`, `app/Video.hs`; the Python of the script left, it stays for the animation only; issues #18 to #21 and piabrota/nix-os#172 |
+| 2026-11-09 03:03 to 03:15 | Claude Fable 5.1 | the PR in the `bipr` format; the script became a paper (`metadata.md`, `prose-pt-BR/`, `refs.bib`, `REFERENCES.md`, `just roteiro`); the Haskell rewritten for reading; `z3/video.py` |
+| 2026-11-09 03:24 | Claude Fable 5.1 | the language rule in `AGENTS.md` and `z3/language.py`; every file of this folder except the script itself in English; the Portuguese files renamed with `pt-BR` |
 
-Custo total: `[a confirmar: preencher no fim]`.
+Total cost: `[a confirmar: fill in at the end]`.
 
 ## 1. 2026-11-09 01:35
 
@@ -190,4 +193,10 @@ This equations should be easy to read, ergonomic
 
 ```text
 add z3 implementation
+```
+
+## 22. 2026-11-09 03:24
+
+```text
+tem varios arquivos em portugues ainda no repositorio, achava que isso era uma invariant no AGENTS.md, faca essa invariant em z3 tb
 ```
