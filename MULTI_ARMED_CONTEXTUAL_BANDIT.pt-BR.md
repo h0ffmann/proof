@@ -7,7 +7,7 @@ source:
   - https://netflixtechblog.com/artwork-personalization-c589f074ad76
   - https://www.aicouncil.com/talks/artwork-personalization-at-netflix
   - https://aicouncil.com/a-multi-armed-bandit-framework-for-recommendations-at-netflix
-tags: [bandit-contextual, teste-ab, netflix, lean, haskell]
+tags: [bandit-contextual, teste-ab, netflix, z3, haskell]
 created: 2026-11-01T00:13Z
 ---
 
@@ -71,7 +71,7 @@ Um teste A/B/n tem `K` variantes. O teste manda cada usuário para uma variante 
 
 Compare esse procedimento com as regras de bandit:
 
-1. **O período de teste é a regra ε-gulosa com ε = 1.** Cada braço recebe probabilidade `1/K`. Essa é a alocação aleatória uniforme. O teorema Lean `epsGreedy_one_is_ab_test` prova essa afirmação.
+1. **O período de teste é a regra ε-gulosa com ε = 1.** Cada braço recebe probabilidade `1/K`. Essa é a alocação aleatória uniforme. A afirmação `epsGreedy_one_is_ab_test` em Z3 (`z3/theorems.py`) prova isso.
 2. **O procedimento A/B completo é "explorar e depois decidir"** (*explore-then-commit*). O sistema explora por um número fixo de rodadas. Depois, o sistema aproveita o melhor braço em todas as rodadas seguintes.
 3. **O bandit muda a alocação durante o teste.** O bandit manda mais tráfego para os braços que parecem melhores. Por isso, o arrependimento durante o teste é menor.
 4. **O contexto personaliza o teste.** Um teste A/B encontra uma única melhor variante para todos os usuários. Um bandit contextual encontra a melhor variante para cada contexto. Um teste A/B por segmento de usuários é um caso particular.
@@ -120,18 +120,18 @@ As fontes primárias que esta nota confirmou são de 2017 e 2018. Esta nota não
 
 ## 5. Ligação com este repositório
 
-| Conceito desta nota | Lean | Haskell |
+| Conceito desta nota | Z3 | Haskell |
 |---|---|---|
-| Modelo probabilístico | `RewardModel` | `RewardModel`, `Models.hs` |
+| Modelo probabilístico | `update`, `estimate`, `posterior` (`examples.py`) | `RewardModel`, `Models.hs` |
 | Política | `policy` | `policy`, `act` |
-| Alocação A/B/n | `epsGreedy 1` = `uniform K` | `epsGreedy 1` |
+| Alocação A/B/n | `eps_greedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
 | Garantia de exploração | `epsGreedy_explores` | — |
 | Arrependimento do UCB numa rodada | `ucb_gap` | `ucb` |
 | O modelo é o único caminho do histórico até a decisão | `policy_factors` | `posterior` |
 
 [![Camadas de modelo e de decisão](docs/diagrams/img/pt-BR/bandit-architecture.png)](docs/diagrams/pt-BR/bandit-architecture.html)
 
-*Figura 3. A camada de modelo, a camada de decisão e a spec em Lean. Feita com archify.*
+*Figura 3. A camada de modelo, a camada de decisão e a spec em Z3. Feita com archify (a figura ainda diz Lean; o workflow manual `diagrams` a renderiza de novo).*
 
 ## 6. Fontes
 

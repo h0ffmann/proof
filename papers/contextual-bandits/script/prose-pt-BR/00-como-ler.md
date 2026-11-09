@@ -13,9 +13,10 @@ deste documento. Cada cena tem quatro partes. **Fala** é o texto que a voz lê.
 aparece. **Desmos**, quando a cena tem um gráfico que um controle deslizante explica melhor que
 uma animação pronta: a expressão está em `desmos/`, para colar na calculadora gráfica e gravar a
 tela. **Código** é o arquivo que sustenta a cena. Tudo o que a fala afirma sobre o método tem uma
-função em Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`) ou um
-teorema em Lean (`lean/ContextualBandit/Video.lean`, as invariantes R1 a R5 dos requisitos do
-autor). Os números citados estão em `results.md`, escrito por `cabal run video`. Python só faz
+função em Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`, `haskell/app/Video.hs`) ou uma
+afirmação provada pelo Z3. As invariantes R1 a R5 dos requisitos do autor estão em `z3/video.py`;
+os teoremas das regras de decisão, em `z3/theorems.py`. Os números citados estão em `results.md`,
+escrito por `cabal run video`. Python só faz
 animação (Manim), em `animation/`. Todos os caminhos são relativos à raiz do repositório
 h0ffmann/proof [@hoffmann2026proof], ou à pasta deste roteiro,
 `papers/contextual-bandits/script/`.

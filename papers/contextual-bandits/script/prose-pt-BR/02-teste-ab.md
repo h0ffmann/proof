@@ -18,7 +18,7 @@ caminhos.
 **Desmos.** `desmos/2-1-ab.txt`: duas Bernoulli com `p_A` e `p_B` em controles; `n` visitantes
 por variante; o intervalo de confiança das duas médias encolhe quando `n` cresce.
 
-**Código.** Lean: `uniform K` em `Policies.lean`; a invariante R3, `etc` em `Video.lean`, com
+**Código.** Z3: `uniform(K)` em `z3/bandit.py`; a invariante R3, `etc` em `z3/video.py`, com
 `etc_before`: antes da troca, a alocação é `uniform`. Haskell: `etc` em `haskell/src/Video.hs`.
 
 ## O teste A/B é uma regra de bandit (11:30 a 13:00)
@@ -38,9 +38,9 @@ um esquema intermediário. A pergunta deixa de ser qual ferramenta e passa a ser
 **Desmos.** `desmos/2-2-epsilon.txt`: a mistura `e/K + (1-e)·[a = melhor]` para três braços; o
 controle `e` de 0 a 1 é a cena inteira.
 
-**Código.** Lean: `epsGreedy_one_is_ab_test` (ε = 1 é o sorteio uniforme), `epsGreedy_zero` (ε =
-0 é a gulosa), `etc_after` e `etc_valid` em `Video.lean`. Haskell: `etc 10 3` dá `[1/3, 1/3,
-1/3]` e `etc 10 10` dá `[0, 1, 0]`, conferidos contra o `#eval` do Lean no spec check.
+**Código.** Z3: `epsGreedy_one_is_ab_test` (ε = 1 é o sorteio uniforme) em `z3/theorems.py`;
+`epsGreedy_zero` (ε = 0 é a gulosa), `etc_after` e `etc_valid` em `z3/video.py`. Haskell: `etc 10 3`
+dá `[1/3, 1/3, 1/3]` e `etc 10 10` dá `[0, 1, 0]`, conferidos contra os exemplos do Z3 no spec check.
 
 ## O custo da espera (13:00 a 15:00)
 
@@ -111,7 +111,7 @@ a correção por propensão.
 amostra em que o braço bom foi escolhido com probabilidade `p`; o controle `p` mostra o viés
 aparecer e a correção o desfazer.
 
-**Código.** `policy` em `haskell/src/ContextualBandit.hs` (e em `Interface.lean`) devolve a
+**Código.** `policy` em `haskell/src/ContextualBandit.hs` (e em `z3/examples.py`) devolve a
 distribuição inteira, não só o braço: essa distribuição é a propensão que o *replay* precisa
 registrar.
 
@@ -128,16 +128,16 @@ bandit quando a decisão se repete milhares de vezes por dia e o custo de errar 
 pequeno: uma imagem, uma posição, uma frase de abertura. E use os dois quando puder: o bandit por
 dentro, o teste A/B por fora, como a Netflix. Essa combinação é a que a maioria das equipes acaba
 adotando, porque ela fica com a velocidade de um e a defesa do outro. E para fechar o bloco, cinco
-fatos sobre tudo isso estão provados em Lean 4, sem `sorry`. Toda regra devolve uma distribuição de
+fatos sobre tudo isso estão provados pelo Z3, por refutação. Toda regra devolve uma distribuição de
 probabilidade. A ε-gulosa dá a cada braço pelo menos ε sobre K. A gulosa e a UCB escolhem um máximo
 de verdade. A ε-gulosa com ε igual a 1 é o teste A/B. E o lema do otimismo, `ucb_gap`: se
 o modelo é calibrado, o braço da UCB perde no máximo 2 β vezes a largura para o melhor. A parte
-probabilística da cota de arrependimento precisa de Mathlib e está aberta. Eu digo isso para
+probabilística da cota de arrependimento está fora do que o Z3 decide e fica aberta. Eu digo isso para
 separar o que este vídeo mostra, a parte determinística e executável, do que ele não mostra.
 
 **Tela.** Tabela de três linhas: contexto, alocação, decisão; coluna A/B e coluna CMAB. Depois, a
 tabela de teoremas do README, uma linha por vez.
 
 **Código.** A tabela é a seção 3 da nota `MULTI_ARMED_CONTEXTUAL_BANDIT.pt-BR.md`
-[@hoffmann2026note]. Os teoremas estão em `lean/ContextualBandit/Theorems.lean`. O Python não
-prova nada; ele só desenha o que o Lean provou.
+[@hoffmann2026note]. Os teoremas estão em `z3/theorems.py`, provados para até cinco braços e
+todo valor real das estimativas. O Python do Manim não prova nada; ele só desenha o que o Z3 provou.

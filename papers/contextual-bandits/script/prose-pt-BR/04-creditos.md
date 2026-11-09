@@ -6,8 +6,8 @@
 | Animações | Manim (Manim Community) [@manim] | `animation/timeline.py` e os takes |
 | Gráficos interativos | Desmos, calculadora gráfica | `desmos/` |
 | Voz | XTTS v2 (Coqui) [@coqui2024xtts] e OpenVoice V2 (MyShell) [@myshell2024openvoice2] | `voice/narrate.py` |
-| Roteiro, código, animações | Claude Code (Anthropic): Claude Sonnet 5.5 (teste do Manim), Claude Fable 5.1 (roteiro, Lean, Haskell) | a partir dos prompts em `PROMPTS.md` |
-| Invariantes | Lean 4 (`Video.lean`, R1 a R5, sem `sorry`), Z3 (`z3/video.py`) e o espelho em Haskell | conferidas pelo spec check de `app/Main.hs` e por `just z3` |
+| Roteiro, código, animações | Claude Code (Anthropic): Claude Sonnet 5.5 (teste do Manim), Claude Fable 5.1 (roteiro, Z3, Haskell) | a partir dos prompts em `PROMPTS.md` |
+| Invariantes | Z3 (`z3/video.py`, R1 a R5; `z3/theorems.py`, as regras) e o espelho em Haskell | conferidas pelo spec check de `app/Main.hs` e por `just z3` |
 | Custo total | `[a confirmar: preencher só no fim da produção]` | tela de créditos |
 
 : O que este vídeo tomou emprestado, de quem, e onde isso entra.
@@ -24,7 +24,7 @@
 
 # Declaração sobre o uso de IA {.unnumbered}
 
-Este roteiro, o código em Lean e em Haskell que sustenta o roteiro e este documento foram escritos
+Este roteiro, o código em Z3 e em Haskell que sustenta o roteiro e este documento foram escritos
 com o Claude Code (Anthropic), pelos modelos Claude Sonnet 5.5 e Claude Fable 5.1. Os modelos
 partiram dos prompts do autor, listados em `PROMPTS.md` com a hora de cada um. O autor revisou e
 aprovou o rascunho em 9 de novembro de 2026. Toda fonte citada foi lida antes de ser citada; `REFERENCES.md`, ao lado

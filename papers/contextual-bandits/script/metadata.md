@@ -1,6 +1,6 @@
 ---
 title: "Script: CMAB, A/B tests and RSI, in 30 minutes"
-subtitle: "The contextual bandit, the A/B test and recursive self-improvement in an explainer video, with an invariant in Lean or a function in Haskell behind each sentence"
+subtitle: "The contextual bandit, the A/B test and recursive self-improvement in an explainer video, with an invariant in Z3 or a function in Haskell behind each sentence"
 author:
   - name: Matheus Hoffmann
     orcid: 0009-0009-1056-7661
@@ -11,16 +11,16 @@ keywords:
   - contextual bandit
   - A/B test
   - recursive self-improvement
-  - Lean 4
+  - Z3
   - Haskell
   - video script
 abstract: |
   This is the script of a 30-minute video, in three blocks of 10 minutes: the contextual
   multi-armed bandit (CMAB), the A/B test and recursive self-improvement (RSI). Each scene is one
   take, with the words spoken, what the screen shows, the interactive graph when one helps, and
-  the code that supports the scene. Everything the narration says about the method has a theorem
-  in Lean 4 (`lean/ContextualBandit/Video.lean`, the invariants R1 to R5), a Z3 check
-  (`z3/video.py`) or a function in Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`,
+  the code that supports the scene. Everything the narration says about the method has a
+  statement proved by Z3 (`z3/video.py`, the invariants R1 to R5; `z3/theorems.py`, the decision
+  rules) or a function in Haskell (`haskell/src/Video.hs`, `haskell/src/Pi.hs`,
   `haskell/app/Video.hs`) in the repository h0ffmann/proof. The simple example is the computation
   of pi, with the viewer as the reward; the complex example is the choice of artwork at Netflix.
   The Brazilian Portuguese edition (`prose-pt-BR/`) is the one written so far; the English edition

@@ -58,7 +58,7 @@ An A/B/n test has `K` variants. It sends each user to one variant at random, wit
 
 Compare this procedure with the bandit rules:
 
-1. **The test period is ε-greedy with ε = 1.** Each arm gets probability `1/K`. This is uniform random allocation. The Lean theorem `epsGreedy_one_is_ab_test` proves this statement.
+1. **The test period is ε-greedy with ε = 1.** Each arm gets probability `1/K`. This is uniform random allocation. The Z3 statement `epsGreedy_one_is_ab_test` (`z3/theorems.py`) proves this.
 2. **The full A/B procedure is "explore-then-commit".** The system explores for a fixed number of rounds. Then it exploits the best arm for all rounds that follow.
 3. **The bandit changes the allocation during the test.** It sends more traffic to arms that look better. Thus the regret during the test is less.
 4. **The context makes the test personal.** An A/B test finds one best variant for all users. A contextual bandit finds the best variant for each context. One A/B test for each user segment is a special case.
@@ -107,18 +107,18 @@ The primary sources that this note confirms are from 2017 and 2018. This note di
 
 ## 5. Connection to this repository
 
-| Concept in this note | Lean | Haskell |
+| Concept in this note | Z3 | Haskell |
 |---|---|---|
-| Probabilistic model | `RewardModel` | `RewardModel`, `Models.hs` |
+| Probabilistic model | `update`, `estimate`, `posterior` (`examples.py`) | `RewardModel`, `Models.hs` |
 | Policy | `policy` | `policy`, `act` |
-| A/B/n allocation | `epsGreedy 1` = `uniform K` | `epsGreedy 1` |
+| A/B/n allocation | `eps_greedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
 | Exploration guarantee | `epsGreedy_explores` | — |
 | UCB regret, one round | `ucb_gap` | `ucb` |
 | Model gives the only path from history to decision | `policy_factors` | `posterior` |
 
 [![Model and decision layers](docs/diagrams/img/en/bandit-architecture.png)](docs/diagrams/en/bandit-architecture.html)
 
-*Figure 3. The model layer, the decision layer and the Lean spec. Made with archify.*
+*Figure 3. The model layer, the decision layer and the Z3 spec. Made with archify (the figure still says Lean; it is rendered again by the manual `diagrams` workflow).*
 
 ## 6. Sources
 

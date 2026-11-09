@@ -1,0 +1,62 @@
+# check: the checks of AGENTS.md, in three jobs. z3: the specification of the contextual bandit
+# (theorems, examples, the video's invariants) and the language rule, `just z3`. haskell: the port
+# builds with -Wall and its spec check matches the Z3 examples. lean: the hygiene script and the
+# proofs of the other experiments (ocean-waves, cycle), which still live in Lean.
+name: check
+
+# DISABLED (owner, 2026-11-09): the repository is private, so no workflow runs on its own.
+# Only a manual run from the Actions tab starts it. To turn it back on, restore:
+#   on:
+#     pull_request:
+#     push:
+#       branches: [main]
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  z3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: extractions/setup-just@v2
+      - run: pip install z3-solver
+      - name: the specification holds (theorems, examples, video), and every file is in English
+        run: just z3
+
+  haskell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: "9.4"
+      - name: the port builds with -Wall and its spec check matches z3/examples.py and z3/video.py
+        working-directory: haskell
+        run: |
+          mkdir -p build
+          ghc -O2 -Wall -Werror -isrc -outputdir build -o build/examples app/Main.hs
+          ./build/examples | tee run.log
+          ! grep -q FAIL run.log
+
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        package: [ocean-waves/lean, cycle/lean]
+    steps:
+      - uses: actions/checkout@v4
+      - name: no sorry, admit or axiom; native_decide only in Examples.lean
+        run: scripts/lean-hygiene.sh
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: ${{ matrix.package }}
+          use-mathlib-cache: true

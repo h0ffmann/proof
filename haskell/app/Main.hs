@@ -8,11 +8,11 @@ import Models
 import Video
 
 ------------------------------------------------------------------------
--- 0. Spec check: reproduce the Lean #eval outputs from Examples.lean
+-- 0. Spec check: reproduce the examples of z3/examples.py and z3/video.py
 
 data Ctx = Morning | Evening deriving (Eq, Ord, Show)
 
--- Same model as Lean's `tabular`: mean = sum/count, width = 1/(count+1).
+-- Same model as z3/examples.py: mean = sum/count, width = 1/(count+1).
 tabular :: Int -> RewardModel Ctx (M.Map (Ctx, Arm) (Double, Int))
 tabular k = RewardModel
   { numArms = k, prior = M.empty
@@ -22,34 +22,34 @@ tabular k = RewardModel
   , sample = \b c a -> pure (mean (estimate (tabular k) b c a))
   }
 
-leanHistory :: [Obs Ctx]
-leanHistory =
+specHistory :: [Obs Ctx]
+specHistory =
   [ Obs Morning 0 0, Obs Morning 1 1, Obs Morning 1 1, Obs Morning 2 0
   , Obs Evening 0 0, Obs Evening 1 0, Obs Evening 2 1 ]
 
 specCheck :: IO ()
 specCheck = do
-  putStrLn "== 0. Spec check against Lean #eval =="
-  let g  = policy (tabular 3) greedy leanHistory Morning
-      g' = policy (tabular 3) greedy leanHistory Evening
-      e  = policy (tabular 3) (epsGreedy 0.1) leanHistory Morning
+  putStrLn "== 0. Spec check against z3/examples.py and z3/video.py =="
+  let g  = policy (tabular 3) greedy specHistory Morning
+      g' = policy (tabular 3) greedy specHistory Evening
+      e  = policy (tabular 3) (epsGreedy 0.1) specHistory Morning
       close xs ys = and (zipWith (\x y -> abs (x - y) < 1e-12) xs ys)
-  printf "greedy morning  %s  (Lean: [0, 1, 0])          %s\n" (show g) (ok (g == [0, 1, 0]))
-  printf "greedy evening  %s  (Lean: [0, 0, 1])          %s\n" (show g') (ok (g' == [0, 0, 1]))
-  printf "eps 0.1 morning %s  (Lean: [1/30, 14/15, 1/30]) %s\n" (show (map (roundTo 4) e))
+  printf "greedy morning  %s  (Z3: [0, 1, 0])          %s\n" (show g) (ok (g == [0, 1, 0]))
+  printf "greedy evening  %s  (Z3: [0, 0, 1])          %s\n" (show g') (ok (g' == [0, 0, 1]))
+  printf "eps 0.1 morning %s  (Z3: [1/30, 14/15, 1/30]) %s\n" (show (map (roundTo 4) e))
     (ok (close e [1 / 30, 14 / 15, 1 / 30]))
-  -- Video.lean
+  -- z3/video.py
   let est3 = [Estimate 0.5 0, Estimate 0.9 0, Estimate 0.1 0]
       user = byDistance (355 / 113)
       s1 = OneArm 1 (leibniz 1) 0
-  printf "leibniz 5       %s  (Lean: 1052/315)             %s\n" (show (leibniz 5)) (ok (leibniz 5 == 1052 / 315))
-  printf "etc 10 3        %s  (Lean: [1/3, 1/3, 1/3])     %s\n" (show (map (roundTo 4) (etc 10 3 est3)))
+  printf "leibniz 5       %s  (Z3: 1052/315)             %s\n" (show (leibniz 5)) (ok (leibniz 5 == 1052 / 315))
+  printf "etc 10 3        %s  (Z3: [1/3, 1/3, 1/3])     %s\n" (show (map (roundTo 4) (etc 10 3 est3)))
     (ok (close (etc 10 3 est3) [1 / 3, 1 / 3, 1 / 3]))
-  printf "etc 10 10       %s  (Lean: [0, 1, 0])          %s\n" (show (etc 10 10 est3)) (ok (etc 10 10 est3 == [0, 1, 0]))
-  printf "step explore n  %d  (Lean: 2)                  %s\n" (terms (step leibniz user s1 Explore)) (ok (terms (step leibniz user s1 Explore) == 2))
-  printf "step exploit n  %d  (Lean: 1)                  %s\n" (terms (step leibniz user s1 Exploit)) (ok (terms (step leibniz user s1 Exploit) == 1))
-  printf "ramanujanSum 1  %s  (Lean: ramSum 1 = 1103)    %s\n" (show (ramanujanSum 1)) (ok (ramanujanSum 1 == 1103))
-  printf "leibnizEven 2   %s  (Lean: 304/105)             %s\n" (show (leibnizEven 2)) (ok (leibnizEven 2 == 304 / 105))
+  printf "etc 10 10       %s  (Z3: [0, 1, 0])          %s\n" (show (etc 10 10 est3)) (ok (etc 10 10 est3 == [0, 1, 0]))
+  printf "step explore n  %d  (Z3: 2)                  %s\n" (terms (step leibniz user s1 Explore)) (ok (terms (step leibniz user s1 Explore) == 2))
+  printf "step exploit n  %d  (Z3: 1)                  %s\n" (terms (step leibniz user s1 Exploit)) (ok (terms (step leibniz user s1 Exploit) == 1))
+  printf "ramanujanSum 1  %s  (Z3: ramSum 1 = 1103)       %s\n" (show (ramanujanSum 1)) (ok (ramanujanSum 1 == 1103))
+  printf "leibnizEven 2   %s  (Z3: 304/105)             %s\n" (show (leibnizEven 2)) (ok (leibnizEven 2 == 304 / 105))
   where ok b = if b then "OK" else "MISMATCH" :: String
 
 roundTo :: Int -> Double -> Double
