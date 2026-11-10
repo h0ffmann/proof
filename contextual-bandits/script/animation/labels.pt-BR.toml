@@ -1,0 +1,245 @@
+# As palavras que aparecem na tela, por take. Cada valor é TeX (LaTeX com babel `brazilian`),
+# escrito como string literal do TOML ('...'), para a barra invertida passar como está.
+# Os números não ficam aqui: eles vêm de ../results.md, escrito por `cabal run video`.
+
+[blocks]
+cmab = 'CMAB'
+ab = 'teste A/B'
+rsi = 'RSI'
+
+[t1_1]
+title = 'Gancho'
+current = 'crença atual'
+new = 'crença nova'
+options = ['opção 0', 'opção 1']
+liked = 'gostou'
+disliked = 'não gostou'
+question = 'a crença nova ainda escolhe a mesma opção?'
+changed = 'mudou de ideia, por evidência'
+name = 'bandit contextual de múltiplos braços: CMAB'
+
+[t1_2]
+title = '\emph{Steal like an artist}: de onde eu tirei isso'
+quote = '\q{nothing is original\ldots} \quad (Austin Kleon, 2012)'
+gap = '58 anos: estatística e economia'
+end = 'cada passo pegou o anterior e mudou uma coisa'
+# [ano, o marco, a fonte em letra pequena]
+milestones = [
+  ['1952', 'Robbins formula o problema', 'Wikipedia, \emph{Multi-armed bandit}'],
+  ['2010', 'LinUCB: Li, Chu, Langford, Schapire', 'Li et al., WWW 2010'],
+  ['2012', '\emph{Steal Like an Artist}', 'Wikipedia, \emph{Steal Like an Artist}'],
+  ['2017', 'Netflix: \emph{Artwork Personalization} (dez.)', 'Dezeen, 2017'],
+  ['2017', 'hackday da globo.com: o serviço de bandit', 'Tiago Motta, 2024'],
+  ['2018', 'um amigo do trabalho; os slides da globo.com', 'Renan Moreira de Oliveira, 2018'],
+  ['2024', 'o post de Tiago Motta', 'Tiago Motta, 2024'],
+  ['2026', 'RSI: o bandit no laço do agente', 'Anthropic, \emph{When AI builds itself}'],
+]
+
+[t1_3]
+title = '$\pi$ e você: um braço só'
+leibniz = 'Leibniz, 1674'
+ramanujan = 'Ramanujan, 1914'
+ramanujan_note = '1 termo: 7 dígitos; 6 termos: 48'
+leibniz_note = '100.000 termos: 5 dígitos'
+exploit = 'aproveitar: $\pi(N)$'
+explore = 'explorar: $\pi(N+1)$'
+ask = 'está bom?'
+grade = 'nota do usuário, de 0 a 1'
+times = 'vezes'
+mean = 'nota média'
+rounds = 'rodadas'
+end = 'no fim: $N =$'
+cycle = ['decidir', 'mostrar', 'receber a resposta', 'atualizar a crença']
+policy = 'a regra que decide é a política'
+
+[t1_4]
+title = 'O nome, letra por letra'
+bandit = '\emph{one-armed bandit}: o caça-níquel'
+multi = '\emph{multi-armed}: várias alavancas, Robbins, 1952'
+contextual = 'contextual: um dado da rodada antes de puxar'
+arms = ['Leibniz', 'Gauss-Legendre', 'Ramanujan']
+pulls = 'puxadas'
+digits = 'dígitos no fim'
+doubles = 'dobra os dígitos a cada passo'
+oscillates = 'oscila'
+morning = 'manhã'
+evening = 'noite'
+types = 'M, A: a lista de braços \quad C: o tipo do contexto'
+heard = 'ele não leu as fórmulas; ele ouviu você'
+
+[t1_5]
+title = 'Modelo e regra, separados'
+model = 'modelo'
+rule = 'regra'
+link = '(média, largura) por sabor'
+history = 'histórico'
+context = 'contexto'
+decision = 'decisão'
+theorem = 'mesma crença $\Rightarrow$ mesma decisão'
+tabular = 'modelo tabular: média $=$ soma$/$contagem, \quad largura $= 1/(\text{contagem}+1)$'
+models = ['Beta-Bernoulli', 'regressão linear bayesiana', 'qualquer modelo com média e desvio']
+same_rule = 'a mesma regra para os três'
+
+[t1_6]
+title = 'Explorar e aproveitar'
+rules = ['gulosa', '$\varepsilon$-gulosa', 'UCB']
+flavors = ['sabor 0', 'sabor 1', 'sabor 2']
+bonus = '$m + \beta\, w$'
+zero = '$\beta = 0$: a UCB vira a gulosa'
+thompson = 'Thompson: sorteia uma média plausível de cada crença'
+illustrative = 'estimativas de exemplo'
+
+[t1_7]
+title = 'O exemplo complexo: a Netflix'
+covers = ['capa 1', 'capa 2', 'capa 3']
+subscriber = 'assinante'
+country = 'país'
+play = 'play'
+noplay = 'sem play'
+context = 'contexto: histórico e país'
+arms = 'braços: as capas'
+reward = 'recompensa: o play'
+rate = '$\approx$ 20 M pedidos de imagem/s no pico'
+rate_source = 'Tony Jebara, 2018'
+same = 'a mesma estrutura de decisão do $\pi$'
+
+[t2_1]
+title = 'O que é um teste A/B'
+visitors = 'visitantes'
+draw = 'sorteio: $1/K$ para cada variante'
+decide = 'depois: decidir, e todos vão para a melhor'
+etc = '\emph{explore-then-commit}'
+variants = ['A', 'B', 'C']
+virtues = ['simples de montar', 'simples de ler', 'simples de defender']
+
+[t2_2]
+title = 'O teste A/B é uma regra de bandit'
+headline = 'teste A/B $=$ $\varepsilon$ de 1 para 0'
+mix = '$p(a) = \dfrac{\varepsilon}{K} + (1-\varepsilon)\,[a = \text{melhor}]$'
+theorem = '$\varepsilon = 1$: o sorteio uniforme'
+greedy = '$\varepsilon = 0$: a gulosa'
+time = 'tempo'
+curves = ['salto: teste A/B', 'constante 0,1: $\varepsilon$-gulosa', 'caindo devagar']
+question = 'qual curva?'
+
+[t2_3]
+title = 'O custo da espera'
+regret = 'arrependimento $= \sum_t \big(\mu_{\text{melhor}} - \mu_{\text{escolhido}}\big)$'
+customers = 'clientes'
+axis = 'arrependimento acumulado'
+policies = ['teste A/B', 'A/B sem contexto', '$\varepsilon$-gulosa 0,1', 'UCB $\beta = 2$']
+caption = 'fim das curvas: \texttt{results.md}, 20 sementes; forma: esboço'
+jebara = '\q{a massive amount of regret} \quad (Tony Jebara, 2018)'
+switch = 'troca'
+
+[t2_4]
+title = 'O contexto personaliza o teste'
+morning = 'manhã'
+evening = 'noite'
+winner = 'vence'
+no_context = 'sem contexto: um sabor só'
+with_context = 'com contexto'
+flavors = ['sabor 0', 'sabor 1', 'sabor 2']
+regret = 'arrependimento'
+without = 'sem contexto'
+with = 'com contexto'
+linucb = 'contexto como vetor: LinUCB, Li et al., 2010'
+
+[t2_5]
+title = 'O que o teste A/B ainda faz melhor'
+fixed = 'alocação fixa: média sem viés'
+moving = 'alocação que muda: média com viés'
+weight = 'correção: cada registro pesa $1/p$'
+replay = '\emph{replay}'
+log = 'registro (escolhas uniformes)'
+logged = 'registro'
+new = 'política nova'
+counts = 'conta'
+dropped = 'descartada'
+price = 'o preço: $K-1$ de cada $K$ rodadas vão fora'
+netflix = 'a Netflix aprovou o bandit com um teste A/B'
+
+[t2_6]
+title = 'Resumo do bloco'
+cols = ['', 'teste A/B', 'CMAB']
+rows = [
+  ['contexto', 'nenhum', 'usa'],
+  ['alocação', '$1/K$, fixa', 'muda a cada rodada'],
+  ['decisão', 'uma, no fim', 'sempre'],
+]
+proved = 'provado pelo Z3, por refutação, para $K = 1$ a 5'
+theorems = [
+  'toda regra devolve uma distribuição',
+  'a $\varepsilon$-gulosa dá a cada braço pelo menos $\varepsilon/K$',
+  'a gulosa e a UCB escolhem um máximo',
+  '$\varepsilon = 1$ é o teste A/B',
+  'calibrado $\Rightarrow$ a UCB perde no máximo $2\beta w$',
+]
+open = 'aberto: a parte probabilística da cota de arrependimento'
+
+[t3_1]
+title = 'Três palavras, uma por vez'
+rings = ['melhoria', 'automelhoria', 'automelhoria recursiva']
+needs = ['exige uma métrica', 'exige um laço fechado', 'exige que o laço mude o laço']
+quote = '\q{This is called recursive self-improvement} \quad (Anthropic, 2026)'
+
+[t3_2]
+title = 'O menor ciclo recursivo'
+outer = 'agente de fora'
+inner = 'agente de dentro'
+picks = 'escolhe $\varepsilon$'
+sells = '500 sorvetes'
+gain = 'ganho médio'
+episodes = 'episódios'
+header = ['$\varepsilon$', 'episódios', 'ganho médio']
+same = 'a mesma \texttt{epsGreedy}, duas vezes'
+horizon = 'o $\varepsilon$ certo depende do horizonte'
+
+[t3_3]
+title = 'Onde o bandit entra na RSI de verdade'
+agent = 'Feedback-Agent (SIA, 2026)'
+arms = ['editar o harness', 'atualizar os pesos']
+algos = 'PPO \quad GRPO \quad DPO'
+judge = 'avaliador determinístico'
+reward = 'recompensa'
+bandit = 'escolha com recompensa só do braço escolhido: um bandit'
+speedup = 'aceleração: $\approx 3\times$ (maio de 2025) $\to$ $\approx 52\times$ (abril de 2026)'
+third = 'revisão automática: $\approx 1/3$ dos erros de incidentes passados'
+source = 'Anthropic, \emph{When AI builds itself}, 2026'
+fixed = 'um alvo fixo pode ser mirado'
+
+[t3_4]
+title = 'Crença atual contra crença nova, de novo'
+options = ['resposta curta', 'resposta longa']
+current = 'crença atual'
+new = 'crença nova'
+alpha = '$\alpha$'
+beta = '$\beta$'
+liked = 'gostou'
+disliked = 'não gostou'
+added = 'seis sinais somados a doze'
+narrower = 'a largura caiu dos dois lados'
+
+[t3_5]
+title = 'O que não é bandit, e o que pode dar errado'
+one_step = 'recompensa de um passo: o bandit não planeja a próxima rodada'
+gameable = 'recompensa fácil de enganar: o laço aprende a enganar'
+lemma = 'calibrado $\Rightarrow$ $\mu^{*} - \mu_{\text{UCB}} \le 2\beta w$'
+without = 'sem calibração, o otimismo vira chute'
+
+[t3_6]
+title = 'Fecho e créditos'
+summary = [
+  'CMAB: uma regra sobre um modelo, com recompensa parcial',
+  'teste A/B: um CMAB congelado',
+  'RSI: o mesmo laço apontado para o laço',
+]
+credits = [
+  'estilo: 3Blue1Brown, Grant Sanderson',
+  'animações: Manim, Manim Community',
+  'roteiro, código e animações: Claude Code (Anthropic)',
+  'Claude Sonnet 5.5 e Claude Fable 5.1',
+  'custo total: a confirmar',
+  'prompts: \texttt{PROMPTS.md}',
+]
+steal = 'roubem à vontade; creditem'

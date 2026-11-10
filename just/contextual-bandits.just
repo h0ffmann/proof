@@ -20,3 +20,9 @@ script:
     mkdir -p build/tex pdf
     printf '%s+%s' "$(git rev-parse --short HEAD)" "$(git rev-list --count HEAD)" > build/.current-revision
     just _pdf ../contextual-bandits/script prose-pt-BR contextual-bandits-script-pt-BR
+
+# In the pinned Manim shell; `just takes -q l 1.3 2.2` renders two takes at 480p.
+# contextual-bandits/script/animation/README.md has the details.
+# Render the video's Manim takes, one scene per take, into build/takes/take-N.M.mp4 (1080p)
+takes *args:
+    nix develop .#manim --command bash contextual-bandits/script/animation/render.sh {{args}}

@@ -204,11 +204,13 @@ escolha, vermelho para o arrependimento); as figuras do archify dão a estrutura
 As figuras estão em `docs/diagrams/img/pt-BR/<nome>.png` e, interativas, em
 [`docs/diagrams/pt-BR/<nome>.html`](../docs/diagrams/index.html). Os arquivos do Desmos estão em
 [`script/desmos/`](script/desmos/README.md).
+Cada cena tem um take do Manim em [`script/animation/`](script/animation/README.md); `just takes`
+renderiza todos.
 
 | Cena | Tempo | Figura | Desmos | Código |
 |---|---|---|---|---|
 | 1.1 Gancho | 0:00 | `bandit-round` | — | `beliefs` (`app/Video.hs`) |
-| 1.2 Steal like an artist | 1:00 | `bandit-timeline` | — | `animation/timeline.py` (a fazer) |
+| 1.2 Steal like an artist | 1:00 | `bandit-timeline` | — | `animation/timeline.py` |
 | 1.3 π e você, um braço | 3:00 | `pi-arms` | `1-3-pi.txt` | `singleArmed`; `step` |
 | 1.4 O nome | 5:00 | `pi-arms` | `1-3-pi.txt` | `multiArmed`; `Pi.hs` |
 | 1.5 Modelo e regra | 6:30 | `bandit-architecture` | `1-5-width.txt` | `policy_factors` |
