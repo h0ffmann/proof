@@ -1,0 +1,11 @@
+# What every seat of ocean-waves-prove shares, on top of agents/shared: the rules for work on the
+# ocean-waves/ topic of h0ffmann/proof on this box. A spec that imports this one selects the file
+# with `guidance: [ow-shared:norms]`. The box norms (`shared:norms`) come first.
+name: ow-shared
+version: "1.0"
+description: The rules of every ocean-waves-prove seat for work on ocean-waves/
+
+resources:
+  guidance:
+    - id: norms
+      path: guidance/norms.md

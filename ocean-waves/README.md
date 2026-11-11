@@ -147,6 +147,14 @@ promises. The 0.75 % error in `k` comes from the Padé `tanh`. In deep water,
 goes from 10 to 10.476 = 10 × 1.1/1.05, exactly the wind and whitecapping
 factor, because the quadruplet transfer adds no action.
 
+## Running it 24/7
+
+[`openrig/`](openrig/README.md) is the draft of an OpenRig rig, `ocean-waves-prove`, that works
+this package without a person present. Two prover seats and a reviewer seat take items from
+[`openrig/queue.tsv`](openrig/queue.tsv): the core-Lean twins of the 17 modules of
+`agda/src/WaveTheory/`, then the Haskell port of the kernels. A claim command keeps two seats off
+the same item, and accepted work reaches one rolling branch. Nothing of it has run ⚠.
+
 ## References
 
 These references are from memory and were not opened, except the WW3 manual.

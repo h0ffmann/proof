@@ -1,0 +1,41 @@
+# The prover seat of ocean-waves-prove: claims one item with `owprove next`, proves it, gets a
+# review, submits, and claims the next. Two members of the rig use this agent.
+name: ow-prover
+version: "1.0"
+description: Claims and proves one item of the ocean-waves queue at a time, in a loop
+
+defaults:
+  runtime: omp
+  model: anthropic/claude-sonnet-5-5
+
+imports:
+  - ref: local:../shared
+  - ref: local:../ow-shared
+
+profiles:
+  default:
+    summary: Loops over owprove's queue; each item ends accepted by the reviewer or blocked
+    uses:
+      # omp does no skill discovery on disk, and a resource path cannot leave the spec folder, so
+      # the repository's AGENTS.md is read from the clone by the norms.
+      skills: []
+      guidance: [shared:norms, ow-shared:norms]
+      subagents: []
+      plugins: []
+      runtime_resources: []
+
+startup:
+  files:
+    - path: guidance/role.md
+      delivery_hint: send_text
+      required: true
+      orientation: role
+    - path: startup/context.md
+      delivery_hint: send_text
+      required: true
+  actions:
+    # Start the loop on a fresh start and after a restore: resume the claim or take the next.
+    - type: send_text
+      value: "Find your seat name with `rig whoami`, run `owprove next --as <seat>`, and work the item it prints, as your role says."
+      idempotent: true
+      applies_on: [fresh_start, restore]

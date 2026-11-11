@@ -1,0 +1,23 @@
+# omp rules of the ocean-waves-prove seats, on top of piabrota/nix-os's hermes/omp.yml (its model
+# roles, its disabled LSP, eval, browser and memory, its deny list for push, gh, installs and
+# secrets). Destination: piabrota/nix-os, omp/ocean-waves-prove.yml, read as a second config
+# overlay by the seat's omp wrapper. Whether omp takes two config files was not checked ⚠; if it
+# takes one, this list is appended to a copy of hermes/omp.yml. An array in an overlay replaces the
+# one before it, so this file must repeat hermes/omp.yml's bash.patterns in full before its own ⚠.
+#
+# These rules make the norms hold in the seat, not only in its prose.
+bash:
+  patterns:
+    # ... hermes/omp.yml's bash.patterns, verbatim, here ...
+    # The claims are owprove's: a seat never touches the claim, accepted or blocked files by hand.
+    - { match: "*claims/*.claim*", approval: deny }
+    - { match: "*ocean-waves-prove/accepted/*", approval: deny }
+    - { match: "*ocean-waves-prove/blocked/*", approval: deny }
+    # No new toolchain: Lean comes from the flake's lean shell, never from elan.
+    - { match: "*elan *", approval: deny }
+    - { match: "*lake update*", approval: deny }
+    - { match: "*nix flake update*", approval: deny }
+    - { match: "*nix flake lock*", approval: deny }
+    # Nothing leaves the box from a seat: publishing a paper is the owner's, from a manual workflow.
+    - { match: "*just aixiv*", approval: deny }
+    - { match: "*scripts/aixiv.sh*", approval: deny }

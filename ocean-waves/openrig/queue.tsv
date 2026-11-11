@@ -1,0 +1,20 @@
+id	kind	source	target	depends	status
+lean-algebra	lean	agda/src/WaveTheory/Algebra.agda	ocean-waves/lean/OceanWaves/Algebra.lean	-	todo
+lean-moments	lean	agda/src/WaveTheory/Moments.agda	ocean-waves/lean/OceanWaves/Moments.lean	lean-algebra	todo
+lean-shoaling	lean	agda/src/WaveTheory/Shoaling.agda	ocean-waves/lean/OceanWaves/Shoaling.lean	lean-algebra,lean-moments	todo
+lean-deepwater	lean	agda/src/WaveTheory/DeepWater.agda	ocean-waves/lean/OceanWaves/DeepWater.lean	-	todo
+lean-refraction	lean	agda/src/WaveTheory/Refraction.agda	ocean-waves/lean/OceanWaves/Refraction.lean	lean-algebra	todo
+lean-propagation2d	lean	agda/src/WaveTheory/Propagation2D.agda	ocean-waves/lean/OceanWaves/Propagation2D.lean	-	todo
+lean-waveaction	lean	agda/src/WaveTheory/WaveAction.agda	ocean-waves/lean/OceanWaves/WaveAction.lean	lean-algebra	todo
+lean-timeloop	lean	agda/src/WaveTheory/TimeLoop.agda	ocean-waves/lean/OceanWaves/TimeLoop.lean	lean-algebra	todo
+lean-spectralgrid	lean	agda/src/WaveTheory/SpectralGrid.agda	ocean-waves/lean/OceanWaves/SpectralGrid.lean	-	todo
+lean-unstructured	lean	agda/src/WaveTheory/Unstructured.agda	ocean-waves/lean/OceanWaves/Unstructured.lean	-	todo
+lean-radiationstress	lean	agda/src/WaveTheory/RadiationStress.agda	ocean-waves/lean/OceanWaves/RadiationStress.lean	-	todo
+lean-momentum	lean	agda/src/WaveTheory/Momentum.agda	ocean-waves/lean/OceanWaves/Momentum.lean	lean-radiationstress	todo
+lean-quadruplets	lean	agda/src/WaveTheory/Quadruplets.agda	ocean-waves/lean/OceanWaves/Quadruplets.lean	-	todo
+lean-interpolation	lean	agda/src/WaveTheory/Interpolation.agda	ocean-waves/lean/OceanWaves/Interpolation.lean	-	todo
+lean-splitting	lean	agda/src/WaveTheory/Splitting.agda	ocean-waves/lean/OceanWaves/Splitting.lean	lean-algebra	todo
+lean-theory-examples	lean	agda/src/WaveTheory/Examples.agda	ocean-waves/lean/OceanWaves/TheoryExamples.lean	lean-moments,lean-shoaling,lean-refraction,lean-deepwater,lean-propagation2d,lean-waveaction	todo
+lean-grid-examples	lean	agda/src/WaveTheory/GridExamples.agda	ocean-waves/lean/OceanWaves/GridExamples.lean	lean-spectralgrid,lean-unstructured,lean-radiationstress	todo
+haskell-kernels	haskell	ocean-waves/lean/OceanWaves/Examples.lean	ocean-waves/haskell/	-	todo
+mathlib-tanh	lean	ocean-waves/README.md	ocean-waves/lean/	-	waiting: owner (Mathlib, AGENTS.md rule 5)

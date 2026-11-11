@@ -1,0 +1,34 @@
+# The reviewer seat of ocean-waves-prove: reads one prover's commit against the Agda module it
+# follows, and answers accept, fix or block. Report only: it edits nothing it checks.
+name: ow-reviewer
+version: "1.0"
+description: Reviews one ocean-waves proof commit at a time against its Agda source, report only
+
+defaults:
+  runtime: omp
+  model: anthropic/claude-sonnet-5-5
+
+imports:
+  - ref: local:../shared
+  - ref: local:../ow-shared
+
+profiles:
+  default:
+    summary: Answers each prover's review request with accept, fix (with findings) or block
+    uses:
+      skills: []
+      guidance: [shared:norms, ow-shared:norms]
+      subagents: []
+      plugins: []
+      runtime_resources: []
+
+startup:
+  files:
+    - path: guidance/role.md
+      delivery_hint: send_text
+      required: true
+      orientation: role
+    - path: startup/context.md
+      delivery_hint: send_text
+      required: true
+  actions: []
