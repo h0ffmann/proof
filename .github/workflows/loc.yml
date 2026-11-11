@@ -1,7 +1,7 @@
-# loc: count the lines of code with scripts/loc.py, write the badge between
+# loc: count the lines of code with tools/badges/ (Haskell), write the badge between
 # the loc markers in README.md and commit it when it changed. The mechanism of the Metrics workflow
 # of h0ffmann/awesome-neurosymbolic-ai: a standard-library Python script fills a README marker and
-# the workflow commits the result as github-actions[bot].
+# the workflow commits the result as github-actions[bot]. GHC comes from the flake's Haskell shell.
 name: loc
 
 # DISABLED (owner, 2026-11-01): the repository is private, so no workflow runs on its own.
@@ -26,12 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - uses: cachix/install-nix-action@v31
 
       - name: Count lines of code and write the README badge
-        run: python scripts/loc.py
+        run: tools/badges/run.sh loc
 
       - name: Commit if changed
         run: |
