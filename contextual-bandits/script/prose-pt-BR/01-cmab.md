@@ -21,7 +21,7 @@ para a outra. Em baixo, os três títulos dos blocos.
 **Código.** `haskell/app/Video.hs`, `beliefs`, com a regra de `betaBernoulli` em
 `haskell/src/Models.hs`. A saída em `results.md`: a crença atual escolhe a opção 0 (0,67);
 depois de 4 sinais positivos para a opção 1 e 2 negativos para a 0, a crença nova escolhe a
-opção 1 (0,62). "Mudou de ideia? True". A invariante R1 em Z3: `by_distance`, a recompensa é o
+opção 1 (0,62). "Mudou de ideia? True". A invariante R1 em Agda: `byDistance`, a recompensa é o
 input do usuário, em [0, 1].
 
 ## Steal like an artist: de onde eu tirei isso (1:00 a 3:00)
@@ -82,10 +82,10 @@ as duas barras de crença do agente, azul, uma por ação, e a seta amarela da e
 corretos `−log10|L(n) − π|`; o controle `N` anda termo a termo. A cena 1.4 usa o mesmo arquivo
 com `R(n)`, de Ramanujan.
 
-**Código.** Z3, `z3-scala/src/main/scala/bandit/domain/Video.scala`: `step`, e as afirmações `step_exploit`
-(aproveitar não gasta termo), `step_explore_n` (explorar gasta exatamente um),
-`step_explore_reward` (a nota não cai) e `step_reward_bounded` (a nota fica em [0, 1]).
-`leibnizPair_pos`: cada par de Leibniz é positivo, logo as somas pares crescem. Haskell, `haskell/src/Video.hs` (os
+**Código.** Agda, `agda/src/ContextualBandit/Video.agda`: `step`, e as afirmações `step-exploit`
+(aproveitar não gasta termo), `step-explore-n` (explorar gasta exatamente um),
+`step-explore-reward` (a nota não cai) e `step-reward-bounded` (a nota fica em [0, 1]).
+`leibnizPair-pos`: cada par de Leibniz é positivo, logo as somas pares crescem. Haskell, `haskell/src/Video.hs` (os
 mesmos nomes) e `haskell/src/Pi.hs` (`leibnizS`, `digitsCorrect`); a simulação é `singleArmed`
 em `haskell/app/Video.hs`. A tabela de dígitos por termo e a de 20 rodadas estão em
 `results.md`.
@@ -122,8 +122,8 @@ soma de Ramanujan cola em π no primeiro termo; a de Gauss-Legendre dobra os dí
 a de Leibniz oscila.
 
 **Código.** `haskell/src/Pi.hs`: `leibnizS`, `gaussLegendreS`, `ramanujanS`, `sqrtRat`; a
-simulação é `multiArmed` em `haskell/app/Video.hs`. Z3: `ramTerm_pos` e `ramSum_lt_succ`, cada
-termo de Ramanujan é positivo e as somas parciais crescem; `ramApprox_anti`, a aproximação desce
+simulação é `multiArmed` em `haskell/app/Video.hs`. Agda: `ramanujanTerm-pos` e `ramSum-lt-succ`, cada
+termo de Ramanujan é positivo e as somas parciais crescem; `ramApprox-anti`, a aproximação desce
 para π por cima. O ambiente com contexto do bloco 2 é `rate` e `shop` em `haskell/app/Video.hs`.
 
 ## Modelo e regra, separados (6:30 a 7:30)
@@ -131,7 +131,7 @@ para π por cima. O ambiente com contexto do bloco 2 é `rate` e `shop` em `hask
 **Fala.** O repositório divide o agente em duas camadas. O modelo de recompensa guarda uma crença
 e, para cada sabor, dá duas coisas: a média prevista e uma largura, a incerteza. A regra de
 decisão vê só essas estimativas. Ela nunca vê o histórico nem o contexto. Essa fronteira é um
-teorema do repositório, `policy_factors`: dois históricos com a mesma crença dão a mesma decisão.
+teorema do repositório, `policy-factors`: dois históricos com a mesma crença dão a mesma decisão.
 Por isso você troca o modelo sem mexer na regra, e troca a regra sem mexer no modelo. O modelo
 deste vídeo é tabular: uma soma e uma contagem por sabor e por contexto; a média é soma sobre
 contagem; a largura é 1 sobre contagem mais 1. Em Haskell o repositório tem três modelos:
@@ -143,10 +143,10 @@ que a fronteira compra.
 largura) por sabor". O histórico entra só na caixa da esquerda.
 
 **Desmos.** `desmos/1-5-width.txt`: a largura `1/(n+1)` e a largura real `1/sqrt(n)` no mesmo
-gráfico, com `n` de 1 a 100. As duas caem; a do Z3 é racional, para os exemplos serem exatos.
+gráfico, com `n` de 1 a 100. As duas caem; a do Agda é racional, para os exemplos serem exatos.
 
-**Código.** Z3: `z3-scala/src/main/scala/bandit/domain/Bandit.scala` (as duas camadas, `estimates` e as regras), `z3-scala/src/main/scala/bandit/domain/Examples.scala`
-(`update`, `estimate`, `posterior`, `policy`) e `z3-scala/src/main/scala/bandit/domain/Theorems.scala` (`policy_factors`). Haskell:
+**Código.** Agda: `agda/src/ContextualBandit/Interface.agda` (as duas camadas) e `agda/src/ContextualBandit/Policies.agda` (as regras), `agda/src/ContextualBandit/Examples.agda`
+(`update`, `estimate`, `posterior`, `policy`) e `agda/src/ContextualBandit/Theorems.agda` (`policy-factors`). Haskell:
 `haskell/src/ContextualBandit.hs`, os mesmos nomes; o modelo tabular do vídeo é `tabular` em
 `haskell/app/Video.hs`.
 
@@ -158,7 +158,7 @@ pode estar baixa demais, e ele nunca mais sai da gaveta. Quem só explora perde 
 ruins. Três regras equilibram isso. A gulosa não explora. A ε-gulosa sorteia um sabor qualquer
 com probabilidade ε e, no resto, é gulosa. A UCB soma à média um bônus de incerteza, β vezes a
 largura: ela é otimista com o que conhece pouco. Com β igual a zero, a UCB vira a gulosa. O
-repositório prova isso: `ucb_zero`. Há uma quarta regra, a amostragem de Thompson: em vez da
+repositório prova isso: `ucb-zero`. Há uma quarta regra, a amostragem de Thompson: em vez da
 média, ela sorteia uma média plausível da crença de cada sabor e escolhe a maior. Um sabor com
 crença larga sorteia valores altos de vez em quando, e por isso é explorado. No repositório ela
 está em Haskell, `thompsonArm`, porque precisa de um modelo que saiba sortear.
@@ -169,9 +169,9 @@ UCB sobe a barra da incerteza.
 **Desmos.** `desmos/1-6-ucb.txt`: três pontos (média, largura) e a pontuação `m + b·w` de cada
 um; o controle `b` vai de 0 a 3 e o sabor vencedor troca na tela.
 
-**Código.** Z3: `greedy`, `epsGreedy`, `ucb` em `z3-scala/src/main/scala/bandit/domain/Bandit.scala`, `ucb_zero` em
-`z3-scala/src/main/scala/bandit/domain/Theorems.scala`. Haskell: os mesmos nomes em `haskell/src/ContextualBandit.hs`; o spec check de
-`haskell/app/Main.hs` confere os exemplos de `z3-scala/src/main/scala/bandit/domain/Examples.scala`: `[0, 1, 0]` de manhã, `[0, 0, 1]` de
+**Código.** Agda: `greedy`, `epsGreedy`, `ucb` em `agda/src/ContextualBandit/Policies.agda`, `ucb-zero` em
+`agda/src/ContextualBandit/Theorems.agda`. Haskell: os mesmos nomes em `haskell/src/ContextualBandit.hs`; o spec check de
+`haskell/app/Main.hs` confere os exemplos de `agda/src/ContextualBandit/Examples.agda`: `[0, 1, 0]` de manhã, `[0, 0, 1]` de
 noite e `[1/30, 14/15, 1/30]` para ε = 1/10.
 
 ## O exemplo complexo: a Netflix (8:30 a 10:00)

@@ -10,10 +10,10 @@ mirror its definitions name for name. The owner cares more about a spec a reader
 can audit than about any one prover.
 
 The first topic is contextual bandits, split into a probabilistic
-`RewardModel` and a `DecisionRule` on top of it. Its specification is **Z3**
-(`z3-scala/`, Scala 3 on Z3's Java binding: statements checked by refutation) and its implementation Haskell.
-It was Lean 4 until 2026-11-09; `docs/decisions/0001-z3-over-lean.md` says why it
-moved, and what was lost (K bounded by `MAX_ARMS`, no induction). See `README.md`.
+`RewardModel` and a `DecisionRule` on top of it. Its specification is **Agda**
+(`agda/src/ContextualBandit/`, under `--safe`: every statement proved for every number of arms) and
+its implementation Haskell. It was Lean 4 until 2026-11-09 and Z3 in Scala (`z3-scala/`, K bounded
+by `MAX_ARMS`) until 2026-11-11; `docs/decisions/0001-z3-over-lean.md` says why it left Lean. See `README.md`.
 The other topics below keep their Lean 4 packages.
 
 The second is `house-pricing/`: Rust trains and compares models on California
@@ -37,37 +37,20 @@ data, with the paper in `papers/tv-audience/`. See `tv-audience/README.md`. The 
 ## Layout
 
 ```
-z3-scala/  every Z3 check, in Scala 3 on Z3's Java binding and Kyo. `z3-scala/z3.sh <check>`
-  z3.sh                             takes Z3 5.3.3's Java binding from Z3_HOME (or fetches it), builds with sbt, runs a check
-  build.sbt                         Scala 3.9.0 (LTS), sbt 2, Kyo 1.0.0-RC7; indentation syntax, -Werror, strictEquality
-  src/main/scala/                   domain-driven: a shared kernel and one bounded context per family of checks
-    kernel/smt/                     Z3 vocabulary (Z.scala: operators, reals, ints) and exact rationals
-    kernel/proof/                   statements as values (Item, Script) and the Prover that runs them by refutation in Kyo
-    kernel/text/, kernel/infrastructure/  Python-compatible text handling; files, processes and console as Kyo effects
-    bandit/domain/                  Bandit.scala (the two layers, the rules), Theorems.scala (for K = 1..MAX_ARMS),
-                                    Examples.scala (the tabular model, ground truth for the Haskell spec check),
-                                    Video.scala (the video script's invariants R1 to R5)
-    language/domain/                LanguageRule.scala: every file in English unless its path carries pt-BR
-    ptc/domain/                     Ptc.scala (the PTC rules of the video script; `--review` lists what Z3 cannot decide),
-                                    NoiseCatalogue.scala (the PTC-9 noise catalogue, ruido-ia.md, row by row)
-    portaudit/                      the port-audit checks (below); infrastructure/Pins.scala fetches the two pins
-    grids/domain/                   the triangle-grid size rules and WW3's explicit sub-step count (`just grids`)
-    leo/                            higher-order statements proved by Leo-III, a TPTP THF prover (`just leo`); problems in z3-scala/leo/
-    */application/                  each context's use cases: read the inputs, call the domain, print the report
-    app/                            Cli.scala (which word runs which check, exit codes) and Main.scala (the Z3 version check)
 contextual-bandits/  README.md (+ README.pt-BR.md): the one page for the bandit, with an index of its files
-docs/decisions/0001-z3-over-lean.md  why the contextual bandit left Lean for Z3
+docs/decisions/0001-z3-over-lean.md  why the contextual bandit left Lean for Z3 (and Z3 for Agda on 2026-11-11)
 haskell/   cabal package `contextual-bandit` (only base + containers)
   src/ContextualBandit.hs           port of Interface + Policies, plus a pure SplitMix RNG
   src/Models.hs                     Beta-Bernoulli, Bayesian linear (LinUCB/LinTS), fromPredictor
-  app/Main.hs                       spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala + simulations
-  src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/bandit/domain/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
+  app/Main.hs                       spec check against agda/src/ContextualBandit/Examples.agda and agda/src/ContextualBandit/Video.agda + simulations
+  src/Video.hs, src/Pi.hs           port of agda/src/ContextualBandit/Video.agda; the π series (Leibniz, Gauss-Legendre, Ramanujan)
   app/Video.hs                      the video's experiments; writes contextual-bandits/script/results.md
   LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
 agda/      Agda library `contextual-bandit` (standard library only), one root per topic in agda/src/*.agda:
            the bandit's decision layer and its theorems for every K, by induction; the cycle clock;
-           every kernel and theorem of ocean-waves/; the triangle-grid checks; the video's rules, the Leo-III
-           problems, the port audit and the decision layer of the text checks of z3-scala/. `just agda` (nix develop .#agda).
+           every kernel and theorem of ocean-waves/; the triangle-grid checks; the video's rules, the five
+           problems that Leo-III proved, the port audit and the decision layer of the text checks. `just agda`
+           (nix develop .#agda).
            Skill: .claude/skills/agda/SKILL.md
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
@@ -78,15 +61,22 @@ ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same tool
   OceanWaves/Examples.lean          #eval examples
 port-audit/  Z3 checks of h0ffmann/chaceon (Rust port of WAVEWATCH III) at a pinned commit. `just port-audit`
   README.md                         each check with its chaceon file:line, and what Z3 cannot prove; the code is
-                                    z3-scala/src/main/scala/portaudit/domain/ (Chaceon.scala, Coverage.scala)
+                                    tools/port-audit/ (Chaceon.hs, Coverage.hs)
+tools/     Haskell tools that read files or ask Z3 (through SBV); each run.sh enters its nix shell by itself:
+  text-checks/                      the language rule, the PTC rules of the video script, its PTC-9 noise catalogue
+  port-audit/                       the 28 statements about chaceon and the coverage table of port-audit/README.md
+  room-mesh/                        the room mesh of triangle-grids/README.md, as NOTE lines
 triangle-grids/  how to build a triangle grid for WW3 with Roland's size rules, and its uses in forecasting
 ```
 
 ## Build and check
 
 ```bash
-# Z3, inside `nix develop .#scala` (the JDK, sbt and Z3 pinned): the contextual bandit, the language rule
-just z3                           # checks/contextual-bandits.sh: theorems, examples, video, language, ptc, ruido-ia; every line OK
+# Agda, inside `nix develop .#agda`: the contextual bandit's specification and every other Agda proof
+just agda                         # checks/agda.sh: hygiene, self-test, then every root type-checks
+
+# Z3 through SBV (each tool enters its own nix shell): the language rule and the video script's text
+just z3                           # checks/text-checks.sh: language, ptc, ruido-ia; every line OK
 
 # Lean, inside `nix develop .#lean` (the release each package's lean-toolchain names)
 cd ocean-waves/lean && lake build # must finish with no errors; prints the #eval outputs
@@ -99,8 +89,8 @@ just liquid                       # LiquidHaskell + Z3 on haskell/src (nix devel
 cd haskell && mkdir -p build && ghc -O2 -Wall -isrc -outputdir build -o build/examples app/Main.hs && ./build/examples
 ```
 
-The first block of the Haskell output is **"Spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and
-z3-scala/src/main/scala/bandit/domain/Video.scala"**. Every line must say `OK`. `just check` runs all of the above, and the
+The first block of the Haskell output is **"Spec check against agda/src/ContextualBandit/Examples.agda and
+agda/src/ContextualBandit/Video.agda"**. Every line must say `OK`. `just check` runs all of the above, and the
 manual workflow `check.yml` runs the same in three jobs (checks, haskell, lean).
 
 ```bash
@@ -167,7 +157,7 @@ Every file is in English, except a file whose path carries `pt-BR`, which is in 
 Portuguese (the owner, 2026-11-09). This holds for prose, code and comments; the prose rules
 above say which English (ASD-STE100 for the notes and the code comments). A Portuguese edition of
 a file is a twin named `<name>.pt-BR.md`, a folder named `pt-BR/`, or a paper's `prose-pt-BR/`.
-`just z3` runs `z3-scala/src/main/scala/language/domain/LanguageRule.scala`, which states the rule as `portuguese(f) <-> marked_pt_br(f)` for
+`just z3` runs `tools/text-checks/Language.hs`, which states the rule as `portuguese(f) <-> marked_pt_br(f)` for
 every tracked text file and asks Z3 for a counterexample; a quoted prompt or a command in a code
 block is not the file's prose. The video script (`contextual-bandits/script/prose-pt-BR/`)
 is the one Portuguese paper; its English edition is issue #18.
@@ -185,7 +175,7 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 - `diagrams.yml` is manual by design: run it on a PR branch to render the archify diagrams and
   commit them there (it refuses `main`).
 - `check.yml` is manual too (the owner, 2026-11-09): from the Actions tab it runs `just checks` (every
-  `checks/<feature>.sh`, among them `just z3`), the Haskell
+  `checks/<feature>.sh`, among them `just z3` and `just agda`), the Haskell
   build with `-Wall -Werror` and its spec check, and `lake build` of the other Lean packages.
 
 ## Reproducible builds (hard rule)
@@ -194,22 +184,16 @@ The repository must build and check the same on any machine, from the Nix flake 
 owner, 2026-11-09). `flake.lock` pins nixpkgs, and every tool version is written in one place in
 the repository:
 
-- **z3-scala**: run it inside `nix develop .#scala`. `nix/scala.nix` pins the JDK (`jdk25_headless`) and
-  Z3 with its Java binding, built from the release tag with a fixed hash, and sets `Z3_HOME`.
-  `z3-scala/build.sbt` holds Scala's version (`scalaVersion`) and Z3's (`z3Version`, which
-  `nix/scala.nix` and `z3.sh` read), and `z3-scala/project/build.properties` holds sbt's. The build stops
-  without the jar, and every check stops when the Z3 it loads is another version.
-- **z3-scala's dependencies** are Z3's Java binding and Kyo (`kyoVersion` in `build.sbt`, the
-  effect system, the owner, 2026-11-09). A new dependency needs the owner's yes in the PR.
+- **The Haskell tools** (`tools/`): each `run.sh` enters its own `nix/<tool>.nix` shell, where GHC,
+  its libraries (SBV, regex-pcre-builtin) and Z3 come from the locked nixpkgs.
 - A new tool or a version bump goes into the flake (or the one file that pins it) in the same PR.
-  Nothing is installed globally, and no step needs a tool the flake does not give, except the
-  Maven artifacts that sbt fetches at the versions pinned above.
-- Leo-III is built from source at the commit that `LEO3_COMMIT` in `z3-scala/z3.sh` names.
+  Nothing is installed globally, and no step needs a tool the flake does not give.
 - **Lean**: each package's `lean-toolchain` names the Lean release, and `nix/lean.nix` gives that
   release from GitHub with a fixed hash per platform (no elan, no download at run time). The three
   files must name the same release, or the evaluation stops; a new release needs the four hashes.
-- **One shell per feature**, each a `nix/<name>.nix` that `flake.nix` finds by itself: `scala`,
-  `liquidhaskell`, `invariants`, `lean`, `haskell`, `house-pricing` (Rust, Lean, curl), `data`
+- **One shell per feature**, each a `nix/<name>.nix` that `flake.nix` finds by itself:
+  `liquidhaskell`, `text-checks` and `port-audit` (GHC with SBV, and Z3),
+  `invariants`, `lean`, `haskell`, `house-pricing` (Rust, Lean, curl), `data`
   (Python with NumPy, pandas, SciPy, Matplotlib, XGBoost for `fat-tails/` and `tv-audience/`),
   `diagrams` (Node and Chromium for archify), `graph` (graphify 0.9.100, Node, Playwright,
   Chromium), `roteiro-preview` (Pillow, ffmpeg, espeak-ng, DejaVu fonts), `pomodoro` (Zig 0.14),
@@ -235,26 +219,25 @@ the repository:
 
    Run `scripts/lean-hygiene.sh` (or `just lean-hygiene`) to check. It reads every tracked
    `.lean` file outside `vendor/`, so a new Lean project needs no change to the script.
-   In `z3-scala/`, the counterpart: every statement goes through `proves`, `evaluates` or
-   `counterexample` of `kernel/proof/Proof.scala`, and nothing is skipped or marked expected to fail. The compiler
-   enforces Scala 3's indentation syntax (`-new-syntax -Werror`); `sbt scalafmtCheckAll` and
-   `sbt "scalafixAll --check"` keep the format and forbid `return` and `null`.
-2. **Z3 first.** A new decision rule or model goes in `z3-scala/src/main/scala/bandit/domain/Bandit.scala` (definition plus at
-   least a validity statement in `Theorems.scala`), then in Haskell with the same name. Update the
+   In Agda, the counterpart: every file starts with `{-# OPTIONS --safe --without-K #-}`, so no
+   `postulate` or termination pragma gets in, and `checks/agda.sh` refuses a file without it. In
+   the Haskell tools, every Z3 statement is asked and its verdict printed (`Proves` and `Refutes`
+   in `tools/port-audit/Report.hs`), and nothing is skipped or marked expected to fail.
+2. **Agda first.** A new decision rule or model goes in `agda/src/ContextualBandit/Policies.agda`
+   (definition plus at least a validity statement in `Theorems.agda`), then in Haskell with the same name. Update the
    interface and theorem tables in `contextual-bandits/README.md` (and its pt-BR twin). Lean is not used for the contextual bandit any more
-   (`docs/decisions/0001-z3-over-lean.md`).
+   (`docs/decisions/0001-z3-over-lean.md`), and neither is Z3 since 2026-11-11.
 3. **Keep the mirror exact.** Tie-breaking (argmax keeps the *first* maximum),
-   argument order and the meaning of `width` must match between Z3, Haskell and Agda (`agda/`).
-   When an example in `z3-scala/src/main/scala/bandit/domain/Examples.scala` or `z3-scala/src/main/scala/bandit/domain/Video.scala` changes, update `specCheck` in
+   argument order and the meaning of `width` must match between Agda (`agda/`) and Haskell.
+   When an example in `agda/src/ContextualBandit/Examples.agda` or `agda/src/ContextualBandit/Video.agda` changes, update `specCheck` in
    `haskell/app/Main.hs`.
 4. **Decision rules see only estimates.** A `DecisionRule` gets per-arm
    `Estimate`s, never the history or the context. Uncertainty belongs to the
    model, choice belongs to the rule. Don't break this boundary; the
-   `policy_factors` and `ucb_gap` theorems rely on it.
-5. **Z3 states, it does not script.** A statement in `z3-scala/` is the sentence it proves, built
-   from the definitions of `Bandit.scala`; no solver tactics, no hand-built proof terms. A theorem
-   that Z3 cannot decide (unbounded K, a symbolic factorial) is bounded and the bound is written
-   beside it. The other Lean packages stay core-only unless a proof truly needs Mathlib; if you
+   `policy-factors` and `ucb-gap` theorems rely on it.
+5. **Z3 states, it does not script.** A Z3 statement in `tools/` is the sentence it proves, built
+   from the tool's definitions; no solver tactics. A statement that Z3 cannot decide is bounded and
+   the bound is written beside it, or it goes to Agda. The other Lean packages stay core-only unless a proof truly needs Mathlib; if you
    add Mathlib, pin a version in that `lakefile.toml`, note why in the PR, and keep `lake build`
    working.
 6. **Haskell stays dependency-light**: `base` and `containers` only, unless agreed. Agreed for
@@ -264,8 +247,9 @@ the repository:
    LiquidHaskell refinements live in `{-@ ... @-}` comments, so they add no dependency;
    `just liquid` must say `SAFE` for every module it checks. A new `ignore`, `assume` or `lazy`
    gets a row in `haskell/LIQUIDHASKELL.md` that says why, or the check fails.
-7. **Exact vs float**: Z3 works over the reals and exact rationals, Haskell uses `Double`
-   (and `Rational` in `Video.hs`). Don't claim a Z3 statement covers floating-point behaviour.
+7. **Exact vs float**: Agda works over exact rationals, Haskell uses `Double` (and `Rational` in
+   `Video.hs`). Don't claim an Agda statement covers floating-point behaviour; the port audit's
+   f32 statements go through Z3's floating-point theory (`tools/port-audit/`).
 
 ## Papers (Paper Fabric)
 
@@ -273,9 +257,9 @@ the repository:
   `just paper <slug>` builds `pdf/<slug>.pdf` inside `nix develop`. Guide: `docs/paper-fabric.md`.
   The video script is a paper in the bandit's folder, `contextual-bandits/script/`,
   with the same four parts; `just script` builds `pdf/contextual-bandits-script-pt-BR.pdf`.
-  Its prose follows PTC (português técnico controlado), level `leve`: `z3-scala/z3.sh ptc` must give
-  no `FAIL`, and `z3-scala/z3.sh ptc --review` lists the sentences to read for the rules Z3 cannot
-  decide (`z3-scala/README.md`). `just ruido-ia` checks the PTC-9 noise catalogue the same way.
+  Its prose follows PTC (português técnico controlado), level `leve`: `tools/text-checks/run.sh ptc` must give
+  no `FAIL`, and `tools/text-checks/run.sh ptc --review` lists the sentences to read for the rules Z3
+  cannot decide (`tools/text-checks/README.md`). `just ruido-ia` checks the PTC-9 noise catalogue the same way.
 - **Fetch before you cite.** Every `refs.bib` key needs a `verified` or `partial` row in
   `REFERENCES.md`. Never cite from memory.
 - Do not commit PDFs. `just paper` builds them; `.github/workflows/pdf.yml` runs only by hand.
@@ -301,7 +285,7 @@ the repository:
 - `contextual-bandits/README.md` is the one page for the contextual bandit: the idea, an index
   of every bandit file, the commands, the interface, the theorems, the Haskell port and the note
   for the video. A new bandit file gets a row in its "Files" table; the bandit's details go there,
-  not in the root `README.md`. The code stays where it is (`z3-scala/`, `haskell/`). The page is
+  not in the root `README.md`. The code stays where it is (`agda/`, `haskell/`). The page is
   written in ASD-STE100 (Simplified Technical English). `contextual-bandits/README.pt-BR.md`
   follows the gramatico rules (level `smart-note + descritivo`). Keep the two in sync.
   Cite only sources that you have opened. Mark unchecked claims with ⚠ in pt-BR.

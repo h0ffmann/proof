@@ -8,11 +8,11 @@ import Models
 import Video
 
 ------------------------------------------------------------------------
--- 0. Spec check: reproduce the examples of z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala
+-- 0. Spec check: reproduce the examples of agda/src/ContextualBandit/Examples.agda and agda/src/ContextualBandit/Video.agda
 
 data Ctx = Morning | Evening deriving (Eq, Ord, Show)
 
--- Same model as z3-scala/src/main/scala/bandit/domain/Examples.scala: mean = sum/count, width = 1/(count+1).
+-- Same model as agda/src/ContextualBandit/Examples.agda: mean = sum/count, width = 1/(count+1).
 tabular :: Int -> RewardModel Ctx (M.Map (Ctx, Arm) (Double, Int))
 tabular k = RewardModel
   { numArms = k, prior = M.empty
@@ -29,27 +29,27 @@ specHistory =
 
 specCheck :: IO ()
 specCheck = do
-  putStrLn "== 0. Spec check against z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala =="
+  putStrLn "== 0. Spec check against agda/src/ContextualBandit/Examples.agda and agda/src/ContextualBandit/Video.agda =="
   let g  = policy (tabular 3) greedy specHistory Morning
       g' = policy (tabular 3) greedy specHistory Evening
       e  = policy (tabular 3) (epsGreedy 0.1) specHistory Morning
       close xs ys = and (zipWith (\x y -> abs (x - y) < 1e-12) xs ys)
-  printf "greedy morning  %s  (Z3: [0, 1, 0])          %s\n" (show g) (ok (g == [0, 1, 0]))
-  printf "greedy evening  %s  (Z3: [0, 0, 1])          %s\n" (show g') (ok (g' == [0, 0, 1]))
-  printf "eps 0.1 morning %s  (Z3: [1/30, 14/15, 1/30]) %s\n" (show (map (roundTo 4) e))
+  printf "greedy morning  %s  (Agda: [0, 1, 0])          %s\n" (show g) (ok (g == [0, 1, 0]))
+  printf "greedy evening  %s  (Agda: [0, 0, 1])          %s\n" (show g') (ok (g' == [0, 0, 1]))
+  printf "eps 0.1 morning %s  (Agda: [1/30, 14/15, 1/30]) %s\n" (show (map (roundTo 4) e))
     (ok (close e [1 / 30, 14 / 15, 1 / 30]))
-  -- z3-scala/src/main/scala/bandit/domain/Video.scala
+  -- agda/src/ContextualBandit/Video.agda
   let est3 = [Estimate 0.5 0, Estimate 0.9 0, Estimate 0.1 0]
       user = byDistance (355 / 113)
       s1 = OneArm 1 (leibniz 1) 0
-  printf "leibniz 5       %s  (Z3: 1052/315)             %s\n" (show (leibniz 5)) (ok (leibniz 5 == 1052 / 315))
-  printf "etc 10 3        %s  (Z3: [1/3, 1/3, 1/3])     %s\n" (show (map (roundTo 4) (etc 10 3 est3)))
+  printf "leibniz 5       %s  (Agda: 1052/315)             %s\n" (show (leibniz 5)) (ok (leibniz 5 == 1052 / 315))
+  printf "etc 10 3        %s  (Agda: [1/3, 1/3, 1/3])     %s\n" (show (map (roundTo 4) (etc 10 3 est3)))
     (ok (close (etc 10 3 est3) [1 / 3, 1 / 3, 1 / 3]))
-  printf "etc 10 10       %s  (Z3: [0, 1, 0])          %s\n" (show (etc 10 10 est3)) (ok (etc 10 10 est3 == [0, 1, 0]))
-  printf "step explore n  %d  (Z3: 2)                  %s\n" (terms (step leibniz user s1 Explore)) (ok (terms (step leibniz user s1 Explore) == 2))
-  printf "step exploit n  %d  (Z3: 1)                  %s\n" (terms (step leibniz user s1 Exploit)) (ok (terms (step leibniz user s1 Exploit) == 1))
-  printf "ramanujanSum 1  %s  (Z3: ramSum 1 = 1103)       %s\n" (show (ramanujanSum 1)) (ok (ramanujanSum 1 == 1103))
-  printf "leibnizEven 2   %s  (Z3: 304/105)             %s\n" (show (leibnizEven 2)) (ok (leibnizEven 2 == 304 / 105))
+  printf "etc 10 10       %s  (Agda: [0, 1, 0])          %s\n" (show (etc 10 10 est3)) (ok (etc 10 10 est3 == [0, 1, 0]))
+  printf "step explore n  %d  (Agda: 2)                  %s\n" (terms (step leibniz user s1 Explore)) (ok (terms (step leibniz user s1 Explore) == 2))
+  printf "step exploit n  %d  (Agda: 1)                  %s\n" (terms (step leibniz user s1 Exploit)) (ok (terms (step leibniz user s1 Exploit) == 1))
+  printf "ramanujanSum 1  %s  (Agda: ramSum 1 = 1103)       %s\n" (show (ramanujanSum 1)) (ok (ramanujanSum 1 == 1103))
+  printf "leibnizEven 2   %s  (Agda: 304/105)             %s\n" (show (leibnizEven 2)) (ok (leibnizEven 2 == 304 / 105))
   where ok b = if b then "OK" else "MISMATCH" :: String
 
 roundTo :: Int -> Double -> Double

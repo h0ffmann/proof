@@ -2,7 +2,7 @@
 
 The Z3 checks of chaceon, the Rust port of WAVEWATCH III, and the coverage table of
 [`port-audit/README.md`](../../port-audit/README.md), which says what each statement means. They
-were Scala (`z3-scala/src/main/scala/portaudit/`) and Python before that; this port keeps every
+were Scala (`z3-scala/src/main/scala/portaudit/`, removed on 2026-11-11) and Python before that; this port keeps every
 statement and every count.
 
 ```sh
@@ -10,7 +10,7 @@ tools/port-audit/run.sh chaceon                    # 28 statements; exit 1 if on
 tools/port-audit/run.sh coverage                   # fetch both pins into port-audit/.cache, print the tables
 tools/port-audit/run.sh coverage --write | --check # rewrite the README block, or fail when it is stale
 tools/port-audit/run.sh coverage --chaceon DIR --ww3 DIR
-bash checks/port-audit-haskell.sh                  # both, as `just check` runs them
+bash checks/port-audit.sh                          # both, as `just check` runs them
 ```
 
 | File | What it holds |
@@ -22,8 +22,8 @@ bash checks/port-audit-haskell.sh                  # both, as `just check` runs 
 | `Json.hs` | a small reader for `switches.json` |
 
 A counterexample is printed as SBV gives its model, sorted by name: a bit-vector or an integer as
-a number, a real as a decimal or as `p % q`. The model can differ from the Scala's, which is any
-model Z3 finds; the verdict cannot.
+a number, a real as a decimal or as `p % q`. The model can differ from the old Scala's, which was any
+model Z3 found; the verdict cannot.
 
 ## Build
 

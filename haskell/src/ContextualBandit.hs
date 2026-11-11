@@ -1,5 +1,6 @@
--- | Contextual bandit interface. This is a direct port of the Z3 spec in
--- ../z3-scala/src/main/scala/bandit/domain/Bandit.scala; ../z3-scala/src/main/scala/bandit/domain/Theorems.scala says what Z3 proves about it.
+-- | Contextual bandit interface. This is a direct port of the Agda spec in
+-- ../agda/src/ContextualBandit/Interface.agda and Policies.agda; ../agda/src/ContextualBandit/Theorems.agda
+-- says what Agda proves about it.
 --
 -- There are two layers:
 --   * 'RewardModel': the probabilistic part (belief, update, estimate, sample)
@@ -11,10 +12,10 @@
 -- and @just liquid@ checks them (../LIQUIDHASKELL.md lists what they prove
 -- and what they trust).
 module ContextualBandit
-  ( -- * Interface (mirrors the two layers of z3-scala/src/main/scala/bandit/domain/Bandit.scala)
+  ( -- * Interface (mirrors the two layers of agda/src/ContextualBandit/Interface.agda)
     Arm, Obs (..), Estimate (..), RewardModel (..), Decision, DecisionRule
   , posterior, policy
-    -- * Decision rules (mirror the rules of z3-scala/src/main/scala/bandit/domain/Bandit.scala)
+    -- * Decision rules (mirror the rules of agda/src/ContextualBandit/Policies.agda)
   , argmax, point, uniform, mix, ucbScore
   , greedy, ucb, epsGreedy
     -- * Thompson sampling (needs the model's posterior sampler)
@@ -40,7 +41,7 @@ import Data.Word (Word64)
 ------------------------------------------------------------------------
 -- Interface
 
--- | Arms are @0 .. k-1@ (Z3: a Python index @0 .. K-1@).
+-- | Arms are @0 .. k-1@ (Agda: @Arm K@, an index below K).
 type Arm = Int
 
 data Obs c = Obs { obsContext :: c, obsArm :: Arm, obsReward :: Double }
@@ -63,7 +64,7 @@ data RewardModel c b = RewardModel
   , sample   :: b -> c -> Arm -> Rand Double
   }
 
--- | Probability of each arm, indexed by arm (Z3: one real per arm).
+-- | Probability of each arm, indexed by arm (Agda: one rational per arm).
 type Decision = [Double]
 
 -- | A probability. LiquidHaskell reads 'Double' as a real number.
@@ -72,13 +73,13 @@ type Decision = [Double]
 -- | A list of estimates with at least one arm.
 {-@ type Arms = {est:[Estimate] | len est > 0} @-}
 
--- | Z3: a function from the list of estimates to the list of probabilities. It never sees context or history.
+-- | Agda: a function from the estimates to the list of probabilities. It never sees context or history.
 type DecisionRule = [Estimate] -> Decision
 
 posterior :: RewardModel c b -> [Obs c] -> b
 posterior m = L.foldl' (update m) (prior m)
 
--- | @history -> context -> distribution over arms@ (Z3: @policy@ in Examples.scala).
+-- | @history -> context -> distribution over arms@ (Agda: @policy@ in Interface.agda).
 policy :: RewardModel c b -> DecisionRule -> [Obs c] -> c -> Decision
 policy m rule h c = rule [estimate m b c a | a <- [0 .. numArms m - 1]]
   where b = posterior m h
@@ -86,7 +87,7 @@ policy m rule h c = rule [estimate m b c a | a <- [0 .. numArms m - 1]]
 ------------------------------------------------------------------------
 -- Decision rules
 
--- | First index with the largest score (same tie-break as Z3's @argmaxFirst@).
+-- | First index with the largest score (same tie-break as Agda's @argmax@).
 {-@ argmax :: xs:{[Double] | len xs > 0} -> {v:Nat | v < len xs} @-}
 argmax :: [Double] -> Arm
 argmax [] = error "argmax: no arms"

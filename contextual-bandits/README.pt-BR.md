@@ -15,8 +15,8 @@ updated: 2026-11-09
 # Bandits contextuais
 
 Tudo sobre o bandit contextual deste repositório está nesta página: a ideia, o índice de
-arquivos, os comandos, a interface, o que o Z3 prova, o porte em Haskell e a nota do vídeo. O
-código Z3 fica em [`z3-scala/`](../z3-scala/README.md). Padrão de escrita: gramatico, nível
+arquivos, os comandos, a interface, o que o Agda prova, o porte em Haskell e a nota do vídeo. O
+código Agda fica em [`agda/`](../agda/README.md). Padrão de escrita: gramatico, nível
 `smart-note + descritivo`. Versão em inglês: [README.md](README.md).
 
 ## Sumário
@@ -25,7 +25,7 @@ código Z3 fica em [`z3-scala/`](../z3-scala/README.md). Padrão de escrita: gra
 2. [Arquivos](#2-arquivos)
 3. [Como rodar](#3-como-rodar)
 4. [A interface](#4-a-interface)
-5. [O que o Z3 prova](#5-o-que-o-z3-prova)
+5. [O que o Agda prova](#5-o-que-o-agda-prova)
 6. [O porte em Haskell](#6-o-porte-em-haskell)
 7. [Ressalvas](#7-ressalvas)
 8. [Nota do vídeo](#8-nota-do-vídeo)
@@ -57,7 +57,7 @@ todas as rodadas, da recompensa do melhor braço menos a recompensa do braço es
 
 A regra de decisão vê só as estimativas de cada braço; a regra nunca vê o histórico nem o
 contexto. Por isso, qualquer modelo que dê uma média e uma incerteza funciona com qualquer regra.
-A afirmação `policy_factors` prova essa fronteira.
+A afirmação `policy-factors` prova essa fronteira.
 
 | Regra | Como a regra explora | Código |
 |---|---|---|
@@ -68,87 +68,84 @@ A afirmação `policy_factors` prova essa fronteira.
 
 [![Camadas de modelo e de decisão](../docs/diagrams/img/pt-BR/bandit-architecture.png)](../docs/diagrams/pt-BR/bandit-architecture.html)
 
-*Figura 1. A camada de modelo, a camada de decisão e a spec em Z3 (archify; clique para abrir o
+*Figura 1. A camada de modelo, a camada de decisão e a spec (archify; clique para abrir o
 diagrama interativo).*
 
 ## 2. Arquivos
 
 | Parte | Arquivos |
 |---|---|
-| Especificação em Z3 | [`Bandit.scala`](../z3-scala/src/main/scala/bandit/domain/Bandit.scala) (as duas camadas, as regras), [`Theorems.scala`](../z3-scala/src/main/scala/bandit/domain/Theorems.scala) (K = 1 a 5), [`Examples.scala`](../z3-scala/src/main/scala/bandit/domain/Examples.scala) (modelo tabular, racionais exatos), [`Video.scala`](../z3-scala/src/main/scala/bandit/domain/Video.scala) (invariantes R1 a R5 do vídeo), [`BanditChecks.scala`](../z3-scala/src/main/scala/bandit/application/BanditChecks.scala); como o Z3 roda: [`z3-scala/README.md`](../z3-scala/README.md) |
-| Por que Z3 e não Lean | [`docs/decisions/0001-z3-over-lean.md`](../docs/decisions/0001-z3-over-lean.md) |
+| Especificação (Agda) | [`agda/`](../agda/README.md): [`Interface.agda`](../agda/src/ContextualBandit/Interface.agda) (as duas camadas), [`Argmax.agda`](../agda/src/ContextualBandit/Argmax.agda), [`Policies.agda`](../agda/src/ContextualBandit/Policies.agda) (as regras), [`Theorems.agda`](../agda/src/ContextualBandit/Theorems.agda) (para todo K), [`Examples.agda`](../agda/src/ContextualBandit/Examples.agda) (modelo tabular, conferido por `refl`), [`Video.agda`](../agda/src/ContextualBandit/Video.agda) (invariantes R1 a R5 do vídeo); [`checks/agda.sh`](../checks/agda.sh), [`just/agda.just`](../just/agda.just) |
+| Por que o bandit saiu do Lean | [`docs/decisions/0001-z3-over-lean.md`](../docs/decisions/0001-z3-over-lean.md) (Z3 em Scala até 2026-11-11, depois Agda) |
 | Porte em Haskell | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, regras, gerador SplitMix), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, linear bayesiano, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (verificação da spec e simulações), [`app/Video.hs`](../haskell/app/Video.hs) |
-| Provas em Agda | [`agda/`](../agda/README.md): [`Interface.agda`](../agda/src/ContextualBandit/Interface.agda), [`Argmax.agda`](../agda/src/ContextualBandit/Argmax.agda), [`Policies.agda`](../agda/src/ContextualBandit/Policies.agda), [`Theorems.agda`](../agda/src/ContextualBandit/Theorems.agda) (para todo K), [`Examples.agda`](../agda/src/ContextualBandit/Examples.agda) (modelo tabular, conferido por `refl`); [`checks/agda.sh`](../checks/agda.sh), [`just/agda.just`](../just/agda.just) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (o que está provado e o que é confiado), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
 | Roteiro do vídeo | [`script/`](script/README.md), os números em [`results.md`](script/results.md), os arquivos do Desmos em [`desmos/`](script/desmos/README.md) |
 | Diagramas | [`docs/diagrams/src/build_candidates.py`](../docs/diagrams/src/build_candidates.py) (fonte, nos dois idiomas), [`docs/diagrams/pt-BR/`](../docs/diagrams/index.html) (HTML), `docs/diagrams/img/pt-BR/` (PNG) |
-| Receitas e verificações | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/contextual-bandits.sh`](../checks/contextual-bandits.sh), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |
+| Receitas e verificações | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/text-checks.sh`](../checks/text-checks.sh) (as verificações de texto do roteiro), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |
 
 ## 3. Como rodar
 
 ```bash
-just z3                                  # toda afirmação em Z3 (nix develop .#scala); cada linha OK
 cd haskell && cabal run examples         # verificação da spec e 4 simulações; ou: runghc -isrc app/Main.hs
 cd haskell && cabal run video            # os experimentos do vídeo; escreve o results.md do roteiro
 just liquid                              # LiquidHaskell; SAFE em cada módulo
-just agda                                # as provas em Agda para todo K (nix develop .#agda)
+just agda                                # a especificação e as provas, para todo K (nix develop .#agda)
 just paper contextual-bandits            # o preprint (dentro de nix develop)
 just script                              # o roteiro do vídeo
 ```
 
-O primeiro bloco de `cabal run examples` compara o Haskell com `Examples.scala` e `Video.scala`.
+O primeiro bloco de `cabal run examples` compara o Haskell com `Examples.agda` e `Video.agda`.
 Toda linha precisa dizer `OK`.
 
 ## 4. A interface
 
-| Conceito | Z3 (`Bandit.scala`, `Examples.scala`, `Video.scala`) | Haskell |
+| Conceito | Agda (`Interface.agda`, `Policies.agda`, `Video.agda`) | Haskell |
 |---|---|---|
-| Braço | índice `0..K-1` de uma `List` do Scala | `Int` em `0..k-1` |
+| Braço | `Arm K`, um índice abaixo de K | `Int` em `0..k-1` |
 | Observação | `(contexto, braço, recompensa)` | `Obs c` |
-| Saída do modelo | `(média, largura)`, dois reais do Z3 | `Estimate {mean, width}` |
+| Saída do modelo | `(média, largura)`, dois racionais | `Estimate {mean, width}` |
 | Modelo probabilístico | `update`, `estimate`, `posterior` (tabular) | `RewardModel c b {numArms, prior, update, estimate, sample}` |
-| Regra de decisão | `List[Estimate] => List[Real]` | `[Estimate] -> [Double]` |
-| Política | `policy(rule, history, context, arms)` | `policy m rule history ctx`, `act` |
-| Alocação A/B/n | `epsGreedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
-| Teste A/B completo | `etc`, `etc_before`, `etc_after` | `etc` (`Video.hs`) |
-| π como bandit | `step`, `leibnizPair_pos`, `ramTerm_pos` | `Pi.hs`, `singleArmed`, `multiArmed` |
-| RSI | `outer`, `innerEps`, `rsi_valid` | `outer`, `inner`, `rsiLoop` |
+| Regra de decisão | `(Arm K → Estimate) → Arm K → ℚ` | `[Estimate] -> [Double]` |
+| Política | `policy m rule history context` | `policy m rule history ctx`, `act` |
+| Alocação A/B/n | `epsGreedy 1 est` = `uniform` | `epsGreedy 1` |
+| Teste A/B completo | `etc`, `etc-before`, `etc-after` | `etc` (`Video.hs`) |
+| π como bandit | `step`, `leibnizPair-pos`, `ramanujanTerm-pos` | `Pi.hs`, `singleArmed`, `multiArmed` |
+| RSI | `rsi-valid-outer`, `rsi-valid-inner` (com `innerEps`), `outer-explores` | `outer`, `inner`, `rsiLoop` |
 
-## 5. O que o Z3 prova
+## 5. O que o Agda prova
 
-O Z3 verifica cada afirmação por refutação (`unsat`), para K = 1 a 5 braços e todo valor real das
-estimativas.
+Cada afirmação está provada para todo número de braços K, por indução, sobre racionais exatos
+(`Data.Rational`). Até 2026-11-11 o Z3 verificava cada uma por refutação só para K = 1 a 5.
 
 | Teorema | Afirmação |
 |---|---|
-| `greedy_valid`, `ucb_valid`, `epsGreedy_valid` | a saída é uma distribuição de probabilidade quando `0 ≤ ε ≤ 1` |
-| `epsGreedy_prob` | o braço guloso recebe `1 - ε + ε/K`, cada outro braço recebe `ε/K` |
-| `epsGreedy_explores` | cada braço tem probabilidade ≥ `ε/K` |
-| `epsGreedy_one_is_ab_test` | a ε-gulosa com ε = 1 é a alocação uniforme de um teste A/B/n |
-| `greedy_is_argmax`, `ucb_is_argmax` | o braço escolhido maximiza a pontuação |
-| `ucb_zero` | a UCB com β = 0 é a gulosa |
-| `ucb_gap` (lema do otimismo) | se o modelo é **calibrado** (`\|média − μ\| ≤ β·largura` em cada braço), o braço da UCB fica a até `2β·largura` do melhor braço |
-| `greedy_gap` | se cada média fica a até δ da verdade, a gulosa perde no máximo 2δ |
-| `policy_factors` | dois históricos com a mesma crença dão a mesma decisão |
-| `step_exploit`, `step_explore_n`, `step_explore_reward`, `step_reward_bounded` | um braço: aproveitar não gasta termo; explorar gasta um e não baixa a recompensa, que fica em [0, 1] |
-| `epsGreedy_zero`, `etc_before`, `etc_after`, `etc_valid` | o teste A/B (*explore then commit*) é uma regra só: uniforme antes da troca, gulosa depois, sempre válida |
-| `rsi_valid`, `outer_explores` | o bandit de fora que escolhe o ε de dentro é a `epsGreedy` de novo, válida, e tenta cada ε |
-| `leibnizPair_pos`, `ramTerm_pos`, `ramSum_lt_succ`, `ramApprox_anti` | cada par de Leibniz é positivo para todo real k ≥ 0; os termos de Ramanujan são positivos (k = 0..9), as somas crescem e a aproximação de π decresce |
+| `greedy-valid`, `ucb-valid`, `epsGreedy-valid` | a saída é uma distribuição de probabilidade quando `0 ≤ ε ≤ 1` |
+| `epsGreedy-prob` | o braço guloso recebe `1 - ε + ε/K`, cada outro braço recebe `ε/K` |
+| `epsGreedy-explores` | cada braço tem probabilidade ≥ `ε/K` |
+| `epsGreedy-one-is-ab-test` | a ε-gulosa com ε = 1 é a alocação uniforme de um teste A/B/n |
+| `greedy-is-argmax`, `ucb-is-argmax` | o braço escolhido maximiza a pontuação |
+| `ucb-zero` | a UCB com β = 0 é a gulosa |
+| `ucb-gap` (lema do otimismo) | se o modelo é **calibrado** (`\|média − μ\| ≤ β·largura` em cada braço), o braço da UCB fica a até `2β·largura` do melhor braço |
+| `greedy-gap` | se cada média fica a até δ da verdade, a gulosa perde no máximo 2δ |
+| `policy-factors` | dois históricos com a mesma crença dão a mesma decisão |
+| `step-exploit`, `step-explore-n`, `step-explore-reward`, `step-reward-bounded` | um braço: aproveitar não gasta termo; explorar gasta um e não baixa a recompensa, que fica em [0, 1] |
+| `epsGreedy-zero`, `etc-before`, `etc-after`, `etc-valid` | o teste A/B (*explore then commit*) é uma regra só: uniforme antes da troca, gulosa depois, sempre válida |
+| `rsi-valid-outer`, `rsi-valid-inner`, `outer-explores` | o bandit de fora que escolhe o ε de dentro é a `epsGreedy` de novo, válida, e tenta cada ε |
+| `leibnizPair-pos`, `ramanujanTerm-pos`, `ramSum-lt-succ`, `ramApprox-anti` | cada par de Leibniz é positivo para todo racional k ≥ 0; os termos de Ramanujan são positivos (todo j), as somas crescem e a aproximação de π decresce |
 
-O `ucb_gap` diz o que o modelo deve à camada de decisão: incerteza calibrada. Uma cota de
-arrependimento do LinUCB precisa do `ucb_gap` em cada rodada (feito), da calibração com
-probabilidade ≥ 1 − δ em todas as rodadas (uma cota de martingal, fora do que o Z3 decide) e de
+O `ucb-gap` diz o que o modelo deve à camada de decisão: incerteza calibrada. Uma cota de
+arrependimento do LinUCB precisa do `ucb-gap` em cada rodada (feito), da calibração com
+probabilidade ≥ 1 − δ em todas as rodadas (uma cota de martingal, não provada aqui) e de
 Σ larguras = O(√(d T log T)) (o lema do potencial elíptico). Os dois últimos itens ficam abertos.
 
-O Agda prova as linhas da camada de decisão desta tabela (de `greedy_valid` a `policy_factors`)
-para todo K, por indução, sobre racionais exatos: [`agda/README.md`](../agda/README.md). O Z3
-continua a ser a especificação; os nomes em Agda são os do Z3 com `-` no lugar de `_`.
+Os módulos e as provas: [`agda/README.md`](../agda/README.md). Os nomes em Agda são os antigos
+nomes do Z3 com `-` no lugar de `_`.
 
 ## 6. O porte em Haskell
 
-O porte usa só `base` e `containers` e repete os nomes do Z3. O argmax fica com o primeiro máximo,
-como no Z3. Para ligar um modelo, implemente quatro funções ou embrulhe o modelo com
+O porte usa só `base` e `containers` e repete os nomes do Agda. O argmax fica com o primeiro máximo,
+como no Agda. Para ligar um modelo, implemente quatro funções ou embrulhe o modelo com
 `fromPredictor`:
 
 ```haskell
@@ -168,13 +165,13 @@ fromPredictor
 - **Qualquer regra**: `act m greedy`, `act m (epsGreedy 0.1)`, `act m (ucb 2)`, `thompsonArm m`.
 
 A `width` precisa ser uma incerteza honesta. Um modelo confiante demais quebra a premissa
-`calibrated`, e a UCB e a Thompson viram gulosas.
+`Calibrated`, e a UCB e a Thompson viram gulosas.
 
 Saída de `cabal run examples` (arrependimento acumulado esperado, uma simulação pequena de cada,
 não é *benchmark*):
 
 ```text
-== 0. Spec check against Examples.scala and Video.scala ==   all OK
+== 0. Spec check against Examples.agda and Video.agda ==   all OK
 == 1. Beta-Bernoulli, 2 contexts x 3 arms, T=5000 (avg 20 runs)
 greedy 41.1   eps-greedy 0.1 43.3   UCB beta=2 25.3   Thompson 32.8
 == 2. Bayesian linear, d=3, 4 arms, T=2000 (avg 10 runs)
@@ -188,10 +185,9 @@ verificação confia e o que fica de fora.
 
 ## 7. Ressalvas
 
-- O Z3 prova sobre os reais e os racionais exatos. O Haskell usa `Double`, e as provas não cobrem o
+- O Agda prova sobre os racionais exatos. O Haskell usa `Double`, e as provas não cobrem o
   arredondamento de ponto flutuante. A verificação da spec mostra que os dois concordam no exemplo
   comum.
-- O Z3 não tem indução: cada teorema vale para K = 1 a 5, não para todo K.
 - A amostragem de Thompson é "a gulosa sobre uma amostra da posteriori". A aleatoriedade e o
   arrependimento dela não estão formalizados.
 - O exemplo tabular usa largura `1/(n+1)`, um substituto racional de `1/√n`, para os exemplos
@@ -219,20 +215,20 @@ renderiza todos.
 | 1.2 Steal like an artist | 1:00 | `bandit-timeline` | — | `animation/timeline.py` |
 | 1.3 π e você, um braço | 3:00 | `pi-arms` | `1-3-pi.txt` | `singleArmed`; `step` |
 | 1.4 O nome | 5:00 | `pi-arms` | `1-3-pi.txt` | `multiArmed`; `Pi.hs` |
-| 1.5 Modelo e regra | 6:30 | `bandit-architecture` | `1-5-width.txt` | `policy_factors` |
-| 1.6 Explorar e aproveitar | 7:30 | — | `1-6-ucb.txt` | `greedy`, `epsGreedy`, `ucb`; `ucb_zero` |
+| 1.5 Modelo e regra | 6:30 | `bandit-architecture` | `1-5-width.txt` | `policy-factors` |
+| 1.6 Explorar e aproveitar | 7:30 | — | `1-6-ucb.txt` | `greedy`, `epsGreedy`, `ucb`; `ucb-zero` |
 | 1.7 A Netflix | 8:30 | `bandit-architecture` | — | `bayesLinear` |
-| 2.1 O que é um teste A/B | 10:00 | `ab-test-vs-bandit` | `2-1-ab.txt` | `uniform`; `etc_before` |
-| 2.2 O teste A/B é uma regra de bandit | 11:30 | `ab-test-vs-bandit` | `2-2-epsilon.txt` | `epsGreedy_one_is_ab_test`, `etc_after` |
+| 2.1 O que é um teste A/B | 10:00 | `ab-test-vs-bandit` | `2-1-ab.txt` | `uniform`; `etc-before` |
+| 2.2 O teste A/B é uma regra de bandit | 11:30 | `ab-test-vs-bandit` | `2-2-epsilon.txt` | `epsGreedy-one-is-ab-test`, `etc-after` |
 | 2.3 O custo da espera | 13:00 | — | `2-3-regret.txt` | `abVsBandit` |
 | 2.4 O contexto personaliza | 15:00 | `ab-test-vs-bandit` | — | `abVsBandit` |
 | 2.5 O que o A/B faz melhor | 16:30 | `bandit-round` | `2-5-propensity.txt` | `policy` |
-| 2.6 Resumo | 18:00 | `bandit-architecture` | — | `Theorems.scala` |
+| 2.6 Resumo | 18:00 | `bandit-architecture` | — | `Theorems.agda` |
 | 3.1 Três palavras | 20:00 | `rsi-loop` | — | `outer`, `innerEps` |
 | 3.2 O menor ciclo recursivo | 21:30 | `rsi-loop` | — | `rsiLoop` |
 | 3.3 O bandit na RSI de verdade | 24:00 | `rsi-loop` | — | `rsiLoop` |
 | 3.4 Crença atual contra crença nova | 26:30 | `bandit-round` | `3-4-beta.txt` | `beliefs`; `betaBernoulli` |
-| 3.5 O que não é bandit | 28:00 | `bandit-architecture` | — | `calibrated`, `ucb_gap` |
+| 3.5 O que não é bandit | 28:00 | `bandit-architecture` | — | `Calibrated`, `ucb-gap` |
 | 3.6 Fecho e créditos | 29:00 | — | — | `PROMPTS.md` |
 
 ### Bloco 1. CMAB
@@ -289,9 +285,9 @@ máximo. O exemplo de π não tem contexto: é um MAB, e não um CMAB.
 alavanca muda a cada rodada, e a política aprende uma função do contexto para a alavanca: linear no
 LinUCB [6], uma tabela de duas linhas na sorveteria.
 
-**1.5 e 1.6.** Ver [a ideia](#1-a-ideia): as duas camadas, o `policy_factors` e a tabela das
+**1.5 e 1.6.** Ver [a ideia](#1-a-ideia): as duas camadas, o `policy-factors` e a tabela das
 regras. O modelo do vídeo é tabular: média = soma / contagem, largura = `1/(n+1)`. Com β = 0, a UCB
-é a gulosa (`ucb_zero`).
+é a gulosa (`ucb-zero`).
 
 **1.7 A Netflix.** A Netflix escolhe a imagem de cada título para cada assinante, como descreve o
 post do Netflix Tech Blog de 2017-12, de Chandrashekar, Amat, Basilico e Jebara [1, 2]. Numa
@@ -310,9 +306,9 @@ Tempo no vídeo: 10:00 a 20:00.
 fica com a melhor (*explore-then-commit*). O teste é simples de montar, de ler e de defender. Em
 termos de bandit:
 
-1. O período de teste é a ε-gulosa com ε = 1 (`epsGreedy_one_is_ab_test`).
-2. A fase de decisão é a ε-gulosa com ε = 0, a gulosa (`epsGreedy_zero`).
-3. O teste completo é um ε que pula de 1 para 0 num dia marcado (R3: `etc_before`, `etc_after`).
+1. O período de teste é a ε-gulosa com ε = 1 (`epsGreedy-one-is-ab-test`).
+2. A fase de decisão é a ε-gulosa com ε = 0, a gulosa (`epsGreedy-zero`).
+3. O teste completo é um ε que pula de 1 para 0 num dia marcado (R3: `etc-before`, `etc-after`).
 
 A pergunta "A/B ou bandit?" vira outra: como ε deve cair ao longo do tempo?
 
@@ -377,7 +373,7 @@ um ε, o de dentro atende 500 clientes, e o ganho médio é a recompensa de fora
 | 0,1 | 12 | 0,085 |
 | 0,01 | 9 | 0,057 |
 
-A mesma `epsGreedy` funciona nos dois níveis (R4: `rsi_valid`, `outer_explores`). O ε = 0,5 ganha
+A mesma `epsGreedy` funciona nos dois níveis (R4: `rsi-valid-outer`, `rsi-valid-inner`, `outer-explores`). O ε = 0,5 ganha
 porque o horizonte é curto e o modelo começa do zero.
 
 [![Automelhoria recursiva: um bandit que ajusta um bandit](../docs/diagrams/img/pt-BR/rsi-loop.png)](../docs/diagrams/pt-BR/rsi-loop.html)
@@ -397,7 +393,7 @@ e fracassos; cada sinal soma 1 numa das contagens. A crença nova soma os sinais
 
 **3.5 O que não é bandit.** Quando a escolha de hoje muda o estado de amanhã, o problema é de
 aprendizado por reforço completo. Uma recompensa fácil de enganar ensina o laço a enganar a
-recompensa: o `ucb_gap` depende da premissa `calibrated`. ⚠ O roteiro não cita um trabalho
+recompensa: o `ucb-gap` depende da premissa `Calibrated`. ⚠ O roteiro não cita um trabalho
 específico de *reward hacking*.
 
 ## 9. Fontes

@@ -167,7 +167,7 @@ rows = [
   ['alocação', '$1/K$, fixa', 'muda a cada rodada'],
   ['decisão', 'uma, no fim', 'sempre'],
 ]
-proved = 'provado pelo Z3, por refutação, para $K = 1$ a 5'
+proved = 'provado em Agda, para todo $K$'
 theorems = [
   'toda regra devolve uma distribuição',
   'a $\varepsilon$-gulosa dá a cada braço pelo menos $\varepsilon/K$',

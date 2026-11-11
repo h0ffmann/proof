@@ -1,6 +1,6 @@
 """Take 2.6, the summary of the block (prose-pt-BR/02-teste-ab.md): the A/B test against the CMAB in
-three rows (the table of section 2.6 of the note), then the five facts Z3 proves by refutation,
-one line at a time (z3-scala/src/main/scala/bandit/domain/Theorems.scala).
+three rows (the table of section 2.6 of the note), then the five facts Agda proves for every number of arms,
+one line at a time (agda/src/ContextualBandit/Theorems.agda).
 """
 
 import sys
@@ -47,7 +47,7 @@ class Take26(Take):
         for f in facts:
             self.play(FadeIn(f[0], scale=1.5), Write(f[1]), run_time=1.5)
             self.wait(5)
-        lemma = code("ucb_gap", 22).next_to(facts[-1], RIGHT, buff=0.3)
+        lemma = code("ucb-gap", 22).next_to(facts[-1], RIGHT, buff=0.3)
         self.play(FadeIn(lemma))
         open_ = T("t2_6.open", 28, REGRET).to_edge(DOWN, buff=0.4)
         self.play(FadeIn(open_))

@@ -17,8 +17,8 @@ mudar. Cada exigência tem um lugar no código que vem a seguir.
 **Tela.** Três círculos concêntricos: melhoria, automelhoria, automelhoria recursiva. Cada palavra
 acende um anel.
 
-**Código.** Z3, `z3-scala/src/main/scala/bandit/domain/Video.scala`, invariante R4: `outer` e `innerEps`, a mesma `epsGreedy` nos
-dois níveis; `rsi_valid` e `outer_explores`. Haskell: `outer` e `inner` em `haskell/src/Video.hs`.
+**Código.** Agda, `agda/src/ContextualBandit/Video.agda`, invariante R4: `outer` e `innerEps`, a mesma `epsGreedy` nos
+dois níveis; `rsi-valid-outer`, `rsi-valid-inner` e `outer-explores`. Haskell: `outer` e `inner` em `haskell/src/Video.hs`.
 
 ## O menor ciclo recursivo que cabe numa tela (21:30 a 24:00)
 
@@ -107,9 +107,9 @@ repositório tem um lema que diz o que o modelo deve à regra: incerteza calibra
 chute.
 
 **Tela.** Um aviso simples: "recompensa de um passo" e "recompensa fácil de enganar", com o lema
-`ucb_gap` ao lado.
+`ucb-gap` ao lado.
 
-**Código.** `z3-scala/src/main/scala/bandit/domain/Theorems.scala`, as premissas `calibrated` e `ucb_gap`. ⚠ A frase sobre
+**Código.** `agda/src/ContextualBandit/Theorems.agda`, as premissas `Calibrated` e `ucb-gap`. ⚠ A frase sobre
 enganar a recompensa é um resumo meu; o roteiro não cita um trabalho específico de *reward
 hacking*.
 
@@ -118,7 +118,7 @@ hacking*.
 **Fala.** Resumo em três frases. Um CMAB é uma regra de decisão em cima de um modelo
 probabilístico, que escolhe com recompensa parcial. Um teste A/B é um CMAB com três coisas
 congeladas: sem contexto, 1 sobre K, uma decisão só. E a RSI é esse mesmo laço apontado para o
-próprio laço. O código de cada frase está no repositório proof, em Z3 e Haskell; o Python só
+próprio laço. O código de cada frase está no repositório proof, em Agda e Haskell; o Python só
 desenha. Agora os créditos, porque este vídeo também roubou como um artista. O estilo é o de
 3Blue1Brown, de Grant Sanderson. As animações são Manim, a biblioteca dele, mantida pela Manim
 Community [@manim]. O roteiro, o código e as animações foram feitos com o Claude Code, da Anthropic,
@@ -131,5 +131,5 @@ creditem.
 créditos: 3Blue1Brown · Manim Community · Claude Code (Sonnet 5.5, Fable 5.1) · custo total `[a
 confirmar: preencher no fim da produção, em dólares e em horas]` · "prompts: PROMPTS.md".
 
-**Código.** `z3-scala/src/main/scala/bandit/domain/Video.scala`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`,
+**Código.** `agda/src/ContextualBandit/Video.agda`, `haskell/src/Video.hs`, `haskell/src/Pi.hs`,
 `haskell/app/Video.hs`, `results.md` e `PROMPTS.md`. As animações: `animation/`.

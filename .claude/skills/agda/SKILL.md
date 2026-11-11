@@ -8,8 +8,9 @@ description: Write, prove and type-check Agda in this repository (agda/, the con
 `agda/` is an Agda library (`agda/contextual-bandit.agda-lib`, depends on `standard-library`
 only). It holds the decision layer of the contextual bandit and its theorems for every number of
 arms K, and ports of other topics: the cycle clock (`Cycle`, from Lean), upwind advection
-(`OceanWaves`, from Lean) and the triangle-grid size rules (`Grids`, from Z3). Z3 (`z3-scala/src/main/scala/bandit/domain/`) is the specification; Agda follows its
-names, with `-` for `_` (`ucb_gap` is `ucb-gap`). Read `agda/README.md` first: it has the
+(`OceanWaves`, from Lean) and the triangle-grid size rules (`Grids`, from Z3). Agda is the
+specification of the bandit since `z3-scala/` was removed (2026-11-11); it kept the Z3 names,
+with `-` for `_` (`ucb_gap` is `ucb-gap`). Read `agda/README.md` first: it has the
 modules, the theorem table and how Agda differs from Z3 and from the Lean original.
 
 ## Toolchain
@@ -42,8 +43,8 @@ A module is checked when Agda prints `Checking ...` lines and no `error:`. Inter
 2. **A new module is imported by a root**, a file `agda/src/<Topic>.agda` (`ContextualBandit`,
    `Cycle`, `OceanWaves`, `Grids`), or nothing checks it. `checks/agda.sh` type-checks every
    root, so a new topic is a new root and needs no change to the script.
-3. **Mirror the specification.** A rule or model goes into Z3 first (AGENTS.md, rule 2). Then
-   it goes into Agda and Haskell with the same name, argument order and tie-break. Argmax keeps
+3. **Agda first.** A rule or model goes into Agda first, with its theorem (AGENTS.md, rule 2). Then
+   it goes into Haskell with the same name, argument order and tie-break. Argmax keeps
    the first maximum: the running best changes only on a strict `<`.
 4. **Decision rules see only estimates** (AGENTS.md, rule 4): a `DecisionRule K` is
    `(Arm K → Estimate) → Decision K`, never a function of the history or the context.
@@ -53,7 +54,7 @@ A module is checked when Agda prints `Checking ...` lines and no `error:`. Inter
    `Examples.agda` (`+ 14 / 15`) and expects a failure: keep that literal, or change the sed in
    the self-test with it.
 6. **English, ASD-STE100 comments** (AGENTS.md, "Language"). A module opens with a comment block
-   that says what it holds and which Z3 or Haskell file it mirrors.
+   that says what it holds and which Lean, Z3 or Haskell original it follows.
 
 ## Traps of the standard library (2.3)
 

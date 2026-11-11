@@ -1,18 +1,19 @@
-# Contextual bandits: the Z3 specification (z3-scala/) and the video script (contextual-bandits/script/).
+# Contextual bandits: the text checks of the video script (tools/text-checks/) and the video script
+# (contextual-bandits/script/). The bandit's theorems, examples and video invariants are proved in
+# agda/src/ContextualBandit/ (`just agda`).
 
-# Z3 (needs a JDK and sbt; z3-scala/z3.sh fetches Z3's Java binding): the contextual bandit's
-# theorems, its examples, the video script's invariants, the language rule (every file in English
-# unless its path carries pt-BR), the PTC rules of the video script (`z3-scala/z3.sh ptc --review`
-# lists what Z3 cannot decide) and its PTC-9 noise catalogue. z3-scala/README.md has the details;
-# docs/decisions/0001-z3-over-lean.md says why Z3. Also in `just check`.
+# Z3 through SBV (tools/text-checks/README.md has the details): the language rule (every file in
+# English unless its path carries pt-BR), the PTC rules of the video script
+# (`tools/text-checks/run.sh ptc --review` lists what Z3 cannot decide) and its PTC-9 noise
+# catalogue. docs/decisions/0001-z3-over-lean.md says why Z3. Also in `just check`.
 z3:
-    bash checks/contextual-bandits.sh
+    bash checks/text-checks.sh
 
 # The PTC-9 noise catalogue (references/ruido-ia.md of PTC) on the video script, row by row
-# (`z3-scala/z3.sh ruido-ia --review` lists the rows Z3 cannot decide)
+# (`tools/text-checks/run.sh ruido-ia --review` lists the rows Z3 cannot decide)
 ruido-ia:
-    z3-scala/z3.sh ruido-ia --self-test
-    z3-scala/z3.sh ruido-ia
+    tools/text-checks/run.sh ruido-ia --self-test
+    tools/text-checks/run.sh ruido-ia
 
 # The video script (contextual-bandits/script/), a paper that lives in the bandit's folder and not
 # under papers/, so `_pdf` gets its path relative to papers/. Its Brazilian Portuguese edition: pdf/contextual-bandits-script-pt-BR.pdf. Run inside `nix develop`.

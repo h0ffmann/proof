@@ -12,9 +12,9 @@ from manim import *  # noqa: E402,F403
 from common import *  # noqa: E402,F403
 
 FILES = [
-    "z3-scala/src/main/scala/bandit/domain/Bandit.scala",
+    "agda/src/ContextualBandit/Policies.agda",
     "haskell/app/Video.hs",
-    "z3-scala/src/main/scala/bandit/domain/Video.scala",
+    "agda/src/ContextualBandit/Video.agda",
 ]
 
 

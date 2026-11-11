@@ -7,8 +7,8 @@
 --   * Ramanujan (Srinivasa Ramanujan, India, 1914; the owner calls him "the King of
 --     Mathematicians", 2026-11-09). About 8 digits per term.
 --
--- The terms of Leibniz and Ramanujan are the symbols of "Video" (and of z3-scala/src/main/scala/bandit/domain/Video.scala). This
--- module adds what Z3 is not asked for: a square root, a decimal expansion, and
+-- The terms of Leibniz and Ramanujan are the symbols of "Video" (and of agda/src/ContextualBandit/Video.agda). This
+-- module adds what Agda is not asked for: a square root, a decimal expansion, and
 -- the count of correct digits. Every number is a 'Rational' at a fixed precision, so
 -- every digit counted is a true digit. Run @cabal run video@ to see the table.
 module Pi

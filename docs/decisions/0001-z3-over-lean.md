@@ -2,6 +2,10 @@
 
 Date: 2026-11-09. Status: accepted (the owner).
 
+Update, 2026-11-11: `z3-scala/` was removed, on the owner's request to move the Scala to Agda or
+Haskell. The specification of the bandit is now Agda (`agda/src/ContextualBandit/`), which proves
+each statement for every number of arms; the paths to `z3-scala/` below are history.
+
 ## Context
 
 Until this decision the contextual bandit had two twins: a Lean 4 specification in

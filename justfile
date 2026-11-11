@@ -17,7 +17,6 @@ graphify := env_var_or_default("GRAPHIFY", "graphify")
 import? 'just/agda.just'
 import? 'just/contextual-bandits.just'
 import? 'just/loc.just'
-import? 'just/leo.just'
 import? 'just/liquidhaskell.just'
 import? 'just/port-audit.just'
 import? 'just/preprints.just'
@@ -90,8 +89,8 @@ crypto-strength:
     python3 crypto-strength/build.py
 
 # The checks: the Lean proofs of the other experiments (and their hygiene), the Haskell examples,
-# whose spec check compares with z3-scala/src/main/scala/bandit/domain/Examples.scala and z3-scala/src/main/scala/bandit/domain/Video.scala, and every checks/<feature>.sh
-# (the Z3 specification of the contextual bandit is checks/contextual-bandits.sh, `just z3`)
+# whose spec check compares with the Agda specification (agda/src/ContextualBandit/), and every
+# checks/<feature>.sh (the Agda proofs are checks/agda.sh, the text checks checks/text-checks.sh)
 check: lean-hygiene
     cd ocean-waves/lean && lake build
     cd cycle/lean && lake build
