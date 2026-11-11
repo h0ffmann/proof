@@ -237,7 +237,9 @@ BAD = [
 # Facts that every case shares, so that only the case's own rule fires.
 GOOD = ['file("flake.nix").', 'file("flake.lock").', 'flake_input_locked("paper").',
         'file("papers/fat-tails/fat-tails.pdf").', 'pdf("papers/fat-tails/fat-tails.pdf").',
-        'file("papers/tv-audience/tv-audience.pdf").', 'pdf("papers/tv-audience/tv-audience.pdf").']
+        'file("papers/tv-audience/tv-audience.pdf").', 'pdf("papers/tv-audience/tv-audience.pdf").',
+        'file("papers/practice-beats-theory/wave-models-on-gpus.pdf").',
+        'pdf("papers/practice-beats-theory/wave-models-on-gpus.pdf").']
 CLEAN = GOOD + ['lean("E/Examples.lean"). lean_examples("E/Examples.lean"). '
                 'lean_token("E/Examples.lean", 1, native_decide).',
                 'commit("ok"). commit_pair("ok", "h0ffmann", "proof"). commit_pair("ok", "z3-scala", "z3.sh").',
