@@ -102,6 +102,14 @@ A module is checked when Agda prints `Checking ...` lines and no `error:`. Inter
   `div-le-div-of-cross`): Agda cannot read them back from `a * inv₀ b`.
 - **Unsolved metas in `trans … (+-comm _ _)`**: give the arguments of `+-comm`, `+-identityʳ` and
   similar lemmas when the other side of `trans` does not fix them.
+- **A large literal on the left of `+` or `*` next to a variable exhausts the heap**
+  (`2 ^ 23 + f`, `2 ^ 24 * 2 ^ k`, `suc q * 2 ^ 149`). Both operations recurse on their left
+  operand, so when Agda compares such terms it unfolds the literal into `suc` one step at a time,
+  millions of times. Write the literal on the right (`f + 2 ^ 23`, `2 ^ k * 2 ^ 24`), keep a
+  large constant `opaque` (`U` in `PortAudit/Float32.agda`, with `U≡` for proofs), give the
+  implicit arguments of a lemma whose type has a literal (`m<n*o⇒m/o<n {n = 2 ^ 23}`,
+  `+-cancelʳ-<`), and never build an order proof of a large literal with `≤ᵇ⇒≤`: it is unary.
+  Run a single module with `agda +RTS -M3G -RTS` to fail fast instead of filling the memory.
 
 ## Port from Lean
 
