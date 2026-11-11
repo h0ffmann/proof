@@ -4,9 +4,10 @@
 -- and the significant wave height, shoaling and depth-limited breaking, the deep-water limit,
 -- refraction by Snell's law, two-dimensional propagation over many steps, wave action on a
 -- current, the model's time loop over many steps, WAVEWATCH III's geometric frequency grid and
--- its integration weights, propagation on an unstructured (triangle) mesh, and the radiation
--- stress. `WaveTheory/README.md` lists the theorems and says which ones are about exact
--- rationals or a `TanhModel` only.
+-- its integration weights, propagation on an unstructured (triangle) mesh, the radiation
+-- stress, the four-wave resonance, the DIA's interpolation weights, fractional steps and source
+-- sub-steps, and wave momentum with the Stokes drift. `WaveTheory/README.md` lists the
+-- theorems and says which ones are about exact rationals or a `TanhModel` only.
 module WaveTheory where
 
 import WaveTheory.Algebra
@@ -22,3 +23,7 @@ import WaveTheory.SpectralGrid
 import WaveTheory.Unstructured
 import WaveTheory.RadiationStress
 import WaveTheory.GridExamples
+import WaveTheory.Quadruplets
+import WaveTheory.Interpolation
+import WaveTheory.Splitting
+import WaveTheory.Momentum
