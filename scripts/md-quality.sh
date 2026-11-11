@@ -15,7 +15,7 @@ cd "$(git rev-parse --show-toplevel)"
 
 # Not checked by any of the three: other people's text (vendored tools).
 skip='^(vendor/|LICENSES/)'
-# The paper's sources are pandoc's Markdown, and `tools/fabric ste-check` is their check.
+# The paper's sources are pandoc's Markdown, and pandoc is their check.
 # The video script is such a paper, in the bandit's folder (contextual-bandits/script/).
 paper='^(papers/[^/]+/([^/]+/)?|contextual-bandits/script/)(prose[^/]*/|metadata\.md$)'
 # Vale's rules are for English that this repository writes, not for Portuguese.

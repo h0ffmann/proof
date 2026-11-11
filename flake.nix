@@ -17,17 +17,13 @@
           (builtins.filter (file: builtins.match ".*\\.nix" file != null)
             (builtins.attrNames (builtins.readDir ./nix))));
     in {
-    # default: pandoc, pandoc-crossref, XeLaTeX, pdfLaTeX and just (the paper lab), plus Gleam on
-    # Erlang for tools/ (refs-check, ste-check). md: the three Markdown analysers of
-    # `just md-quality`. The others come from nix/<name>.nix. Everything comes from the paper
+    # default: pandoc, pandoc-crossref, XeLaTeX, pdfLaTeX and just (the paper lab). md: the three
+    # Markdown analysers of `just md-quality`. The others come from nix/<name>.nix. Everything comes from the paper
     # lab's nixpkgs, so flake.lock pins it all.
     devShells = builtins.mapAttrs
       (system: shells:
         let pkgs = paper.inputs.nixpkgs.legacyPackages.${system}; in featureShells pkgs // {
-          default = pkgs.mkShell {
-            inputsFrom = [ shells.default ];
-            packages = [ pkgs.gleam pkgs.beamPackages.erlang pkgs.beamPackages.rebar3 ];
-          };
+          default = shells.default;
           md = pkgs.mkShell { packages = [ pkgs.markdownlint-cli2 pkgs.vale pkgs.lychee ]; };
         })
       paper.devShells;

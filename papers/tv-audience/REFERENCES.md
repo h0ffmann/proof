@@ -7,8 +7,8 @@ date: 2026-11-07
 # Reference log
 
 Every entry in [`refs.bib`](refs.bib) was fetched before it was cited. This log records what was
-checked and how, so a reviewer can repeat the check. `tools/fabric refs-check` fails when a
-`refs.bib` key has no row here, or a row's key is not in `refs.bib`.
+checked and how, so a reviewer can repeat the check. Every `refs.bib` key has a row
+here, and every row's key is in `refs.bib`.
 
 Status values: `verified` (source fetched, details match), `partial` (source fetched, a detail
 could not be confirmed), `unverified` (not fetched; must not be cited).

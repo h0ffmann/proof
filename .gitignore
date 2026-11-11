@@ -38,7 +38,6 @@ build/
 
 # Paper Fabric outputs (build/ above covers build/tex): PDFs ship with releases, not in git
 pdf/
-tools/build/
 .lycheecache
 result
 result-*
