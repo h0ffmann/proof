@@ -13,7 +13,7 @@
 [![Haskell](https://img.shields.io/badge/Haskell-base_%2B_containers-1b3a5c?style=flat-square&logo=haskell&logoColor=white)](haskell)
 [![Rust](https://img.shields.io/badge/Rust-std_only-1b3a5c?style=flat-square&logo=rust&logoColor=white)](house-pricing/rust)
 [![Python](https://img.shields.io/badge/Python-experiments-1b3a5c?style=flat-square&logo=python&logoColor=white)](#index-of-experiments)
-[![preprints: 3](https://img.shields.io/badge/preprints-3-2a78d6?style=flat-square)](papers)
+[![preprints: 4](https://img.shields.io/badge/preprints-4-2a78d6?style=flat-square)](papers)
 [![Nix](https://img.shields.io/badge/toolchain-Nix_flake-1b3a5c?style=flat-square&logo=nixos&logoColor=white)](flake.nix)
 [![license: MPL-2.0](https://img.shields.io/badge/license-MPL--2.0-1b3a5c?style=flat-square)](#license)
 
@@ -165,6 +165,7 @@ just graph            # build the graphify network graph; `just render-graph` se
 just crypto-strength  # rebuild the crypto heatmap and results
 just invariants       # the rules of AGENTS.md, decided by clingo on Invariants.lp (also in `just check`)
 just loc              # refresh the lines-of-code table in this README (`just loc-check` only checks)
+just preprints        # recount the preprints badge from papers/ (`just preprints-check` only checks; in `just check`)
 python3 fat-tails/python/fat_tails.py        # fat-tails results and figures
 python3 tv-audience/python/experiment.py     # TV audience benchmark, results and figures
 python3 docs/logo/logo.py                    # draw the logo again (--check to verify)
