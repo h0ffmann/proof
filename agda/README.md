@@ -60,8 +60,14 @@ every root.
 | Root | Ported from | What it proves |
 |---|---|---|
 | [`Cycle`](src/Cycle/Clock.agda) | `cycle/lean/Cycle/Clock.lean` | `tick-iterate` (k ticks are `(t + k) mod (n + 1)`), `eternal-return`, `history-periodic`, `returns-forever` |
-| [`OceanWaves`](src/OceanWaves/Advection.agda) | `ocean-waves/lean/OceanWaves/Advection.lean` | first-order upwind advection: `advect-eq` (a convex combination), `advect-sum` (only the boundary fluxes change the total), `advectPeriodic-sum` and `advectPeriodicN-sum` (exact conservation on a periodic grid), `advect-nonneg` and `advectPeriodicN-nonneg` (positivity under CFL), `advect-le-max` (no new maximum) |
+| [`OceanWaves.Order`](src/OceanWaves/Order.agda), [`OceanWaves.Sums`](src/OceanWaves/Sums.agda) | `ocean-waves/lean/OceanWaves/RatLemmas.lean` | Lean's total division `_/₀_` (`inv₀ 0 = 0`) and its lemmas, the order lemmas, finite sums (`sumTo-comm`, `sumTo-pick`, the telescope) and `tabulate` with `tabulate-eq` |
+| [`OceanWaves.Dispersion`](src/OceanWaves/Dispersion.agda) | `ocean-waves/lean/OceanWaves/Dispersion.lean` | for every `TanhModel`: `sigma2-strictMono`, the deep and shallow bounds, `nFactor-ge-half`, `nFactor-le-one`, `groupSpeed-bounds` (c/2 ≤ c_g ≤ c), `phaseSpeed-sq-le` (c² ≤ g h), `courant-le-one` (the depth-based CFL); the clamped Padé model `padeModel` with `pade-mono` and `pade-sech-bound` |
+| [`OceanWaves.Bisection`](src/OceanWaves/Bisection.agda) | `ocean-waves/lean/OceanWaves/Bisection.lean` | the bracket invariants, `bisect-width` (the width halves at each step), `bisect-root`; the wavenumber kernel `waveNumber` with `waveNumber-upper` and `waveNumber-error` |
+| [`OceanWaves.Advection`](src/OceanWaves/Advection.agda) | `ocean-waves/lean/OceanWaves/Advection.lean` | first-order upwind advection: `advect-eq` (a convex combination), `advect-sum` (only the boundary fluxes change the total), `advectPeriodic-sum` and `advectPeriodicN-sum` (exact conservation on a periodic grid), `advect-nonneg` and `advectPeriodicN-nonneg` (positivity under CFL), `advect-le-max` (no new maximum) |
+| [`OceanWaves.Sources`](src/OceanWaves/Sources.agda) | `ocean-waves/lean/OceanWaves/Sources.lean` | `windRate-nonneg`, `windRate-zero`, `dsRate-nonneg`, `quad-moment`, `snl-conserves-action`, `snl-conserves-energy`, `linStep-nonneg` (for every Δt), `eulerStep-nonneg` (only under a restriction), the limiter, `sourceStep-nonneg`, `sourceStep-sum` |
+| [`OceanWaves.ActionBalance`](src/OceanWaves/ActionBalance.agda) | `ocean-waves/lean/OceanWaves/ActionBalance.lean` | `advect-is-euler`; for one model step: `courant-bins`, `propagate-bin-sum`, `propagate-total`, `propagate-nonneg`, `step-nonneg`, `step-total`, and `stepFast-eq` (the tabulated kernel computes `step`) |
 | [`OceanWaves.Examples`](src/OceanWaves/Examples.agda) | `ocean-waves/lean/OceanWaves/Examples.lean` (the idea) | one, two and five periodic steps of a pulse on three cells, by `refl` |
+| [`OceanWaves.ModelExamples`](src/OceanWaves/ModelExamples.agda) | `ocean-waves/lean/OceanWaves/Examples.lean` | Lean's examples as checks Agda computes: c² ≤ g h in 10 m, a bump kept over four steps, a negative value above CFL, semi-implicit against Euler, no wind input for a 10 s wave and input for a 5 s wave, S_nl keeps action and energy, `cfg-valid`, `cfg-local`, and the 6 × 4 step that grows the total action |
 | [`Grids`](src/Grids/SizeRule.agda) | `z3-scala/src/main/scala/grids/domain/Grids.scala`, parts 1 and 3 | `size-floor`, `size-steep-is-floor`, `size-smallest-minimum`; `chain-le-reach` (a chain of 30% steps from 5 km stays under 5 · 1.3^i, for every i), `growth-6-steps-below-30km`, and Z3's counterexample `growth-7-steps-reach-30km` as a witness |
 
 Differences from the sources:
@@ -73,9 +79,19 @@ Differences from the sources:
 - `size-floor` holds for every input. Z3 states it for positive inputs.
 - Z3 checks gradation for a chain of 7 and 8 sizes. Agda proves the bound for a chain of any
   length (`Chain h` is a function `ℕ → ℚ`) and reads it at 6 and 7 steps.
-- Not ported: `RatLemmas.lean` beyond the sums that advection uses, the dispersion, bisection,
-  source and action-balance modules of `ocean-waves/`, and parts 2, 4 and 5 of `Grids.scala`
-  (the Courant number of a 600 s step, WAVEWATCH III's ITER, the measured mesh).
+- Lean's `Rat` divides by zero and gives zero. `_/₀_` does the same, so the kernels read as in
+  Lean. Equalities of fractions such as (σ/k)² = σ²/k² are not used: a proof multiplies by the
+  inverse and cancels it with `inv₀-inverse`.
+- Lean's `if c then … else …` on a decidable proposition is a function of the answer
+  (`clamp` for the Padé model, `bisect-step`, `gate` for an interior centre), and each proof
+  matches on the answer. A `with` on `x ≤? 3ℚ` does not abstract, because the goal unfolds it.
+- Lean's `funext` is not available under `--safe`: `StepConfig.Local` and `snl-moment` state
+  their equalities bin by bin.
+- `ModelExamples.agda` checks numbers that Lean only prints with `#eval`, and has no `Float`
+  reference (Lean compares with `Float.tanh` and a Newton solve). It uses 12 bisection steps
+  where Lean prints 30.
+- Not ported: parts 2, 4 and 5 of `Grids.scala` (the Courant number of a 600 s step,
+  WAVEWATCH III's ITER, the measured mesh).
 
 The skill [`.claude/skills/agda/SKILL.md`](../.claude/skills/agda/SKILL.md) says how to write
 and check Agda here.

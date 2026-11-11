@@ -53,6 +53,10 @@ Run it:
 cd ocean-waves/lean && lake build      # checks every proof, prints the #evals
 ```
 
+The same kernels and theorems are also in Agda, in `agda/src/OceanWaves/` (`just agda`). The
+port and how it differs from Lean (total division, decisions, no `funext`) are in
+[`agda/README.md`](../agda/README.md).
+
 ## No real numbers, so `tanh` is a parameter
 
 Core Lean has no `ℝ`, no `tanh` and no derivatives. So:
