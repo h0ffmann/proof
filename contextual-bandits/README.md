@@ -1,7 +1,7 @@
 # Contextual bandits
 
-Everything about the contextual bandit in this repository is on this page: the idea, the index of
-files, the commands, the interface, what Agda proves, the Haskell port, and the note for the video.
+This page holds all of the contextual bandit in this repository. It gives the idea, the index of
+files, the commands, the interface, what Agda proves, the Haskell port and the note for the video.
 The Agda code itself stays in [`agda/`](../agda/README.md). Writing standard: ASD-STE100.
 Portuguese edition: [README.pt-BR.md](README.pt-BR.md).
 
@@ -54,7 +54,7 @@ boundary.
 
 [![Model and decision layers](../docs/diagrams/img/en/bandit-architecture.png)](../docs/diagrams/en/bandit-architecture.html)
 
-*Figure 1. The model layer, the decision layer and the spec (archify; click for the interactive
+*Figure 1. The model layer, the decision layer and the spec (archify, click for the interactive
 diagram).*
 
 ## 2. Files
@@ -163,7 +163,7 @@ greedy 41.1   eps-greedy 0.1 43.3   UCB beta=2 25.3   Thompson 32.8
 greedy 322.9  eps-greedy 0.1 62.0   LinUCB 25.3       LinTS 31.5
 ```
 
-LiquidHaskell checks refinement types on `ContextualBandit.hs` and `Models.hs`: `argmax` returns an
+LiquidHaskell checks refinement types on `ContextualBandit.hs` and `Models.hs`. `argmax` returns an
 index in range, each rule returns probabilities in [0, 1], and Beta-Bernoulli keeps its counts at 1
 or more. [`LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) lists what it trusts and what it does not
 cover.
@@ -183,14 +183,14 @@ The video has three blocks of 10 minutes: **CMAB**, **A/B test** and **RSI**. Ea
 its scene in the script. The numbers come from
 [`results.md`](script/results.md), which `cabal run video` writes. The
 final style of the video is the script's (Manim, dark background, blue for the belief, yellow for
-the selection, red for the regret); the archify figures give the structure.
+the selection, red for the regret). The archify figures give the structure.
 
 ### Scene map
 
 Figures are in `docs/diagrams/img/en/<name>.png` and, interactive, in
 [`docs/diagrams/en/<name>.html`](../docs/diagrams/index.html). Desmos files are in
 [`script/desmos/`](script/desmos/README.md).
-Every scene has a Manim take in [`script/animation/`](script/animation/README.md); `just takes`
+Every scene has a Manim take in [`script/animation/`](script/animation/README.md). `just takes`
 renders them.
 
 | Scene | Time | Figure | Desmos | Code |
@@ -247,37 +247,44 @@ again. The friend of 2018 is not in the figure: the script still marks the name 
 
 [![Timeline of the bandit, from 1952 to 2026](../docs/diagrams/img/en/bandit-timeline.png)](../docs/diagrams/en/bandit-timeline.html)
 
-*Figure 3. The timeline of scene 1.2. Dates are correct to the year or the month; archify shows
-day 1.*
+*Figure 3. The timeline of scene 1.2. Dates are correct to the year or the month. The archify figure
+shows day 1.*
 
 **1.3 π and you.** You are the reward. With one arm (the Leibniz series), the agent either shows
 π(N) again (exploit) or calculates one more term (explore). You grade the distance to π from 0 to 1.
+
 In 20 rounds with ε = 0.2, the agent exploited 9 times (mean grade 0.14), explored 11 times (mean
 grade 0.76) and stopped at π(12). With three arms, Gauss-Legendre doubles the digits at each step
 (3, 8, 19, 41) and Ramanujan gets 7 digits with 1 term and 48 with 6. The agent pulled Ramanujan 16
-times, Gauss-Legendre 3 and Leibniz 1. Both have grade 1.00; greedy keeps the first maximum. The π
+times, Gauss-Legendre 3 and Leibniz 1. Both have grade 1.00, and greedy keeps the first maximum. The π
 example has no context, so it is a MAB, not a CMAB.
 
 [![π and you: one arm, then three](../docs/diagrams/img/en/pi-arms.png)](../docs/diagrams/en/pi-arms.html)
 
 *Figure 4. The π loop. Scenes 1.3 and 1.4.*
 
-**1.4 The name.** **B** for bandit (a slot machine is a "one-armed bandit"); **M** and **A** for
-multi-armed (many levers, each with an unknown mean prize); **C** for contextual (before the pull,
-the agent sees one data item, for example morning or night). With context, the best lever changes
-in each round and the policy learns a function from context to lever: linear in LinUCB [6], a
+**1.4 The name.** **B** is for bandit (a slot machine is a "one-armed bandit"). **M** and **A** are
+for multi-armed (many levers, each with an unknown mean prize). **C** is for contextual (before the
+pull, the agent sees one data item, for example morning or night). With context, the best lever
+changes in each round. The policy learns a function from context to lever: linear in LinUCB [6], a
 table of two rows in the ice-cream shop.
 
 **1.5 and 1.6.** See [the idea](#1-the-idea): the two layers, `policy-factors`, and the rules
 table. The video's model is tabular: mean = sum / count, width = `1/(n+1)`. With β = 0, UCB is
 greedy (`ucb-zero`).
 
-**1.7 Netflix.** Netflix selects the image that it shows for each title and member, as the Netflix
-Tech Blog post of December 2017 by Chandrashekar, Amat, Basilico and Jebara describes [1, 2]. In a
-2018 keynote, Jebara gave these data [3]: the context is the viewing history and the country; the
-arm is the image; the reward is a play; the system uses online learning and contextual bandits; it
-gets about 20 million image requests per second at peak; the team uses replay to evaluate a new
-policy offline. At this scale the model must generalize, as `bayesLinear` does (mean = context ·
+**1.7 Netflix.** Netflix selects the image that it shows for each title and member. The Netflix
+Tech Blog post of December 2017 by Chandrashekar, Amat, Basilico and Jebara describes this
+system [1, 2]. In a 2018 keynote, Jebara gave these data [3]:
+
+- The context is the viewing history and the country.
+- The arm is the image.
+- The reward is a play.
+- The system uses online learning and contextual bandits.
+- It gets about 20 million image requests per second at peak.
+- The team uses replay to evaluate a new policy offline.
+
+At this scale the model must generalize, as `bayesLinear` does (mean = context ·
 arm weights). The primary sources are from 2017 and 2018. This note found no primary source for
 the status in 2026: do not state that Netflix uses bandits today.
 
@@ -317,18 +324,18 @@ segment is a special case of a contextual bandit.
 effect. A bandit changes the allocation, so a simple mean of its logs is biased. Record the
 probability of each selection (`policy` gives the full distribution) and use replay or inverse
 propensity weighting (IPW). Netflix used an A/B test to approve the artwork system before the
-rollout [3]: the bandit replaced the slow loop inside the A/B test, not the test.
+rollout [3]. The bandit replaced the slow loop inside the A/B test, not the test.
 
 **2.6 Summary.** An A/B test is one policy: no context, fixed uniform allocation, one decision at
 the end. A contextual bandit removes these three limits. In production, from the sources:
 
 - **Netflix homepage billboard**: a 2018 talk by Jaya Kawale and Elliot Chow describes a bandit
-  framework with ε-greedy, offline replay and online A/B tests, because batch models adapt too
-  slowly to the catalog [4, 5].
+  framework with ε-greedy, offline replay and online A/B tests [4, 5]. The reason is that batch
+  models adapt too slowly to the catalog.
 - **globo.com**: the service selects a photo and the position of an advertisement [9].
 
-Rule of thumb: an A/B test for one decision that you must defend; a bandit for a decision that
-occurs thousands of times each day at a low cost per error; the two together when you can.
+Rule of thumb: use an A/B test for one decision that you must defend. Use a bandit for a decision
+that occurs thousands of times each day at a low cost per error. Use the two together when you can.
 
 ### Block 3. RSI
 
@@ -364,14 +371,14 @@ because the horizon is short and the model starts from zero.
 *Figure 6. The outer loop selects the ε of the inner loop. Scenes 3.1 to 3.3.*
 
 **3.3 Real RSI.** The SIA paper (2026) describes a "Feedback-Agent" that selects between edits to
-the scaffold, prompts and tools, and updates to the weights, with a deterministic evaluator as the
-reward [12]: a bandit. The script read SIA through a review, not the PDF. Anthropic reports a
-training-code speed-up from about 3 times (May 2025) to about 52 times (April 2026), and an
-automatic code review that would have found about one third of the errors behind past incidents
-[11].
+the scaffold, prompts and tools, and updates to the weights. A deterministic evaluator gives the
+reward [12], so it is a bandit. The script read SIA through a review, not the PDF. Anthropic
+reports a training-code speed-up from about 3 times (May 2025) to about 52 times (April 2026)
+[11]. It also reports an automatic code review that would have found about one third of the
+errors behind past incidents [11].
 
 **3.4 Current belief against new belief.** Beta-Bernoulli keeps two counts per option, successes
-and failures; each signal adds 1 to one count. The new belief adds the new signals to the old ones
+and failures. Each signal adds 1 to one count. The new belief adds the new signals to the old ones
 (0.67 and 0.50 become 0.57 and 0.62, scene 1.1), and the width decreases for both arms.
 
 **3.5 What is not a bandit.** When the selection of today changes the state of tomorrow, the
@@ -392,4 +399,4 @@ hacking.
 9. Tiago Motta, post about the bandit service of globo.com, 2024-09-28. Key `motta2024bandit` in [8].
 10. Renan Moreira de Oliveira, "Machine Learning na globo.com", slides, 2018. Key `oliveira2018globo` in [8].
 11. Anthropic, "When AI builds itself", 2026. Key `anthropic2026builds` in [8].
-12. A review of the SIA paper (arXiv 2605.27276), 2026. Key `bhavsar2026sia` in [8]; status `partial`.
+12. A review of the SIA paper (arXiv 2605.27276), 2026. Key `bhavsar2026sia` in [8], status `partial`.

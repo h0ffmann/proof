@@ -60,7 +60,7 @@ length check.
 | Rule (level `leve`) | Required? | What Z3 checks | In `Ptc.hs` |
 |---|---|---|---|
 | PTC-5, sentence length | yes | every sentence has at most 35 words | `maxWords`, `words'` |
-| PTC-7, number, date, unit | yes | no decimal point (a scene, a version, an ISO month are not decimals), no `1,000,000`, no `DD/MM/YYYY`, no AM/PM, a space before a unit symbol, no symbol in the plural, no `10-20` range | `numberFormat`, `decimalPoint`, `numberId` |
+| PTC-7, number, date, unit | yes | no decimal point (a scene, a paragraph, a version, an ISO month are not decimals), no `1,000,000`, no `DD/MM/YYYY`, no AM/PM, a space before a unit symbol, no symbol in the plural, no `10-20` range | `numberFormat`, `decimalPoint`, `numberId` |
 | PTC-8, spelling of 1990 | yes | the prefix and hyphen cases, the trema (not in a name), the open diphthong of a paroxytone, the abolished differential accents | `spelling`, `prefixHyphenVowel`, `trema` |
 | PTC-9, chatbot noise | yes | no chatbot artefact, meta-text, model limit or generic conclusion | `noiseAlways` |
 | PTC-1, coreference (the pattern part) | yes | no mesoclisis, no 3rd-person enclitic, no `o mesmo` as a pronoun | `clitic`, `cliticOk` |

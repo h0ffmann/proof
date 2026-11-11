@@ -66,6 +66,8 @@ tools/     Haskell tools that read files or ask Z3 (through SBV); each run.sh en
   text-checks/                      the language rule, the PTC rules of the video script, its PTC-9 noise catalogue
   port-audit/                       the 28 statements about chaceon and the coverage table of port-audit/README.md
   room-mesh/                        the room mesh of triangle-grids/README.md, as NOTE lines
+  prose-check/                      the ASD-STE100 and PTC rules in Agda (agda/src/Prose/), compiled by
+                                    Agda's GHC backend; `just prose`
 triangle-grids/  how to build a triangle grid for WW3 with Roland's size rules, and its uses in forecasting
 ```
 
@@ -220,7 +222,10 @@ the repository:
    Run `scripts/lean-hygiene.sh` (or `just lean-hygiene`) to check. It reads every tracked
    `.lean` file outside `vendor/`, so a new Lean project needs no change to the script.
    In Agda, the counterpart: every file starts with `{-# OPTIONS --safe --without-K #-}`, so no
-   `postulate` or termination pragma gets in, and `checks/agda.sh` refuses a file without it. In
+   `postulate` or termination pragma gets in, and `checks/agda.sh` refuses a file without it.
+   The one exception is `tools/prose-check/Main.agda`, which only reads files and prints, because
+   the standard library's IO is not `--safe`; `checks/prose-check.sh` refuses a postulate, a
+   pragma or foreign code in it. In
    the Haskell tools, every Z3 statement is asked and its verdict printed (`Proves` and `Refutes`
    in `tools/port-audit/Report.hs`), and nothing is skipped or marked expected to fail.
 2. **Agda first.** A new decision rule or model goes in `agda/src/ContextualBandit/Policies.agda`

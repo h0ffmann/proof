@@ -240,7 +240,7 @@ decimalPoint, numberId, numberFormat :: Rx
 decimalPoint = re "(?<![\\w.,/:-])\\d+\\.\\d{1,2}(?![\\d.,])|(?<![\\w.,/:-])\\d+\\.\\d{4,}(?![\\d.,])"
 -- A number with a point that is not a decimal: a scene, a version, a model, an IP-like id.
 numberId = reI $
-  "(?:\\b(?:cenas?|scene|takes?|seção|versão|v|V|Sonnet|Fable|Opus|Haiku|Claude|Lean|Z3|GHC"
+  "(?:\\b(?:cenas?|scene|takes?|seção|parágrafos?|versão|v|V|Sonnet|Fable|Opus|Haiku|Claude|Lean|Z3|GHC"
     ++ "|OpenVoice|XTTS|Python|pandoc)\\s*(?:\\d+(?:\\.\\d+)*\\s*(?:,|e|a)\\s*)*$)"
 numberFormat = anyOf False
   [ "\\b\\d{1,3}(?:,\\d{3}){2,}\\b" -- 1,000,000 (English thousands)
