@@ -257,7 +257,9 @@ the repository:
    beside it. The other Lean packages stay core-only unless a proof truly needs Mathlib; if you
    add Mathlib, pin a version in that `lakefile.toml`, note why in the PR, and keep `lake build`
    working.
-6. **Haskell stays dependency-light**: `base` and `containers` only, unless agreed.
+6. **Haskell stays dependency-light**: `base` and `containers` only, unless agreed. Agreed for
+   the tools under `tools/` (the owner, 2026-11-11): GHC's bundled libraries, SBV and zlib, from
+   the tool's own `nix/<tool>.nix` shell; the bandit package `haskell/` keeps the rule.
    Build with `-Wall` and leave no warnings.
    LiquidHaskell refinements live in `{-@ ... @-}` comments, so they add no dependency;
    `just liquid` must say `SAFE` for every module it checks. A new `ignore`, `assume` or `lazy`
