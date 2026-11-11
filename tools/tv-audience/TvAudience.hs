@@ -10,6 +10,10 @@ module TvAudience
   , denom, jcsShare, jcsShares, jcsOutside, jcsForecast
   , winner, hit, hits, accuracy
   , Tree (..), eval, treeSum, predict, lo, hi
+  , stableShare, invert
+  , Programme (..), Rival (..), picks, slotFeatures
+  , dot, dense, NsParams (..), nsUtility, resid
+  , Model (..), SlotIn (..), poolHat, forecastSlot, withoutNetwork, pipelineWape
   ) where
 
 -- FatTails/Sample.agda and OceanWaves/Order.agda ---------------------------------------------
@@ -141,3 +145,60 @@ lo (Leaf v) = v
 lo (Node _ _ l r) = min (lo l) (lo r)
 hi (Leaf v) = v
 hi (Node _ _ l r) = max (hi l) (hi r)
+
+-- JcsTheory.agda -----------------------------------------------------------------------------
+
+stableShare :: (Eq a, Fractional a) => a -> [a] -> a -> a
+stableShare k ws w = (w * k) `divZ` (k + sumL (map (* k) ws))
+
+invert :: (Eq a, Fractional a) => [a] -> [a]
+invert ss = map (\s -> s * inv0 (1 - sumL ss)) ss
+
+-- Features.agda ------------------------------------------------------------------------------
+
+data Programme a = Prog { genre :: Int, hype :: a, big :: Bool }
+
+data Rival a = Rival Int a a Bool deriving (Eq, Show)
+
+picks :: [b] -> [(b, [b])]
+picks [] = []
+picks (x : xs) = (x, xs) : map (\(y, ys) -> (y, x : ys)) (picks xs)
+
+slotFeatures :: (Ord a, Num a) => [Programme a] -> [Rival a]
+slotFeatures s =
+  [ Rival (length (filter ((== genre p) . genre) os)) (sumL (map hype os)) (foldr (max . hype) 0 os) (any big os)
+  | (p, os) <- picks s ]
+
+-- Neural.agda --------------------------------------------------------------------------------
+
+dot :: Num a => [a] -> [a] -> a
+dot as hs = sumL (zipWith (*) as hs)
+
+dense :: Num a => [[a]] -> [a] -> [a] -> [a]
+dense rs cs z = zipWith (\r c -> dot r z + c) rs cs
+
+data NsParams a = Ns { w :: [a], b :: a, w1 :: [[a]], b1 :: [a], w2 :: [a] }
+
+nsUtility :: Num a => (a -> a) -> NsParams a -> [a] -> a
+nsUtility act p z = (dot (w p) z + b p) + dot (w2 p) (map act (dense (w1 p) (b1 p) z))
+
+resid :: Num a => [a] -> [a] -> [a]
+resid = zipWith (-)
+
+-- Pipeline.agda ------------------------------------------------------------------------------
+
+data Model a = Model { e :: a -> a, act :: a -> a, params :: NsParams a, poolBase :: a, poolTrees :: [Tree a] }
+
+data SlotIn a = SlotIn { level :: a, poolX :: Int -> a, zs :: [[a]] }
+
+poolHat :: (Ord a, Num a) => Model a -> SlotIn a -> a
+poolHat m d = e m (level d + predict (poolBase m) (poolTrees m) (poolX d))
+
+forecastSlot :: (Ord a, Fractional a) => Model a -> SlotIn a -> [a]
+forecastSlot m d = jcsForecast (poolHat m d) (map (e m . nsUtility (act m) (params m)) (zs d))
+
+withoutNetwork :: Model a -> Model a
+withoutNetwork m = m { params = (params m) { w2 = [] } }
+
+pipelineWape :: (Ord a, Fractional a) => Model a -> [(SlotIn a, [a])] -> a
+pipelineWape m ss = wape (concat [ zip ys (forecastSlot m d) | (d, ys) <- ss ])
