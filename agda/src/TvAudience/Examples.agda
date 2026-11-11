@@ -11,7 +11,6 @@ open import Data.List using (List; []; _∷_)
 open import Data.Nat as ℕ using (ℕ; _%_)
 open import Data.Product using (_,_)
 open import Data.Rational as ℚ using (ℚ; 0ℚ; 1ℚ; _/_; -_; _⊔_)
-open import Data.Rational.Properties using (_≤?_)
 open import Relation.Nullary.Decidable using (from-yes)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
@@ -22,6 +21,15 @@ open import TvAudience.Panel
 open import TvAudience.Jcs
 open import TvAudience.Winner
 open import TvAudience.Trees
+open import TvAudience.JcsTheory
+open import TvAudience.Features
+open import TvAudience.Neural
+open import TvAudience.Pipeline
+open import Data.Rational using (_⊓_)
+open import Data.Rational.Properties using (_≤?_)
+open import Relation.Nullary using (does)
+open import Data.Bool using (if_then_else_)
+open import FatTails.Sample using (_/₀_; sum)
 
 -- Three channel-slots, in millions: (actual, forecast).
 rows : List Row
@@ -140,3 +148,82 @@ tree-hi = refl
 
 ensemble : predict (+ 1 / 2) (tree ∷ leaf (+ 1 / 4) ∷ []) row ≡ + 11 / 4
 ensemble = refl
+
+-- ---------------------------------------------------------------------------------------------
+-- More JCS
+
+-- Shares 1/4 and 1/4 come from the weights 1/2 and 1/2, with the outside option at 1/2.
+inverted : invert (+ 1 / 4 ∷ + 1 / 4 ∷ []) ≡ + 1 / 2 ∷ + 1 / 2 ∷ []
+inverted = refl
+
+inverted-shares : jcsShares (invert (+ 1 / 4 ∷ + 1 / 4 ∷ [])) ≡ + 1 / 4 ∷ + 1 / 4 ∷ []
+inverted-shares = refl
+
+-- The second channel's odds against the outside option are its weight, 2.
+odds-2 : jcsShare weights (+ 2 / 1) /₀ jcsOutside weights ≡ + 2 / 1
+odds-2 = refl
+
+-- The stable form with k = 1/3 gives the same 4/9.
+stable-4/9 : stableShare (+ 1 / 3) weights (+ 2 / 1) ≡ + 4 / 9
+stable-4/9 = refl
+
+-- The first channel (2/9) leaves: the second goes from 4/9 to (4/9) / (7/9) = 4/7.
+diversion-4/7 : jcsShare (+ 2 / 1 ∷ + 1 / 2 ∷ []) (+ 2 / 1) ≡ + 4 / 7
+diversion-4/7 = refl
+
+-- ---------------------------------------------------------------------------------------------
+-- The line-up and the neurosymbolic utility
+
+lineup : List Programme
+lineup = prog 1 (+ 2 / 1) true ∷ prog 1 0ℚ false ∷ prog 2 1ℚ false ∷ []
+
+lineup-features : slotFeatures lineup
+  ≡ rival 1 1ℚ 1ℚ false ∷ rival 1 (+ 3 / 1) (+ 2 / 1) true ∷ rival 0 (+ 2 / 1) (+ 2 / 1) true ∷ []
+lineup-features = refl
+
+-- Rational stand-ins for exp and tanh, for the examples only: positive and increasing, and
+-- bounded by 1.
+expQ : ℚ → ℚ
+expQ u = if does (0ℚ ≤? u) then 1ℚ ℚ.+ u else 1ℚ /₀ (1ℚ ℚ.- u)
+
+clip : ℚ → ℚ
+clip t = (- 1ℚ) ⊔ (t ⊓ 1ℚ)
+
+-- u = z + 1/2 · clip(z): one feature, one hidden unit.
+nsP : NsParams
+nsP = ns (1ℚ ∷ []) 0ℚ ((1ℚ ∷ []) ∷ []) (0ℚ ∷ []) (+ 1 / 2 ∷ [])
+
+ns-utility : nsUtility clip nsP (1ℚ ∷ []) ≡ + 3 / 2
+ns-utility = refl
+
+ns-off : nsUtility clip (ns (1ℚ ∷ []) 0ℚ ((1ℚ ∷ []) ∷ []) (0ℚ ∷ []) (0ℚ ∷ [])) (1ℚ ∷ []) ≡ 1ℚ
+ns-off = refl
+
+-- Shares 2/9, 4/9, 1/9 against observed 1/9, 4/9, 1/9: the residuals add up to 1/9 = s₀,obs - s₀.
+resid-slot-1/9 : sum (resid (jcsShares weights) (+ 1 / 9 ∷ + 4 / 9 ∷ + 1 / 9 ∷ [])) ≡ + 1 / 9
+resid-slot-1/9 = refl
+
+-- ---------------------------------------------------------------------------------------------
+-- The pipeline
+
+-- The pool model has no tree and a log level of 9, so the pool forecast is expQ 9 = 10.
+nsModel : Model
+nsModel = model expQ clip nsP 0ℚ []
+
+slot1 : SlotIn
+slot1 = slotIn (+ 9 / 1) (λ _ → 0ℚ) ((1ℚ ∷ []) ∷ (0ℚ ∷ []) ∷ [])
+
+pipeline-pool : poolHat nsModel slot1 ≡ + 10 / 1
+pipeline-pool = refl
+
+pipeline-forecast : forecastSlot nsModel slot1 ≡ + 50 / 9 ∷ + 20 / 9 ∷ []
+pipeline-forecast = refl
+
+pipeline-winner-0 : winner (forecastSlot nsModel slot1) ≡ 0
+pipeline-winner-0 = refl
+
+pipeline-wape : pipelineWape nsModel ((slot1 , + 6 / 1 ∷ + 2 / 1 ∷ []) ∷ []) ≡ + 1 / 12
+pipeline-wape = refl
+
+pipeline-jcs : forecastSlot (withoutNetwork nsModel) slot1 ≡ + 5 / 1 ∷ + 5 / 2 ∷ []
+pipeline-jcs = refl

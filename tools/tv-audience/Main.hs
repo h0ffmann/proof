@@ -89,7 +89,38 @@ specLines w =
   , q "tree-lo" (-1) (lo tree)
   , q "tree-hi" 4 (hi tree)
   , q "ensemble" (11 / 4) (predict (1 / 2) [tree, Leaf (1 / 4)] row)
+  , qs "inverted" [1 / 2, 1 / 2] (invert [1 / 4, 1 / 4])
+  , qs "inverted-shares" [1 / 4, 1 / 4] (jcsShares (invert [1 / 4, 1 / 4]))
+  , q "odds-2" 2 (jcsShare weights 2 `divZ` jcsOutside weights)
+  , q "stable-4/9" (4 / 9) (stableShare (1 / 3) weights 2)
+  , q "diversion-4/7" (4 / 7) (jcsShare [2, 1 / 2] 2)
+  , exact "lineup-features" [Rival 1 1 1 False, Rival 1 3 2 True, Rival 0 2 2 True] (slotFeatures lineup)
+  , q "ns-utility" (3 / 2) (nsUtility clip nsP [1])
+  , q "ns-off" 1 (nsUtility clip nsP { w2 = [0] } [1])
+  , q "resid-slot-1/9" (1 / 9) (sumL (resid (jcsShares weights) [1 / 9, 4 / 9, 1 / 9]))
+  , q "pipeline-pool" 10 (poolHat nsModel slot1)
+  , qs "pipeline-forecast" [50 / 9, 20 / 9] (forecastSlot nsModel slot1)
+  , exact "pipeline-winner-0" (0 :: Int) (winner (forecastSlot nsModel slot1))
+  , q "pipeline-wape" (1 / 12) (pipelineWape nsModel [(slot1, [6, 2])])
+  , qs "pipeline-jcs" [5, 5 / 2] (forecastSlot (withoutNetwork nsModel) slot1)
   ]
+
+lineup :: [Programme Rational]
+lineup = [Prog 1 2 True, Prog 1 0 False, Prog 2 1 False]
+
+-- Rational stand-ins for exp and tanh, as in Examples.agda.
+expQ, clip :: Rational -> Rational
+expQ u = if 0 <= u then 1 + u else 1 `divZ` (1 - u)
+clip t = max (-1) (min t 1)
+
+nsP :: NsParams Rational
+nsP = Ns [1] 0 [[1]] [0] [1 / 2]
+
+nsModel :: Model Rational
+nsModel = Model expQ clip nsP 0 []
+
+slot1 :: SlotIn Rational
+slot1 = SlotIn 9 (const 0) [[1], [0]]
 
 -- Data check -----------------------------------------------------------------------------------
 

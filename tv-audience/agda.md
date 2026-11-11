@@ -12,17 +12,25 @@ Every Agda statement is about finite lists of exact rationals (`Data.Rational`),
 `--safe --without-K`: no postulate, and no proof is left out. These stay outside Agda:
 
 - **Training.** XGBoost, the MLP, the logit of JCS and the neural utility of the neurosymbolic
-  JCS are fitted by the Python. Agda has no fitted weight. It proves what holds for every tree
-  ensemble and for every set of utilities, so the theorems cover the fitted models too.
-- **Logarithms and exponentials.** ℚ has neither. The models predict a log audience and
-  forecast `exp(lag_mean + f(x))`, and JCS uses the weights `exp(u)`. Agda takes the weights as
-  numbers ≥ 0 and the level as a mean of whatever the series holds.
+  JCS are fitted by the Python (L-BFGS, Adam). Agda has no fitted weight. It proves what holds
+  for every tree ensemble, every network and every set of utilities, so the theorems cover the
+  fitted models too. Of training it states the logit layer's signal: the residual s - s_obs sums
+  over a slot to s₀,obs - s₀, and it is 0 at the weights that fit the observed shares.
+- **Logarithms, exponentials and tanh.** ℚ has none of them. The models predict a log audience
+  and forecast `exp(lag_mean + f(x))`, and JCS uses the weights `exp(u)`. The modules before
+  `Pipeline` take the weights as numbers ≥ 0 and the level as a mean of whatever the series
+  holds. `Pipeline` takes exp and the activation as arguments, and its theorems ask only that
+  exp be positive and strictly increasing (`ExpLike`) and, for the network's bound, that the
+  activation stay within [-1, 1], as tanh does. The examples use rational stand-ins.
+  `rival_lag_sum` (log Σ exp) and the log-odds features are computed upstream.
 - **Probability.** The bootstrap intervals (500 resamples of days), the percentiles and the
   simulation of `simulate.py` are random. No statement here is about a distribution. The one fact
   Agda states about the bootstrap is that a model's paired difference against itself is 0 on
   every resample.
-- **MinT and Timestral.** The reconciliation and the foundation model are libraries. They are not
-  defined here.
+- **MinT, Timestral, XGBoost's and the MLP's channel models.** The reconciliation and the
+  foundation model are libraries and are not defined here. The independent XGBoost and MLP
+  channel models are a tree ensemble (`Trees`) and a network (`Neural`), but `Pipeline` composes
+  only the two JCS models, the ones the paper's coherence claim is about.
 - **Rounding.** The data are floating-point numbers. The tool computes on `Double` and checks the
   Python numbers within a relative tolerance of 1e-9. An Agda proof says nothing about rounding.
 
@@ -37,7 +45,11 @@ Every Agda statement is about finite lists of exact rationals (`Data.Rational`),
 | `Jcs` | `denom`, `jcsShare`, `jcsShares`, `jcsOutside`, `jcsForecast` (`_softmax_out`, pool × share) | `jcs-sum`, `jcs-inside-lt-one`, `jcs-coherent` and `jcs-countOver` (the channel forecasts of a slot never add up to more than its pool forecast), `jcsShare-mono`, `jcs-iia` (the ratio of two shares does not depend on the rivals), `jcs-rival` (a new rival never raises a share) |
 | `Winner` | `winner` (the first largest, as `idxmax`), `hit`, `accuracy` (`winner_acc_*`) | `winner-scale` (no change under c > 0), `jcs-winner` (the JCS winner is the largest weight, whatever the pool), `accuracy-nonneg`, `accuracy-le-one`, `accuracy-perfect` |
 | `Trees` | `Tree`, `eval`, `predict` (base + Σ leaves), `lo`, `hi` | `eval-between`, `predict-between`, `eval-same` and `predict-same` (piecewise constant: rows on the same side of every split get the same prediction), `predict-++` (boosting rounds add up) |
-| `Examples` | a slot of three channels, a JCS slot, a tree | every definition by `refl`: WAPE 3/20 in millions and in thousands, the JCS shares 2/9, 4/9, 1/9 with outside 2/9, a rival that takes the first channel from 2/9 to 1/6 |
+| `JcsTheory` | `stableShare`, `stableOutside` (`_softmax_out` after subtracting the largest utility), `invert` (shares to weights, s / s₀) | `jcs-odds` (share / outside share = weight, so the log-odds is u), `jcs-stable` and `jcs-stable-outside` (the stable form is the same share), `jcs-invert` and `jcs-invert-outside` (every slot of shares with a sum below 1 is fitted exactly), `jcs-diversion` (a channel that leaves gives its viewers to the rest in proportion, s / (1 - s_a)), `jcs-own` and `jcs-cross` (a larger weight raises the own share and lowers every rival's), `jcs-accounting` (channels + outside = pool forecast), `jcs-pool-scale` |
+| `Features` | `Programme`, `picks` (each channel with its rivals), `slotFeatures`: `n_same_genre`, `rival_sum_hype`, `rival_max_hype`, `rival_big` | `picks-length`, `picks-rivals` (C - 1 rivals each), `picks-sum` (own hype + rivals' = the slot's), `picks-max` (rivals' max ≤ the slot's), `nSameGenre-le`, `alone` |
+| `Neural` | `dot`, `dense`, `standardise`, `NsParams`, `nsUtility` (w·z + b + W2·act(W1 z + b1)), `resid` | `ns-nests-jcs` (W2 = 0 gives the JCS utility), `ns-bounded` (an activation within [-1, 1] moves u by at most Σ \|W2\|), `unstandardise-standardise`, `resid-slot`, `resid-fit` |
+| `Pipeline` | `ExpLike`, `channelRaw`, `slotZ` (line-up and own features to standardised z), `Model`, `poolHat` (exp of level + trees), `forecastSlot`, `pipelineWape`, `againstPoolHat`, `winners` | for every model and input: `weights-nonneg`, `poolHat-pos`, `pipeline-coherent`, `pipeline-accounting`, `pipeline-countOver` (0 against the pool forecast), `winner-mono`, `pipeline-winner` (the winner is the largest utility, whatever the pool model), `pipeline-nests` (the neurosymbolic pipeline with W2 = 0 is the JCS pipeline) |
+| `Examples` | a slot of three channels, a JCS slot, a tree, a line-up, a one-unit network, a two-channel pipeline | every definition by `refl`: WAPE 3/20 in millions and in thousands, the JCS shares 2/9, 4/9, 1/9 with outside 2/9, a rival that takes the first channel from 2/9 to 1/6, shares 1/4 and 1/4 from weights 1/2 and 1/2, a pipeline that forecasts 50/9 and 20/9 from a pool of 10 (5 and 5/2 with the network off) |
 
 `jcs-coherent` compares the forecasts with the pool forecast. The results table compares them
 with the observed pool, so its 0.0 % for JCS is a measurement, not this theorem.
@@ -49,7 +61,7 @@ bash checks/agda.sh          # every Agda root type-checks, TvAudience among the
 bash checks/tv-audience.sh   # the tool: self-test, then the spec, data and table checks
 ```
 
-The tool prints one line for each number. The spec check computes the 28 examples of
+The tool prints one line for each number. The spec check computes the 42 examples of
 `Examples.agda` on `Rational` and needs each one to be equal. The data check reads the 8208 test
 rows, which [`export.py`](../tools/tv-audience/export.py) writes from the Python's own `simulate`
 and `build_features` (`nix develop .#data`). On them it computes the seasonal naive WAPE of all
