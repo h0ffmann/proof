@@ -1,0 +1,4 @@
+# tools/tv-ratings/run.sh writes ratings.csv and sources.csv here, from public pages fetched on
+# the day it runs. They are not committed: the pages change, and each keeps its own terms
+# (sources.csv names them). tools/tv-ratings/README.md says what each column holds.
+*.csv
