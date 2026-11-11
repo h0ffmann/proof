@@ -52,5 +52,30 @@ it. Its self-test shows that a wrong example, a postulate and a file without `--
 - The tabular model's width is `1 / (n + 1)`, as in Lean: `Data.Rational` has no square root.
 - The video's rules (`Video.scala`: `etc`, `outer`, π) are not ported.
 
+## Other topics
+
+The library has one root per topic, a file `src/<Topic>.agda`. `checks/agda.sh` type-checks
+every root.
+
+| Root | Ported from | What it proves |
+|---|---|---|
+| [`Cycle`](src/Cycle/Clock.agda) | `cycle/lean/Cycle/Clock.lean` | `tick-iterate` (k ticks are `(t + k) mod (n + 1)`), `eternal-return`, `history-periodic`, `returns-forever` |
+| [`OceanWaves`](src/OceanWaves/Advection.agda) | `ocean-waves/lean/OceanWaves/Advection.lean` | first-order upwind advection: `advect-eq` (a convex combination), `advect-sum` (only the boundary fluxes change the total), `advectPeriodic-sum` and `advectPeriodicN-sum` (exact conservation on a periodic grid), `advect-nonneg` and `advectPeriodicN-nonneg` (positivity under CFL), `advect-le-max` (no new maximum) |
+| [`OceanWaves.Examples`](src/OceanWaves/Examples.agda) | `ocean-waves/lean/OceanWaves/Examples.lean` (the idea) | one, two and five periodic steps of a pulse on three cells, by `refl` |
+| [`Grids`](src/Grids/SizeRule.agda) | `z3-scala/src/main/scala/grids/domain/Grids.scala`, parts 1 and 3 | `size-floor`, `size-steep-is-floor`, `size-smallest-minimum`; `chain-le-reach` (a chain of 30% steps from 5 km stays under 5 · 1.3^i, for every i), `growth-6-steps-below-30km`, and Z3's counterexample `growth-7-steps-reach-30km` as a witness |
+
+Differences from the sources:
+
+- Lean's `Fin (n + 1)` and `Fin.ext` are `Fin (suc n)` and `toℕ-injective`.
+- Lean writes the upstream value of face i as `if i = 0 then b else N (i - 1)`. Agda matches on
+  i (`upstream`), so each case reduces by computation.
+- The periodic theorems take a grid of `suc n` cells, where Lean takes `n` with `0 < n`.
+- `size-floor` holds for every input. Z3 states it for positive inputs.
+- Z3 checks gradation for a chain of 7 and 8 sizes. Agda proves the bound for a chain of any
+  length (`Chain h` is a function `ℕ → ℚ`) and reads it at 6 and 7 steps.
+- Not ported: `RatLemmas.lean` beyond the sums that advection uses, the dispersion, bisection,
+  source and action-balance modules of `ocean-waves/`, and parts 2, 4 and 5 of `Grids.scala`
+  (the Courant number of a 600 s step, WAVEWATCH III's ITER, the measured mesh).
+
 The skill [`.claude/skills/agda/SKILL.md`](../.claude/skills/agda/SKILL.md) says how to write
 and check Agda here.
