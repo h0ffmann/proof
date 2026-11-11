@@ -26,6 +26,9 @@ python3 tv-audience/python/experiment.py   # downloads mistralai/Timestral-209M 
 
 Without them the script prints `Timestral not run` and reports that arm as "not run".
 
+The metrics, baselines and share layer are also defined in Agda, with their properties proved;
+[`agda.md`](agda.md) says what is proved and what stays in the Python.
+
 ## Results (simulated test set, 1 Jan to 31 Oct 2026)
 
 | Model | WAPE all | WAPE big shows | WAPE contested big shows |
