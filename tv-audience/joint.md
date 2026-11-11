@@ -56,6 +56,10 @@ How to read it for TV audiences:
   and it is a measurement on data, not a theorem. `lopsided` in
   [`JointExamples.agda`](../agda/src/TvAudience/JointExamples.agda) shows that the joint estimate
   is worse without it (SSE 1 to 5/2).
+  [`tools/tv-validate/`](../tools/tv-validate/README.md) measures it on the simulated test set:
+  it holds in 76.7 % of the slots when the group is the whole pool, and in 30.2 % when the group
+  is the three channels. There the additive step lowers the squared error of the group that has
+  the rest of the pool (-16.0 %), and raises the squared error of the channel rows (+35.0 %).
 - **Per channel, a band is needed.** The total error falls, but one channel can get worse.
   `uneven` shows a channel that goes from error 0 to error 1 while the total falls from 4 to 2.
   `channel-no-worse` gives a band (every channel over-forecast, the largest bias at most twice

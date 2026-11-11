@@ -1,0 +1,50 @@
+cabal-version:   3.0
+name:            tv-validate
+version:         0.1.0.0
+synopsis:        Validates tv-audience/python against agda/src/TvAudience/ on the experiment's own numbers
+license:         MPL-2.0
+build-type:      Simple
+extra-doc-files: README.md
+
+-- Every version comes from the nixpkgs that flake.lock pins (nix/tv-validate.nix): there is no
+-- Hackage index in the shell, and `cabal build --offline` takes the libraries GHC already has.
+-- TvAudience is the mirror of the Agda definitions that tools/tv-audience/ already checks
+-- against agda/src/TvAudience/Examples.agda; it is compiled from there, not copied.
+common shared
+  default-language: GHC2021
+  ghc-options:      -Wall -Wcompat
+  build-depends:    base >=4.18 && <5
+
+library
+  import:          shared
+  hs-source-dirs:  src, ../tv-audience
+  exposed-modules:
+    TvAudience
+    TvValidate.Checks
+    TvValidate.Joint
+    TvValidate.Load
+    TvValidate.Metrics
+    TvValidate.Model
+    TvValidate.Properties
+  build-depends:
+    ad,
+    aeson,
+    bytestring,
+    cassava,
+    containers,
+    filepath,
+    hedgehog,
+    text,
+    vector
+
+executable tv-validate
+  import:         shared
+  hs-source-dirs: app
+  main-is:        Main.hs
+  ghc-options:    -O1 -rtsopts "-with-rtsopts=-A64m"
+  build-depends:
+    optparse-applicative,
+    tasty,
+    tasty-hedgehog,
+    tasty-hunit,
+    tv-validate

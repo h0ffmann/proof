@@ -126,6 +126,13 @@ waived(pdf_committed, "papers/tv-audience/tv-audience.pdf").
 % The owner asked for this one as a file (2026-11-11): its source is not in this repository.
 waived(pdf_committed, "papers/practice-beats-theory/wave-models-on-gpus.pdf").
 
+% The owner asked for canonical, modern Haskell libraries in the TV audience validation pipeline
+% (2026-11-11; AGENTS.md, rule 6). nix/tv-validate.nix pins each one. Any other cabal file, and any
+% other library in this one, still breaks the rule.
+tv_validate_dep("ad"; "aeson"; "bytestring"; "cassava"; "filepath"; "hedgehog"; "optparse-applicative";
+                "tasty"; "tasty-hedgehog"; "tasty-hunit"; "text"; "vector").
+waived(haskell_dependency, ("tools/tv-validate/tv-validate.cabal", D)) :- tv_validate_dep(D).
+
 failing(R, S) :- violation(R, S), not waived(R, S).
 stale_waiver(R, S) :- waived(R, S), not violation(R, S).
 
