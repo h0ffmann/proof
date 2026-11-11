@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-# Z3 checks of chaceon, the Rust port of WAVEWATCH III (`just port-audit`), and its coverage table
-# (`z3-scala/z3.sh coverage` fetches chaceon and WW3 at their pins, so this needs the network once).
+# The port audit of chaceon (`just port-audit`, tools/port-audit/): the 28 statements of Chaceon.hs, checked
+# by Z3 through SBV, and the coverage table of port-audit/README.md, which must be current
+# (`coverage` fetches chaceon and WW3 at their pins, so it needs the network once).
 set -euo pipefail
-z3-scala/z3.sh chaceon
-z3-scala/z3.sh coverage --check
+cd "$(dirname "$0")/.."
+tools/port-audit/run.sh chaceon
+tools/port-audit/run.sh coverage --check > /dev/null
+echo "port-audit: coverage table current"

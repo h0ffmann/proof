@@ -18,14 +18,14 @@ caminhos.
 **Desmos.** `desmos/2-1-ab.txt`: duas Bernoulli com `p_A` e `p_B` em controles; `n` visitantes
 por variante; o intervalo de confiança das duas médias encolhe quando `n` cresce.
 
-**Código.** Z3: `uniform(K)` em `z3-scala/src/main/scala/bandit/domain/Bandit.scala`; a invariante R3, `etc` em `z3-scala/src/main/scala/bandit/domain/Video.scala`, com
-`etc_before`: antes da troca, a alocação é `uniform`. Haskell: `etc` em `haskell/src/Video.hs`.
+**Código.** Agda: `uniform` em `agda/src/ContextualBandit/Policies.agda`; a invariante R3, `etc` em `agda/src/ContextualBandit/Video.agda`, com
+`etc-before`: antes da troca, a alocação é `uniform`. Haskell: `etc` em `haskell/src/Video.hs`.
 
 ## O teste A/B é uma regra de bandit (11:30 a 13:00)
 
 **Fala.** Agora a ponte. A ε-gulosa com ε igual a 1 ignora o modelo e sorteia cada sabor com
 probabilidade 1 sobre K. Isso é o período de teste de um teste A/B/n. Não é uma analogia: é o
-teorema `epsGreedy_one_is_ab_test`, provado no repositório. E a segunda fase, decidir e ficar na
+teorema `epsGreedy-one-is-ab-test`, provado no repositório. E a segunda fase, decidir e ficar na
 melhor, é a ε-gulosa com ε igual a 0, a gulosa. Então um teste A/B é uma política de bandit com
 um ε que pula de 1 para 0 num dia marcado. Eu gosto desse jeito de ver, porque ele transforma uma
 discussão de time, "A/B ou bandit?", numa escolha de um número: como ε deve cair ao longo do
@@ -38,9 +38,9 @@ um esquema intermediário. A pergunta deixa de ser qual ferramenta e passa a ser
 **Desmos.** `desmos/2-2-epsilon.txt`: a mistura `e/K + (1-e)·[a = melhor]` para três braços; o
 controle `e` de 0 a 1 é a cena inteira.
 
-**Código.** Z3: `epsGreedy_one_is_ab_test` (ε = 1 é o sorteio uniforme) em `z3-scala/src/main/scala/bandit/domain/Theorems.scala`;
-`epsGreedy_zero` (ε = 0 é a gulosa), `etc_after` e `etc_valid` em `z3-scala/src/main/scala/bandit/domain/Video.scala`. Haskell: `etc 10 3`
-dá `[1/3, 1/3, 1/3]` e `etc 10 10` dá `[0, 1, 0]`, conferidos contra os exemplos do Z3 no spec check.
+**Código.** Agda: `epsGreedy-one-is-ab-test` (ε = 1 é o sorteio uniforme) em `agda/src/ContextualBandit/Theorems.agda`;
+`epsGreedy-zero` (ε = 0 é a gulosa), `etc-after` e `etc-valid` em `agda/src/ContextualBandit/Video.agda`. Haskell: `etc 10 3`
+dá `[1/3, 1/3, 1/3]` e `etc 10 10` dá `[0, 1, 0]`, conferidos contra os exemplos em Agda no spec check.
 
 ## O custo da espera (13:00 a 15:00)
 
@@ -111,7 +111,7 @@ a correção por propensão.
 amostra em que o braço bom foi escolhido com probabilidade `p`; o controle `p` mostra o viés
 aparecer e a correção o desfazer.
 
-**Código.** `policy` em `haskell/src/ContextualBandit.hs` (e em `z3-scala/src/main/scala/bandit/domain/Examples.scala`) devolve a
+**Código.** `policy` em `haskell/src/ContextualBandit.hs` (e em `agda/src/ContextualBandit/Examples.agda`) devolve a
 distribuição inteira, não só o braço: essa distribuição é a propensão que o *replay* precisa
 registrar.
 
@@ -128,16 +128,16 @@ bandit quando a decisão se repete milhares de vezes por dia e o custo de errar 
 pequeno: uma imagem, uma posição, uma frase de abertura. E use os dois quando puder: o bandit por
 dentro, o teste A/B por fora, como a Netflix. Essa combinação é a que a maioria das equipes acaba
 adotando, porque ela fica com a velocidade de um e a defesa do outro. E para fechar o bloco, cinco
-fatos sobre tudo isso estão provados pelo Z3, por refutação. Toda regra devolve uma distribuição de
+fatos sobre tudo isso estão provados em Agda, para todo número de braços. Toda regra devolve uma distribuição de
 probabilidade. A ε-gulosa dá a cada braço pelo menos ε sobre K. A gulosa e a UCB escolhem um máximo
-de verdade. A ε-gulosa com ε igual a 1 é o teste A/B. E o lema do otimismo, `ucb_gap`: se
+de verdade. A ε-gulosa com ε igual a 1 é o teste A/B. E o lema do otimismo, `ucb-gap`: se
 o modelo é calibrado, o braço da UCB perde no máximo 2 β vezes a largura para o melhor. A parte
-probabilística da cota de arrependimento está fora do que o Z3 decide e fica aberta. Eu digo isso para
+probabilística da cota de arrependimento está fora do que está provado e fica aberta. Eu digo isso para
 separar o que este vídeo mostra, a parte determinística e executável, do que ele não mostra.
 
 **Tela.** Tabela de três linhas: contexto, alocação, decisão; coluna A/B e coluna CMAB. Depois, a
 tabela de teoremas do README, uma linha por vez.
 
 **Código.** A tabela é o parágrafo 2.6 da nota `contextual-bandits/README.pt-BR.md`
-[@hoffmann2026note]. Os teoremas estão em `z3-scala/src/main/scala/bandit/domain/Theorems.scala`, provados para até cinco braços e
-todo valor real das estimativas. O Python do Manim não prova nada; ele só desenha o que o Z3 provou.
+[@hoffmann2026note]. Os teoremas estão em `agda/src/ContextualBandit/Theorems.agda`, provados para todo número de braços,
+sobre racionais exatos. O Python do Manim não prova nada; ele só desenha o que o Agda provou.

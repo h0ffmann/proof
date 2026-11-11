@@ -1,8 +1,8 @@
 # agda/
 
 The decision layer of the contextual bandit, and its theorems, in Agda 2.8.0 with the standard
-library 2.3 only. Z3 (`z3-scala/src/main/scala/bandit/domain/`) stays the specification and
-proves each statement for K = 1 to 5 arms. Agda proves the same statements for every K, by
+library 2.3 only. It is the specification since 2026-11-11, when `z3-scala/` was removed; Z3
+checked each statement there for K = 1 to 5 arms. Agda proves the same statements for every K, by
 induction on K, over exact rationals (`Data.Rational`). The design and the theorems come from
 the Lean 4 package that held the bandit until 2026-11-09
 ([`docs/decisions/0001-z3-over-lean.md`](../docs/decisions/0001-z3-over-lean.md)).
@@ -110,17 +110,18 @@ Differences from the sources:
 - `margin` uses `gap`, Z3's `ite(lhs >= rhs, lhs - rhs, rhs - lhs)` on the built-in ℕ
   operations: the standard library's `∣_-_∣` recurses in unary, and a witness on 50-bit numbers
   does not finish.
-- The text checks measure the script and the files with Java regular expressions. Agda proves
-  while it type-checks, and under `--safe` it cannot read a file, so the measures stay in Scala
-  and the Agda modules take them as functions. The rules that `ptc --review` lists need the
+- The text checks measure the script and the files with regular expressions. Agda proves
+  while it type-checks, and under `--safe` it cannot read a file, so the measures are in Haskell
+  ([`tools/text-checks/`](../tools/text-checks/README.md)) and the Agda modules take them as functions. The rules that `ptc --review` lists need the
   meaning of a sentence, which no formula gives.
-- Not ported:
+- Not ported to Agda, and in Haskell instead:
   - part 5 of `Grids.scala`, NOTE lines that print numbers of a measured mesh (it uses `Double`
-    and `x^1.4`);
+    and `x^1.4`): [`tools/room-mesh/`](../tools/room-mesh/Main.hs);
   - groups U and S of `Chaceon.scala` over IEEE f32 (`nint`, `floor`, `sign`, the f32 spectrum
     update): they are about the bits that Rust computes, and ℚ has no rounding;
+    [`tools/port-audit/`](../tools/port-audit/README.md) asks Z3 through SBV;
   - `Coverage.scala`, a count over the fetched WAVEWATCH III sources, which is a measurement and
-    not a statement.
+    not a statement: `tools/port-audit/`, too.
 
 The skill [`.claude/skills/agda/SKILL.md`](../.claude/skills/agda/SKILL.md) says how to write
 and check Agda here.

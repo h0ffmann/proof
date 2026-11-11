@@ -6,8 +6,8 @@
 
 <sub>∀ · <i>for all</i> · <a href="#in-one-minute">in one minute</a> · <a href="#index-of-experiments">experiments</a> · <a href="#lines-of-code">lines of code</a> · <a href="#papers">papers</a> · <a href="#recipes">recipes</a> · <a href="#structure">structure</a> · <a href="docs/logo/README.md">the logo</a> · <a href="docs/logo/logo.desmos.json">its Desmos equations</a> · <a href="#license">license</a></sub>
 
-[![Z3 5.3.3](https://img.shields.io/badge/Z3-5.3.3-1b3a5c?style=flat-square)](z3-scala/build.sbt)
-[![Scala 3.9.0](https://img.shields.io/badge/Scala-3.9.0_on_Kyo-1b3a5c?style=flat-square&logo=scala&logoColor=white)](z3-scala)
+[![Agda 2.8.0](https://img.shields.io/badge/Agda-2.8.0_--safe-1b3a5c?style=flat-square)](nix/agda.nix)
+[![Z3 through SBV](https://img.shields.io/badge/Z3-through_SBV-1b3a5c?style=flat-square)](tools)
 [![Lean 4 v4.24.0](https://img.shields.io/badge/Lean_4-v4.24.0-1b3a5c?style=flat-square)](ocean-waves/lean/lean-toolchain)
 [![no sorry](https://img.shields.io/badge/sorry-0-2a78d6?style=flat-square)](AGENTS.md)
 [![Haskell](https://img.shields.io/badge/Haskell-base_%2B_containers-1b3a5c?style=flat-square&logo=haskell&logoColor=white)](haskell)
@@ -22,8 +22,9 @@
 ## In one minute
 
 - **proof** (formerly *dogma*) holds specifications checked by a prover, and implementations that
-  follow them name for name. The contextual bandit is specified in [Z3](https://github.com/Z3Prover/z3)
-  (`z3-scala/`, since 2026-11-09: [why](docs/decisions/0001-z3-over-lean.md)) and implemented in Haskell;
+  follow them name for name. The contextual bandit is specified and proved in
+  [Agda](https://agda.readthedocs.io) (`agda/`, since 2026-11-11; Z3 before that, from 2026-11-09:
+  [why](docs/decisions/0001-z3-over-lean.md)) and implemented in Haskell;
   house pricing, ocean waves and the cycle are proved in [Lean 4](https://lean-lang.org), with Rust
   for house pricing. The specification is the source of truth; the implementations are checked
   against its examples.
@@ -31,7 +32,8 @@
   with its results committed and, where it is worth it, a paper.
 - Papers are Markdown built to PDF by the Paper Fabric pipeline (pandoc, pandoc-crossref, XeLaTeX),
   pinned by Nix. Every citation was fetched before it was cited, and `REFERENCES.md` logs how.
-- Every Z3 statement is checked by refutation (`unsat`), none is skipped; the Lean code is
+- Every Agda file is checked with `--safe` and has no postulate; every Z3 statement (the Haskell
+  tools in `tools/`, through SBV) is checked by refutation (`unsat`), none is skipped; the Lean code is
   core-only (no Mathlib) and has no `sorry`, `admit` or new `axiom` ([`AGENTS.md`](AGENTS.md), "Rules").
 - Every change lands through a pull request. CI is off while the repository is private, so the
   checks run by hand ([Recipes](#recipes)).
@@ -40,19 +42,19 @@
 
 | Folder | Problem | Language | Maturity |
 |---|---|---|---|
-| [`contextual-bandits/`](contextual-bandits/README.md), [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([page](contextual-bandits/README.md), [preprint](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell, Agda | **Proved**: spec checked by Z3 for K ≤ 5 arms and by Agda for every K ([`agda/`](agda/README.md)), Haskell port checked against its examples; regret bound open |
+| [`contextual-bandits/`](contextual-bandits/README.md), [`agda/`](agda/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([page](contextual-bandits/README.md), [preprint](papers/contextual-bandits/metadata.md)) | Agda, Haskell | **Proved**: spec proved in Agda for every K ([`agda/`](agda/README.md)), Haskell port checked against its examples; regret bound open |
 | [`house-pricing/`](house-pricing/README.md) | California house prices: seven models compared, gradient boosting replicated exactly in Lean and called from Rust | Rust, Lean 4 | **Proved**: output bounds and a monotone variant proved; Rust/Lean parity checked |
 | [`ocean-waves/`](ocean-waves/README.md) | Physics and numerical kernels of a spectral wave model (WAVEWATCH III, WAM Cycle 4) | Lean 4, Agda | **Proved**: kernels and their theorems; every kernel and theorem also in Agda ([`agda/`](agda/README.md)); no runnable model port yet |
 | [`cycle/`](cycle/README.md) | Eternal return: "time is a flat circle" as a theorem about a clock ([essay](papers/cycle/metadata.md)) | Lean 4, Agda, Markdown | **Draft**: theorem proved in Lean and Agda, essay is a skeleton |
 | [`fat-tails/`](fat-tails/README.md) | Taleb's fat-tail diagnostics on the S&P 500, 1950 to 2026; power-law against Gaussian VaR ([preprint](papers/fat-tails/metadata.md)) | Python | **Results**: real data, results committed, preprint v0 |
 | [`tv-audience/`](tv-audience/README.md) | Forecasting big-show TV audiences as a competition between channels: XGBoost, DNN, Mistral Timestral, joint competitive share model ([preprint](papers/tv-audience/metadata.md)) | Python | **Simulated**: synthetic benchmark and preprint v0; Timestral arm not run; real-channel test pending |
 | [`crypto-strength/`](crypto-strength/README.md) | 17 crypto networks scored on nine factors, long-term top 10 | Python, CSV | **Results**: sourced scores, partly judgment |
-| [`port-audit/`](port-audit/README.md) | Audit of [chaceon](https://github.com/h0ffmann/chaceon), the Rust port of WAVEWATCH III: the `f32` division rewrite, Fortran intrinsics, `W3SRCE`'s time step; how much of WW3 is translated and integrated | Z3 (Scala) | **Proved**: 28 statements, 5 with an expected counterexample; two show the time step can exceed its limiter. Coverage: 37% of WW3 translated, 47% of the target build integrated |
-| [`triangle-grids/`](triangle-grids/README.md) | Triangle grids for WAVEWATCH III with Aron Roland's size rules (depth, coast, slope, 5 km floor, 30% growth), and their uses in global, hurricane and nearshore forecasting | Z3 (Scala), Agda, Markdown | **Proved**: 13 statements on the size rules and WW3's explicit sub-step count; every proved statement also in Agda, the growth bound for chains of any length; no WW3 run |
+| [`port-audit/`](port-audit/README.md) | Audit of [chaceon](https://github.com/h0ffmann/chaceon), the Rust port of WAVEWATCH III: the `f32` division rewrite, Fortran intrinsics, `W3SRCE`'s time step; how much of WW3 is translated and integrated | Haskell (Z3 through SBV), Agda | **Proved**: 28 statements, 5 with an expected counterexample; two show the time step can exceed its limiter. Coverage: 37% of WW3 translated, 47% of the target build integrated |
+| [`triangle-grids/`](triangle-grids/README.md) | Triangle grids for WAVEWATCH III with Aron Roland's size rules (depth, coast, slope, 5 km floor, 30% growth), and their uses in global, hurricane and nearshore forecasting | Agda, Haskell, Markdown | **Proved**: 13 statements on the size rules and WW3's explicit sub-step count, in Agda, the growth bound for chains of any length; no WW3 run |
 | [`graphs/triad/`](graphs/triad/README.md) | Network of Musk, Thiel and Karp: companies, deals and ties | Python, JavaScript (graphify) | **Results**: sourced edges, rendered graph |
 | [`pomodoro/`](pomodoro/README.md) | Interval timer for macOS: native dialogs set the period and the beep sound, remembered in `~/.pomodoro` (`just build-mac`) | Zig | **Tool**: builds for Apple Silicon |
 
-Maturity levels, strongest first: **Proved** (Lean proofs with no `sorry`, or Z3 statements all `unsat`; implementation
+Maturity levels, strongest first: **Proved** (Lean proofs with no `sorry`, Agda proofs under `--safe`, or Z3 statements all `unsat`; implementation
 checked against them), **Results** (runs end to end on real data, outputs committed),
 **Simulated** (runs end to end on synthetic data only), **Draft** (partial: a skeleton or an
 unfinished write-up).
@@ -82,9 +84,9 @@ in the UK, US and Brazil for a real-data test. All data so far are synthetic.
 
 [`contextual-bandits/`](contextual-bandits/README.md) is the one page for the contextual bandit
 ([pt-BR](contextual-bandits/README.pt-BR.md)): the idea, an index of every file, the commands, the
-Z3/Haskell interface, the table of what Z3 proves, the Haskell port and the note for the video.
-The bandit is a decision rule on top of a probabilistic model; Z3 (`z3-scala/`) proves the rules
-for K ≤ 5 arms, and the Haskell port (`haskell/`) is checked against Z3's examples.
+Agda/Haskell interface, the table of what Agda proves, the Haskell port and the note for the video.
+The bandit is a decision rule on top of a probabilistic model; Agda (`agda/`) proves the rules
+for every number of arms, and the Haskell port (`haskell/`) is checked against Agda's examples.
 
 ## Fat tails in equity indexes
 
@@ -154,7 +156,7 @@ any path.
 
 ```console
 just check            # every checks/<feature>.sh (`just z3` among them), the other Lean packages, the Haskell spec check
-just z3               # the Z3 specification of the contextual bandit, and the language rule
+just z3               # the text checks through Z3: the language rule, the PTC rules and noise catalogue of the video script
 just liquid           # LiquidHaskell: the refinement types of the Haskell port (nix develop .#liquidhaskell)
 just house-pricing    # fetch data, train, lake build, Rust/Lean parity
 just paper [slug]     # build every paper, or one, to pdf/<slug>.pdf (inside `nix develop`)
@@ -176,7 +178,8 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ```
 .
 ├── contextual-bandits/      the one page for the contextual bandit: idea, file index, proofs, video note
-├── z3-scala/, haskell/      contextual bandits: Z3 spec and proofs (and the language rule), Haskell port
+├── agda/, haskell/          the Agda proofs (the contextual bandit and the other topics), the bandit's Haskell port
+├── tools/                   Haskell tools: the text checks, the port audit, the room mesh (Z3 through SBV)
 ├── house-pricing/           Rust trains, Lean replicates and proves; Rust calls Lean through its C ABI
 ├── ocean-waves/             spectral wave model physics and kernels, Lean only
 ├── cycle/                   eternal return: a clock theorem in Lean, for the essay in papers/cycle
@@ -185,7 +188,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ├── crypto-strength/         a scored map of 17 crypto networks (Python, CSV)
 ├── graphs/triad/            the Musk, Thiel and Karp network (graphify)
 ├── port-audit/              Z3 checks of chaceon, the Rust port of WAVEWATCH III
-├── triangle-grids/          triangle grids for WW3: Roland's size rules, checked by Z3
+├── triangle-grids/          triangle grids for WW3: Roland's size rules, proved in Agda
 ├── papers/<slug>/           one paper each: metadata.md, prose/, refs.bib, REFERENCES.md
 ├── format/, .vale/         Paper Fabric: LaTeX template, prose rules
 ├── docs/                    paper-fabric.md, the archify diagrams, the logo

@@ -20,6 +20,6 @@ language rule of `AGENTS.md` asks.
 | `animation/` | the Manim animations, one per take (Python only draws) |
 | `PROMPTS.md` | the prompts that made all of this, as typed, with the time of each one |
 
-The code behind each sentence is in `z3-scala/src/main/scala/bandit/domain/Video.scala` (the invariants R1 to R5, proved by
-refutation), `z3-scala/src/main/scala/bandit/domain/Theorems.scala` (the decision rules) and `haskell/src/Video.hs`,
+The code behind each sentence is in `agda/src/ContextualBandit/Video.agda` (the invariants R1 to R5, proved
+for every number of arms), `agda/src/ContextualBandit/Theorems.agda` (the decision rules) and `haskell/src/Video.hs`,
 `haskell/src/Pi.hs` and `haskell/app/Video.hs` (the mirror and the experiments).

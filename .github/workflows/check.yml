@@ -1,5 +1,5 @@
 # check: the checks of AGENTS.md, in three jobs. checks: every checks/<feature>.sh
-# (scripts/checks.sh), inside the root flake's `scala` shell (z3-scala/'s JDK, sbt and Z3), with
+# (scripts/checks.sh), inside the root flake's `check` shell (each tool under tools/ enters its own), with
 # the pip packages of every checks/<feature>.requirements.txt, so a new check needs no change
 # here. haskell: the port builds with -Wall -Werror and its spec check says OK.
 # lean: the hygiene script and `lake build` of each Lean package; a package that is not in the tree
@@ -33,8 +33,8 @@ jobs:
         run: |
           shopt -s nullglob
           for r in checks/*.requirements.txt; do pip install -r "$r"; done
-      - name: every checks/<feature>.sh holds, with the JDK, sbt and Z3 of the root flake
-        run: nix develop .#scala --command just checks
+      - name: every checks/<feature>.sh holds, in the check shell of the root flake
+        run: nix develop .#check --command just checks
 
   haskell:
     runs-on: ubuntu-latest

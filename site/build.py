@@ -38,11 +38,10 @@ REPO = "https://github.com/h0ffmann/proof"
 
 # The Markdown files that become pages, with their section in the index and their title there.
 PAGES = [
-    ("Contextual bandits", "contextual-bandits/README.md", "The contextual bandit: the idea, the files, what Z3 proves, the Haskell port"),
+    ("Contextual bandits", "contextual-bandits/README.md", "The contextual bandit: the idea, the files, what Agda proves, the Haskell port"),
     ("Contextual bandits", "contextual-bandits/README.pt-BR.md", "The same page in Brazilian Portuguese"),
     ("Contextual bandits", "contextual-bandits/script/results.md", "The video's experiments, as the Haskell port writes them"),
     ("Contextual bandits", "docs/decisions/0001-z3-over-lean.md", "Why the specification moved from Lean to Z3"),
-    ("Z3 reports", "z3-scala/README.md", "Every Z3 check: the statements, how they are checked by refutation, the commands"),
     ("Z3 reports", "port-audit/README.md", "Audit of chaceon, the Rust port of WAVEWATCH III: 28 statements and the coverage table"),
     ("Z3 reports", "triangle-grids/README.md", "Triangle grids for WAVEWATCH III: 13 statements on the size rules and the sub-step count"),
     ("Video script", "contextual-bandits/script/README.md", "How the video script is written and built"),

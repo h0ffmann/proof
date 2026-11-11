@@ -1,7 +1,7 @@
 # Triangle grids for spectral wave models
 
 How to build a triangle (unstructured) grid for WAVEWATCH III (WW3) with the size rules that Aron
-Roland and his co-authors use, what Z3 proves about those rules and about WW3's explicit scheme on
+Roland and his co-authors use, what Agda proves about those rules and about WW3's explicit scheme on
 the grid, and how the same kind of grid serves different kinds of wave forecasting.
 
 Triangle grids in WW3 are Aron Roland's work, with Fabrice Ardhuin; at NOAA, Ali Abdolali led the
@@ -14,7 +14,8 @@ works are marola ([10.5281/zenodo.23224155](https://doi.org/10.5281/zenodo.23224
 ([10.5281/zenodo.23356739](https://doi.org/10.5281/zenodo.23356739)).
 
 ```sh
-z3-scala/z3.sh grids     # 13 statements, 4 with an expected counterexample, and the room mesh as NOTE lines
+just agda                # the 13 statements in agda/src/Grids/, the 4 counterexamples as witnesses
+just grids               # the room mesh as NOTE lines, against the numbers below (checks/room-mesh.sh)
 ```
 
 ## Sources, read on 2026-11-09
@@ -33,7 +34,7 @@ z3-scala/z3.sh grids     # 13 statements, 4 with an expected counterexample, and
   [10.1007/s10236-014-0711-z](https://doi.org/10.1007/s10236-014-0711-z).
 - **WW3** at metocean/WW3 `92e2cf66` (tag `7.14.mos-92e2cf6`), the pin of
   [chaceon](https://github.com/h0ffmann/chaceon); `port-audit/.cache/WW3` after
-  `z3-scala/z3.sh coverage`.
+  `tools/port-audit/run.sh coverage`.
 
 ## How to build the grid
 
@@ -66,9 +67,11 @@ System (SMS), "with a resolution ranging from 50 km in the deep ocean to about 1
 islands". Whatever generator is used, it needs the five rules above as its size function, and the
 grid goes to `ww3_grid` as a Gmsh file with grid type `'UNST'`.
 
-## What Z3 proves
+## What Agda proves
 
-`z3-scala/src/main/scala/grids/domain/Grids.scala`, in exact real arithmetic:
+[`agda/src/Grids/`](../agda/src/Grids.agda) (`SizeRule`, `Courant`, `Iter`), over exact rationals, under
+`--safe`. A counterexample is a witness that the statement fails. Z3 checked the same statements,
+in Scala, until 2026-11-11.
 
 | Statement | Result |
 |---|---|
@@ -85,8 +88,8 @@ efficiency of explicit methods is limited by the strict CFL criterion". WW3 meet
 by splitting the global step: each node's largest stable step is `SI / KKSUM`
 (`model/src/w3profsmd.F90:644`), `CFLXY = DT / DTMAXGL` over the nodes (`:648`), and `ITER`
 rounds `CFLXY` up unless its fractional part is below `THR8 = TINY(1d0)` (`:561`, `:649-656`).
-Z3 proves `ITER ≥ CFLXY − THR8` and `ITER ≥ CFLXY` whenever the fractional part is 0 or above
-`THR8`. It also finds the edge: a fractional part in `(0, THR8]` rounds down, and a CFL number of
+Agda proves `ITER ≥ CFLXY − THR8` and `ITER ≥ CFLXY` whenever the fractional part is 0 or above
+`THR8`. It also has the edge as a witness: a fractional part in `(0, THR8]` rounds down, and a CFL number of
 at most `THR8` gives `ITER = 0`, so the loop `DO IT = 1, ITER` (`:663`) does not run and the
 spectrum does not move. `THR8` is about 2.2 × 10⁻³⁰⁸, so the edge is a curiosity, not a defect a
 run would meet.
@@ -125,5 +128,5 @@ smaller errors than its implicit version". A forecast with a fixed wall-clock bu
 graded down to a few kilometres takes the implicit step; a study that needs the smallest
 propagation error on a modest grid can afford the explicit sub-steps.
 
-What is not here ⚠: no WW3 run on such a grid, no measured skill and no timing. The Z3 statements
+What is not here ⚠: no WW3 run on such a grid, no measured skill and no timing. The Agda statements
 check the rules' arithmetic and WW3's sub-step count, not a forecast.

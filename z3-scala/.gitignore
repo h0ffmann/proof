@@ -1,8 +1,0 @@
-# The Z3 jar and native libraries that z3.sh puts here, and sbt's build output
-lib/
-.z3/
-target/
-project/target/
-project/project/
-.bsp/
-.leo/

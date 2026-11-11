@@ -1,8 +1,8 @@
 # Contextual bandits
 
 Everything about the contextual bandit in this repository is on this page: the idea, the index of
-files, the commands, the interface, what Z3 proves, the Haskell port, and the note for the video.
-The Z3 code itself stays in [`z3-scala/`](../z3-scala/README.md). Writing standard: ASD-STE100.
+files, the commands, the interface, what Agda proves, the Haskell port, and the note for the video.
+The Agda code itself stays in [`agda/`](../agda/README.md). Writing standard: ASD-STE100.
 Portuguese edition: [README.pt-BR.md](README.pt-BR.md).
 
 ## Contents
@@ -11,7 +11,7 @@ Portuguese edition: [README.pt-BR.md](README.pt-BR.md).
 2. [Files](#2-files)
 3. [Run](#3-run)
 4. [The interface](#4-the-interface)
-5. [What Z3 proves](#5-what-z3-proves)
+5. [What Agda proves](#5-what-agda-proves)
 6. [The Haskell port](#6-the-haskell-port)
 7. [Caveats](#7-caveats)
 8. [Note for the video](#8-note-for-the-video)
@@ -42,7 +42,7 @@ added for all rounds.
 ```
 
 The decision rule sees only the per-arm estimates, never the history or the context. Thus any
-model that gives a mean and an uncertainty works with any rule. `policy_factors` proves this
+model that gives a mean and an uncertainty works with any rule. `policy-factors` proves this
 boundary.
 
 | Rule | How it explores | Code |
@@ -54,86 +54,84 @@ boundary.
 
 [![Model and decision layers](../docs/diagrams/img/en/bandit-architecture.png)](../docs/diagrams/en/bandit-architecture.html)
 
-*Figure 1. The model layer, the decision layer and the Z3 spec (archify; click for the interactive
+*Figure 1. The model layer, the decision layer and the spec (archify; click for the interactive
 diagram).*
 
 ## 2. Files
 
 | Part | Files |
 |---|---|
-| Z3 specification | [`Bandit.scala`](../z3-scala/src/main/scala/bandit/domain/Bandit.scala) (the two layers, the rules), [`Theorems.scala`](../z3-scala/src/main/scala/bandit/domain/Theorems.scala) (K = 1 to 5), [`Examples.scala`](../z3-scala/src/main/scala/bandit/domain/Examples.scala) (tabular model, exact rationals), [`Video.scala`](../z3-scala/src/main/scala/bandit/domain/Video.scala) (the video's invariants R1 to R5), [`BanditChecks.scala`](../z3-scala/src/main/scala/bandit/application/BanditChecks.scala); how Z3 runs: [`z3-scala/README.md`](../z3-scala/README.md) |
-| Why Z3 and not Lean | [`docs/decisions/0001-z3-over-lean.md`](../docs/decisions/0001-z3-over-lean.md) |
+| Specification (Agda) | [`agda/`](../agda/README.md): [`Interface.agda`](../agda/src/ContextualBandit/Interface.agda) (the two layers), [`Argmax.agda`](../agda/src/ContextualBandit/Argmax.agda), [`Policies.agda`](../agda/src/ContextualBandit/Policies.agda) (the rules), [`Theorems.agda`](../agda/src/ContextualBandit/Theorems.agda) (for every K), [`Examples.agda`](../agda/src/ContextualBandit/Examples.agda) (tabular model, checked by `refl`), [`Video.agda`](../agda/src/ContextualBandit/Video.agda) (the video's invariants R1 to R5); [`checks/agda.sh`](../checks/agda.sh), [`just/agda.just`](../just/agda.just) |
+| Why the bandit left Lean | [`docs/decisions/0001-z3-over-lean.md`](../docs/decisions/0001-z3-over-lean.md) (Z3 in Scala until 2026-11-11, then Agda) |
 | Haskell port | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, rules, SplitMix RNG), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, Bayesian linear, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (spec check and simulations), [`app/Video.hs`](../haskell/app/Video.hs) |
-| Agda proofs | [`agda/`](../agda/README.md): [`Interface.agda`](../agda/src/ContextualBandit/Interface.agda), [`Argmax.agda`](../agda/src/ContextualBandit/Argmax.agda), [`Policies.agda`](../agda/src/ContextualBandit/Policies.agda), [`Theorems.agda`](../agda/src/ContextualBandit/Theorems.agda) (for every K), [`Examples.agda`](../agda/src/ContextualBandit/Examples.agda) (tabular model, checked by `refl`); [`checks/agda.sh`](../checks/agda.sh), [`just/agda.just`](../just/agda.just) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (what is proved and trusted), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
 | Video script (pt-BR) | [`script/`](script/README.md), its numbers in [`results.md`](script/results.md), its Desmos files in [`desmos/`](script/desmos/README.md) |
 | Diagrams | [`docs/diagrams/src/build_candidates.py`](../docs/diagrams/src/build_candidates.py) (source, both languages), [`docs/diagrams/en/`](../docs/diagrams/index.html) (HTML), `docs/diagrams/img/en/` (PNG) |
-| Recipes and checks | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/contextual-bandits.sh`](../checks/contextual-bandits.sh), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |
+| Recipes and checks | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/text-checks.sh`](../checks/text-checks.sh) (the script's text checks), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |
 
 ## 3. Run
 
 ```bash
-just z3                                  # every Z3 statement (nix develop .#scala); each line OK
 cd haskell && cabal run examples         # spec check, then 4 simulations; or: runghc -isrc app/Main.hs
 cd haskell && cabal run video            # the video's experiments; writes the script's results.md
 just liquid                              # LiquidHaskell; SAFE for each module
-just agda                                # the Agda proofs for every K (nix develop .#agda)
+just agda                                # the specification and its proofs, for every K (nix develop .#agda)
 just paper contextual-bandits            # the preprint (inside nix develop)
 just script                              # the video script, pt-BR
 ```
 
-The first block of `cabal run examples` is the spec check against `Examples.scala` and
-`Video.scala`. Each line must say `OK`.
+The first block of `cabal run examples` is the spec check against `Examples.agda` and
+`Video.agda`. Each line must say `OK`.
 
 ## 4. The interface
 
-| Concept | Z3 (`Bandit.scala`, `Examples.scala`, `Video.scala`) | Haskell |
+| Concept | Agda (`Interface.agda`, `Policies.agda`, `Video.agda`) | Haskell |
 |---|---|---|
-| Arm | index `0..K-1` of a Scala `List` | `Int` in `0..k-1` |
+| Arm | `Arm K`, an index below K | `Int` in `0..k-1` |
 | Observation | `(context, arm, reward)` | `Obs c` |
-| Model output | `(mean, width)`, two Z3 reals | `Estimate {mean, width}` |
+| Model output | `(mean, width)`, two rationals | `Estimate {mean, width}` |
 | Probabilistic model | `update`, `estimate`, `posterior` (tabular) | `RewardModel c b {numArms, prior, update, estimate, sample}` |
-| Decision rule | `List[Estimate] => List[Real]` | `[Estimate] -> [Double]` |
-| Policy | `policy(rule, history, context, arms)` | `policy m rule history ctx`, `act` |
-| A/B/n allocation | `epsGreedy(1, est)` = `uniform(K)` | `epsGreedy 1` |
-| Full A/B test | `etc`, `etc_before`, `etc_after` | `etc` (`Video.hs`) |
-| π as a bandit | `step`, `leibnizPair_pos`, `ramTerm_pos` | `Pi.hs`, `singleArmed`, `multiArmed` |
-| RSI | `outer`, `innerEps`, `rsi_valid` | `outer`, `inner`, `rsiLoop` |
+| Decision rule | `(Arm K → Estimate) → Arm K → ℚ` | `[Estimate] -> [Double]` |
+| Policy | `policy m rule history context` | `policy m rule history ctx`, `act` |
+| A/B/n allocation | `epsGreedy 1 est` = `uniform` | `epsGreedy 1` |
+| Full A/B test | `etc`, `etc-before`, `etc-after` | `etc` (`Video.hs`) |
+| π as a bandit | `step`, `leibnizPair-pos`, `ramanujanTerm-pos` | `Pi.hs`, `singleArmed`, `multiArmed` |
+| RSI | `rsi-valid-outer`, `rsi-valid-inner` (with `innerEps`), `outer-explores` | `outer`, `inner`, `rsiLoop` |
 
-## 5. What Z3 proves
+## 5. What Agda proves
 
-Each statement is checked by refutation (`unsat`) for K = 1 to 5 arms and all real estimates.
+Each statement is proved for every number of arms K, by induction, over exact rationals
+(`Data.Rational`). Until 2026-11-11 Z3 checked them by refutation for K = 1 to 5 only.
 
 | Theorem | Statement |
 |---|---|
-| `greedy_valid`, `ucb_valid`, `epsGreedy_valid` | the output is a probability distribution when `0 ≤ ε ≤ 1` |
-| `epsGreedy_prob` | the greedy arm gets `1 - ε + ε/K`, each other arm gets `ε/K` |
-| `epsGreedy_explores` | each arm has probability ≥ `ε/K` |
-| `epsGreedy_one_is_ab_test` | ε-greedy with ε = 1 is the uniform allocation of an A/B/n test |
-| `greedy_is_argmax`, `ucb_is_argmax` | the selected arm maximises its score |
-| `ucb_zero` | UCB with β = 0 is greedy |
-| `ucb_gap` (optimism lemma) | if the model is **calibrated** (`\|mean − μ\| ≤ β·width` for each arm), UCB's arm is within `2β·width` of the best arm |
-| `greedy_gap` | if each mean is within δ of the truth, greedy loses at most 2δ |
-| `policy_factors` | two histories with the same belief give the same decision |
-| `step_exploit`, `step_explore_n`, `step_explore_reward`, `step_reward_bounded` | one arm: exploitation spends no term; exploration spends one and does not decrease the reward, which stays in [0, 1] |
-| `epsGreedy_zero`, `etc_before`, `etc_after`, `etc_valid` | the A/B test ("explore then commit") is one rule: uniform before the switch, greedy after, valid always |
-| `rsi_valid`, `outer_explores` | the outer bandit that selects the inner ε is `epsGreedy` again, valid, and it tries each ε |
-| `leibnizPair_pos`, `ramTerm_pos`, `ramSum_lt_succ`, `ramApprox_anti` | each Leibniz pair is positive for each real k ≥ 0; Ramanujan's terms are positive (k = 0..9), its sums increase and its approximation of π decreases |
+| `greedy-valid`, `ucb-valid`, `epsGreedy-valid` | the output is a probability distribution when `0 ≤ ε ≤ 1` |
+| `epsGreedy-prob` | the greedy arm gets `1 - ε + ε/K`, each other arm gets `ε/K` |
+| `epsGreedy-explores` | each arm has probability ≥ `ε/K` |
+| `epsGreedy-one-is-ab-test` | ε-greedy with ε = 1 is the uniform allocation of an A/B/n test |
+| `greedy-is-argmax`, `ucb-is-argmax` | the selected arm maximises its score |
+| `ucb-zero` | UCB with β = 0 is greedy |
+| `ucb-gap` (optimism lemma) | if the model is **calibrated** (`\|mean − μ\| ≤ β·width` for each arm), UCB's arm is within `2β·width` of the best arm |
+| `greedy-gap` | if each mean is within δ of the truth, greedy loses at most 2δ |
+| `policy-factors` | two histories with the same belief give the same decision |
+| `step-exploit`, `step-explore-n`, `step-explore-reward`, `step-reward-bounded` | one arm: exploitation spends no term; exploration spends one and does not decrease the reward, which stays in [0, 1] |
+| `epsGreedy-zero`, `etc-before`, `etc-after`, `etc-valid` | the A/B test ("explore then commit") is one rule: uniform before the switch, greedy after, valid always |
+| `rsi-valid-outer`, `rsi-valid-inner`, `outer-explores` | the outer bandit that selects the inner ε is `epsGreedy` again, valid, and it tries each ε |
+| `leibnizPair-pos`, `ramanujanTerm-pos`, `ramSum-lt-succ`, `ramApprox-anti` | each Leibniz pair is positive for each rational k ≥ 0; Ramanujan's terms are positive (every j), its sums increase and its approximation of π decreases |
 
-`ucb_gap` says what the model owes the decision layer: calibrated uncertainty. A LinUCB regret
-bound needs `ucb_gap` in each round (done), calibration with probability ≥ 1 − δ for all rounds
-(a martingale bound, outside what Z3 decides), and Σ widths = O(√(d T log T)) (the elliptical
+`ucb-gap` says what the model owes the decision layer: calibrated uncertainty. A LinUCB regret
+bound needs `ucb-gap` in each round (done), calibration with probability ≥ 1 − δ for all rounds
+(a martingale bound, not proved here), and Σ widths = O(√(d T log T)) (the elliptical
 potential lemma). The last two are open.
 
-Agda proves the decision-layer rows of this table (`greedy_valid` to `policy_factors`) for every
-K, by induction, over exact rationals: [`agda/README.md`](../agda/README.md). Z3 stays the
-specification; the Agda names are the Z3 names with `-` for `_`.
+The modules and the proofs: [`agda/README.md`](../agda/README.md). The Agda names are the old Z3
+names with `-` for `_`.
 
 ## 6. The Haskell port
 
-The port uses only `base` and `containers`, and mirrors the Z3 names. Argmax keeps the first
-maximum, as in Z3. To connect a model, give four functions, or wrap a model with `fromPredictor`:
+The port uses only `base` and `containers`, and mirrors the Agda names. Argmax keeps the first
+maximum, as in Agda. To connect a model, give four functions, or wrap a model with `fromPredictor`:
 
 ```haskell
 fromPredictor
@@ -150,14 +148,14 @@ fromPredictor
   `const` and retrain in batches outside the loop.
 - **Any rule**: `act m greedy`, `act m (epsGreedy 0.1)`, `act m (ucb 2)`, `thompsonArm m`.
 
-The `width` must be an honest uncertainty. An over-confident model breaks the `calibrated`
+The `width` must be an honest uncertainty. An over-confident model breaks the `Calibrated`
 premise, and UCB and Thompson become greedy.
 
 Output of `cabal run examples` (expected cumulative regret, one small simulation each, not a
 benchmark):
 
 ```text
-== 0. Spec check against Examples.scala and Video.scala ==   all OK
+== 0. Spec check against Examples.agda and Video.agda ==   all OK
 == 1. Beta-Bernoulli, 2 contexts x 3 arms, T=5000 (avg 20 runs)
 greedy 41.1   eps-greedy 0.1 43.3   UCB beta=2 25.3   Thompson 32.8
 == 2. Bayesian linear, d=3, 4 arms, T=2000 (avg 10 runs)
@@ -171,9 +169,8 @@ cover.
 
 ## 7. Caveats
 
-- Z3 proves over the reals and exact rationals. Haskell uses `Double`, so the proofs do not cover
+- Agda proves over exact rationals. Haskell uses `Double`, so the proofs do not cover
   floating-point rounding. The spec check shows that the two agree on the shared example.
-- Z3 has no induction: each theorem is checked for K = 1 to 5, not for all K.
 - Thompson sampling is "greedy on a posterior sample". Its randomness and its regret are not
   formalised.
 - The tabular example uses width `1/(n+1)`, a rational stand-in for `1/√n`, so that the examples
@@ -201,20 +198,20 @@ renders them.
 | 1.2 Steal like an artist | 1:00 | `bandit-timeline` | — | `animation/timeline.py` |
 | 1.3 π and you, one arm | 3:00 | `pi-arms` | `1-3-pi.txt` | `singleArmed`; `step` |
 | 1.4 The name | 5:00 | `pi-arms` | `1-3-pi.txt` | `multiArmed`; `Pi.hs` |
-| 1.5 Model and rule | 6:30 | `bandit-architecture` | `1-5-width.txt` | `policy_factors` |
-| 1.6 Explore and exploit | 7:30 | — | `1-6-ucb.txt` | `greedy`, `epsGreedy`, `ucb`; `ucb_zero` |
+| 1.5 Model and rule | 6:30 | `bandit-architecture` | `1-5-width.txt` | `policy-factors` |
+| 1.6 Explore and exploit | 7:30 | — | `1-6-ucb.txt` | `greedy`, `epsGreedy`, `ucb`; `ucb-zero` |
 | 1.7 Netflix | 8:30 | `bandit-architecture` | — | `bayesLinear` |
-| 2.1 What an A/B test is | 10:00 | `ab-test-vs-bandit` | `2-1-ab.txt` | `uniform`; `etc_before` |
-| 2.2 The A/B test is a bandit rule | 11:30 | `ab-test-vs-bandit` | `2-2-epsilon.txt` | `epsGreedy_one_is_ab_test`, `etc_after` |
+| 2.1 What an A/B test is | 10:00 | `ab-test-vs-bandit` | `2-1-ab.txt` | `uniform`; `etc-before` |
+| 2.2 The A/B test is a bandit rule | 11:30 | `ab-test-vs-bandit` | `2-2-epsilon.txt` | `epsGreedy-one-is-ab-test`, `etc-after` |
 | 2.3 The cost of the wait | 13:00 | — | `2-3-regret.txt` | `abVsBandit` |
 | 2.4 Context makes the test personal | 15:00 | `ab-test-vs-bandit` | — | `abVsBandit` |
 | 2.5 What the A/B test does better | 16:30 | `bandit-round` | `2-5-propensity.txt` | `policy` |
-| 2.6 Summary | 18:00 | `bandit-architecture` | — | `Theorems.scala` |
+| 2.6 Summary | 18:00 | `bandit-architecture` | — | `Theorems.agda` |
 | 3.1 Three words | 20:00 | `rsi-loop` | — | `outer`, `innerEps` |
 | 3.2 The smallest recursive loop | 21:30 | `rsi-loop` | — | `rsiLoop` |
 | 3.3 The bandit in real RSI | 24:00 | `rsi-loop` | — | `rsiLoop` |
 | 3.4 Current belief against new belief | 26:30 | `bandit-round` | `3-4-beta.txt` | `beliefs`; `betaBernoulli` |
-| 3.5 What is not a bandit | 28:00 | `bandit-architecture` | — | `calibrated`, `ucb_gap` |
+| 3.5 What is not a bandit | 28:00 | `bandit-architecture` | — | `Calibrated`, `ucb-gap` |
 | 3.6 Close and credits | 29:00 | — | — | `PROMPTS.md` |
 
 ### Block 1. CMAB
@@ -270,9 +267,9 @@ the agent sees one data item, for example morning or night). With context, the b
 in each round and the policy learns a function from context to lever: linear in LinUCB [6], a
 table of two rows in the ice-cream shop.
 
-**1.5 and 1.6.** See [the idea](#1-the-idea): the two layers, `policy_factors`, and the rules
+**1.5 and 1.6.** See [the idea](#1-the-idea): the two layers, `policy-factors`, and the rules
 table. The video's model is tabular: mean = sum / count, width = `1/(n+1)`. With β = 0, UCB is
-greedy (`ucb_zero`).
+greedy (`ucb-zero`).
 
 **1.7 Netflix.** Netflix selects the image that it shows for each title and member, as the Netflix
 Tech Blog post of December 2017 by Chandrashekar, Amat, Basilico and Jebara describes [1, 2]. In a
@@ -290,9 +287,9 @@ Time in the video: 10:00 to 20:00.
 **2.1 and 2.2.** An A/B/n test sends each user to one of `K` variants at random, then commits to
 the best ("explore-then-commit"). It is simple to set up, read and defend. In bandit terms:
 
-1. The test period is ε-greedy with ε = 1 (`epsGreedy_one_is_ab_test`).
-2. The decision phase is ε-greedy with ε = 0, greedy (`epsGreedy_zero`).
-3. The full test is an ε that changes from 1 to 0 on a fixed day (R3: `etc_before`, `etc_after`).
+1. The test period is ε-greedy with ε = 1 (`epsGreedy-one-is-ab-test`).
+2. The decision phase is ε-greedy with ε = 0, greedy (`epsGreedy-zero`).
+3. The full test is an ε that changes from 1 to 0 on a fixed day (R3: `etc-before`, `etc-after`).
 
 The question "A/B or bandit?" becomes: how must ε decrease over time?
 
@@ -358,7 +355,7 @@ inner agent serves 500 customers, and the mean gain is the outer reward.
 | 0.1 | 12 | 0.085 |
 | 0.01 | 9 | 0.057 |
 
-The same `epsGreedy` works at the two levels (R4: `rsi_valid`, `outer_explores`). ε = 0.5 wins
+The same `epsGreedy` works at the two levels (R4: `rsi-valid-outer`, `rsi-valid-inner`, `outer-explores`). ε = 0.5 wins
 because the horizon is short and the model starts from zero.
 
 [![Recursive self-improvement: a bandit that tunes a bandit](../docs/diagrams/img/en/rsi-loop.png)](../docs/diagrams/en/rsi-loop.html)
@@ -378,7 +375,7 @@ and failures; each signal adds 1 to one count. The new belief adds the new signa
 
 **3.5 What is not a bandit.** When the selection of today changes the state of tomorrow, the
 problem is full reinforcement learning. If it is easy to deceive the reward, the loop learns to
-deceive it: `ucb_gap` needs the premise `calibrated`. The script cites no specific work on reward
+deceive it: `ucb-gap` needs the premise `Calibrated`. The script cites no specific work on reward
 hacking.
 
 ## 9. Sources

@@ -1,5 +1,5 @@
 """Take 3.5, what is not a bandit and what can go wrong (prose-pt-BR/03-rsi.md): two plain warnings,
-with the lemma `ucb_gap` and its premise `calibrated` beside them (Theorems.scala).
+with the lemma `ucb-gap` and its premise `Calibrated` beside them (agda/src/ContextualBandit/Theorems.agda).
 """
 
 import sys
@@ -28,7 +28,7 @@ class Take35(Take):
             self.play(FadeIn(w[0], scale=1.5), Write(w[1]), run_time=1.5)
             self.wait(8)
         lemma = VGroup(T("t3_5.lemma", 34, BELIEF),
-                       VGroup(code("calibrated"), code("ucb_gap")).arrange(RIGHT, buff=0.5))
+                       VGroup(code("Calibrated"), code("ucb-gap")).arrange(RIGHT, buff=0.5))
         lemma.arrange(DOWN, buff=0.2).move_to([0, -1.6, 0])
         frame = SurroundingRectangle(lemma, color=BELIEF, buff=0.25)
         self.play(Write(lemma[0]), FadeIn(lemma[1]), Create(frame))

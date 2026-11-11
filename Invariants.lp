@@ -72,9 +72,8 @@ violation(flake_input_unlocked, "paper") :- file("flake.lock"), not flake_input_
 
 % What the tree needs, and the nixpkgs attribute that would pin it.
 needs(ghc) :- file(P), cabal_dep(P, _).
-needs(jdk) :- file("z3-scala/build.sbt").
-needs(scala) :- file("z3-scala/build.sbt").
-needs(z3) :- file("z3-scala/build.sbt").
+needs(z3) :- file("tools/text-checks/Smt.hs").
+needs(z3) :- file("tools/port-audit/Chaceon.hs").
 needs(lean) :- lean_package(_).
 needs(clingo).
 needs(rust) :- file("house-pricing/rust/Cargo.toml").
