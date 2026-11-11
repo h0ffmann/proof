@@ -13,7 +13,7 @@
 [![Haskell](https://img.shields.io/badge/Haskell-base_%2B_containers-1b3a5c?style=flat-square&logo=haskell&logoColor=white)](haskell)
 [![Rust](https://img.shields.io/badge/Rust-std_only-1b3a5c?style=flat-square&logo=rust&logoColor=white)](house-pricing/rust)
 [![Python](https://img.shields.io/badge/Python-experiments-1b3a5c?style=flat-square&logo=python&logoColor=white)](#index-of-experiments)
-[![preprints: 4](https://img.shields.io/badge/preprints-4-2a78d6?style=flat-square)](papers)
+[![preprints: 5](https://img.shields.io/badge/preprints-5-2a78d6?style=flat-square)](papers)
 [![Nix](https://img.shields.io/badge/toolchain-Nix_flake-1b3a5c?style=flat-square&logo=nixos&logoColor=white)](flake.nix)
 [![license: MPL-2.0](https://img.shields.io/badge/license-MPL--2.0-1b3a5c?style=flat-square)](#license)
 
@@ -42,7 +42,7 @@
 
 | Folder | Problem | Language | Maturity |
 |---|---|---|---|
-| [`contextual-bandits/`](contextual-bandits/README.md), [`agda/`](agda/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([page](contextual-bandits/README.md), [preprint](papers/contextual-bandits/metadata.md)) | Agda, Haskell | **Proved**: spec proved in Agda for every K ([`agda/`](agda/README.md)), Haskell port checked against its examples; regret bound open |
+| [`contextual-bandits/`](contextual-bandits/README.md), [`agda/`](agda/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([page](contextual-bandits/README.md), [preprint](papers/contextual-bandits/metadata.md), [whitepaper](papers/bandit-decision-layer/metadata.md)) | Agda, Haskell | **Proved**: spec proved in Agda for every K ([`agda/`](agda/README.md)), Haskell port checked against its examples; regret bound open |
 | [`house-pricing/`](house-pricing/README.md) | California house prices: seven models compared, gradient boosting replicated exactly in Lean and called from Rust | Rust, Lean 4 | **Proved**: output bounds and a monotone variant proved; Rust/Lean parity checked |
 | [`ocean-waves/`](ocean-waves/README.md) | Physics and numerical kernels of a spectral wave model (WAVEWATCH III, WAM Cycle 4) | Lean 4, Agda | **Proved**: kernels and their theorems; every kernel and theorem also in Agda ([`agda/`](agda/README.md)); no runnable model port yet |
 | [`cycle/`](cycle/README.md) | Eternal return: "time is a flat circle" as a theorem about a clock ([essay](papers/cycle/metadata.md)) | Lean 4, Agda, Markdown | **Draft**: theorem proved in Lean and Agda, essay is a skeleton |

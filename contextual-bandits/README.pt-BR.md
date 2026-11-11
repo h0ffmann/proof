@@ -80,6 +80,7 @@ diagrama interativo).*
 | Porte em Haskell | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, regras, gerador SplitMix), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, linear bayesiano, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (verificação da spec e simulações), [`app/Video.hs`](../haskell/app/Video.hs) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (o que está provado e o que é confiado), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
+| Whitepaper (os teoremas com provas escritas) | [`papers/bandit-decision-layer/`](../papers/bandit-decision-layer/metadata.md) |
 | Roteiro do vídeo | [`script/`](script/README.md), os números em [`results.md`](script/results.md), os arquivos do Desmos em [`desmos/`](script/desmos/README.md) |
 | Diagramas | [`docs/diagrams/src/build_candidates.py`](../docs/diagrams/src/build_candidates.py) (fonte, nos dois idiomas), [`docs/diagrams/pt-BR/`](../docs/diagrams/index.html) (HTML), `docs/diagrams/img/pt-BR/` (PNG) |
 | Receitas e verificações | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/text-checks.sh`](../checks/text-checks.sh) (as verificações de texto do roteiro), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |

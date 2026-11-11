@@ -66,6 +66,7 @@ diagram).*
 | Haskell port | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, rules, SplitMix RNG), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, Bayesian linear, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (spec check and simulations), [`app/Video.hs`](../haskell/app/Video.hs) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (what is proved and trusted), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
+| Whitepaper (the theorems with written proofs) | [`papers/bandit-decision-layer/`](../papers/bandit-decision-layer/metadata.md) |
 | Video script (pt-BR) | [`script/`](script/README.md), its numbers in [`results.md`](script/results.md), its Desmos files in [`desmos/`](script/desmos/README.md) |
 | Diagrams | [`docs/diagrams/src/build_candidates.py`](../docs/diagrams/src/build_candidates.py) (source, both languages), [`docs/diagrams/en/`](../docs/diagrams/index.html) (HTML), `docs/diagrams/img/en/` (PNG) |
 | Recipes and checks | [`just/contextual-bandits.just`](../just/contextual-bandits.just), [`checks/text-checks.sh`](../checks/text-checks.sh) (the script's text checks), [`just/liquidhaskell.just`](../just/liquidhaskell.just) |
