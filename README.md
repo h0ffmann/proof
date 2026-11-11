@@ -13,7 +13,7 @@
 [![Haskell](https://img.shields.io/badge/Haskell-base_%2B_containers-1b3a5c?style=flat-square&logo=haskell&logoColor=white)](haskell)
 [![Rust](https://img.shields.io/badge/Rust-std_only-1b3a5c?style=flat-square&logo=rust&logoColor=white)](house-pricing/rust)
 [![Python](https://img.shields.io/badge/Python-experiments-1b3a5c?style=flat-square&logo=python&logoColor=white)](#index-of-experiments)
-[![preprints: 5](https://img.shields.io/badge/preprints-5-2a78d6?style=flat-square)](papers)
+[![preprints: 6](https://img.shields.io/badge/preprints-6-2a78d6?style=flat-square)](papers)
 [![aiXiv 2611.01105](https://img.shields.io/badge/aiXiv-2611.01105-2a78d6?style=flat-square)](https://aixiv.online/abs/2611.01105)
 [![Nix](https://img.shields.io/badge/toolchain-Nix_flake-1b3a5c?style=flat-square&logo=nixos&logoColor=white)](flake.nix)
 [![license: MPL-2.0](https://img.shields.io/badge/license-MPL--2.0-1b3a5c?style=flat-square)](#license)
