@@ -328,7 +328,7 @@ jointLines tag what grouping slots =
      , let (a, j) = channelPairs keep ]
   where
     name t = tag ++ " " ++ t
-    groupsD = [ (event (firstOf s), p, map snd chans ++ rest, map fst chans) | s <- slots, let (p, chans, rest) = grouping s ]
+    groupsD = [ (any big s, p, map snd chans ++ rest, map fst chans) | s <- slots, let (p, chans, rest) = grouping s ]
     exactE = [ (e, toRational p, map (\(y, f) -> (toRational y, toRational f)) rs) | (e, p, rs, _) <- groupsD ]
     fst3 (e, _, _) = e
     holdsE = [ x | x@(_, p, rs) <- exactE, abs (Jt.poolErr p rs) <= abs (Jt.bias rs) ]
