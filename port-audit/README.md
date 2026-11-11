@@ -11,7 +11,13 @@ means none exists. The code is `z3-scala/src/main/scala/portaudit/` (`Chaceon.sc
 The audited commit is `fe531e1e64950c0f3ce7987ae4ed0325a56adfbe` (2026-11-04). Every `file:line`
 below is a path in chaceon at that commit.
 
+The same checks also run in Haskell, `tools/port-audit/` (Z3 through SBV, `bash
+checks/port-audit-haskell.sh`): the 28 statements give the same verdicts, and the coverage table
+it writes is the one below, byte for byte. The Scala stays until it is removed.
+
 ```sh
+tools/port-audit/run.sh chaceon            # the 28 statements, about 13 s
+tools/port-audit/run.sh coverage --check   # the coverage table below is current, about 10 s
 z3-scala/z3.sh chaceon     # 28 lines of OK, about 10 s; exit code 1 if one fails
 z3-scala/z3.sh coverage    # how much of WW3 is translated and integrated (below)
 just port-audit            # the same; `just check` runs it too (checks/port-audit.sh)
