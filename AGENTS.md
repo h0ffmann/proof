@@ -144,12 +144,12 @@ House-pricing rules:
 clingo 5.8: composable PRs (every `just/*.just` imported, every `checks/*.sh` strict), no other
 repository and no attribution in the commits of a branch, a branch not named by a session, Nix at
 the root with a locked input, complete Lean proofs, Haskell on `base` and `containers`, workflows
-by hand only, no PDF committed. `scripts/invariants.py` reads the tree into facts and solves them;
+by hand only, no PDF committed. `tools/invariants/` (Haskell) reads the tree into facts and solves them;
 `checks/invariants.sh` (`just invariants`, in `just check`) fails on a violation that is not
 waived, and on a waiver that excuses nothing. A `gap` is a rule the tree does not keep yet (a
 toolchain that Nix does not pin, in `flake.nix` or in a `nix/<name>.nix` shell that the flake
 discovers); it prints but does not fail. clingo's own shell is `nix/invariants.nix`. A new rule goes in
-`Invariants.lp`, with a bad case in the self-test of `scripts/invariants.py`.
+`Invariants.lp`, with a bad case in the self-test of `tools/invariants/Main.hs`.
 
 ## Language (hard rule)
 

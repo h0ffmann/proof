@@ -1,6 +1,6 @@
 % Invariants.lp: the standing rules of this repository, as an answer set program (clingo 5.8).
 %
-% scripts/invariants.py reads the tree and the branch, writes what it sees as facts, and solves
+% tools/invariants/Main.hs reads the tree and the branch, writes what it sees as facts, and solves
 % them with this file. Each rule below derives violation(Rule, Subject) when the tree breaks it.
 % The check fails when a violation is not waived. A gap(Rule, Subject) is a rule that the tree
 % does not keep yet; it is printed, but it does not fail the check. A waiver that excuses nothing
@@ -9,7 +9,7 @@
 %   just invariants               # check the tree; exit 1 on a violation
 %   just invariants-self-test     # bad facts must give each violation
 %
-% Facts from scripts/invariants.py (strings are paths, names or words):
+% Facts from tools/invariants/Main.hs (strings are paths, names or words):
 %   file(P)                      a tracked file
 %   lean(P), lean_examples(P)    a tracked .lean file outside vendor/, and one named Examples.lean
 %   lean_token(P, L, T)          line L of P has T in {sorry, admit, axiom, native_decide}
