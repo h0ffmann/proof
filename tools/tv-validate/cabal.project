@@ -1,0 +1,2 @@
+-- tools/tv-validate/ is a package of its own: nothing above this folder is part of the build.
+packages: .

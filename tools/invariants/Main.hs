@@ -252,6 +252,7 @@ bad =
   , ("lean(\"A.lean\"). lean_token(\"A.lean\", 2, axiom).", "lean_hole")
   , ("lean(\"T.lean\"). lean_token(\"T.lean\", 3, native_decide).", "native_decide_outside_examples")
   , ("cabal_dep(\"x.cabal\", \"text\").", "haskell_dependency")
+  , ("cabal_dep(\"tools/tv-validate/tv-validate.cabal\", \"lens\").", "haskell_dependency")
   , ("workflow_trigger(\"w.yml\", \"pull_request\").", "workflow_runs_by_itself")
   , ("file(\"a.pdf\"). pdf(\"a.pdf\").", "pdf_committed")
   ]
@@ -264,6 +265,10 @@ good =
   , "file(\"papers/tv-audience/tv-audience.pdf\").", "pdf(\"papers/tv-audience/tv-audience.pdf\")."
   , "file(\"papers/practice-beats-theory/wave-models-on-gpus.pdf\")."
   , "pdf(\"papers/practice-beats-theory/wave-models-on-gpus.pdf\")." ]
+  -- The libraries that Invariants.lp waives for tools/tv-validate/ and for no other cabal file.
+  ++ [ "cabal_dep(\"tools/tv-validate/tv-validate.cabal\", \"" <> d <> "\")."
+     | d <- [ "ad", "aeson", "bytestring", "cassava", "filepath", "hedgehog", "optparse-applicative"
+            , "tasty", "tasty-hedgehog", "tasty-hunit", "text", "vector" ] ]
 
 clean :: [Text]
 clean = good ++

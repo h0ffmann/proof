@@ -66,6 +66,10 @@ tools/     Haskell tools that read files or ask Z3 (through SBV); each run.sh en
   text-checks/                      the language rule, the PTC rules of the video script, its PTC-9 noise catalogue
   port-audit/                       the 28 statements about chaceon and the coverage table of port-audit/README.md
   room-mesh/                        the room mesh of triangle-grids/README.md, as NOTE lines
+  tv-validate/                      a cabal package: runs tv-audience/python/experiment.py as it is and
+                                    computes its numbers again (scores, JCS forward pass, logit gradient by
+                                    automatic differentiation), with the theorems of agda/src/TvAudience/ on
+                                    the run and as Hedgehog properties; tools/tv-validate/README.md
   prose-check/                      the ASD-STE100 and PTC rules in Agda (agda/src/Prose/), compiled by
                                     Agda's GHC backend; `just prose`
 triangle-grids/  how to build a triangle grid for WW3 with Roland's size rules, and its uses in forecasting
@@ -201,7 +205,9 @@ the repository:
   Chromium), `roteiro-preview` (Pillow, ffmpeg, espeak-ng, DejaVu fonts), `pomodoro` (Zig 0.14),
   `agda` (Agda 2.8.0 and its standard library 2.3, versions asserted in `nix/agda.nix`),
   `manim` (Manim Community 0.21, ffmpeg and LaTeX for the 3Blue1Brown-style takes of the video
-  script), and `check`, which joins the shells `just check` needs: `nix develop .#check --command just
+  script), `tv-validate` (GHC with the Hackage libraries of `tools/tv-validate/`, cabal-install,
+  and Python with NumPy, pandas, SciPy, scikit-learn and XGBoost, which runs
+  `tv-audience/python/experiment.py`), and `check`, which joins the shells `just check` needs: `nix develop .#check --command just
   check`. The default shell (the paper toolchain) and `md` are in `flake.nix`.
 - Outside Nix: the voice of the video script (`contextual-bandits/script/voice/`, XTTS and
   OpenVoice on PyTorch) has its own `requirements.txt`; nixpkgs does not package OpenVoice.
@@ -248,6 +254,11 @@ the repository:
 6. **Haskell stays dependency-light**: `base` and `containers` only, unless agreed. Agreed for
    the tools under `tools/` (the owner, 2026-11-11): GHC's bundled libraries, SBV and zlib, from
    the tool's own `nix/<tool>.nix` shell; the bandit package `haskell/` keeps the rule.
+   Agreed for `tools/tv-validate/` only (the owner, 2026-11-11, who asked for "canonical or most
+   modern" Haskell there): a cabal package on Hackage libraries. They are ad, aeson, cassava,
+   vector, text, bytestring, filepath, optparse-applicative, tasty, tasty-hunit, tasty-hedgehog
+   and hedgehog. `nix/tv-validate.nix` gives each one from the locked nixpkgs, and cabal builds
+   offline. `Invariants.lp` waives exactly these names for that one cabal file.
    Build with `-Wall` and leave no warnings.
    LiquidHaskell refinements live in `{-@ ... @-}` comments, so they add no dependency;
    `just liquid` must say `SAFE` for every module it checks. A new `ignore`, `assume` or `lazy`

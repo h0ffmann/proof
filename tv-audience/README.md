@@ -29,6 +29,12 @@ Without them the script prints `Timestral not run` and reports that arm as "not 
 The metrics, baselines and share layer are also defined in Agda, with their properties proved;
 [`agda.md`](agda.md) says what is proved and what stays in the Python.
 
+A Haskell pipeline runs the experiment as it is and computes its numbers again. They are every
+score of every model, the JCS forecasts from the fitted weights, the gradient of the logit fit,
+and the Agda theorems on the run's own numbers.
+[`tools/tv-validate/`](../tools/tv-validate/README.md) says what it finds, among it which numbers
+of `results.json` the pinned Nix shell gives back.
+
 ## Results (simulated test set, 1 Jan to 31 Oct 2026)
 
 | Model | WAPE all | WAPE big shows | WAPE contested big shows |
