@@ -1,6 +1,6 @@
 # The data shell (`nix develop .#data`): Python with the packages of the numerical experiments,
 # fat-tails/python (NumPy, pandas, SciPy, Matplotlib) and tv-audience/python (also XGBoost);
-# crypto-strength/build.py and scripts/loc.py need the standard library only.
+# crypto-strength/build.py needs the standard library only.
 { pkgs }:
 pkgs.mkShell {
   packages = [
