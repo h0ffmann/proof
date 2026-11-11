@@ -7,8 +7,20 @@ article recommendation [@li2010contextual].
 This repository splits the agent into two layers. A probabilistic model reports a mean and an
 uncertainty for each arm. A decision rule turns those estimates into a probability for each arm.
 The Z3 specification in `z3/` proves properties of the decision rules, for every real estimate
-and up to five arms, and `haskell/` ports them. (It was a Lean 4 package until November 2026; the
-repository's `docs/decisions/0001-z3-over-lean.md` records why it moved.) [@Sec:proved] lists what is proved.
+and up to five arms, and `haskell/` ports them. Z3 is used for now, and no proof assistant is
+adopted yet ([@Sec:prover]); an earlier Lean 4 package was removed in November 2026. [@Sec:proved]
+lists what is checked.
+
+# No proof language is adopted yet {#sec:prover}
+
+This paper does not adopt a proof language. Z3 is a solver: it checks each statement by a search
+for a counterexample, and it gives no proof term that a reader can check again. The checks in
+[@Sec:proved] are therefore Z3 checks, not proofs in a proof assistant.
+
+The choice of a proof assistant is open. The owner is inclined to use Agda together with Z3.
+Agda is a dependently typed language with a syntax close to Haskell, and the owner knows Haskell
+better than Lean 4. Thus an Agda specification would be nearer to the Haskell port in `haskell/`.
+The Lean 4 package of this model was removed in November 2026, and no Agda code exists yet.
 
 # What is proved {#sec:proved}
 
