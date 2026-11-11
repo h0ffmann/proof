@@ -64,6 +64,8 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
   src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/bandit/domain/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
   app/Video.hs                      the video's experiments; writes contextual-bandits/script/results.md
   LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
+agda/      Agda library `contextual-bandit` (standard library only): the decision layer and its theorems
+           for every K, by induction; `just agda` (nix develop .#agda). Skill: .claude/skills/agda/SKILL.md
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
   OceanWaves/Bisection.lean         verified bisection, wavenumber kernel
@@ -208,6 +210,7 @@ the repository:
   (Python with NumPy, pandas, SciPy, Matplotlib, XGBoost for `fat-tails/` and `tv-audience/`),
   `diagrams` (Node and Chromium for archify), `graph` (graphify 0.9.100, Node, Playwright,
   Chromium), `roteiro-preview` (Pillow, ffmpeg, espeak-ng, DejaVu fonts), `pomodoro` (Zig 0.14),
+  `agda` (Agda 2.8.0 and its standard library 2.3, versions asserted in `nix/agda.nix`),
   `manim` (Manim Community 0.21, ffmpeg and LaTeX for the 3Blue1Brown-style takes of the video
   script), and `check`, which joins the shells `just check` needs: `nix develop .#check --command just
   check`. The default shell (the paper toolchain, Gleam) and `md` are in `flake.nix`.
@@ -238,7 +241,7 @@ the repository:
    interface and theorem tables in `contextual-bandits/README.md` (and its pt-BR twin). Lean is not used for the contextual bandit any more
    (`docs/decisions/0001-z3-over-lean.md`).
 3. **Keep the mirror exact.** Tie-breaking (argmax keeps the *first* maximum),
-   argument order and the meaning of `width` must match between Z3 and Haskell.
+   argument order and the meaning of `width` must match between Z3, Haskell and Agda (`agda/`).
    When an example in `z3-scala/src/main/scala/bandit/domain/Examples.scala` or `z3-scala/src/main/scala/bandit/domain/Video.scala` changes, update `specCheck` in
    `haskell/app/Main.hs`.
 4. **Decision rules see only estimates.** A `DecisionRule` gets per-arm

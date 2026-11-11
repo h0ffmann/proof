@@ -14,6 +14,7 @@ graphify := env_var_or_default("GRAPHIFY", "graphify")
 # One file per feature, so that pull requests do not collide here (AGENTS.md, "Composable PRs").
 # A feature keeps its recipes in just/<feature>.just and its checks in checks/<feature>.sh;
 # `just check` and .github/workflows/check.yml find the checks without a list.
+import? 'just/agda.just'
 import? 'just/contextual-bandits.just'
 import? 'just/loc.just'
 import? 'just/leo.just'
