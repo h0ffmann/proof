@@ -28,6 +28,7 @@ it. Its self-test shows that a wrong example, a postulate and a file without `--
 | [`Policies.agda`](src/ContextualBandit/Policies.agda) | `point`, `uniform`, `mix`, `ucbScore`, `greedy`, `ucb`, `epsGreedy`, `thompsonArm`, `mass`, `Valid` |
 | [`Theorems.agda`](src/ContextualBandit/Theorems.agda) | the theorems below, and the sum lemmas they use |
 | [`Examples.agda`](src/ContextualBandit/Examples.agda) | the tabular model of `Examples.scala`; each decision is checked by `refl` |
+| [`Video.agda`](src/ContextualBandit/Video.agda) | the invariants R1 to R5 of the video script (`Video.scala`), and its examples by `refl` |
 
 | Agda | Z3 (`Theorems.scala`) | Statement |
 |---|---|---|
@@ -50,7 +51,11 @@ it. Its self-test shows that a wrong example, a postulate and a file without `--
 - `invK K` is `1 / ofℕ K` with `ofℕ` defined by recursion (`1 + ... + 1`), and `0` when K = 0.
 - `2 * x` is written `2ℚ * x` with `2ℚ = 1 + 1`.
 - The tabular model's width is `1 / (n + 1)`, as in Lean: `Data.Rational` has no square root.
-- The video's rules (`Video.scala`: `etc`, `outer`, π) are not ported.
+- The video's rules (`Video.scala`, R1 to R5) are in [`Video.agda`](src/ContextualBandit/Video.agda):
+  `clip`, `byDistance`, `explore`, `exploit`, `etc`, the RSI statements and the two series of
+  π, with Z3's examples by `refl`. Z3 checks R3 and R4 for K = 3 and M = 4, and the Ramanujan
+  terms for k = 0 to 9. Agda proves them for every K and M and every term, and that the paired
+  Leibniz sums and the Ramanujan sums increase at every n.
 
 ## Other topics
 
@@ -69,6 +74,13 @@ every root.
 | [`OceanWaves.Examples`](src/OceanWaves/Examples.agda) | `ocean-waves/lean/OceanWaves/Examples.lean` (the idea) | one, two and five periodic steps of a pulse on three cells, by `refl` |
 | [`OceanWaves.ModelExamples`](src/OceanWaves/ModelExamples.agda) | `ocean-waves/lean/OceanWaves/Examples.lean` | Lean's examples as checks Agda computes: c² ≤ g h in 10 m, a bump kept over four steps, a negative value above CFL, semi-implicit against Euler, no wind input for a 10 s wave and input for a 5 s wave, S_nl keeps action and energy, `cfg-valid`, `cfg-local`, and the 6 × 4 step that grows the total action |
 | [`Grids`](src/Grids/SizeRule.agda) | `z3-scala/src/main/scala/grids/domain/Grids.scala`, parts 1 and 3 | `size-floor`, `size-steep-is-floor`, `size-smallest-minimum`; `chain-le-reach` (a chain of 30% steps from 5 km stays under 5 · 1.3^i, for every i), `growth-6-steps-below-30km`, and Z3's counterexample `growth-7-steps-reach-30km` as a witness |
+| [`Grids.Courant`](src/Grids/Courant.agda) | `Grids.scala`, part 2 | `courant-at-least-1`, `courant-above-1-where-finer`; Z3's counterexample `explicit_600s_stable` as a witness |
+| [`Grids.Iter`](src/Grids/Iter.agda) | `Grids.scala`, part 4 | WAVEWATCH III's ITER: `iter-covers-cfl-to-thr8`, `iter-covers-cfl-unless-rest-in-0-thr8`, `iter-at-least-1-above-thr8`; the counterexamples `iter_covers_cfl` and `iter_at_least_1` as one witness (`small-cfl`) |
+| [`Leo`](src/Leo/Problems.agda) | `z3-scala/leo/*.p` (Leo-III) | `through-belief`, `cantor` and `cantor-Set`, `surj-right-inverse`, `compose`; `surj-injective-refuted` refutes the problem that Leo-III must not prove |
+| [`PortAudit.Division`](src/PortAudit/Division.agda) | `Chaceon.scala`, group D (integers) | `no-tie` and `margin` for every t, A, B and M, read at Z3's ranges (`no-tie-24`, `no-tie-25`, `margin-24`, `margin-25`); `margin-2^48-fails` and `no-tie-needs-normal` as witnesses |
+| [`PortAudit.Rounding`](src/PortAudit/Rounding.agda) | `Chaceon.scala`, group D (reals) | `same-side` and `same-side-not-tie` for every error bound that meets two inequalities, read at 2^-49 and 5/2 · 2^-52; `same-side-8ulp-fails` as a witness; `closer-lo` |
+| [`PortAudit.TimeStep`](src/PortAudit/TimeStep.agda) | `Chaceon.scala`, group S (reals) | `implicit-le-explicit` (for every dt), `limiter-bounds-increment`, `split-idt-ge-1`, `split-le-rem`, `split-le-dt/0·99`, `step-never-past-dtg`, `step-progress`; `limiter-vs-floor-0·5` and `split-le-dt-refuted` as witnesses |
+| [`TextChecks`](src/TextChecks/Verdict.agda) | `Ptc.scala`, `NoiseCatalogue.scala`, `LanguageRule.scala` | the decision layer of the text checks: the verdict and the list of broken units are right for every text (`holds-sound`, `holds-complete`, `broken-sound`, `broken-complete`), the exit code is 0 exactly when every required check holds (`exit-zero`, `zero-exit`), `CHECKS` with its limits, the level table of the noise catalogue (`sempre-sai-required`, `stricter-never-relaxes`, `leve-fails-only-sempre-sai`), and the stop-word judgement of the language rule (`short-not-judged`, `judged-rule`) |
 
 Differences from the sources:
 
@@ -90,8 +102,25 @@ Differences from the sources:
 - `ModelExamples.agda` checks numbers that Lean only prints with `#eval`, and has no `Float`
   reference (Lean compares with `Float.tanh` and a Newton solve). It uses 12 bisection steps
   where Lean prints 30.
-- Not ported: parts 2, 4 and 5 of `Grids.scala` (the Courant number of a 600 s step,
-  WAVEWATCH III's ITER, the measured mesh).
+- `Grids.Iter` and `PortAudit.TimeStep` take Z3's integer floor and count as natural numbers:
+  Z3's premises make each one larger than a positive number, so no case is lost.
+- Leo-III's logic is classical with choice. In Agda "for every y there is an x" is a dependent
+  pair, so `surj-right-inverse` needs no axiom. Cantor's theorem is proved for Boolean sets and
+  for sets as predicates into `Set`.
+- `margin` uses `gap`, Z3's `ite(lhs >= rhs, lhs - rhs, rhs - lhs)` on the built-in ℕ
+  operations: the standard library's `∣_-_∣` recurses in unary, and a witness on 50-bit numbers
+  does not finish.
+- The text checks measure the script and the files with Java regular expressions. Agda proves
+  while it type-checks, and under `--safe` it cannot read a file, so the measures stay in Scala
+  and the Agda modules take them as functions. The rules that `ptc --review` lists need the
+  meaning of a sentence, which no formula gives.
+- Not ported:
+  - part 5 of `Grids.scala`, NOTE lines that print numbers of a measured mesh (it uses `Double`
+    and `x^1.4`);
+  - groups U and S of `Chaceon.scala` over IEEE f32 (`nint`, `floor`, `sign`, the f32 spectrum
+    update): they are about the bits that Rust computes, and ℚ has no rounding;
+  - `Coverage.scala`, a count over the fetched WAVEWATCH III sources, which is a measurement and
+    not a statement.
 
 The skill [`.claude/skills/agda/SKILL.md`](../.claude/skills/agda/SKILL.md) says how to write
 and check Agda here.

@@ -66,7 +66,8 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
   LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
 agda/      Agda library `contextual-bandit` (standard library only), one root per topic in agda/src/*.agda:
            the bandit's decision layer and its theorems for every K, by induction; the cycle clock;
-           every kernel and theorem of ocean-waves/; the triangle-grid size rules. `just agda` (nix develop .#agda).
+           every kernel and theorem of ocean-waves/; the triangle-grid checks; the video's rules, the Leo-III
+           problems, the port audit and the decision layer of the text checks of z3-scala/. `just agda` (nix develop .#agda).
            Skill: .claude/skills/agda/SKILL.md
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
