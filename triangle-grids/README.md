@@ -101,8 +101,8 @@ rule: near the coast and on slopes.
 [piabrota/room](https://github.com/piabrota/room)'s ▲ grid view draws a demonstration mesh of the
 Brazilian coast (`scripts/grid.mjs` at `66e38a7`): coast nodes every 9 km, then four hexagonal
 lattices in distance bands out to 550 km, spaced by `9 + 61 × min(1, d / 550)^1.4` km, joined by
-Delaunay. Its sea is an estimate from the wind, not a WW3 run. Against A26's rules (`z3-scala/z3.sh
-grids`, NOTE lines):
+Delaunay. Its sea is an estimate from the wind, not a WW3 run. Against A26's rules (`tools/room-mesh/run.sh`,
+NOTE lines, in `bash checks/room-mesh.sh`):
 
 - The coast spacing, 9 km, is above the 5 km floor.
 - The lattices are 9.68, 13.47, 25.38 and 51.52 km, so the steps between bands are ratios of 1.39,
