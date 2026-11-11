@@ -95,6 +95,11 @@ A module is checked when Agda prints `Checking ...` lines and no `error:`. Inter
 - **Division**: `_÷_` needs a `NonZero` instance. To port Lean's total division use `_/₀_` of
   `OceanWaves/Order.agda`, and prove an inequality with `by-diff`: `a ≤ b` from `b - a ≡ e`
   (the solver, with `inv₀ q` as a variable) and `0 ≤ e` (`*-nonneg`, `sq-nonneg`).
+- **`∣_-_∣` of `Data.Nat` recurses in unary.** On 50-bit numbers a type that mentions it does
+  not finish checking. Use `_∸_` and `_≤ᵇ_`, which are built in (`gap` in
+  `PortAudit/Division.agda`), and turn a Boolean comparison into a proof with `≤ᵇ⇒≤` and `<ᵇ⇒<`.
+- **Give the implicit arguments of the `OceanWaves.Order` division lemmas** (`div-le-of-le-mul`,
+  `div-le-div-of-cross`): Agda cannot read them back from `a * inv₀ b`.
 - **Unsolved metas in `trans … (+-comm _ _)`**: give the arguments of `+-comm`, `+-identityʳ` and
   similar lemmas when the other side of `trans` does not fix them.
 

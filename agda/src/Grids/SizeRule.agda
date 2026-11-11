@@ -9,8 +9,8 @@
 --    below the 5 km floor. A depth gradient over 1/10 gives the floor.
 -- 3. A growth rate of 30% between neighbours needs at least 7 steps from 5 km to 30 km.
 --
--- Parts 2 (the Courant number of a 600 s step), 4 (WAVEWATCH III's ITER) and 5 (the NOTE lines
--- of a measured mesh) are not ported.
+-- Part 2 (the Courant number of a 600 s step) is `Grids.Courant`, part 4 (WAVEWATCH III's ITER)
+-- is `Grids.Iter`. Part 5 (the NOTE lines of a measured mesh) prints numbers and is not ported.
 module Grids.SizeRule where
 
 open import Data.Bool using (true; false; if_then_else_)
