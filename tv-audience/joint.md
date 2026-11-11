@@ -71,3 +71,13 @@ How to read it for TV audiences:
 ```bash
 bash checks/agda.sh   # every Agda root type-checks, TvAudienceJoint among them (nix develop .#agda)
 ```
+
+## Measured on the simulated benchmark
+
+[`python/joint_step.py`](python/joint_step.py) applies the joint step to the test set of
+`experiment.py` and writes [`joint_step.md`](joint_step.md): how often |ε| ≤ |S| holds, and the
+SSE and WAPE before and after, for two groupings (channels with the outside row, channels alone)
+and two totals (a forecast, the actual total). `nix develop .#tv-joint --command python3
+tv-audience/python/joint_step.py` runs it. The paper
+[`papers/tv-joint-estimation`](../papers/tv-joint-estimation/metadata.md) states the theorems with
+written proofs and discusses these numbers.
