@@ -13,6 +13,9 @@ rebuilds it.
 
 Educational only. Not investment advice.
 
+The metrics are also defined over exact rationals in Agda, with their properties proved, and a
+Haskell tool checks the Agda definitions against `results.json`: see [`agda.md`](agda.md).
+
 ```bash
 pip install numpy pandas scipy matplotlib
 python3 fat-tails/python/fat_tails.py   # writes results.md, results.json, figures/*.png
