@@ -64,8 +64,10 @@ haskell/   cabal package `contextual-bandit` (only base + containers)
   src/Video.hs, src/Pi.hs           port of z3-scala/src/main/scala/bandit/domain/Video.scala; the π series (Leibniz, Gauss-Legendre, Ramanujan)
   app/Video.hs                      the video's experiments; writes contextual-bandits/script/results.md
   LIQUIDHASKELL.md                  the refinement types ({-@ ... @-}) that `just liquid` checks, and what they trust
-agda/      Agda library `contextual-bandit` (standard library only): the decision layer and its theorems
-           for every K, by induction; `just agda` (nix develop .#agda). Skill: .claude/skills/agda/SKILL.md
+agda/      Agda library `contextual-bandit` (standard library only), one root per topic in agda/src/*.agda:
+           the bandit's decision layer and its theorems for every K, by induction; the cycle clock;
+           upwind advection of ocean-waves/; the triangle-grid size rules. `just agda` (nix develop .#agda).
+           Skill: .claude/skills/agda/SKILL.md
 ocean-waves/lean/  Lean 4 package `OceanWaves` (Lake, core Lean only), same toolchain
   OceanWaves/Dispersion.lean        TanhModel, σ²(k), phase/group speed, depth CFL
   OceanWaves/Bisection.lean         verified bisection, wavenumber kernel

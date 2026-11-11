@@ -7,7 +7,8 @@ description: Write, prove and type-check Agda in this repository (agda/, the con
 
 `agda/` is an Agda library (`agda/contextual-bandit.agda-lib`, depends on `standard-library`
 only). It holds the decision layer of the contextual bandit and its theorems for every number of
-arms K. Z3 (`z3-scala/src/main/scala/bandit/domain/`) is the specification; Agda follows its
+arms K, and ports of other topics: the cycle clock (`Cycle`, from Lean), upwind advection
+(`OceanWaves`, from Lean) and the triangle-grid size rules (`Grids`, from Z3). Z3 (`z3-scala/src/main/scala/bandit/domain/`) is the specification; Agda follows its
 names, with `-` for `_` (`ucb_gap` is `ucb-gap`). Read `agda/README.md` first: it has the
 modules, the theorem table and how Agda differs from Z3 and from the Lean original.
 
@@ -38,7 +39,9 @@ A module is checked when Agda prints `Checking ...` lines and no `error:`. Inter
    `postulate`, `{-# TERMINATING #-}`, `{-# NON_TERMINATING #-}`, `primTrustMe` and the other
    escapes, so a module that type-checks has only complete proofs. `checks/agda.sh` fails on a
    file without `--safe`. Never remove it to get a proof through.
-2. **A new module is imported by `agda/src/ContextualBandit.agda`**, or nothing checks it.
+2. **A new module is imported by a root**, a file `agda/src/<Topic>.agda` (`ContextualBandit`,
+   `Cycle`, `OceanWaves`, `Grids`), or nothing checks it. `checks/agda.sh` type-checks every
+   root, so a new topic is a new root and needs no change to the script.
 3. **Mirror the specification.** A rule or model goes into Z3 first (AGENTS.md, rule 2). Then
    it goes into Agda and Haskell with the same name, argument order and tie-break. Argmax keeps
    the first maximum: the running best changes only on a strict `<`.
@@ -99,3 +102,16 @@ A module is checked when Agda prints `Checking ...` lines and no `error:`. Inter
 | `grind`, `simp`, `omega` | the solver above, `≤-trans` chains, `subst`, `rewrite` |
 | `native_decide`, `#eval` | `refl` on a closed term, `from-yes` on a decidable relation |
 | `funext` | not available: state it arm by arm |
+| `if i = 0 then b else N (i - 1)` | match on `i` (`upstream b N zero = b`), so each case reduces |
+| `Fin (n + 1)` with `Fin.ext` | `Fin (suc n)`, `toℕ-injective`, the `_%_` lemmas of `Data.Nat.DivMod` |
+
+## Port from Z3
+
+- A Z3 statement over a fixed number of unknowns (a chain of 8 sizes) often becomes an
+  induction in Agda (a chain of any length). Prove the general bound, then read it at the
+  numbers Z3 checks (`Grids/SizeRule.agda`).
+- A Z3 `counterexample` becomes a witness: a value that meets the premises and breaks the
+  conclusion, checked with `from-yes` (`growth-7-steps-reach-30km`).
+- `ite(c, a, b)` is `if does (p <? q) then a else b`. In a proof, case on it with
+  `with does (p <? q) in eq` and use `dec-true` or `dec-false`: a `with` on the bare `p <? q`
+  does not abstract once the constants unfold.
