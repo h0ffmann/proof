@@ -126,6 +126,8 @@ violation(pdf_committed, P) :- file(P), pdf(P).
 % These two PDFs were committed before the rule. Remove the line when the PDF leaves the tree.
 waived(pdf_committed, "papers/fat-tails/fat-tails.pdf").
 waived(pdf_committed, "papers/tv-audience/tv-audience.pdf").
+% The owner asked for this one as a file (2026-11-11): its source is not in this repository.
+waived(pdf_committed, "papers/practice-beats-theory/wave-models-on-gpus.pdf").
 
 failing(R, S) :- violation(R, S), not waived(R, S).
 stale_waiver(R, S) :- waived(R, S), not violation(R, S).
