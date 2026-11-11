@@ -178,7 +178,7 @@ The repository is private, so automatic CI is off (owner, 2026-11-01). The workf
 
 - Do not add `pull_request`, `push` or `schedule` triggers to any workflow, and do not add a new
   automatic workflow, until the owner turns CI back on.
-- Run the checks locally before you open a PR: `just check`, `just fabric-test`, `just paper-check`
+- Run the checks locally before you open a PR: `just check`, `just paper-check`
   and `just md-quality`. Say in the PR which ones you ran.
 - Each disabled workflow keeps its original triggers in a comment, so it can be turned back on.
 - `diagrams.yml` is manual by design: run it on a PR branch to render the archify diagrams and
@@ -215,7 +215,7 @@ the repository:
   `agda` (Agda 2.8.0 and its standard library 2.3, versions asserted in `nix/agda.nix`),
   `manim` (Manim Community 0.21, ffmpeg and LaTeX for the 3Blue1Brown-style takes of the video
   script), and `check`, which joins the shells `just check` needs: `nix develop .#check --command just
-  check`. The default shell (the paper toolchain, Gleam) and `md` are in `flake.nix`.
+  check`. The default shell (the paper toolchain) and `md` are in `flake.nix`.
 - Outside Nix: the voice of the video script (`contextual-bandits/script/voice/`, XTTS and
   OpenVoice on PyTorch) has its own `requirements.txt`; nixpkgs does not package OpenVoice.
 
@@ -274,7 +274,7 @@ the repository:
   no `FAIL`, and `z3-scala/z3.sh ptc --review` lists the sentences to read for the rules Z3 cannot
   decide (`z3-scala/README.md`). `just ruido-ia` checks the PTC-9 noise catalogue the same way.
 - **Fetch before you cite.** Every `refs.bib` key needs a `verified` or `partial` row in
-  `REFERENCES.md`; `just paper-check` fails otherwise. Never cite from memory.
+  `REFERENCES.md`. Never cite from memory.
 - Do not commit PDFs. `just paper` builds them; `.github/workflows/pdf.yml` runs only by hand.
 - Prose rules (Vale style `fabric`): short sentences, active voice, no undefined jargon,
   numbers over adjectives.

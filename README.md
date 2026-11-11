@@ -109,7 +109,7 @@ Start with [docs/paper-fabric.md](docs/paper-fabric.md); the starter paper is
 [`papers/contextual-bandits`](papers/contextual-bandits/metadata.md).
 
 ```bash
-nix develop          # pandoc, pandoc-crossref, XeLaTeX, Gleam (pinned by flake.lock)
+nix develop          # pandoc, pandoc-crossref, XeLaTeX (pinned by flake.lock)
 just paper           # every paper -> pdf/<slug>.pdf
 just paper-check     # + reference log and STE/pt-BR checks
 ```
@@ -187,7 +187,7 @@ python3 docs/logo/logo.py                    # draw the logo again (--check to v
 ├── port-audit/              Z3 checks of chaceon, the Rust port of WAVEWATCH III
 ├── triangle-grids/          triangle grids for WW3: Roland's size rules, checked by Z3
 ├── papers/<slug>/           one paper each: metadata.md, prose/, refs.bib, REFERENCES.md
-├── format/, tools/, .vale/  Paper Fabric: LaTeX template, refs and STE checks (Gleam), prose rules
+├── format/, .vale/         Paper Fabric: LaTeX template, prose rules
 ├── docs/                    paper-fabric.md, the archify diagrams, the logo
 ├── vendor/archify/          the pinned archify that draws the diagrams
 ├── flake.nix, flake.lock    the paper toolchain, from h0ffmann/picasso's paper lab

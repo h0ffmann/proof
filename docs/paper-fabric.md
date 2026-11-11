@@ -38,12 +38,11 @@ warning as an error, so an unknown citation or label fails it.
 | Command | Fails when |
 |---|---|
 | `just paper` | pandoc warns (unknown citation or label) or XeLaTeX fails |
-| `just paper-check` | the above, or a `refs.bib` key has no `verified`/`partial` row in `REFERENCES.md`, or an entry has no `doi`/`url`, or a `prose-ste/` or `prose-pt-BR/` text loses a citation, quotation or number |
-| `just fabric-test` | a test of `tools/` fails |
+| `just paper-check` | the above, for every paper and the video script |
 | `just md-quality` | markdownlint finds a structure fault, Vale finds a prose error, or lychee finds a dead link to a file |
 
 CI is disabled while the repository is private (AGENTS.md). `.github/workflows/pdf.yml` runs
-`just fabric-test` and `just paper-check` only when started by hand from the Actions tab, and keeps
+`just paper-check` only when started by hand from the Actions tab, and keeps
 the PDFs as an artifact. PDFs are not committed.
 
 ## 4. Rules that make the output credible

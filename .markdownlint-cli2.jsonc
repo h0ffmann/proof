@@ -18,8 +18,8 @@
   },
   "globs": ["**/*.md"],
   "ignores": [
-    "vendor/**", "LICENSES/**", "build/**", "tools/build/**", "lean/.lake/**", "haskell/dist-newstyle/**",
-    // pandoc sources: their syntax is pandoc's, and ste-check is their check.
+    "vendor/**", "LICENSES/**", "build/**", "lean/.lake/**", "haskell/dist-newstyle/**",
+    // pandoc sources: their syntax is pandoc's, and pandoc is their check.
     "papers/*/prose*/**", "papers/*/metadata.md",
     // the video script is a paper that lives in the bandit's folder (contextual-bandits/script/)
     "papers/*/*/prose*/**", "papers/*/*/metadata.md",

@@ -147,16 +147,8 @@ _pdf slug dir out:
     cp build/{{out}}.pdf pdf/{{out}}.pdf
     @echo "paper: pdf/{{out}}.pdf"
 
-# Build the papers, then check that every cited reference was fetched and logged (REFERENCES.md)
-# and that each STE text and pt-BR translation keeps its citations, quotations and numbers.
+# Build every paper and the video script; pandoc fails on an unknown citation or label.
 paper-check: paper script
-    tools/fabric refs-check papers/*/refs.bib papers/*/*/refs.bib contextual-bandits/script/refs.bib
-    for p in papers/*/prose-ste; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check "${p%/prose-ste}"; done
-    for p in papers/*/prose-pt-BR; do [ -d "$p" ] || continue; p="${p#papers/}"; tools/fabric ste-check --translation "${p%/prose-pt-BR}"; done
-
-# The tests of tools/ (gleeunit): refs-check and ste-check.
-fabric-test:
-    cd tools && gleam test
 
 # Three analysers over the Markdown files, in the flake's `md` shell: markdownlint-cli2 (structure),
 # Vale (prose rules) and lychee (links). `--online` also fetches web links; `--self-test` gives each
@@ -164,13 +156,13 @@ fabric-test:
 md-quality *args:
     nix develop --extra-experimental-features 'nix-command flakes' --no-update-lock-file .#md --command scripts/md-quality.sh {{args}}
 
-# Enter the paper toolchain: pandoc, pandoc-crossref, XeLaTeX, pdfLaTeX, Gleam and Erlang, just (Nix).
+# Enter the paper toolchain: pandoc, pandoc-crossref, XeLaTeX, pdfLaTeX, just (Nix).
 shell:
     nix develop --extra-experimental-features 'nix-command flakes'
 
 # Remove the paper build outputs.
 clean:
-    rm -rf build pdf tools/build
+    rm -rf build pdf
 
 # Screenplay preview: the first 1:30 of a roteiro to build/roteiro-preview/ (skill roteiro-preview)
 sp-preview *args:

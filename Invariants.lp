@@ -78,7 +78,6 @@ needs(z3) :- file("z3-scala/build.sbt").
 needs(lean) :- lean_package(_).
 needs(clingo).
 needs(rust) :- file("house-pricing/rust/Cargo.toml").
-needs(gleam) :- file("tools/gleam.toml").
 needs(node) :- file("vendor/archify/package.json").
 needs(zig) :- file("pomodoro/pomodoro.zig").
 needs(ffmpeg) :- file(".claude/skills/roteiro-preview/preview.py").
@@ -98,7 +97,6 @@ in_nix(lean) :- nix_package("elan").
 in_nix(lean) :- nix_package("lean4").
 in_nix(clingo) :- nix_package("clingo").
 in_nix(rust) :- nix_package("cargo").
-in_nix(gleam) :- nix_package("gleam").
 in_nix(node) :- nix_package("nodejs").
 in_nix(zig) :- nix_package("zig").
 in_nix(ffmpeg) :- nix_package("ffmpeg").

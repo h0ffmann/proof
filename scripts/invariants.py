@@ -249,7 +249,6 @@ CLEAN = GOOD + ['lean("E/Examples.lean"). lean_examples("E/Examples.lean"). '
                 'branch("add-invariants-lp"). branch_part("add-invariants-lp", "invariants").']
 # A file that makes the tree need a toolchain, a nixpkgs attribute that pins it, the toolchain.
 NEEDS = [('file("house-pricing/rust/Cargo.toml").', "cargo", "rust"),
-         ('file("tools/gleam.toml").', "gleam", "gleam"),
          ('file("vendor/archify/package.json").', "nodejs", "node"),
          ('file("pomodoro/pomodoro.zig").', "zig", "zig"),
          ('file(".claude/skills/roteiro-preview/preview.py").', "ffmpeg-headless", "ffmpeg"),
