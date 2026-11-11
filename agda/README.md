@@ -84,6 +84,7 @@ every root.
 | [`PortAudit.Intrinsics`](src/PortAudit/Intrinsics.agda) | `Chaceon.hs`, group U (IEEE f32) | for every bit pattern: `nint-round-half-away`, `nint-frac-exact`, `floor-round-down`, `sign-SIGN`, `sign-negative-zero` |
 | [`PortAudit.StepF32`](src/PortAudit/StepF32.agda) | `Chaceon.hs`, group S (IEEE f32) | for every bit pattern, and for both answers of maxNum and minNum on ±0: `spectrum-nonneg`, `limited-step-le-dam`, `limited-step-sign`, `tail-no-negative-zero` |
 | [`PortAudit.Coverage`](src/PortAudit/Coverage.agda) | the coverage table of `port-audit/README.md` | the table as checked data: every sum, difference and rounded share between its cells, by `refl`; `stab3-never`, WW3's STAB3 finding, for every switch set. The counts themselves need the fetched sources, which Agda cannot read under `--safe` |
+| [`Prose`](src/Prose/Ste.agda) | the deleted Gleam `ste-check`, `tools/text-checks/Ptc.hs` | the ASD-STE100 rules that the characters decide (sentence and paragraph length, no semicolon, no contraction, rule 1.1 with a word list) and PTC-5 and PTC-7, run on the repository by `tools/prose-check/`; `required-ok`, `off-never-fails`, `same-sound`, `same-complete` (an edition keeps the citations and numbers), and 28 cases by `refl` in `Prose.Examples` |
 | [`TextChecks`](src/TextChecks/Verdict.agda) | `Ptc.scala`, `NoiseCatalogue.scala`, `LanguageRule.scala` | the decision layer of the text checks: the verdict and the list of broken units are right for every text (`holds-sound`, `holds-complete`, `broken-sound`, `broken-complete`), the exit code is 0 exactly when every required check holds (`exit-zero`, `zero-exit`), `CHECKS` with its limits, the level table of the noise catalogue (`sempre-sai-required`, `stricter-never-relaxes`, `leve-fails-only-sempre-sai`), and the stop-word judgement of the language rule (`short-not-judged`, `judged-rule`) |
 
 Differences from the sources:
@@ -114,6 +115,9 @@ Differences from the sources:
 - `margin` uses `gap`, Z3's `ite(lhs >= rhs, lhs - rhs, rhs - lhs)` on the built-in ℕ
   operations: the standard library's `∣_-_∣` recurses in unary, and a witness on 50-bit numbers
   does not finish.
+- [`Prose`](src/Prose/Ste.agda) is the other way: the ASD-STE100 rules and part of the PTC rules
+  as functions on the characters of a text, which `tools/prose-check/` compiles with `agda --compile`
+  and a small `Main.agda` that reads the files ([`tools/prose-check/README.md`](../tools/prose-check/README.md)).
 - The text checks measure the script and the files with regular expressions. Agda proves
   while it type-checks, and under `--safe` it cannot read a file, so the measures are in Haskell
   ([`tools/text-checks/`](../tools/text-checks/README.md)) and the Agda modules take them as functions. The rules that `ptc --review` lists need the

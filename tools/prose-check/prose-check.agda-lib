@@ -1,0 +1,3 @@
+name: prose-check
+depend: standard-library
+include: . ../../agda/src

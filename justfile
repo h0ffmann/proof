@@ -23,6 +23,7 @@ import? 'just/preprints.just'
 import? 'just/site.just'
 import? 'just/triangle-grids.just'
 import? 'just/invariants.just'
+import? 'just/prose-check.just'
 
 # List recipes
 default:
