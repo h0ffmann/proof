@@ -87,6 +87,14 @@ A module is checked when Agda prints `Checking ...` lines and no `error:`. Inter
 - **Sums**: `mass d = foldr _+_ 0ℚ (tabulate d)`. `tabulate {suc K} d` is
   `d zero ∷ tabulate (d ∘ suc)` by definition, so a sum lemma goes by induction on K with
   `cong₂ _+_` and needs no lemma about `map` or `allFin`.
+- **A `with` on a rational decision does not abstract** (`with x ≤? 3ℚ`): the goal unfolds
+  `_≤?_` to integer arithmetic first. Define the branch as a function of the answer
+  (`clamp x (yes _) = pade x`) and prove each lemma by matching on a `Dec` argument
+  (`OceanWaves/Dispersion.agda`, `Bisection.agda`). On ℕ, `does (j ≟ a)` reduces to
+  `j ≡ᵇ a`: define with `≡ᵇ` and use `with j ≡ᵇ a in eq` (`OceanWaves/Sums.agda`, `pick`).
+- **Division**: `_÷_` needs a `NonZero` instance. To port Lean's total division use `_/₀_` of
+  `OceanWaves/Order.agda`, and prove an inequality with `by-diff`: `a ≤ b` from `b - a ≡ e`
+  (the solver, with `inv₀ q` as a variable) and `0 ≤ e` (`*-nonneg`, `sq-nonneg`).
 - **Unsolved metas in `trans … (+-comm _ _)`**: give the arguments of `+-comm`, `+-identityʳ` and
   similar lemmas when the other side of `trans` does not fix them.
 
