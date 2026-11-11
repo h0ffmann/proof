@@ -20,7 +20,10 @@ for a counterexample, and it gives no proof term that a reader can check again. 
 The choice of a proof assistant is open. The owner is inclined to use Agda together with Z3.
 Agda is a dependently typed language with a syntax close to Haskell, and the owner knows Haskell
 better than Lean 4. Thus an Agda specification would be nearer to the Haskell port in `haskell/`.
-The Lean 4 package of this model was removed in November 2026, and no Agda code exists yet.
+The Lean 4 package of this model was removed in November 2026. A first Agda port, `agda/`,
+proves the decision-layer theorems of [@Sec:proved] for each number of arms, by induction over
+exact rationals. Agda 2.8.0 with its standard library 2.3 checks it with `--safe`, which refuses
+a statement without a proof. Z3 stays the specification until the owner adopts a proof language.
 
 # What is proved {#sec:proved}
 

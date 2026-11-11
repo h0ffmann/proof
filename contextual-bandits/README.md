@@ -64,6 +64,7 @@ diagram).*
 | Z3 specification | [`Bandit.scala`](../z3-scala/src/main/scala/bandit/domain/Bandit.scala) (the two layers, the rules), [`Theorems.scala`](../z3-scala/src/main/scala/bandit/domain/Theorems.scala) (K = 1 to 5), [`Examples.scala`](../z3-scala/src/main/scala/bandit/domain/Examples.scala) (tabular model, exact rationals), [`Video.scala`](../z3-scala/src/main/scala/bandit/domain/Video.scala) (the video's invariants R1 to R5), [`BanditChecks.scala`](../z3-scala/src/main/scala/bandit/application/BanditChecks.scala); how Z3 runs: [`z3-scala/README.md`](../z3-scala/README.md) |
 | Why Z3 and not Lean | [`docs/decisions/0001-z3-over-lean.md`](../docs/decisions/0001-z3-over-lean.md) |
 | Haskell port | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, rules, SplitMix RNG), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, Bayesian linear, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (spec check and simulations), [`app/Video.hs`](../haskell/app/Video.hs) |
+| Agda proofs | [`agda/`](../agda/README.md): [`Interface.agda`](../agda/src/ContextualBandit/Interface.agda), [`Argmax.agda`](../agda/src/ContextualBandit/Argmax.agda), [`Policies.agda`](../agda/src/ContextualBandit/Policies.agda), [`Theorems.agda`](../agda/src/ContextualBandit/Theorems.agda) (for every K), [`Examples.agda`](../agda/src/ContextualBandit/Examples.agda) (tabular model, checked by `refl`); [`checks/agda.sh`](../checks/agda.sh), [`just/agda.just`](../just/agda.just) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (what is proved and trusted), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
 | Video script (pt-BR) | [`script/`](script/README.md), its numbers in [`results.md`](script/results.md), its Desmos files in [`desmos/`](script/desmos/README.md) |
@@ -77,6 +78,7 @@ just z3                                  # every Z3 statement (nix develop .#sca
 cd haskell && cabal run examples         # spec check, then 4 simulations; or: runghc -isrc app/Main.hs
 cd haskell && cabal run video            # the video's experiments; writes the script's results.md
 just liquid                              # LiquidHaskell; SAFE for each module
+just agda                                # the Agda proofs for every K (nix develop .#agda)
 just paper contextual-bandits            # the preprint (inside nix develop)
 just script                              # the video script, pt-BR
 ```
@@ -123,6 +125,10 @@ Each statement is checked by refutation (`unsat`) for K = 1 to 5 arms and all re
 bound needs `ucb_gap` in each round (done), calibration with probability ≥ 1 − δ for all rounds
 (a martingale bound, outside what Z3 decides), and Σ widths = O(√(d T log T)) (the elliptical
 potential lemma). The last two are open.
+
+Agda proves the decision-layer rows of this table (`greedy_valid` to `policy_factors`) for every
+K, by induction, over exact rationals: [`agda/README.md`](../agda/README.md). Z3 stays the
+specification; the Agda names are the Z3 names with `-` for `_`.
 
 ## 6. The Haskell port
 

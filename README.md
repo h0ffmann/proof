@@ -40,7 +40,7 @@
 
 | Folder | Problem | Language | Maturity |
 |---|---|---|---|
-| [`contextual-bandits/`](contextual-bandits/README.md), [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([page](contextual-bandits/README.md), [preprint](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell | **Proved**: spec checked by Z3 for K ≤ 5 arms, Haskell port checked against its examples; regret bound open |
+| [`contextual-bandits/`](contextual-bandits/README.md), [`z3-scala/`](z3-scala/README.md), [`haskell/`](haskell) | Contextual bandits: a decision rule on top of a probabilistic reward model; validity and the UCB optimism lemma ([page](contextual-bandits/README.md), [preprint](papers/contextual-bandits/metadata.md)) | Z3 (Scala), Haskell, Agda | **Proved**: spec checked by Z3 for K ≤ 5 arms and by Agda for every K ([`agda/`](agda/README.md)), Haskell port checked against its examples; regret bound open |
 | [`house-pricing/`](house-pricing/README.md) | California house prices: seven models compared, gradient boosting replicated exactly in Lean and called from Rust | Rust, Lean 4 | **Proved**: output bounds and a monotone variant proved; Rust/Lean parity checked |
 | [`ocean-waves/`](ocean-waves/README.md) | Physics and numerical kernels of a spectral wave model (WAVEWATCH III, WAM Cycle 4) | Lean 4 | **Proved**: kernels and their theorems; no runnable model port yet |
 | [`cycle/`](cycle/README.md) | Eternal return: "time is a flat circle" as a theorem about a clock ([essay](papers/cycle/metadata.md)) | Lean 4, Markdown | **Draft**: theorem proved, essay is a skeleton |

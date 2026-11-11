@@ -78,6 +78,7 @@ diagrama interativo).*
 | Especificação em Z3 | [`Bandit.scala`](../z3-scala/src/main/scala/bandit/domain/Bandit.scala) (as duas camadas, as regras), [`Theorems.scala`](../z3-scala/src/main/scala/bandit/domain/Theorems.scala) (K = 1 a 5), [`Examples.scala`](../z3-scala/src/main/scala/bandit/domain/Examples.scala) (modelo tabular, racionais exatos), [`Video.scala`](../z3-scala/src/main/scala/bandit/domain/Video.scala) (invariantes R1 a R5 do vídeo), [`BanditChecks.scala`](../z3-scala/src/main/scala/bandit/application/BanditChecks.scala); como o Z3 roda: [`z3-scala/README.md`](../z3-scala/README.md) |
 | Por que Z3 e não Lean | [`docs/decisions/0001-z3-over-lean.md`](../docs/decisions/0001-z3-over-lean.md) |
 | Porte em Haskell | [`haskell/src/ContextualBandit.hs`](../haskell/src/ContextualBandit.hs) (interface, regras, gerador SplitMix), [`Models.hs`](../haskell/src/Models.hs) (Beta-Bernoulli, linear bayesiano, `fromPredictor`), [`Video.hs`](../haskell/src/Video.hs), [`Pi.hs`](../haskell/src/Pi.hs), [`app/Main.hs`](../haskell/app/Main.hs) (verificação da spec e simulações), [`app/Video.hs`](../haskell/app/Video.hs) |
+| Provas em Agda | [`agda/`](../agda/README.md): [`Interface.agda`](../agda/src/ContextualBandit/Interface.agda), [`Argmax.agda`](../agda/src/ContextualBandit/Argmax.agda), [`Policies.agda`](../agda/src/ContextualBandit/Policies.agda), [`Theorems.agda`](../agda/src/ContextualBandit/Theorems.agda) (para todo K), [`Examples.agda`](../agda/src/ContextualBandit/Examples.agda) (modelo tabular, conferido por `refl`); [`checks/agda.sh`](../checks/agda.sh), [`just/agda.just`](../just/agda.just) |
 | LiquidHaskell | [`haskell/LIQUIDHASKELL.md`](../haskell/LIQUIDHASKELL.md) (o que está provado e o que é confiado), [`checks/liquidhaskell.sh`](../checks/liquidhaskell.sh) |
 | Preprint | [`papers/contextual-bandits/`](../papers/contextual-bandits/metadata.md) |
 | Roteiro do vídeo | [`script/`](script/README.md), os números em [`results.md`](script/results.md), os arquivos do Desmos em [`desmos/`](script/desmos/README.md) |
@@ -91,6 +92,7 @@ just z3                                  # toda afirmação em Z3 (nix develop .
 cd haskell && cabal run examples         # verificação da spec e 4 simulações; ou: runghc -isrc app/Main.hs
 cd haskell && cabal run video            # os experimentos do vídeo; escreve o results.md do roteiro
 just liquid                              # LiquidHaskell; SAFE em cada módulo
+just agda                                # as provas em Agda para todo K (nix develop .#agda)
 just paper contextual-bandits            # o preprint (dentro de nix develop)
 just script                              # o roteiro do vídeo
 ```
@@ -138,6 +140,10 @@ O `ucb_gap` diz o que o modelo deve à camada de decisão: incerteza calibrada. 
 arrependimento do LinUCB precisa do `ucb_gap` em cada rodada (feito), da calibração com
 probabilidade ≥ 1 − δ em todas as rodadas (uma cota de martingal, fora do que o Z3 decide) e de
 Σ larguras = O(√(d T log T)) (o lema do potencial elíptico). Os dois últimos itens ficam abertos.
+
+O Agda prova as linhas da camada de decisão desta tabela (de `greedy_valid` a `policy_factors`)
+para todo K, por indução, sobre racionais exatos: [`agda/README.md`](../agda/README.md). O Z3
+continua a ser a especificação; os nomes em Agda são os do Z3 com `-` no lugar de `_`.
 
 ## 6. O porte em Haskell
 
