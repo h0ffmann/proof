@@ -1,0 +1,83 @@
+# aixiv: build one paper of papers/ with the pinned toolchain and send it to aiXiv
+# (https://aixiv.online) through its REST API (scripts/aixiv.sh, docs/aixiv.md). By hand only, from
+# the Actions tab. A run is a dry run unless "publish" is ticked and the paper's folder is typed
+# again in "confirm", and it publishes only from main. Publishing cannot be undone: aiXiv keeps
+# every version, timestamped and hashed.
+#
+# Needs the secret AIXIV_TOKEN (a token from https://aixiv.online/settings) in the environment
+# "aixiv" (Settings > Environments). A required reviewer on that environment adds one more gate.
+name: aixiv
+
+# By hand only (AGENTS.md, "CI is disabled"): publishing is never automatic.
+on:
+  workflow_dispatch:
+    inputs:
+      paper:
+        description: "The paper's folder under papers/ (for example bandit-decision-layer)"
+        required: true
+        type: string
+      publish:
+        description: "Publish. Off: a dry run, aiXiv validates and nothing is stored"
+        required: false
+        type: boolean
+        default: false
+      confirm:
+        description: "To publish, type the paper's folder again"
+        required: false
+        type: string
+        default: ""
+      changelog:
+        description: "What changed (required for a new version of a paper that has an id)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aixiv
+  cancel-in-progress: false
+
+jobs:
+  aixiv:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: aixiv
+    env:
+      PAPER: ${{ inputs.paper }}
+      PUBLISH: ${{ inputs.publish }}
+      CONFIRM: ${{ inputs.confirm }}
+      CHANGELOG: ${{ inputs.changelog }}
+    steps:
+      - name: the gate
+        run: |
+          [[ "$PAPER" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "::error::paper must be a folder name of papers/"; exit 1; }
+          if [ "$PUBLISH" = true ]; then
+            [ "$CONFIRM" = "$PAPER" ] || { echo "::error::to publish, type '$PAPER' in confirm"; exit 1; }
+            [ "$GITHUB_REF" = refs/heads/main ] || { echo "::error::publish only from main (this run is on $GITHUB_REF)"; exit 1; }
+          fi
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v31
+      - name: the lock is current
+        run: nix flake metadata --no-update-lock-file >/dev/null
+      - name: the manifest
+        run: scripts/aixiv.sh check
+      - name: build the paper
+        run: scripts/aixiv.sh build "$PAPER"
+      - name: dry run, then publish if asked
+        env:
+          AIXIV_TOKEN: ${{ secrets.AIXIV_TOKEN }}
+        run: |
+          args=()
+          if [ "$PUBLISH" = true ]; then args=(--publish); [ -z "$CHANGELOG" ] || args+=(--changelog "$CHANGELOG"); fi
+          scripts/aixiv.sh submit "$PAPER" "${args[@]}" | tee "build/aixiv/$PAPER/log.txt"
+          { echo "## aiXiv: papers/$PAPER"; echo; echo '```text'; cat "build/aixiv/$PAPER/log.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aixiv-${{ inputs.paper }}
+          path: build/aixiv/
+          if-no-files-found: ignore
