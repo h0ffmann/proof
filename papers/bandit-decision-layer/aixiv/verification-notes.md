@@ -1,0 +1,1 @@
+`checks/agda.sh` type-checks all 44 modules of the Agda library (Agda 2.8.0, every file under `--safe`, which refuses postulates and unfinished proofs). The Haskell spec check prints OK for each example of `Examples.agda` and `Video.agda`. The paper builds with pandoc and XeLaTeX with no warning.

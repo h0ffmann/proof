@@ -15,6 +15,7 @@ graphify := env_var_or_default("GRAPHIFY", "graphify")
 # A feature keeps its recipes in just/<feature>.just and its checks in checks/<feature>.sh;
 # `just check` and .github/workflows/check.yml find the checks without a list.
 import? 'just/agda.just'
+import? 'just/aixiv.just'
 import? 'just/contextual-bandits.just'
 import? 'just/loc.just'
 import? 'just/liquidhaskell.just'

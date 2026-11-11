@@ -1,0 +1,11 @@
+{
+  "id": "2611.01105",
+  "primary_category": "math.ST",
+  "categories": ["math.ST"],
+  "ai_contribution": "ai-assisted",
+  "ai_models": "Claude Code, Agda 2.8.0",
+  "license": "CC BY 4.0",
+  "process_summary": "file:aixiv/process-summary.md",
+  "verification_notes": "file:aixiv/verification-notes.md",
+  "negative_results": "file:aixiv/negative-results.md"
+}

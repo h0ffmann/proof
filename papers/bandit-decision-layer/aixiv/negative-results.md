@@ -1,0 +1,1 @@
+Z3 could check the statements only for a bounded number of arms (up to five), and it gives no proof term; this is why the specification moved to Agda. The probabilistic half of a regret bound (calibration with high probability, the elliptical potential lemma) is not proved.
