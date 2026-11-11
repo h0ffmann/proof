@@ -110,6 +110,15 @@ Paper Fabric pipeline from [h0ffmann/closed-source](https://github.com/h0ffmann/
 Start with [docs/paper-fabric.md](docs/paper-fabric.md); the starter paper is
 [`papers/contextual-bandits`](papers/contextual-bandits/metadata.md).
 
+<!-- aixiv:start -->
+[![aiXiv 2611.01105](https://img.shields.io/badge/aiXiv-2611.01105_math.ST-2a78d6?style=flat-square)](https://aixiv.online/abs/2611.01105)
+
+On aiXiv: [*A decision layer for contextual bandits, proved in Agda*](https://aixiv.online/abs/2611.01105)
+([PDF](https://aixiv.online/pdf/2611.01105v1)), aiXiv:2611.01105v1 [math.ST], submitted on
+11 November 2026, CC BY 4.0. Its source is
+[`papers/bandit-decision-layer`](papers/bandit-decision-layer/metadata.md).
+<!-- aixiv:end -->
+
 ```bash
 nix develop          # pandoc, pandoc-crossref, XeLaTeX (pinned by flake.lock)
 just paper           # every paper -> pdf/<slug>.pdf
