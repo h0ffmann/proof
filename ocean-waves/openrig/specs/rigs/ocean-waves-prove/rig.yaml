@@ -1,0 +1,67 @@
+# The proof rig of ocean-waves/: two provers claim items of ocean-waves/openrig/queue.tsv with
+# `owprove`, write the core-Lean twin of an Agda WaveTheory module (or the Haskell port of the
+# kernels), build it, and hand each commit to the reviewer. Three omp seats, the box's limit
+# (piabrota/nix-os docs/OPENRIG.md, "Limits"). Design: ocean-waves/openrig/README.md.
+# Destination: piabrota/nix-os, openrig/specs/rigs/ocean-waves-prove/rig.yaml. Not validated yet:
+#   rig spec validate /etc/openrig/specs/rigs/ocean-waves-prove/rig.yaml
+#   rig up /etc/openrig/specs/rigs/ocean-waves-prove/rig.yaml --plan
+# The keeper `openrig-ow-keeper` starts it and nudges idle provers. Do not run it at the same time
+# as another rig: the unit has one memory budget.
+version: "0.2"
+name: ocean-waves-prove
+summary: Two provers and a reviewer that bring the WaveTheory modules to core Lean, one claimed item at a time
+
+# In RPC mode nobody answers a prompt, so the seats run without one. The guard is the omp overlay:
+# hermes/omp.yml and omp/ocean-waves-prove.yml.
+permission_policy: builtin:yolo
+
+env:
+  USER: openrig
+  LOGNAME: openrig
+  HOME: /var/lib/openrig
+  OWPROVE_HOME: /var/lib/openrig/work/ocean-waves-prove
+  OWPROVE_OUTBOX: /var/lib/rig-outbox/ocean-waves-prove
+  # One build at a time across the three seats; every gate the role runs takes this lock.
+  OWPROVE_BUILD_LOCK: /var/lib/openrig/work/ocean-waves-prove/build.lock
+  # Lean and GHC inside the unit's MemoryHigh: one job.
+  LEAN_NUM_THREADS: "1"
+  MAKEFLAGS: "-j1"
+
+pods:
+  - id: prove
+    label: Prove
+    summary: Each prover claims an item with owprove, proves it, and asks the reviewer. The reviewer reads the Lean against the Agda.
+    members:
+      - id: prover-a
+        agent_ref: "local:../../agents/ow-prover"
+        profile: default
+        runtime: omp
+        # The form for which the runner passes the key.
+        model: anthropic/claude-sonnet-5-5
+        # The seat's own folder: OpenRig merges the norms into its AGENTS.md. The clone is proof/
+        # under it, made by `owprove init` before the first `rig up`.
+        cwd: /var/lib/openrig/work/ocean-waves-prove/prover-a
+        restore_policy: resume_if_possible
+      - id: prover-b
+        agent_ref: "local:../../agents/ow-prover"
+        profile: default
+        runtime: omp
+        model: anthropic/claude-sonnet-5-5
+        cwd: /var/lib/openrig/work/ocean-waves-prove/prover-b
+        restore_policy: resume_if_possible
+      - id: reviewer
+        agent_ref: "local:../../agents/ow-reviewer"
+        profile: default
+        runtime: omp
+        model: anthropic/claude-sonnet-5-5
+        cwd: /var/lib/openrig/work/ocean-waves-prove/reviewer
+        restore_policy: resume_if_possible
+    edges:
+      - kind: delegates_to
+        from: prover-a
+        to: reviewer
+      - kind: delegates_to
+        from: prover-b
+        to: reviewer
+
+edges: []
