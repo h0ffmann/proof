@@ -25,6 +25,7 @@ import? 'just/site.just'
 import? 'just/triangle-grids.just'
 import? 'just/invariants.just'
 import? 'just/prose-check.just'
+import? 'just/ocean-triton.just'
 
 # List recipes
 default:
