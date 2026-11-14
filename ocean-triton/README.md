@@ -31,7 +31,7 @@ have. So the kernels go through a small language instead:
 6. [`check.py`](check.py) runs the Triton kernels and compares each output with the exact value.
 
 Every file in `agda/src/OceanTriton/` is `--safe`. `tools/ocean-triton/Main.agda` only writes
-the two files, the same exception as `tools/prose-check/Main.agda`.
+the generated files, the same exception as `tools/prose-check/Main.agda`.
 
 ## The kernels
 
@@ -52,6 +52,9 @@ the two files, the same exception as `tools/prose-check/Main.agda`.
 | `source_step_snl` | map | `Sources.sourceStep` with S_nl computed in the kernel | `sourceSnlK-sound` |
 | `wavenumber` | loop | `Bisection.waveNumber` (Padé tanh), for every number of steps | `wavenumberK-sound` |
 | `sxx`, `sxy`, `syy` | map | `WaveTheory.RadiationStress` (the WW3 output fields SXX, SXY, SYY) | `sxxK-sound`, `sxyK-sound`, `syyK-sound`, `stressK-trace` |
+| `snell` | map | `WaveTheory.Refraction.snell` | `snellK-sound` |
+| `shoal` | map | `WaveTheory.Shoaling.shoal` (energy flux kept) | `shoalK-sound`, `shoalK-flux` |
+| `break_cap` | map | `WaveTheory.Shoaling.breakCap` (depth-limited) | `breakCapK-sound`, `breakCapK-le` |
 
 `dsK-sound` states the whole whitecapping chain: the three reduce kernels, then `ds_rate`, give
 `dsRate P S i` for every spectrum `S`.
@@ -80,20 +83,47 @@ runs the launches in order, each into a fresh buffer, and compares every cell an
 `prop2d` runs 3 times on a 9 × 7 grid; `model` runs 2 times on 5 cells and 6 bins, with the
 limiter clipping at both bounds.
 
+## Gathers, fused sums and WW3's routines (milestones M3 and M4)
+
+`agda/src/OceanTriton/Gather.agda` is a second kernel language for what `Expr` cannot say: a
+read through an index array, a padded row of an edge list, a product repeated a per-lane number
+of times, and sums over the lanes in the same launch (a fused kernel). Its programs carry index
+arrays and a lane count per launch. `EmitGather.agda` prints it into [`gather.py`](gather.py),
+`GatherVectors.agda` gives the exact values in [`gather_vectors.json`](gather_vectors.json), and
+[`check_gather.py`](check_gather.py) runs them.
+
+| Kernel or program | Its meaning is | Theorems |
+|---|---|---|
+| `break_scale` (fused) | `WaveTheory.Shoaling.breakScale`: m0 and the scaled spectrum in one launch | `breakScaleK-sound`, `breakScaleK-le` |
+| `ds_fused` (fused) | `OceanWaves.Sources.dsRate`, its three sums included, in one launch | `dsFusedK-sound` |
+| `mesh` (k launches of `mesh_step`) | `WaveTheory.Unstructured.meshRun` on any edge list that fits the rows | `meshK-sound`, `mesh-run`, `mesh-total`, `mesh-nonneg` |
+| `strang2d` (in `grid.py`) | Strang splitting: half a step in x, one in y, half in x | `strang-run`, `strang-total`, `strang-nonneg` |
+| `w3sbt1_d`, `w3sbt1_s` | WW3's W3SBT1, `w3sbt1md.F90:175-212` | `sbtD-sound`, `sbtS-sound` |
+| `w3snl1` (11 launches) | WW3's W3SNL1 (the DIA), `w3snl1md.F90:335-414`: S and D | `snl1-S`, `snl1-D` |
+
+The two WW3 routines are read from metocean/WW3 at tag `7.14.mos-92e2cf6`, commit `92e2cf66`;
+each module's header lists the lines. They are transcriptions read by eye and proved against
+the transcription, not yet compared with a running WW3 (the W mark of [`PLAN.md`](PLAN.md)).
+W3SNL1's CONS and INSNL1's tables are inputs: the theorems hold for every value, and the test
+uses synthetic tables in range.
+
 ## What is not proved
 
 - **The printer.** No Triton semantics exists in Agda, so nothing proves that the printed Python
-  means what `eval` means. `Emit.agda` and `EmitGrid.agda` are short and map each constructor to
-  one Triton expression; their headers list them. The host loop of `check_grid.py`, which
+  means what `eval` means. `Emit.agda`, `EmitGrid.agda` and `EmitGather.agda` are short and map
+  each constructor to one Triton expression; their headers list them. A `rep` prints a loop of R
+  steps, so it means its Agda only where the count is at most R; `check_gather.py` checks that
+  bound before every launch. The host loop of `check_grid.py`, which
   launches the `PROGRAMS` rows in order, is trusted the same way.
 - **Floating point.** Triton computes in float32, `eval` in `ℚ` (AGENTS.md rule 7). `check.py`
   accepts an output when `|got - exact| ≤ 1e-6 + 1e-5 |exact|`. This is a rounding budget,
   measured, not proved. On the test inputs the worst kernel uses 3% of it.
 - **The reduce kernels add in another order** than `sumTo`. The exact sum is the same; the
   rounded sum is not.
-- **Not WAVEWATCH III's numbers.** The kernels are those of the reduced physics of
-  `OceanWaves`, not WW3's routines. [`PLAN.md`](PLAN.md) has the milestones and checkpoints
-  that lead to WW3, and what "verified against WW3" will mean.
+- **Not yet WAVEWATCH III's numbers.** The M0 to M2 kernels are those of the reduced physics of
+  `OceanWaves`. W3SBT1 and W3SNL1 are WW3's own formulas, transcribed, but no kernel has been
+  compared with a running WW3. [`PLAN.md`](PLAN.md) has the milestones and checkpoints that
+  lead to WW3, and what "verified against WW3" will mean.
 - **The bisection in float32** takes the same branch as the exact one only when no midpoint is
   within rounding of the root's test. On the test inputs every branch is the same.
 - **No GPU run here.** `just ocean-triton` runs Triton's interpreter on the CPU, which executes
@@ -103,15 +133,16 @@ limiter clipping at both bounds.
 ## Run it
 
 ```bash
-just ocean-triton          # checks/ocean-triton.sh: files current, 18 kernels and 2 programs agree, self-test
-just ocean-triton-write    # print the four generated files again after a change to the Agda
+just ocean-triton          # checks/ocean-triton.sh: files current, 21 kernels, 3 programs and 7 gather results agree, self-test
+just ocean-triton-write    # print the six generated files again after a change to the Agda
 just ocean-triton-cuda     # the same comparison on a CUDA GPU
 ```
 
 `checks/ocean-triton.sh` enters `nix develop .#agda` for Agda (`nix/agda.nix`) and
 `nix develop .#triton` for Triton 3.7.1, PyTorch 2.13.0 and NumPy (`nix/triton.nix`). Both
 shells take every version from `flake.lock`. The self-test changes one exact value by 1/1000,
-and one `+` to `-` in `advect`, then the same in a program's result and in `sweep_x`, and each
+and one `+` to `-` in `advect`, then the same in a program's result and in `sweep_x`, then a
+point of W3SNL1's S (by a part in 1000), a `+` in `w3snl1_s` and a count above its R, and each
 change must fail.
 
 The test inputs reach both branches of every choice. `k h` is on both sides of 3 in the Padé

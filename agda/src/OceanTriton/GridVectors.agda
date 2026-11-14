@@ -21,6 +21,7 @@ open import Relation.Nullary.Decidable using (from-yes)
 open import OceanWaves.Dispersion using (Medium; padeModel)
 open import OceanTriton.Grid hiding (nb; np)
 open import OceanTriton.Space
+open import OceanTriton.Shallow using (strangRun)
 
 private
   wave : ℕ → ℕ → ℕ → ℚ
@@ -79,5 +80,21 @@ modelJson = json "model" 5 6 runs
   runs = 2
   bufs = buffers0 modelConfig (λ x j → wave 7 3 (j * 5 ℕ.+ x)) (λ _ _ → 0ℚ) (λ _ _ → 0ℚ)
 
+-- Strang splitting: an 8 × 5 periodic grid, half a step of cx = 2/5, cy = 1/3, two runs; the
+-- value is `strangRun` (by `strang-run`).
+strangJson : String
+strangJson = json "strang2d" nx ny runs ("F" ∷ "T" ∷ "U" ∷ []) ("cxh" ∷ "cy" ∷ [])
+  (F ∷ z ∷ z ∷ []) (cxh ∷ cy ∷ []) (strangRun nx ny cxh cy runs F)
+  where
+  nx = 8
+  ny = 5
+  runs = 2
+  cxh = + 1 / 5
+  cy = + 1 / 3
+  F : Field
+  F x y = wave 5 2 (y * 8 ℕ.+ x)
+  z : Field
+  z _ _ = 0ℚ
+
 gridVectors : String
-gridVectors = "{\n" ++ prop2DJson ++ ",\n" ++ modelJson ++ "\n}\n"
+gridVectors = "{\n" ++ prop2DJson ++ ",\n" ++ modelJson ++ ",\n" ++ strangJson ++ "\n}\n"

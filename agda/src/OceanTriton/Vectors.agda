@@ -28,6 +28,7 @@ open import OceanWaves.Sources using (snl)
 open import OceanWaves.Sums using () renaming (toList to sample)
 open import OceanTriton.Expr
 open import OceanTriton.Kernels
+open import OceanTriton.Shallow using (snellK; shoalK; breakCapK)
 open import OceanTriton.Step using (snlK; sourceSnlK; sxxK; sxyK; syyK; wavenumberK; stressStore)
 open import WaveTheory.RadiationStress using (Direction; dir)
 open import OceanWaves.Dispersion using (Medium)
@@ -100,6 +101,9 @@ cases =
   case sxxK (stressStore (wave 3 2) (half 4 1) pyth) ∷
   case sxyK (stressStore (wave 3 2) (half 4 1) pyth) ∷
   case syyK (stressStore (wave 3 2) (half 4 1) pyth) ∷
+  case snellK (store (half 4 1 ∷ wave 3 1 ∷ wave 5 2 ∷ []) []) ∷
+  case shoalK (store (wave 7 3 ∷ wave 3 1 ∷ wave 5 2 ∷ []) []) ∷
+  case breakCapK (store (wave 7 3 ∷ []) (+ 4 / 5 ∷ lit 2 ∷ [])) ∷
   []
 
 quoted : String → String

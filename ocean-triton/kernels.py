@@ -159,6 +159,30 @@ def syy(E_ptr, n_ptr, cos_ptr, sin_ptr, out_ptr, n, BLOCK: tl.constexpr):
 
 
 @triton.jit
+def snell(s_ptr, c1_ptr, c2_ptr, out_ptr, n, BLOCK: tl.constexpr):
+    """Snell's law on speeds, sin theta_2 = sin theta_1 c_2 / c_1 (WaveTheory.Refraction.snell)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, _div0((tl.load(s_ptr + i, mask=m, other=0.0) * tl.load(c2_ptr + i, mask=m, other=0.0)), tl.load(c1_ptr + i, mask=m, other=0.0)), mask=m)
+
+
+@triton.jit
+def shoal(E_ptr, cg1_ptr, cg2_ptr, out_ptr, n, BLOCK: tl.constexpr):
+    """shoaling, the energy flux E c_g kept (WaveTheory.Shoaling.shoal)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, _div0((tl.load(E_ptr + i, mask=m, other=0.0) * tl.load(cg1_ptr + i, mask=m, other=0.0)), tl.load(cg2_ptr + i, mask=m, other=0.0)), mask=m)
+
+
+@triton.jit
+def break_cap(E_ptr, gamma, h, out_ptr, n, BLOCK: tl.constexpr):
+    """one bin cut to the depth-limited cap (gamma h)^2 / 16 (WaveTheory.Shoaling.breakCap)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, tl.minimum(tl.load(E_ptr + i, mask=m, other=0.0), _div0(((gamma * gamma) * (h * h)), (16.0))), mask=m)
+
+
+@triton.jit
 def wavenumber(sigma_ptr, g, h, out_ptr, n, iters, BLOCK: tl.constexpr):
     """the wavenumber of sigma by bisection on [0, kHi0] (OceanWaves.Bisection.waveNumber, Pade tanh)."""
     i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
@@ -192,5 +216,8 @@ KERNELS = {
     "sxx": (sxx, "map", ("E", "n", "cos", "sin", ), ()),
     "sxy": (sxy, "map", ("E", "n", "cos", "sin", ), ()),
     "syy": (syy, "map", ("E", "n", "cos", "sin", ), ()),
+    "snell": (snell, "map", ("s", "c1", "c2", ), ()),
+    "shoal": (shoal, "map", ("E", "cg1", "cg2", ), ()),
+    "break_cap": (break_cap, "map", ("E", ), ("gamma", "h", )),
     "wavenumber": (wavenumber, "loop", ("sigma", ), ("g", "h", )),
 }
