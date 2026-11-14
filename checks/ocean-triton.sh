@@ -13,7 +13,7 @@
 #    gather kernels and programs of M3 and M4, W3SBT1 and W3SNL1 among them
 #    (ocean-triton/check_gather.py), and so does W3SDB1 in float64 (ocean-triton/check_sdb.py),
 #    and so do the lane programs of ST4, W3SDS4 first (ocean-triton/check_lanes.py), whose
-#    libmvec powf equals the library's bits (ocean-triton/libmvec.py --self-test);
+#    glibc and libmvec functions equal the libraries' bits (ocean-triton/libm.py --self-test);
 # 4. self-test: a wrong exact value and a wrong operator in a kernel both fail step 3, for the
 #    kernels, for the programs and for the gather module, and so does a count above its R.
 #
@@ -60,7 +60,7 @@ triton ocean-triton/kernels.py ocean-triton/vectors.json
 grid ocean-triton/grid.py ocean-triton/grid_vectors.json
 gather ocean-triton/gather.py ocean-triton/gather_vectors.json
 sdb ocean-triton/sdb.py ocean-triton/sdb_vectors.json
-py ocean-triton/libmvec.py --self-test
+py ocean-triton/libm.py --self-test
 lanes ocean-triton/lanes.py ocean-triton/lanes_vectors.json
 
 # Self-test: an exact value off by 1/1000, then a + printed as - in the upwind kernel.

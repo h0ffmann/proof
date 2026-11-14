@@ -5,14 +5,15 @@ EmitLanes, W3SDS4) and compare them with the values of the same routines in Agda
     python3 ocean-triton/check_lanes.py LANES.py LANES_VECTORS.json [--device cpu|cuda]
 
 A case gives a program's input arrays and parameters. Every other float array starts at zero.
-The launches run in the printed order, each into a fresh buffer of its lane count, which is
-what `OceanTriton.Lanes.runL` means. The kernels compute in float32 and the exact values are
+The launches run in the printed order, each into a fresh buffer of its lane count, a loop's
+launches once per step with the step as an argument, which is what `OceanTriton.Lanes.runL`
+means. The kernels compute in float32 and the exact values are
 the routine in double, so a value agrees when |got - exact| <= ATOL * max|exact| + RTOL * |exact|,
 with ATOL = 1e-6 and RTOL = 1e-5: the float32 budget of check.py, its absolute part scaled to
 the result (dissipation rates are small numbers). The functions differ too (tanh and pow are
-built from exp and log in the kernel, and `vpow` is libmvec's powf, ocean-triton/libmvec.py);
-the budget covers that on these inputs, and this is a check of the printed programs, not of the
-functions. `libmvec.py --self-test` checks vpow against the library.
+glibc's float32 functions, ocean-triton/libm.py, and `vpow` is libmvec's powf); the budget
+covers that on these inputs, and this is a check of the printed programs, not of the functions.
+`libm.py --self-test` checks the functions against the libraries.
 """
 
 import argparse
@@ -27,25 +28,35 @@ ATOL = 1e-6
 BLOCK = 1024
 
 
-_MV = {}
+_LM = {}
 
 
 def run(mod, prog, farrs, iarrs, fps, ips, torch, dev):
     """The launches of PROGRAMS_L[prog] on these inputs; returns every float buffer."""
-    if dev not in _MV:  # libmvec's tables and this CPU's rcpps, for `vpow` (libmvec.py)
-        import libmvec
-        _MV[dev] = torch.tensor(libmvec.tables(), dtype=torch.float64, device=dev)
+    if dev not in _LM:  # glibc's and libmvec's tables and this CPU's rcpps (libm.py)
+        import libm
+        _LM[dev] = torch.tensor(libm.tables(), dtype=torch.float64, device=dev)
     fnames, inames, fpn, ipn, launches, _results = mod.PROGRAMS_L[prog]
     bufs = {f: torch.tensor([float(v) for v in farrs[f]], dtype=torch.float32, device=dev)
             if f in farrs else torch.zeros(1, dtype=torch.float32, device=dev) for f in fnames}
     ibufs = [torch.tensor(iarrs[n], dtype=torch.int32, device=dev) for n in inames]
     fvals = [float(fps[n]) for n in fpn]
     ivals = [int(ips[n]) for n in ipn]
-    for fn, lanes, out in launches:
+    def launch(fn, lanes, out, step):
         n = int(ips[lanes])
         res = torch.zeros(n, dtype=torch.float32, device=dev)
-        fn[((n + BLOCK - 1) // BLOCK,)](*[bufs[f] for f in fnames], *ibufs, *fvals, *ivals, _MV[dev], res, n, BLOCK=BLOCK)
+        # No contraction: WW3 is built without it, and libm.py's float64 arithmetic needs it so.
+        fn[((n + BLOCK - 1) // BLOCK,)](*[bufs[f] for f in fnames], *ibufs, *fvals, *ivals, step, _LM[dev], res, n,
+                                        BLOCK=BLOCK, enable_fp_fusion=False)
         bufs[out] = res
+
+    for item in launches:
+        if item[0] == "loop":
+            for step in range(int(ips[item[1]])):
+                for fn, lanes, out in item[2]:
+                    launch(fn, lanes, out, step)
+        else:
+            launch(*item, 0)
     return bufs
 
 

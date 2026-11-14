@@ -21,8 +21,9 @@
 -- v counts the loop variables in scope and a the accumulators; both are de Bruijn indices,
 -- innermost first. Every loop is a left fold in the Fortran's order, so a sum keeps its order.
 --
--- A program (`ProgL`) is a list of launches on nf float buffers; each launch runs one body on
--- a lane count and writes one buffer. Its meaning (`runL`) runs them in order. The printer
+-- A program (`ProgL`) is a list of launches on nf float buffers, some of them in loops; each
+-- launch runs one body on a lane count and writes one buffer. Its meaning (`runL`) runs them in
+-- order, a loop's body once per step. The printer
 -- (`OceanTriton.EmitLanes`) is trusted, as every printer here.
 module OceanTriton.Lanes where
 
@@ -38,10 +39,10 @@ open import Data.Vec as V using (Vec; []; _∷_; lookup; _[_]≔_)
 
 -- Operations, functions and comparisons of float32.
 data Op : Set where
-  add sub mul div max min : Op
+  add sub mul div max min atan2 : Op
 
 data Fun : Set where
-  fsqrt fexp flog ftanh fcos fsin fabs fneg : Fun
+  fsqrt fexp flog flog10 ftanh fcos fsin fabs fneg : Fun
 
 data Cmp : Set where
   lt le ne : Cmp
@@ -71,6 +72,7 @@ module Syntax (σ : Sig) where
 
   data IE (v : ℕ) : Set where
     lane : IE v
+    step : IE v                          -- the step of the loop the launch runs in (0 outside one)
     var  : Fin v → IE v
     nat  : ℕ → IE v
     ipar : Fin (nip σ) → IE v
@@ -101,6 +103,13 @@ module Syntax (σ : Sig) where
       out   : Fin (nf σ)
       doc   : String
 
+  -- What a program runs: a launch, or launches repeated for step = 0 … c - 1, c an integer
+  -- parameter. A DO loop whose iterations depend on each other (W3SIN4's sheltering, band after
+  -- band; W3SRCE's time steps) is a loop of launches, each writing what the next step reads.
+  data Item : Set where
+    single : Launch → Item
+    loop : Fin (nip σ) → List Launch → Item
+
   record ProgL : Set where
     field
       name     : String
@@ -108,7 +117,7 @@ module Syntax (σ : Sig) where
       iarrays  : Vec String (ni σ)
       fparams  : Vec String (nfp σ)
       iparams  : Vec String (nip σ)
-      launches : List Launch
+      launches : List Item
       results  : List (Fin (nf σ) × Fin (nip σ))   -- a buffer and its length
       doc      : String
 
@@ -132,6 +141,7 @@ record Env (σ : Sig) (R : Set) : Set where
     iarr : Vec (ℕ → ℕ) (ni σ)
     fpar : Vec R (nfp σ)
     ipar : Vec ℕ (nip σ)
+    stp  : ℕ
 
 module Eval {σ : Sig} {R : Set} (M : Model R) where
   open Syntax σ
@@ -139,6 +149,7 @@ module Eval {σ : Sig} {R : Set} (M : Model R) where
 
   evI : ∀ {v} → Env σ R → ℕ → Vec ℕ v → IE v → ℕ
   evI ρ i ks lane       = i
+  evI ρ i ks step       = Env.stp ρ
   evI ρ i ks (var k)    = lookup ks k
   evI ρ i ks (nat n)    = n
   evI ρ i ks (ipar p)   = lookup (Env.ipar ρ) p
@@ -167,6 +178,11 @@ module Eval {σ : Sig} {R : Set} (M : Model R) where
   stepL : Launch → Env σ R → Env σ R
   stepL L ρ = record ρ { farr = Env.farr ρ [ Launch.out L ]≔ (λ i → evF ρ i [] [] (Launch.body L)) }
 
-  runL : List Launch → Env σ R → Env σ R
-  runL []       ρ = ρ
-  runL (L ∷ Ls) ρ = runL Ls (stepL L ρ)
+  runLs : List Launch → Env σ R → Env σ R
+  runLs []       ρ = ρ
+  runLs (L ∷ Ls) ρ = runLs Ls (stepL L ρ)
+
+  runL : List Item → Env σ R → Env σ R
+  runL []                ρ = ρ
+  runL (single L ∷ Is)   ρ = runL Is (stepL L ρ)
+  runL (loop c Ls ∷ Is)  ρ = runL Is (foldN (lookup (Env.ipar ρ) c) ρ (λ k ρ′ → runLs Ls (record ρ′ { stp = k })))

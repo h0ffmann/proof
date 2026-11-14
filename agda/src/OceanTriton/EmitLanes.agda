@@ -9,11 +9,13 @@
 --     iarr t e       the same from an int32 array
 --     ∸              tl.maximum(p - q, 0);  quot, rem   //, % (the divisors are NTH or NK)
 --     lit q          q as a Python float, rounded to float32 by Triton
---     op             + - * as written, tl.div_rn, tl.maximum, tl.minimum
---     fn             tl.sqrt_rn, tl.exp, tl.log, _tanh, tl.cos, tl.sin, tl.abs, unary -
---     pow x y        _pow(x, y): x * x when y = 2, else exp(y log x) in float64, rounded
---     vpow x y       _vpow(x, y, mv_ptr, z): libmvec's SSE4 powf, lane by lane, from the tables
---                    of ocean-triton/libmvec.py in mv_ptr (every kernel takes it)
+--     op             + - * as written, tl.div_rn, tl.maximum, tl.minimum, libm.atan2f
+--     fn             tl.sqrt_rn, tl.abs, unary -, and glibc's expf, logf, log10f, tanhf, cosf
+--                    and sinf as ocean-triton/libm.py writes them, with their bits
+--     pow x y        libm.powf, glibc's scalar powf
+--     vpow x y       libm.vpowf, one lane of libmvec's SSE4 _ZGVbN4vv_powf
+--
+-- Every kernel takes lm_ptr, the tables of libm.py, and is launched without contraction.
 --     sel, isel      tl.where (both sides are computed, the one not taken is not read)
 --     fold b c e B   r = e; for k in range(b): r = tl.where(k < c, B, r), with the loads of B
 --                    masked by k < c; it means foldN only where c ≤ b, which the host checks
@@ -44,6 +46,7 @@ module Print (σ : Sig) (P : Syntax.ProgL σ) where
 
   pyI : ∀ {v} → Vec String v → String → IE v → String
   pyI ks m lane       = "i"
+  pyI ks m step       = "step"
   pyI ks m (var k)    = lookup ks k
   pyI ks m (nat n)    = showℕ n
   pyI ks m (ipar p)   = lookup iparams p
@@ -62,14 +65,16 @@ module Print (σ : Sig) (P : Syntax.ProgL σ) where
     opPy div a b = "tl.div_rn(" ⊕ a ⊕ ", " ⊕ b ⊕ ")"
     opPy max a b = "tl.maximum(" ⊕ a ⊕ ", " ⊕ b ⊕ ")"
     opPy min a b = "tl.minimum(" ⊕ a ⊕ ", " ⊕ b ⊕ ")"
+    opPy atan2 a b = "libm.atan2f(" ⊕ a ⊕ ", " ⊕ b ⊕ ", lm_ptr, z)"
 
     funPy : Fun → String → String
     funPy fsqrt a = "tl.sqrt_rn(" ⊕ a ⊕ ")"
-    funPy fexp  a = "tl.exp(" ⊕ a ⊕ ")"
-    funPy flog  a = "tl.log(" ⊕ a ⊕ ")"
-    funPy ftanh a = "_tanh(" ⊕ a ⊕ ")"
-    funPy fcos  a = "tl.cos(" ⊕ a ⊕ ")"
-    funPy fsin  a = "tl.sin(" ⊕ a ⊕ ")"
+    funPy fexp  a = "libm.expf(" ⊕ a ⊕ ", lm_ptr, z)"
+    funPy flog  a = "libm.logf(" ⊕ a ⊕ ", lm_ptr, z)"
+    funPy flog10 a = "libm.log10f(" ⊕ a ⊕ ", lm_ptr, z)"
+    funPy ftanh a = "libm.tanhf(" ⊕ a ⊕ ", lm_ptr, z)"
+    funPy fcos  a = "libm.cosf(" ⊕ a ⊕ ", lm_ptr, z)"
+    funPy fsin  a = "libm.sinf(" ⊕ a ⊕ ", lm_ptr, z)"
     funPy fabs  a = "tl.abs(" ⊕ a ⊕ ")"
     funPy fneg  a = "(-" ⊕ a ⊕ ")"
 
@@ -97,10 +102,10 @@ module Print (σ : Sig) (P : Syntax.ProgL σ) where
   ... | s , e , c′ = s , funPy f e , c′
   pyF ks rs m c (pow p q) with pyF ks rs m c p
   ... | s₁ , e₁ , c₁ with pyF ks rs m c₁ q
-  ...   | s₂ , e₂ , c₂ = s₁ ++ s₂ , "_pow(" ⊕ e₁ ⊕ ", " ⊕ e₂ ⊕ ")" , c₂
+  ...   | s₂ , e₂ , c₂ = s₁ ++ s₂ , "libm.powf(" ⊕ e₁ ⊕ ", " ⊕ e₂ ⊕ ", lm_ptr, z)" , c₂
   pyF ks rs m c (vpow p q) with pyF ks rs m c p
   ... | s₁ , e₁ , c₁ with pyF ks rs m c₁ q
-  ...   | s₂ , e₂ , c₂ = s₁ ++ s₂ , "_vpow(" ⊕ e₁ ⊕ ", " ⊕ e₂ ⊕ ", mv_ptr, z)" , c₂
+  ...   | s₂ , e₂ , c₂ = s₁ ++ s₂ , "libm.vpowf(" ⊕ e₁ ⊕ ", " ⊕ e₂ ⊕ ", lm_ptr, z)" , c₂
   pyF ks rs m c (sel k x y t e) with pyF ks rs m c x
   ... | s₁ , e₁ , c₁ with pyF ks rs m c₁ y
   ...   | s₂ , e₂ , c₂ with pyF ks rs m c₂ t
@@ -121,7 +126,7 @@ module Print (σ : Sig) (P : Syntax.ProgL σ) where
 
   args : String
   args = intersperse ", " (L.map (_⊕ "_ptr") (toList farrays) ++ L.map (_⊕ "_ptr") (toList iarrays)
-                           ++ toList fparams ++ toList iparams ++ "mv_ptr" ∷ "out_ptr" ∷ "n" ∷ "BLOCK: tl.constexpr" ∷ [])
+                           ++ toList fparams ++ toList iparams ++ "step" ∷ "lm_ptr" ∷ "out_ptr" ∷ "n" ∷ "BLOCK: tl.constexpr" ∷ [])
 
   kernelPy : Launch → String
   kernelPy L = unlines (
@@ -142,18 +147,29 @@ module Print (σ : Sig) (P : Syntax.ProgL σ) where
     tup : List String → String
     tup xs = "(" ⊕ S.concat (L.map (λ x → q x ⊕ ", ") xs) ⊕ ")"
 
-  -- PROGRAMS_L row: arrays, parameters, the launches (function, lane count, buffer written),
-  -- the results (buffer, length).
+  private
+    triple : Launch → String
+    triple L = "(" ⊕ Launch.name L ⊕ ", " ⊕ q (lookup iparams (Launch.lanes L)) ⊕ ", "
+               ⊕ q (lookup farrays (Launch.out L)) ⊕ "), "
+    item : Item → String
+    item (single L)  = triple L
+    item (loop c Ls) = "(\"loop\", " ⊕ q (lookup iparams c) ⊕ ", (" ⊕ S.concat (L.map triple Ls) ⊕ ")), "
+    kernels : Item → List Launch
+    kernels (single L)  = L ∷ []
+    kernels (loop c Ls) = Ls
+
+
+  -- PROGRAMS_L row: arrays, parameters, the launches (function, lane count, buffer written;
+  -- a loop is ("loop", count, launches)), the results (buffer, length).
   row : String
   row = "    " ⊕ q name ⊕ ": (" ⊕ tup (toList farrays) ⊕ ", " ⊕ tup (toList iarrays) ⊕ ", "
         ⊕ tup (toList fparams) ⊕ ", " ⊕ tup (toList iparams) ⊕ ",\n        ("
-        ⊕ S.concat (L.map (λ L → "(" ⊕ Launch.name L ⊕ ", " ⊕ q (lookup iparams (Launch.lanes L)) ⊕ ", "
-                               ⊕ q (lookup farrays (Launch.out L)) ⊕ "), ") launches)
+        ⊕ S.concat (L.map item launches)
         ⊕ "),\n        (" ⊕ S.concat (L.map (λ r → "(" ⊕ q (lookup farrays (proj₁ r)) ⊕ ", "
                                ⊕ q (lookup iparams (proj₂ r)) ⊕ "), ") results) ⊕ ")),"
 
   module′ : String
-  module′ = S.concat (L.map (λ L → kernelPy L ⊕ "\n\n") launches)
+  module′ = S.concat (L.map (λ L → kernelPy L ⊕ "\n\n") (L.concatMap kernels launches))
 
 -- A program with its signature, for the module's list.
 record AnyProg : Set where
@@ -171,26 +187,7 @@ lanesModule ps = unlines (
   "import triton" ∷
   "import triton.language as tl" ∷
   "" ∷
-  "import libmvec" ∷
-  "" ∷
-  "" ∷
-  "@triton.jit" ∷
-  "def _tanh(x):" ∷
-  "    \"\"\"tanh from tl.exp: sign(x) (1 - e) / (1 + e), e = exp(-2 |x|).\"\"\"" ∷
-  "    e = tl.exp(-2.0 * tl.abs(x))" ∷
-  "    t = tl.div_rn(1.0 - e, 1.0 + e)" ∷
-  "    return tl.where(x < 0.0, -t, t)" ∷
-  "" ∷
-  "" ∷
-  "@triton.jit" ∷
-  "def _pow(x, y):" ∷
-  "    \"\"\"x ** y for x >= 0: x * x when y = 2, else exp(y log x) in float64, rounded once.\"\"\"" ∷
-  "    y = tl.where(x == x, y, y)  # a scalar parameter becomes a float32 block" ∷
-  "    w = tl.exp(y.to(tl.float64) * tl.log(x.to(tl.float64))).to(tl.float32)" ∷
-  "    return tl.where(y == 2.0, x * x, w)" ∷
-  "" ∷
-  "" ∷
-  "_vpow = libmvec.vpowf" ∷
+  "import libm" ∷
   "" ∷
   "" ∷
   L.map (λ { (prog σ P) → Print.module′ σ P }) ps ++

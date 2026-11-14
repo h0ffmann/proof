@@ -62,9 +62,9 @@ awk 'f && !done { printf "%.9e\n", $1 * 1.001 + 1e-9; done = 1; next } /^DDB / {
 if replay ocean-triton/gather.py "$work/wrong-sdb-capture.txt" > /dev/null; then
   echo "ww3-replay: self-test: a wrong output of W3SDB1 passed" >&2; exit 1
 fi
-# W3SDS4: scalar powf where WW3's -O3 code calls libmvec, the one difference of
-# ww3-replay/README.md's "libmvec"; then a captured D off by a part in 1000.
-sed 's|^_vpow = libmvec.vpowf$|_vpow = libmvec.scalarf|' ocean-triton/lanes.py > "$work/wrong-lanes.py"
+# W3SDS4: glibc's scalar powf where WW3's -O3 code calls libmvec's (ocean-triton/libm.py); then
+# a captured D off by a part in 1000.
+sed 's|libm\.vpowf(|libm.scalarf(|g' ocean-triton/lanes.py > "$work/wrong-lanes.py"
 if cmp -s "$work/wrong-lanes.py" ocean-triton/lanes.py; then
   echo "ww3-replay: self-test: the W3SDS4 mutation did not apply" >&2; exit 1
 fi

@@ -1,7 +1,7 @@
 {-# OPTIONS --safe --without-K #-}
 
 -- Exact values for the lane programs of `OceanTriton.Lanes`: the model in Agda's Float (IEEE
--- double, with the host's sqrt, exp, log, tanh, cos, sin and pow), and the JSON that
+-- double, with the host's sqrt, exp, log, tanh, cos, sin, atan2 and pow), and the JSON that
 -- `ocean-triton/check_lanes.py` reads. A case gives a program's inputs (the float arrays it
 -- reads before any launch writes them, the integer arrays, the parameters) and the values of
 -- its results. The values are the routine's, computed from its transcription; the kernels run
@@ -23,8 +23,10 @@ open import OceanTriton.Lanes
 floatModel : Model F.Float
 floatModel = record
   { op = λ { add a b → a F.+ b ; sub a b → a F.- b ; mul a b → a F.* b ; div a b → a F.÷ b
-           ; max a b → if b F.<ᵇ a then a else b ; min a b → if a F.<ᵇ b then a else b }
-  ; fun = λ { fsqrt x → F.sqrt x ; fexp x → F.e^ x ; flog x → F.log x ; ftanh x → F.tanh x
+           ; max a b → if b F.<ᵇ a then a else b ; min a b → if a F.<ᵇ b then a else b
+           ; atan2 a b → F.atan2 a b }
+  ; fun = λ { fsqrt x → F.sqrt x ; fexp x → F.e^ x ; flog x → F.log x ; flog10 x → F.log x F.÷ F.log 10.0
+            ; ftanh x → F.tanh x
             ; fcos x → F.cos x ; fsin x → F.sin x ; fabs x → if x F.<ᵇ 0.0 then F.- x else x
             ; fneg x → F.- x }
   ; pow = F._**_

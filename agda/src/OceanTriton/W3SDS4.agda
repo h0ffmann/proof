@@ -52,7 +52,7 @@ module OceanTriton.W3SDS4 where
 
 open import Data.Bool using (Bool; true; false; if_then_else_)
 open import Data.Fin using (Fin; #_)
-open import Data.List using (List; []; _∷_)
+open import Data.List as L using (List; []; _∷_)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _∸_; _<ᵇ_)
 open import Data.Integer using (+_; -_)
 open import Data.Product using (_,_)
@@ -305,7 +305,7 @@ sds4 = record
               ∷ "ssdsbm0" ∷ "ssdsbm1" ∷ "ssdsbm2" ∷ "ssdsbm3" ∷ "ssdsbm4" ∷ "depth" ∷ "ustar" ∷ "usdir"
               ∷ "dair" ∷ "grav" ∷ "dwat" ∷ "twopi2" ∷ []
   ; iparams = "nth" ∷ "nk" ∷ "nspec" ∷ "nsat" ∷ "ik1" ∷ "dikcumul" ∷ "iso1" ∷ []
-  ; launches = sds4Launches
+  ; launches = L.map single sds4Launches
   ; results = (D , NSPEC) ∷ (S , NSPEC) ∷ []
   ; doc = "WAVEWATCH III's ST4 dissipation W3SDS4, case 1, in seven launches" }
 
@@ -321,11 +321,11 @@ module _ {R : Set} (M : Model R) (x : Inputs R) where
              (I.SATI ∷ [])
              (I.dth ∷ I.ssdsbr ∷ I.ssdsc2 ∷ I.ssdsc3 ∷ I.ssdsc5 ∷ I.ssdsc6 ∷ I.ssdsc21 ∷ I.ssdsp ∷ I.ssdsbm0 ∷ I.ssdsbm1
               ∷ I.ssdsbm2 ∷ I.ssdsbm3 ∷ I.ssdsbm4 ∷ I.depth ∷ I.ustar ∷ I.usdir ∷ I.dair ∷ I.grav ∷ I.dwat ∷ I.twopi2 ∷ [])
-             (I.nth ∷ I.nk ∷ I.nspec ∷ I.nsat ∷ I.ik1 ∷ I.dikcumul ∷ I.iso1 ∷ [])
+             (I.nth ∷ I.nk ∷ I.nspec ∷ I.nsat ∷ I.ik1 ∷ I.dikcumul ∷ I.iso1 ∷ []) 0
     where z = λ _ → Model.lit M (+ 0 / 1)
 
   out : Env sds4Sig R
-  out = runL sds4Launches env₀
+  out = runL (ProgL.launches sds4) env₀
 
   sds4-D : ∀ is → lookup (Env.farr out) (# 13) is ≡ Routine.D M x is
   sds4-D is = refl
