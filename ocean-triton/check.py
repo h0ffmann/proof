@@ -49,8 +49,9 @@ def main() -> int:
         scs = [float(Fraction(case["scalars"][s])) for s in scalars]
         exact = [Fraction(v) for v in case["expected"]]
         out = torch.zeros(len(exact), dtype=torch.float32, device=args.device)
-        grid = (triton_cdiv(n, BLOCK),) if shape == "map" else (1,)
-        fn[grid](*ins, *scs, out, n, BLOCK=BLOCK)
+        grid = (1,) if shape == "reduce" else (triton_cdiv(n, BLOCK),)
+        loop = (case["iters"],) if shape == "loop" else ()
+        fn[grid](*ins, *scs, out, n, *loop, BLOCK=BLOCK)
         got = out.cpu().tolist()
         worst = max(abs(g - float(e)) / (ATOL + RTOL * abs(float(e))) for g, e in zip(got, exact))
         ok = worst <= 1.0

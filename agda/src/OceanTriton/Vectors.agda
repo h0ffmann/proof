@@ -10,6 +10,7 @@
 -- (k = 0 at lane 0, where /₀ gives 0).
 module OceanTriton.Vectors where
 
+import Data.Integer
 open import Data.Integer using (ℤ; +_; _-_)
 open import Data.List as L using (List; []; _∷_; concat)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _*_; _%_)
@@ -22,10 +23,14 @@ open import Data.String using (String; _++_; intersperse; unlines)
 open import Data.Vec as V using (Vec; []; _∷_; toList; zipWith)
 
 open import OceanWaves.Order using (lit)
+open import Relation.Binary.PropositionalEquality using (refl)
 open import OceanWaves.Sources using (snl)
 open import OceanWaves.Sums using () renaming (toList to sample)
 open import OceanTriton.Expr
 open import OceanTriton.Kernels
+open import OceanTriton.Step using (snlK; sourceSnlK; sxxK; sxyK; syyK; wavenumberK; stressStore)
+open import WaveTheory.RadiationStress using (Direction; dir)
+open import OceanWaves.Dispersion using (Medium)
 
 -- The number of lanes: more than one block of 16, and not a multiple of it.
 lanes : ℕ
@@ -42,6 +47,17 @@ signed a b i = (+ ((a * i ℕ.+ b) % 9) - + 4) / 4
 -- i / d.
 ramp : ℕ → ℕ → ℚ
 ramp d i = + i / suc d
+
+-- n between 1/2 (deep water) and 1 (shallow water).
+half : ℕ → ℕ → ℕ → ℚ
+half a b i = + ((a * i ℕ.+ b) % 9 ℕ.+ 9) / 18
+
+-- Directions on the unit circle from Pythagorean triples, one per lane in turn.
+pyth : ℕ → Direction
+pyth zero                   = dir (+ 3 / 5) (+ 4 / 5) refl
+pyth (suc zero)             = dir (Data.Integer.- (+ 5) / 13) (+ 12 / 13) refl
+pyth (suc (suc zero))       = dir (+ 8 / 17) (Data.Integer.- (+ 15) / 17) refl
+pyth (suc (suc (suc i)))    = pyth i
 
 record Case : Set where
   constructor case
@@ -79,6 +95,11 @@ cases =
   case linStepK (store (wave 3 1 ∷ wave 4 2 ∷ wave 7 3 ∷ []) (lit 2 ∷ [])) ∷
   case eulerK (store (wave 3 1 ∷ wave 4 2 ∷ wave 7 3 ∷ []) (+ 1 / 4 ∷ [])) ∷
   case sourceK (sourceStore 1ℚ (+ 1 / 8) (wave 3 1) (wave 4 2) lanes (signed 5 2) (wave 7 3)) ∷
+  case snlK (sized lanes (signed 5 2 ∷ []) []) ∷
+  case sourceSnlK (sized lanes (wave 3 1 ∷ wave 4 2 ∷ wave 7 3 ∷ signed 5 2 ∷ []) (1ℚ ∷ + 1 / 8 ∷ [])) ∷
+  case sxxK (stressStore (wave 3 2) (half 4 1) pyth) ∷
+  case sxyK (stressStore (wave 3 2) (half 4 1) pyth) ∷
+  case syyK (stressStore (wave 3 2) (half 4 1) pyth) ∷
   []
 
 quoted : String → String
@@ -106,6 +127,22 @@ json c@(case K st) =
      ++ "},\n" ++
   "    \"expected\": " ++ values (expected c) ++ "\n  }"
 
+-- The loop kernel: 20 bisection steps; σ spans 1/8 to 7/4 rad/s, in 2 m of water.
+iters : ℕ
+iters = 20
+
+loopJson : String
+loopJson =
+  "  \"wavenumber\": {\n" ++
+  "    \"n\": " ++ showℕ lanes ++ ",\n" ++
+  "    \"iters\": " ++ showℕ iters ++ ",\n" ++
+  "    \"arrays\": {\"sigma\": " ++ values (sample (suc lanes) σw) ++ "},\n" ++
+  "    \"scalars\": {\"g\": " ++ quoted (showℚ gw) ++ ", \"h\": " ++ quoted (showℚ (lit 2)) ++ "},\n" ++
+  "    \"expected\": " ++ values (sample lanes (runLoop wavenumberK iters (store (σw ∷ []) (gw ∷ lit 2 ∷ [])))) ++ "\n  }"
+  where
+  σw = wave 3 2
+  gw = + 981 / 100
+
 -- The whole file: a JSON object from kernel name to its case.
 vectors : String
-vectors = "{\n" ++ intersperse ",\n" (L.map json cases) ++ "\n}\n"
+vectors = "{\n" ++ intersperse ",\n" (L.map json cases L.++ (loopJson ∷ [])) ++ "\n}\n"

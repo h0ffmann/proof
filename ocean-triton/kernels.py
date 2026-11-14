@@ -118,6 +118,61 @@ def source_step(beta_ptr, gamma_ptr, N_ptr, snl_ptr, dt, L, out_ptr, n, BLOCK: t
     tl.store(out_ptr + i, (_div0((tl.load(N_ptr + i, mask=m, other=0.0) * ((1.0) + (dt * tl.load(beta_ptr + i, mask=m, other=0.0)))), ((1.0) + (dt * tl.load(gamma_ptr + i, mask=m, other=0.0)))) + tl.maximum((-_div0((tl.load(N_ptr + i, mask=m, other=0.0) * ((1.0) + (dt * tl.load(beta_ptr + i, mask=m, other=0.0)))), ((1.0) + (dt * tl.load(gamma_ptr + i, mask=m, other=0.0))))), tl.minimum(L, (dt * tl.load(snl_ptr + i, mask=m, other=0.0))))), mask=m)
 
 
+@triton.jit
+def snl(d_ptr, out_ptr, n, BLOCK: tl.constexpr):
+    """the quadruplet transfer S_nl (OceanWaves.Sources.snl) as a three-point stencil."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, ((tl.where(i + 2 < n, tl.load(d_ptr + i + 1, mask=m & (i + 2 < n), other=0.0), 0.0) + tl.where((i >= 2) & (i < n), tl.load(d_ptr + i - 1, mask=m & (i >= 2), other=0.0), 0.0)) - ((2.0) * tl.where((i >= 1) & (i + 1 < n), tl.load(d_ptr + i, mask=m, other=0.0), 0.0))), mask=m)
+
+
+@triton.jit
+def source_step_snl(beta_ptr, gamma_ptr, N_ptr, d_ptr, dt, L, out_ptr, n, BLOCK: tl.constexpr):
+    """the source step with the limiter and S_nl computed from d (OceanWaves.Sources.sourceStep)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, (_div0((tl.load(N_ptr + i, mask=m, other=0.0) * ((1.0) + (dt * tl.load(beta_ptr + i, mask=m, other=0.0)))), ((1.0) + (dt * tl.load(gamma_ptr + i, mask=m, other=0.0)))) + tl.maximum((-_div0((tl.load(N_ptr + i, mask=m, other=0.0) * ((1.0) + (dt * tl.load(beta_ptr + i, mask=m, other=0.0)))), ((1.0) + (dt * tl.load(gamma_ptr + i, mask=m, other=0.0))))), tl.minimum(L, (dt * ((tl.where(i + 2 < n, tl.load(d_ptr + i + 1, mask=m & (i + 2 < n), other=0.0), 0.0) + tl.where((i >= 2) & (i < n), tl.load(d_ptr + i - 1, mask=m & (i >= 2), other=0.0), 0.0)) - ((2.0) * tl.where((i >= 1) & (i + 1 < n), tl.load(d_ptr + i, mask=m, other=0.0), 0.0))))))), mask=m)
+
+
+@triton.jit
+def sxx(E_ptr, n_ptr, cos_ptr, sin_ptr, out_ptr, n, BLOCK: tl.constexpr):
+    """the radiation stress S_xx = E (n (1 + cos^2) - 1/2) (WaveTheory.RadiationStress)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, (tl.load(E_ptr + i, mask=m, other=0.0) * ((tl.load(n_ptr + i, mask=m, other=0.0) * ((1.0) + (tl.load(cos_ptr + i, mask=m, other=0.0) * tl.load(cos_ptr + i, mask=m, other=0.0)))) - (1.0 / 2.0))), mask=m)
+
+
+@triton.jit
+def sxy(E_ptr, n_ptr, cos_ptr, sin_ptr, out_ptr, n, BLOCK: tl.constexpr):
+    """the radiation stress S_xy = E n cos sin (WaveTheory.RadiationStress)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, (((tl.load(E_ptr + i, mask=m, other=0.0) * tl.load(n_ptr + i, mask=m, other=0.0)) * tl.load(cos_ptr + i, mask=m, other=0.0)) * tl.load(sin_ptr + i, mask=m, other=0.0)), mask=m)
+
+
+@triton.jit
+def syy(E_ptr, n_ptr, cos_ptr, sin_ptr, out_ptr, n, BLOCK: tl.constexpr):
+    """the radiation stress S_yy = E (n (1 + sin^2) - 1/2) (WaveTheory.RadiationStress)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, (tl.load(E_ptr + i, mask=m, other=0.0) * ((tl.load(n_ptr + i, mask=m, other=0.0) * ((1.0) + (tl.load(sin_ptr + i, mask=m, other=0.0) * tl.load(sin_ptr + i, mask=m, other=0.0)))) - (1.0 / 2.0))), mask=m)
+
+
+@triton.jit
+def wavenumber(sigma_ptr, g, h, out_ptr, n, iters, BLOCK: tl.constexpr):
+    """the wavenumber of sigma by bisection on [0, kHi0] (OceanWaves.Bisection.waveNumber, Pade tanh)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    r0 = tl.zeros([BLOCK], dtype=tl.float32) + (0.0)
+    r1 = tl.zeros([BLOCK], dtype=tl.float32) + tl.maximum(_div0((tl.load(sigma_ptr + i, mask=m, other=0.0) * tl.load(sigma_ptr + i, mask=m, other=0.0)), g), _div0((3.0), h))
+    for _ in range(iters):
+        s0 = tl.where(((g * _div0((r0 + r1), (2.0))) * tl.where((_div0((r0 + r1), (2.0)) * h) <= (3.0), _div0(((_div0((r0 + r1), (2.0)) * h) * ((27.0) + ((_div0((r0 + r1), (2.0)) * h) * (_div0((r0 + r1), (2.0)) * h)))), ((27.0) + ((9.0) * ((_div0((r0 + r1), (2.0)) * h) * (_div0((r0 + r1), (2.0)) * h))))), (1.0))) < (tl.load(sigma_ptr + i, mask=m, other=0.0) * tl.load(sigma_ptr + i, mask=m, other=0.0)), _div0((r0 + r1), (2.0)), r0)
+        s1 = tl.where(((g * _div0((r0 + r1), (2.0))) * tl.where((_div0((r0 + r1), (2.0)) * h) <= (3.0), _div0(((_div0((r0 + r1), (2.0)) * h) * ((27.0) + ((_div0((r0 + r1), (2.0)) * h) * (_div0((r0 + r1), (2.0)) * h)))), ((27.0) + ((9.0) * ((_div0((r0 + r1), (2.0)) * h) * (_div0((r0 + r1), (2.0)) * h))))), (1.0))) < (tl.load(sigma_ptr + i, mask=m, other=0.0) * tl.load(sigma_ptr + i, mask=m, other=0.0)), r1, _div0((r0 + r1), (2.0)))
+        r0 = s0
+        r1 = s1
+    tl.store(out_ptr + i, r1, mask=m)
+
+
 # name: (function, shape, arrays, scalars)
 KERNELS = {
     "advect": (advect, "map", ("mu", "N", ), ("b", )),
@@ -132,4 +187,10 @@ KERNELS = {
     "lin_step": (lin_step, "map", ("beta", "gamma", "N", ), ("dt", )),
     "euler_step": (euler_step, "map", ("beta", "gamma", "N", ), ("dt", )),
     "source_step": (source_step, "map", ("beta", "gamma", "N", "snl", ), ("dt", "L", )),
+    "snl": (snl, "map", ("d", ), ()),
+    "source_step_snl": (source_step_snl, "map", ("beta", "gamma", "N", "d", ), ("dt", "L", )),
+    "sxx": (sxx, "map", ("E", "n", "cos", "sin", ), ()),
+    "sxy": (sxy, "map", ("E", "n", "cos", "sin", ), ()),
+    "syy": (syy, "map", ("E", "n", "cos", "sin", ), ()),
+    "wavenumber": (wavenumber, "loop", ("sigma", ), ("g", "h", )),
 }

@@ -15,11 +15,13 @@ open import IO
 open import System.Environment using (getArgs)
 open import System.Exit using (exitWith; ExitFailure)
 
+open import Data.List using (_++_)
 open import OceanTriton.Kernels using (kernels)
+open import OceanTriton.Step using (stepKernels; loopKernels)
 open import OceanTriton.Emit using (module′)
 open import OceanTriton.Vectors using (vectors)
 
 main : Main
 main = run $ getArgs >>= λ where
-  (py ∷ json ∷ []) → writeFile py (module′ (toList kernels)) >> writeFile json vectors
+  (py ∷ json ∷ []) → writeFile py (module′ (toList kernels ++ stepKernels) loopKernels) >> writeFile json vectors
   _                → putStrLn "usage: Main KERNELS.py VECTORS.json" >> exitWith (ExitFailure (+ 2))
