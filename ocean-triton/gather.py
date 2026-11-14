@@ -80,6 +80,14 @@ def w3sbt1_s(A_ptr, wn_ptr, cg_ptr, sig_ptr, mapwn_ptr, sbtc1, depth, out_ptr, n
 
 
 @triton.jit
+def freq_advect(N_ptr, mu_ptr, msk_ptr, kof_ptr, kof1_ptr, up_ptr, out_ptr, n, BLOCK: tl.constexpr):
+    """upwind advection in frequency with a Courant number per face and closed ends (OceanTriton.Freq.freqStep)."""
+    i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
+    m = i < n
+    tl.store(out_ptr + i, ((tl.load(N_ptr + i, mask=m, other=0.0) + (tl.load(mu_ptr + tl.load(kof_ptr + i, mask=m, other=0), mask=m, other=0.0) * (tl.load(msk_ptr + i, mask=m, other=0.0) * tl.load(N_ptr + tl.load(up_ptr + i, mask=m, other=0), mask=m, other=0.0)))) - (tl.load(mu_ptr + tl.load(kof1_ptr + i, mask=m, other=0), mask=m, other=0.0) * tl.load(N_ptr + i, mask=m, other=0.0))), mask=m)
+
+
+@triton.jit
 def mesh_step(M_ptr, wout_ptr, win_ptr, src_ptr, out_ptr, n, BLOCK: tl.constexpr):
     """one upwind step on an unstructured grid, a gather over each node's padded edges (WaveTheory.Unstructured.meshStep)."""
     i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
@@ -181,6 +189,7 @@ KERNELS = {
     "ds_fused": (ds_fused, True),
     "w3sbt1_d": (w3sbt1_d, False),
     "w3sbt1_s": (w3sbt1_s, False),
+    "freq_advect": (freq_advect, False),
     "mesh_step": (mesh_step, False),
     "w3snl1_ue": (w3snl1_ue, False),
     "w3snl1_sa1": (w3snl1_sa1, False),
@@ -204,6 +213,9 @@ REP_BOUNDS = {
 #        launches as (kernel, fused, reads, index arrays, parameters, lanes, writes), results)
 PROGRAMS = {
     "mesh": (("M", "wout", "win", ), ("src", ), (), ("nodes", ), (
+        (mesh_step, False, ("M", "wout", "win", ), ("src", ), (), "nodes", "M"),
+    ), (("M", "nodes"), )),
+    "mesh_triangles": (("M", "wout", "win", ), ("src", ), (), ("nodes", ), (
         (mesh_step, False, ("M", "wout", "win", ), ("src", ), (), "nodes", "M"),
     ), (("M", "nodes"), )),
     "w3snl1": (("A", "sig", "cg", "msk", "af11", "UE", "SA1", "SA2", "DA1C", "DA1P", "DA1M", "DA2C", "DA2P", "DA2M", "S", "D", ), ("src", "kof", "cnt", "ip11", "ip12", "ip13", "ip14", "im11", "im12", "im13", "im14", "ip21", "ip22", "ip23", "ip24", "im21", "im22", "im23", "im24", "ic11", "ic12", "ic21", "ic22", "ic31", "ic32", "ic41", "ic42", "ic51", "ic52", "ic61", "ic62", "ic71", "ic72", "ic81", "ic82", "kofS", "self", ), ("tpiinv", "fachfe", "cons", "dal1", "dal2", "dal3", "awg1", "awg2", "awg3", "awg4", "awg5", "awg6", "awg7", "awg8", "swg1", "swg2", "swg3", "swg4", "swg5", "swg6", "swg7", "swg8", ), ("nue", "nsa", "nspec", ), (

@@ -24,9 +24,9 @@ step, but not WW3's numbers. Milestone M4 replaces it, routine by routine.
 | M0 The kernels of one reduced step | done | 12 of 12 | 12 of 12 (CPU interpreter) | 0 |
 | M1 The step without host-side physics | done | 6 of 6 | 6 of 6 (CPU interpreter) | 0 |
 | M2 Space: 2-D propagation and the time loop | done (step 4 in M3) | 2 programs (5 kernels) | 2 programs (CPU interpreter) | 0 |
-| M3 Spectral space and other grids | done, except steps 2b and 3b | 5 kernels, 2 programs | 5 kernels, 2 programs (CPU interpreter) | 0 |
-| M4 WW3's own source terms | W3SBT1 and W3SNL1 done; W3SDB1, ST4 and W3SRCE open | 2 routines (2 + 11 kernels) | 2 routines (CPU interpreter) | 2 routines (M5) |
-| M5 Verification against WW3 | steps 1 to 3 done in this change for W3SNL1 and W3SBT1; step 4 open | — | — | W3SNL1, W3SBT1: bit for bit on 3 captures |
+| M3 Spectral space and other grids | done | 6 kernels, 2 programs | 6 kernels, 2 programs, the mesh on two meshes (CPU interpreter) | 0 |
+| M4 WW3's own source terms | W3SBT1, W3SNL1 and W3SDB1 done; ST4 and W3SRCE open | 3 routines (2 + 11 + 2 kernels) | 3 routines (CPU interpreter) | 3 routines (M5) |
+| M5 Verification against WW3 | steps 1 to 3 done for W3SNL1, W3SBT1 and W3SDB1; step 4 open | — | — | W3SNL1, W3SBT1, W3SDB1: bit for bit on 3 captures |
 | M6 GPU runs and timing | planned | — | 0 on a GPU | — |
 
 ## M0: the kernels of one reduced step (done)
@@ -87,7 +87,7 @@ kernels.
      `model-run` carries them over pointwise.
 4. [x] The fused whitecapping in one launch: done in M3, step 4.
 
-## M3: spectral space and other grids (done in this change, except 2b and 3b)
+## M3: spectral space and other grids (done)
 
 A new kernel language, `OceanTriton.Gather`, adds what M0's `Expr` cannot say: a read through
 an index array (`gat`), a padded row of an edge list (`rowW`, `rowG`), a product repeated a
@@ -109,12 +109,19 @@ launch. `OceanTriton.EmitGather` prints it to `gather.py`; `check_gather.py` run
      rows (`MaxDeg`); `mesh-run`: k launches are `meshRun`; `mesh-total` and `mesh-nonneg`
      restated.
    - [x] T: a 6-node mesh (a ring and three chords, rows of 3 with padding), 4 steps.
-   - [ ] 2b. T on a mesh of `triangle-grids/`. Open.
+   - [x] 2b. T on a triangle mesh: a strip of four triangles on a 3 × 2 grid of nodes, every
+     edge directed downstream (`mesh_triangles`, 5 steps). `triangle-grids/` has no mesh file
+     yet, so the mesh is written in `GatherVectors.agda`; a mesh from a mesh generator is open.
 3. Splitting (`OceanTriton.Shallow`, `strang`): half a step in x, a step in y (θ), half a step
    in x, as a program of three launches.
    - [x] P: `strang-run`: k runs are `strangRun`; `strang-total`, `strang-nonneg`.
    - [x] T: an 8 × 5 grid, 2 runs, in `grid.py`.
-   - [ ] 3b. Advection in k with its own Courant numbers. Open.
+   - [x] 3b. Advection in k with its own Courant numbers (`OceanTriton.Freq`, `freq_advect`):
+     each direction's column of bins is `OceanWaves.Advection.advect` with a Courant number per
+     face, nothing entering below the first bin. P: `freqK-sound`, the kernel is that at every
+     point for every NTH > 0; `freq-total`, a closed top (μ NK = 0) keeps each column's total;
+     `freq-nonneg` under CFL. T: NTH = 3, NK = 5. This is the reduced form: WW3's own advection
+     in k (its `W3KTP` routines) is not read yet.
 4. Fused reductions (from M2): each sum in a loop over the lanes, then every lane, in one launch.
    - [x] P: `dsFusedK-sound`: `ds_fused` is `OceanWaves.Sources.dsRate`, its three sums
      included, by `refl`; `breakScaleK-sound` and `breakScaleK-le` for `break_scale`.
@@ -142,7 +149,8 @@ Order (most of a WW3 step's run time first, to be measured with a profile at the
    - [ ] T with INSNL1's own tables, and the action and energy properties of the quartets
      (`WaveTheory.Quadruplets`) restated for this form. Open.
 2. [ ] `W3SIN4` and `W3SDS4` (ST4 input and dissipation). Open: they need `exp`, `log`, `tanh`
-   and `sqrt` (below).
+   and `sqrt`; `W3SDB1`'s `Model` and float64 programs are the way in, with `log` and the
+   loops over directions added.
 3. [ ] `W3SRCE`'s integration: the dynamic time step and the limiter as WW3 writes them, with
    the sub-steps of `WaveTheory.Splitting`. Open.
 4. Bottom friction and depth-induced breaking.
@@ -151,8 +159,13 @@ Order (most of a WW3 step's run time first, to be measured with a profile at the
      `sbtS-sound`: the kernel is the routine at every spectral point when WN increases over the
      bins (every WW3 frequency grid) and the depth is not negative; the loop needs no lane of
      its own. T: 12 bins of 3 directions, k d on both sides of 6.
-   - [ ] Depth-induced breaking as WW3 writes it (`W3SDB1`). Open; `break_cap` and
-     `break_scale` are the reduced form.
+   - [x] `W3SDB1` (`OceanTriton.W3SDB1`, from `w3sdb1md.F90:223-280`), the Battjes-Janssen
+     branch, in double precision as the Fortran is. The arithmetic is a `Model` (operations,
+     EXP, TANH, DSQRT, ABS, the literals, the tests); the kernel is a straight-line program in a
+     new float64 language with function leaves. P: `sdb-cbj`, `sdb-D`, `sdb-S` by refl, in every
+     model, for both values of FDONLY. T: seven cases in Agda's Float, every branch of B (≤ 0.2,
+     ≤ 0.5, < 1, ≥ 1, BB ≥ 1) and both FDONLY. Not proved: any property of the functions, so no
+     sign of D. The early return when SUM(A) < THR is not in the kernel; the replay checks it.
 
 The obstacle: ℚ has no `exp`, `log`, `tanh`, `sqrt` or `cos`, and ST4 uses all of them. Two
 ways, decided per function:
@@ -193,7 +206,9 @@ Done in this change ([`ww3-replay/`](../ww3-replay/README.md), `just ww3-replay`
 - [x] 3. W: the printed Triton kernels give W3SNL1's S and D (eleven launches) and W3SBT1's S
   and D **bit for bit**, 864 values each, on all three captures (Triton's CPU interpreter). The
   budget was written before the first run; no value needed it.
-- [ ] W3SDB1: captured (the surf case breaks), not replayed, since no kernel exists for it yet.
+- [x] W3SDB1: S and D bit for bit, 864 values each, on all three captures. Only `surf` breaks
+  (B ≈ 0.24, so Q0 = 0 and the fixed-point loop runs); the branches B > 0.5 and BB ≥ 1 and
+  FDONLY false are not reached by these captures (ww3_ts1 sets FDONLY true) and have T only.
 - [ ] 4. The whole step against a regression test. Open: it needs ST4 and W3SRCE.
 
 ## M6: GPU runs and timing

@@ -4,18 +4,18 @@
 # 1. tools/ocean-triton/Main.agda only writes files: no postulate, no pragma, no foreign code
 #    (the kernels, their soundness theorems and the printer are --safe Agda in
 #    agda/src/OceanTriton/, which checks/agda.sh type-checks);
-# 2. ocean-triton/kernels.py, vectors.json, grid.py, grid_vectors.json, gather.py and
-#    gather_vectors.json are what the Agda prints now;
+# 2. ocean-triton/kernels.py, vectors.json, grid.py, grid_vectors.json, gather.py,
+#    gather_vectors.json, sdb.py and sdb_vectors.json are what the Agda prints now;
 # 3. the printed kernels, run by Triton (its CPU interpreter, `nix develop .#triton`), agree
 #    with the exact values within the float32 budget of ocean-triton/check.py, and so do the
 #    printed launch programs of milestone M2 (ocean-triton/check_grid.py), and so do the
 #    gather kernels and programs of M3 and M4, W3SBT1 and W3SNL1 among them
-#    (ocean-triton/check_gather.py);
+#    (ocean-triton/check_gather.py), and so does W3SDB1 in float64 (ocean-triton/check_sdb.py);
 # 4. self-test: a wrong exact value and a wrong operator in a kernel both fail step 3, for the
 #    kernels, for the programs and for the gather module, and so does a count above its R.
 #
 #   checks/ocean-triton.sh            # steps 1 to 4
-#   checks/ocean-triton.sh --write    # print the six files again into ocean-triton/
+#   checks/ocean-triton.sh --write    # print the eight files again into ocean-triton/
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -26,9 +26,9 @@ fi
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
-files="kernels.py vectors.json grid.py grid_vectors.json gather.py gather_vectors.json"
+files="kernels.py vectors.json grid.py grid_vectors.json gather.py gather_vectors.json sdb.py sdb_vectors.json"
 tools/ocean-triton/run.sh "$work/kernels.py" "$work/vectors.json" "$work/grid.py" "$work/grid_vectors.json" \
-  "$work/gather.py" "$work/gather_vectors.json"
+  "$work/gather.py" "$work/gather_vectors.json" "$work/sdb.py" "$work/sdb_vectors.json"
 
 if [ "${1:-}" = "--write" ]; then
   for f in $files; do cp "$work/$f" ocean-triton/; done
@@ -49,10 +49,12 @@ py() {
 triton() { py ocean-triton/check.py "$@"; }
 grid() { py ocean-triton/check_grid.py "$@"; }
 gather() { py ocean-triton/check_gather.py "$@"; }
+sdb() { py ocean-triton/check_sdb.py "$@"; }
 
 triton ocean-triton/kernels.py ocean-triton/vectors.json
 grid ocean-triton/grid.py ocean-triton/grid_vectors.json
 gather ocean-triton/gather.py ocean-triton/gather_vectors.json
+sdb ocean-triton/sdb.py ocean-triton/sdb_vectors.json
 
 # Self-test: an exact value off by 1/1000, then a + printed as - in the upwind kernel.
 py - "$work/vectors.json" "$work/wrong-value.json" <<'PY'
@@ -126,4 +128,22 @@ PY
 if gather ocean-triton/gather.py "$work/wrong-gather-count.json" > /dev/null 2>&1; then
   echo "ocean-triton: self-test: a count above R passed" >&2; exit 1
 fi
-echo "ocean-triton: self-test OK (a wrong value and a wrong kernel fail, for kernels, programs and gathers; a count above R fails)"
+# The same for W3SDB1: the D of the case at the fixed point off by a part in 1000, then
+# HRMS * HRMS printed as HRMS + HRMS in the FDONLY kernel.
+py - "$work/sdb_vectors.json" "$work/wrong-sdb-value.json" <<'PY'
+import json, sys
+c = json.load(open(sys.argv[1]))
+c[2]["D"] = repr(float(c[2]["D"]) * 1.001)
+json.dump(c, open(sys.argv[2], "w"))
+PY
+if sdb ocean-triton/sdb.py "$work/wrong-sdb-value.json" > /dev/null; then
+  echo "ocean-triton: self-test: a wrong exact value of W3SDB1 passed" >&2; exit 1
+fi
+sed '/^def w3sdb1_fdonly(/,/tl.store/s|((v7 \* v7) / (v6 \* v6))|((v7 + v7) / (v6 * v6))|' ocean-triton/sdb.py > "$work/wrong-sdb.py"
+if cmp -s "$work/wrong-sdb.py" ocean-triton/sdb.py; then
+  echo "ocean-triton: self-test: the W3SDB1 kernel mutation did not apply" >&2; exit 1
+fi
+if sdb "$work/wrong-sdb.py" ocean-triton/sdb_vectors.json > /dev/null; then
+  echo "ocean-triton: self-test: a wrong W3SDB1 kernel passed" >&2; exit 1
+fi
+echo "ocean-triton: self-test OK (a wrong value and a wrong kernel fail, for kernels, programs, gathers and W3SDB1; a count above R fails)"

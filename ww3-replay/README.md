@@ -4,7 +4,7 @@ Milestone M5 of [`ocean-triton/PLAN.md`](../ocean-triton/PLAN.md): the W mark. A
 from Agda gets it only through numbers from a running WAVEWATCH III (WW3), not through a
 transcription read by eye. This folder builds WW3, runs one of its regression tests, captures
 three source-term routines from the run, and replays the captures through the kernels of
-[`ocean-triton/gather.py`](../ocean-triton/gather.py).
+[`ocean-triton/gather.py`](../ocean-triton/gather.py) and [`ocean-triton/sdb.py`](../ocean-triton/sdb.py).
 
 ## The result
 
@@ -12,12 +12,13 @@ three source-term routines from the run, and replays the captures through the ke
 |---|---|---|---|---|
 | W3SNL1, the DIA (`w3snl1md.F90:335-414`) | 3 cases, with INSNL1's own tables | the program `w3snl1`, 11 launches | 864 of 864 values bit for bit, in each case | 864 of 864 bit for bit |
 | W3SBT1, JONSWAP bottom friction (`w3sbt1md.F90:175-212`) | 3 cases | `w3sbt1_s`, `w3sbt1_d` | 864 of 864 bit for bit | 864 of 864 bit for bit |
-| W3SDB1, depth-induced breaking | 3 cases (it breaks in `surf`) | no kernel yet | — | — |
+| W3SDB1, depth-induced breaking (`w3sdb1md.F90:223-280`) | 3 cases (it breaks in `surf`) | `w3sdb1_fdonly` of [`sdb.py`](../ocean-triton/sdb.py), CBJ in float64 | 864 of 864 bit for bit | 864 of 864 bit for bit |
 
 The run is Triton's CPU interpreter, which computes in float32 with NumPy. The budget,
 `|triton - ww3| ≤ 1e-6 max|ww3| + 1e-5 |ww3|`, was written in `replay.py` before the first run;
 no value needed it. This is a measurement on three inputs of one test, not a proof for every
-input. The proof is the other half: `snl1-S`, `snl1-D`, `sbtS-sound` and `sbtD-sound` in
+input. The proof is the other half: `snl1-S`, `snl1-D`, `sbtS-sound`, `sbtD-sound`, `sdb-cbj`,
+`sdb-D` and `sdb-S` in
 `agda/src/OceanTriton/` say that the kernels compute the transcription for every input.
 
 ## The pieces
@@ -33,7 +34,7 @@ input. The proof is the other half: `snl1-S`, `snl1-D`, `sbtS-sound` and `sbtD-s
   reads the spectrum of a restart that `ww3_shel` wrote. Then it calls the three routines as
   W3SRCE calls them (`w3srcemd.F90:1258`, `:1319`, `:1337`), with the means of W3SPR4 and the
   wavenumbers of WAVNU1. It writes every input and output with nine significant digits, which
-  read back to the same float32. Nothing inside WW3 is changed or printed.
+  read back to the same float32, and W3SDB1's SDBC1, SDBC2 and FDONLY from `mod_def.ww3`. Nothing inside WW3 is changed or printed.
 - [`run.sh`](run.sh) runs `ww3_grid`, `ww3_strt` and `ww3_shel` on the test's own input, with
   one restart written at 06:00 of the first day (the test writes none), in three cases:
 
@@ -62,8 +63,9 @@ After a change that moves the captures on purpose (the pin, the switch, a case o
 `ww3_capture.F90`), run `just ww3-replay-write`, then `just ww3-replay`, and commit the new
 `captures.sha256` with the change.
 
-The self-test prints one `+` of the S kernel of W3SNL1 as `-`, and changes one captured output
-of WW3 by a part in 1000. Each change must fail the replay.
+The self-test prints one `+` of the S kernel of W3SNL1 as `-` and drops the sign of W3SDB1's D,
+and changes one captured output of W3SNL1 and one of W3SDB1 by a part in 1000. Each change must
+fail the replay.
 
 ## What is not checked
 
@@ -74,5 +76,8 @@ of WW3 by a part in 1000. Each change must fail the replay.
   replay compares with this build only.
 - **Not on a GPU.** `--device cuda` exists and has not run. A GPU's float32 arithmetic may
   contract a multiply and an add, which the CPU interpreter does not do.
-- **W3SDB1** works in double precision and needs `EXP`, `TANH` and `DSQRT`. Its kernel needs
-  function leaves in the gather language first (`ocean-triton/PLAN.md`, M4).
+- **W3SDB1's other branches.** Only `surf` breaks, with B ≈ 0.24: the fixed-point loop runs, but
+  B > 0.5, BB ≥ 1 and FDONLY false (ww3_ts1 sets FDONLY true, so TANH is not called) are not
+  reached here. `ocean-triton/check_sdb.py` covers them against Agda's Float, not against WW3.
+- **The functions.** The kernel computes EXP and DSQRT with NumPy's float64, and WW3 with
+  glibc's and the CPU's; they agree on these inputs. A GPU's `exp` may not.

@@ -1,7 +1,7 @@
 """Replay a capture of WAVEWATCH III's routines through the Triton kernels printed from Agda, and
 compare them with the Fortran's own outputs (milestone M5 of ocean-triton/PLAN.md, the W mark).
 
-    python3 ww3-replay/replay.py GATHER.py CAPTURE.txt [--bits] [--device cpu|cuda]
+    python3 ww3-replay/replay.py GATHER.py CAPTURE.txt [--sdb SDB.py] [--bits] [--device cpu|cuda]
 
 CAPTURE.txt is what ww3-replay/ww3_capture.F90 writes: the inputs of W3SNL1, W3SBT1 and W3SDB1
 at one sea point of a WW3 run, INSNL1's tables, and the three routines' S and D as WW3 computed
@@ -10,7 +10,7 @@ them, every REAL with nine significant digits (it reads back to the same float32
 The Agda programs index the extended arrays of W3SNL1 from 0 (W3SNL1.agda, "Positions"): a
 position p is ISP + NTH - 1, and a table holds positions. This script turns WW3's tables into
 that form and nothing else; the kernels, their launch order and their buffers are the printed
-PROGRAMS and KERNELS of GATHER.py.
+PROGRAMS and KERNELS of GATHER.py, and W3SDB1's kernel of SDB.py.
 
 The budget, written down before the first run: a value agrees when
 |triton - ww3| <= ATOL * max|ww3| + RTOL * |ww3|, with ATOL = 1e-6 and RTOL = 1e-5, the
@@ -48,6 +48,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("gather")
     ap.add_argument("capture")
+    ap.add_argument("--sdb", default="ocean-triton/sdb.py", help="the printed W3SDB1 module")
     ap.add_argument("--bits", action="store_true")
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
     args = ap.parse_args()
@@ -138,7 +139,23 @@ def main() -> int:
     bad += not compare("W3SBT1 S", launch("w3sbt1_s", arrays, mapwn, [sbtc1, depth], nspec).cpu().tolist(), c["SBT"])
     bad += not compare("W3SBT1 D", launch("w3sbt1_d", arrays, mapwn, [sbtc1, depth], nspec).cpu().tolist(), c["DBT"])
 
-    print(f"ww3-replay: {4 - bad}/4 outputs of WW3 agree with the printed kernels "
+    # W3SDB1: the kernel of its FDONLY, CBJ in float64 from the REAL inputs widened (DBLE).
+    import warnings
+    warnings.filterwarnings("ignore", category=RuntimeWarning)  # the branch not taken of a tl.where
+    sdbc1, sdbc2, fdonly = c["sdbconst"]
+    if sum(c["A"]) < 1e-15:
+        raise ValueError("SUM(A) is below THR: W3SDB1 returns early (w3sdb1md.F90:198), which the kernel is not")
+    sdb = importlib.util.spec_from_file_location("ocean_triton_sdb", args.sdb)
+    smod = importlib.util.module_from_spec(sdb)
+    sdb.loader.exec_module(smod)
+    p = torch.tensor([_emean, _fmean, _wnmean, depth, sdbc1, sdbc2], dtype=torch.float64, device=dev)
+    s_out = torch.zeros(nspec, dtype=torch.float32, device=dev)
+    d_out = torch.zeros(nspec, dtype=torch.float32, device=dev)
+    smod.KERNELS[fdonly == 1.0][((nspec + BLOCK - 1) // BLOCK,)](f32(c["A"]), p, s_out, d_out, nspec, BLOCK=BLOCK)
+    bad += not compare("W3SDB1 S", s_out.cpu().tolist(), c["SDB"])
+    bad += not compare("W3SDB1 D", d_out.cpu().tolist(), c["DDB"])
+
+    print(f"ww3-replay: {6 - bad}/6 outputs of WW3 agree with the printed kernels "
           f"(sea point {d['isea']}, depth {depth} m, {dev}{', interpreter' if dev == 'cpu' else ''})")
     return 1 if bad else 0
 
