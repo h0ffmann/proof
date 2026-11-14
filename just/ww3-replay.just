@@ -3,6 +3,6 @@
 ww3-replay:
     bash checks/ww3-replay.sh
 
-# Run WW3 again and write the captures into ww3-replay/captures/
+# Run WW3 again and write the captures' hashes into ww3-replay/captures.sha256
 ww3-replay-write:
     bash checks/ww3-replay.sh --write

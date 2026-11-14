@@ -43,8 +43,9 @@ input. The proof is the other half: `snl1-S`, `snl1-D`, `sbtS-sound` and `sbtD-s
   | `shallow` | depth scale -6 instead of -2500: 6 m | W3SBT1 on part of the spectrum, both branches of `k d > 6` |
   | `surf` | depth scale -2, minimum depth 1 m instead of 5.75 | W3SDB1 breaks (`LBREAK` true) |
 
-- [`captures/`](captures/) holds the three captures. The check runs WW3 again and requires the
-  same files, byte for byte.
+- [`captures.sha256`](captures.sha256) holds the sha256 of the three captures, not the captures
+  (36,344 lines each). The check runs WW3 again, writes fresh captures, requires these hashes,
+  and replays the fresh files. To keep the captures, run `ww3-replay/run.sh OUTDIR`.
 - [`replay.py`](replay.py) turns WW3's tables into the 0-based positions of
   `agda/src/OceanTriton/W3SNL1.agda` and runs the printed launches. This translation of indices
   is its only part that is not printed from Agda.
@@ -52,9 +53,14 @@ input. The proof is the other half: `snl1-S`, `snl1-D`, `sbtS-sound` and `sbtD-s
 ## Run it
 
 ```bash
-just ww3-replay          # checks/ww3-replay.sh: WW3 builds and reproduces the captures, the replay is bit for bit, self-test
-just ww3-replay-write    # run WW3 again and write the captures
+just ww3-replay          # checks/ww3-replay.sh: WW3 builds, its captures have the committed hashes, the replay is bit for bit, self-test
+just ww3-replay-write    # run WW3 again and write the captures' hashes into captures.sha256
+ww3-replay/run.sh DIR    # run WW3 and write the three captures into DIR, to read or replay them
 ```
+
+After a change that moves the captures on purpose (the pin, the switch, a case of `run.sh`, or
+`ww3_capture.F90`), run `just ww3-replay-write`, then `just ww3-replay`, and commit the new
+`captures.sha256` with the change.
 
 The self-test prints one `+` of the S kernel of W3SNL1 as `-`, and changes one captured output
 of WW3 by a part in 1000. Each change must fail the replay.

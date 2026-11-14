@@ -4,6 +4,8 @@
 #
 #   ww3-replay/run.sh OUTDIR     # writes OUTDIR/deep.txt, shallow.txt and surf.txt
 #
+# checks/ww3-replay.sh compares their sha256 with ww3-replay/captures.sha256.
+#
 # Outside its shell it enters `nix develop .#ww3-replay` (nix/ww3-replay.nix), which builds WW3.
 # Three cases, each one run of ww3_grid, ww3_strt and ww3_shel on the test's own input, with one
 # restart written at 06:00 of the first day (the test writes none), then ww3_capture on it:
