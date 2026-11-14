@@ -34,9 +34,10 @@ open import OceanTriton.Gather using (KernelG)
 open import OceanTriton.GatherVectors using (gatherVectors)
 
 -- The gather kernels: the fused ones, W3SBT1's, the mesh step (rows of 3), and W3SNL1's
--- eleven with two tail rows (the R of `ue`, which REP_BOUNDS checks).
+-- eleven, with up to 16 tail rows: the R of `ue`, which REP_BOUNDS checks. WW3's grids have fewer
+-- (ww3_ts1: NFRHGH - NFR = 7), and the vectors use 2.
 gather : List KernelG
-gather = fusedKernels ++ sbtKernels ++ meshK 2 2 ∷ ueK 2 ∷ SA.sa1K ∷ SA.sa2K ∷ SA.da1cK ∷ SA.da1pK ∷ SA.da1mK
+gather = fusedKernels ++ sbtKernels ++ meshK 2 2 ∷ ueK 16 ∷ SA.sa1K ∷ SA.sa2K ∷ SA.da1cK ∷ SA.da1pK ∷ SA.da1mK
          ∷ SA.da2cK ∷ SA.da2pK ∷ SA.da2mK ∷ sK ∷ dK ∷ []
 
 main : Main
@@ -44,6 +45,6 @@ main = run $ getArgs >>= λ where
   (py ∷ json ∷ gpy ∷ gjson ∷ hpy ∷ hjson ∷ []) →
     writeFile py (module′ (toList kernels ++ stepKernels ++ m3Kernels) loopKernels) >> writeFile json vectors >>
     writeFile gpy (gridModule kernels2 (programs ++ strang ∷ [])) >> writeFile gjson gridVectors >>
-    writeFile hpy (gatherModule gather (meshProgram 2 2 ∷ snl1 2 ∷ [])) >> writeFile hjson gatherVectors
+    writeFile hpy (gatherModule gather (meshProgram 2 2 ∷ snl1 16 ∷ [])) >> writeFile hjson gatherVectors
   _ → putStrLn "usage: Main KERNELS.py VECTORS.json GRID.py GRID_VECTORS.json GATHER.py GATHER_VECTORS.json"
       >> exitWith (ExitFailure (+ 2))

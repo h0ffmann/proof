@@ -103,9 +103,13 @@ arrays and a lane count per launch. `EmitGather.agda` prints it into [`gather.py
 
 The two WW3 routines are read from metocean/WW3 at tag `7.14.mos-92e2cf6`, commit `92e2cf66`;
 each module's header lists the lines. They are transcriptions read by eye and proved against
-the transcription, not yet compared with a running WW3 (the W mark of [`PLAN.md`](PLAN.md)).
-W3SNL1's CONS and INSNL1's tables are inputs: the theorems hold for every value, and the test
-uses synthetic tables in range.
+the transcription. W3SNL1's CONS and INSNL1's tables are inputs: the theorems hold for every
+value, and the test here uses synthetic tables in range.
+
+Both are also compared with a running WW3 (the W mark of [`PLAN.md`](PLAN.md)):
+[`ww3-replay/`](../ww3-replay/README.md) builds WW3 at the pin, captures the two routines from
+the regression test `ww3_ts1` with INSNL1's own tables, and replays the captures through these
+kernels. Their S and D are WW3's bit for bit.
 
 ## What is not proved
 
@@ -120,9 +124,10 @@ uses synthetic tables in range.
   measured, not proved. On the test inputs the worst kernel uses 3% of it.
 - **The reduce kernels add in another order** than `sumTo`. The exact sum is the same; the
   rounded sum is not.
-- **Not yet WAVEWATCH III's numbers.** The M0 to M2 kernels are those of the reduced physics of
-  `OceanWaves`. W3SBT1 and W3SNL1 are WW3's own formulas, transcribed, but no kernel has been
-  compared with a running WW3. [`PLAN.md`](PLAN.md) has the milestones and checkpoints that
+- **Not yet WAVEWATCH III's numbers, except two routines.** The M0 to M2 kernels are those of
+  the reduced physics of `OceanWaves`. W3SBT1 and W3SNL1 are WW3's own formulas, and their
+  kernels give WW3's numbers bit for bit on three captures of one regression test; that is a
+  measurement on those inputs, not a proof for every input. [`PLAN.md`](PLAN.md) has the milestones and checkpoints that
   lead to WW3, and what "verified against WW3" will mean.
 - **The bisection in float32** takes the same branch as the exact one only when no midpoint is
   within rounding of the root's test. On the test inputs every branch is the same.

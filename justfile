@@ -26,6 +26,7 @@ import? 'just/triangle-grids.just'
 import? 'just/invariants.just'
 import? 'just/prose-check.just'
 import? 'just/ocean-triton.just'
+import? 'just/ww3-replay.just'
 
 # List recipes
 default:
