@@ -13,7 +13,8 @@
 program ww3_capture
   use constants,  only: tpiinv
   use w3gdatmd,   only: w3nmod, w3setg, nk, nth, nspec, nsea, sig, dmin, fachfe, &
-                        kdcon, kdmn, snlc1, snls1, snls2, snls3, sbtc1
+                        kdcon, kdmn, snlc1, snls1, snls2, snls3, sbtc1, &
+                        sdbc1, sdbc2, fdonly
   use w3wdatmd,   only: w3ndat, w3setw, va, time
   use w3adatmd,   only: w3naux, w3seta, nfr, nfrhgh, nfrchg, nspecx, nspecy, &
                         ip11, ip12, ip13, ip14, im11, im12, im13, im14,      &
@@ -103,6 +104,8 @@ program ww3_capture
   call put('SNL', snl); call put('DNL', dnl)
   call put('SBT', sbt); call put('DBT', dbt)
   call put('SDB', sdb); call put('DDB', ddb)
+  ! W3SDB1's constants from mod_def.ww3 (ww3_grid's &SDB1), FDONLY as 1 or 0.
+  call put('sdbconst', [sdbc1, sdbc2, merge(1., 0., fdonly)])
   close (out)
   write (*, '(a, i0, a, es12.4, a, l1)') 'ww3_capture: sea point ', isea, ', depth ', depth, ', lbreak ', lbreak
 

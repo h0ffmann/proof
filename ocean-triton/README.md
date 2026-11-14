@@ -96,18 +96,30 @@ arrays and a lane count per launch. `EmitGather.agda` prints it into [`gather.py
 |---|---|---|
 | `break_scale` (fused) | `WaveTheory.Shoaling.breakScale`: m0 and the scaled spectrum in one launch | `breakScaleK-sound`, `breakScaleK-le` |
 | `ds_fused` (fused) | `OceanWaves.Sources.dsRate`, its three sums included, in one launch | `dsFusedK-sound` |
-| `mesh` (k launches of `mesh_step`) | `WaveTheory.Unstructured.meshRun` on any edge list that fits the rows | `meshK-sound`, `mesh-run`, `mesh-total`, `mesh-nonneg` |
+| `mesh`, `mesh_triangles` (k launches of `mesh_step`) | `WaveTheory.Unstructured.meshRun` on any edge list that fits the rows; the second case is a strip of four triangles | `meshK-sound`, `mesh-run`, `mesh-total`, `mesh-nonneg` |
+| `freq_advect` | `OceanTriton.Freq.freqStep`: upwind advection across the bins, a Courant number per face, closed ends | `freqK-sound`, `freq-total`, `freq-nonneg` |
 | `strang2d` (in `grid.py`) | Strang splitting: half a step in x, one in y, half in x | `strang-run`, `strang-total`, `strang-nonneg` |
 | `w3sbt1_d`, `w3sbt1_s` | WW3's W3SBT1, `w3sbt1md.F90:175-212` | `sbtD-sound`, `sbtS-sound` |
 | `w3snl1` (11 launches) | WW3's W3SNL1 (the DIA), `w3snl1md.F90:335-414`: S and D | `snl1-S`, `snl1-D` |
+| `w3sdb1`, `w3sdb1_fdonly` (in [`sdb.py`](sdb.py)) | WW3's W3SDB1, `w3sdb1md.F90:223-280`, in float64 with a float32 D | `sdb-cbj`, `sdb-D`, `sdb-S` |
 
-The two WW3 routines are read from metocean/WW3 at tag `7.14.mos-92e2cf6`, commit `92e2cf66`;
+The three WW3 routines are read from metocean/WW3 at tag `7.14.mos-92e2cf6`, commit `92e2cf66`;
 each module's header lists the lines. They are transcriptions read by eye and proved against
 the transcription. W3SNL1's CONS and INSNL1's tables are inputs: the theorems hold for every
 value, and the test here uses synthetic tables in range.
 
-Both are also compared with a running WW3 (the W mark of [`PLAN.md`](PLAN.md)):
-[`ww3-replay/`](../ww3-replay/README.md) builds WW3 at the pin, captures the two routines from
+W3SDB1 needs EXP, TANH and DSQRT in double precision, which ℚ has not. `W3SDB1.agda` writes the
+routine over a `Model`, any type with the routine's operations, functions, literals and tests,
+and its kernel as a straight-line program of float64 statements (`Prog`); `sdb-cbj` says, by
+refl, that the program is the routine's CBJ in every model, and `sdb-D`, `sdb-S` that the lanes
+store D = REAL(-CBJ) and S = D A. The printer reads the model as IEEE double: tl.exp, tl.sqrt,
+a tanh built from tl.exp (Triton's CPU interpreter has no libdevice tanh), and float64 literals.
+Its exact values ([`sdb_vectors.json`](sdb_vectors.json)) are the same routine in Agda's Float,
+seven cases that reach every branch; [`check_sdb.py`](check_sdb.py) runs them. Nothing proves a
+property of the functions themselves, so no sign or bound of D is proved.
+
+The three are also compared with a running WW3 (the W mark of [`PLAN.md`](PLAN.md)):
+[`ww3-replay/`](../ww3-replay/README.md) builds WW3 at the pin, captures the three routines from
 the regression test `ww3_ts1` with INSNL1's own tables, and replays the captures through these
 kernels. Their S and D are WW3's bit for bit.
 
@@ -124,8 +136,8 @@ kernels. Their S and D are WW3's bit for bit.
   measured, not proved. On the test inputs the worst kernel uses 3% of it.
 - **The reduce kernels add in another order** than `sumTo`. The exact sum is the same; the
   rounded sum is not.
-- **Not yet WAVEWATCH III's numbers, except two routines.** The M0 to M2 kernels are those of
-  the reduced physics of `OceanWaves`. W3SBT1 and W3SNL1 are WW3's own formulas, and their
+- **Not yet WAVEWATCH III's numbers, except three routines.** The M0 to M2 kernels are those of
+  the reduced physics of `OceanWaves`. W3SBT1, W3SNL1 and W3SDB1 are WW3's own formulas, and their
   kernels give WW3's numbers bit for bit on three captures of one regression test; that is a
   measurement on those inputs, not a proof for every input. [`PLAN.md`](PLAN.md) has the milestones and checkpoints that
   lead to WW3, and what "verified against WW3" will mean.
@@ -138,8 +150,8 @@ kernels. Their S and D are WW3's bit for bit.
 ## Run it
 
 ```bash
-just ocean-triton          # checks/ocean-triton.sh: files current, 21 kernels, 3 programs and 7 gather results agree, self-test
-just ocean-triton-write    # print the six generated files again after a change to the Agda
+just ocean-triton          # checks/ocean-triton.sh: files current, 21 kernels, 3 programs, 9 gather results and 7 W3SDB1 cases agree, self-test
+just ocean-triton-write    # print the eight generated files again after a change to the Agda
 just ocean-triton-cuda     # the same comparison on a CUDA GPU
 ```
 
@@ -147,7 +159,8 @@ just ocean-triton-cuda     # the same comparison on a CUDA GPU
 `nix develop .#triton` for Triton 3.7.1, PyTorch 2.13.0 and NumPy (`nix/triton.nix`). Both
 shells take every version from `flake.lock`. The self-test changes one exact value by 1/1000,
 and one `+` to `-` in `advect`, then the same in a program's result and in `sweep_x`, then a
-point of W3SNL1's S (by a part in 1000), a `+` in `w3snl1_s` and a count above its R, and each
+point of W3SNL1's S (by a part in 1000), a `+` in `w3snl1_s` and a count above its R, then a D of W3SDB1 (by a part in 1000) and a `*`
+printed as `+` in `w3sdb1_fdonly`, and each
 change must fail.
 
 The test inputs reach both branches of every choice. `k h` is on both sides of 3 in the Padé

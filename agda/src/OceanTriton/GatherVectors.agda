@@ -7,7 +7,7 @@
 -- `ocean-triton/check_gather.py` runs the printed Triton on the same inputs and compares.
 --
 -- The inputs reach both branches of every choice: W3SBT1 has bins on both sides of k d = 6 and
--- of c_g k / σ = 1/2; the mesh rows are padded (degree 2 in rows of 3); W3SNL1's UE has the zero
+-- of c_g k / σ = 1/2; the frequency advection has an inflow face and a closed top; the mesh rows are padded (degree 2 in rows of 3); W3SNL1's UE has the zero
 -- rows, the real rows and two tail rows (FACHFE once and twice). Its index tables are synthetic
 -- and in range: the theorems hold for every table, and INSNL1's are data (W3SNL1.agda).
 module OceanTriton.GatherVectors where
@@ -15,7 +15,9 @@ module OceanTriton.GatherVectors where
 open import Data.Fin using (toℕ)
 open import Data.Integer using (+_)
 open import Data.List as L using (List; []; _∷_; upTo)
-open import Data.Nat as ℕ using (ℕ; _*_; _%_)
+open import Data.Nat as ℕ using (ℕ; _*_; _%_; _∸_; _<ᵇ_)
+open import Data.Nat.DivMod using () renaming (_/_ to _div_)
+open import Data.Bool using (if_then_else_)
 open import Data.Nat.Show using () renaming (show to showℕ)
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Rational using (ℚ; 0ℚ; 1ℚ; _/_)
@@ -24,10 +26,11 @@ open import Data.String using (String; _++_; intersperse)
 open import Data.Vec as V using (Vec; []; _∷_; lookup)
 
 open import WaveTheory.Unstructured using (Edge; edge; meshRun)
-open import OceanTriton.Gather using (sg; runG)
+open import OceanTriton.Gather using (sg; runG; ProgramG)
+open import OceanTriton.Freq using (freqStep)
 open import OceanTriton.Shallow using (breakScaleK; dsFusedK)
 open import OceanTriton.W3SBT1 using (Bottom; sbtD; sbtS)
-open import OceanTriton.Mesh using (woutT; winT; srcT)
+open import OceanTriton.Mesh using (woutT; winT; srcT; meshProgram)
 open import OceanTriton.W3SNL1 using (Snl1; module Spec; msk; kofT; cntT; kofST; selfT)
   renaming (srcT to ueSrcT)
 
@@ -135,6 +138,48 @@ meshCase = pcase "mesh"
   where M = wave 5 1
 
 -- ---------------------------------------------------------------------------------------------
+-- A triangle mesh: a strip of four triangles on a 3 × 2 grid of nodes, bottom row 0 1 2, top row
+-- 3 4 5, triangles (0 1 4) (0 4 3) (1 2 5) (1 5 4), with every edge of a triangle directed
+-- downstream of a flow up and to the right: along the rows 1/4, the two diagonals 1/8, the
+-- three verticals 1/16. Nodes 0 and 1 have three edges out, 4 and 5 three edges in, so the rows
+-- of 3 hold them. triangle-grids/ has no mesh file yet, so the mesh is written here.
+
+triangleEdges : List Edge
+triangleEdges =
+  edge 0 1 h ∷ edge 1 2 h ∷ edge 3 4 h ∷ edge 4 5 h ∷
+  edge 0 4 d ∷ edge 1 5 d ∷
+  edge 0 3 v ∷ edge 1 4 v ∷ edge 2 5 v ∷ []
+  where h = + 1 / 4 ; d = + 1 / 8 ; v = + 1 / 16
+
+-- The same program as `mesh`, under its own name, for its own case.
+meshTriangles : ProgramG
+meshTriangles = record (meshProgram 2 2)
+  { name = "mesh_triangles"
+  ; doc = "k upwind steps on a strip of four triangles (WaveTheory.Unstructured.meshRun)" }
+
+private
+  triangleCase : String
+  triangleCase = pcase "mesh_triangles"
+    (("M" , tab 6 M) ∷ ("wout" , tab 18 (woutT 2 triangleEdges)) ∷ ("win" , tab 18 (winT 2 triangleEdges)) ∷ [])
+    (("src" , tab 18 (srcT 2 triangleEdges)) ∷ []) [] (("nodes" , 6) ∷ []) 5
+    (("M" , tab 6 (meshRun triangleEdges 5 M)) ∷ [])
+    where M = wave 3 2
+
+  -- -------------------------------------------------------------------------------------------
+  -- Advection in frequency: NTH = 3, NK = 5, a Courant number per face, the top face closed.
+
+  freqCase : String
+  freqCase = kcase "freq_advect" 15
+    (tab 15 N ∷ tab 6 μ ∷ tab 15 (λ i → if i <ᵇ 3 then 0ℚ else 1ℚ) ∷ [])
+    (tab 15 (λ i → i div 3) ∷ tab 15 (λ i → ℕ.suc (i div 3)) ∷ tab 15 (λ i → i ∸ 3) ∷ []) []
+    (tab 15 (freqStep 3 μ N))
+    where
+    N = wave 7 4
+    μ : ℕ → ℚ
+    μ 5 = 0ℚ
+    μ k = + (k ℕ.+ 2) / 9
+
+-- ---------------------------------------------------------------------------------------------
 -- W3SNL1: NTH = 4, NFR = 3, NFRHGH = 5 (two tail rows); 24 positions of UE and SA, 12 points
 
 snlConfig : Snl1
@@ -183,5 +228,5 @@ snl1Case = pcase "w3snl1"
 
 gatherVectors : String
 gatherVectors =
-  "{\n  \"kernels\": {\n" ++ intersperse ",\n" (breakScaleCase ∷ dsFusedCase ∷ sbtDCase ∷ sbtSCase ∷ []) ++
-  "\n  },\n  \"programs\": {\n" ++ intersperse ",\n" (meshCase ∷ snl1Case ∷ []) ++ "\n  }\n}\n"
+  "{\n  \"kernels\": {\n" ++ intersperse ",\n" (breakScaleCase ∷ dsFusedCase ∷ sbtDCase ∷ sbtSCase ∷ freqCase ∷ []) ++
+  "\n  },\n  \"programs\": {\n" ++ intersperse ",\n" (meshCase ∷ triangleCase ∷ snl1Case ∷ []) ++ "\n  }\n}\n"
