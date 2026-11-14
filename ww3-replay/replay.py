@@ -1,16 +1,16 @@
 """Replay a capture of WAVEWATCH III's routines through the Triton kernels printed from Agda, and
 compare them with the Fortran's own outputs (milestone M5 of ocean-triton/PLAN.md, the W mark).
 
-    python3 ww3-replay/replay.py GATHER.py CAPTURE.txt [--sdb SDB.py] [--bits] [--device cpu|cuda]
+    python3 ww3-replay/replay.py GATHER.py CAPTURE.txt [--sdb SDB.py] [--lanes LANES.py] [--bits] [--device cpu|cuda]
 
-CAPTURE.txt is what ww3-replay/ww3_capture.F90 writes: the inputs of W3SNL1, W3SBT1 and W3SDB1
+CAPTURE.txt is what ww3-replay/ww3_capture.F90 writes: the inputs of W3SNL1, W3SBT1, W3SDB1 and W3SDS4
 at one sea point of a WW3 run, INSNL1's tables, and the three routines' S and D as WW3 computed
 them, every REAL with nine significant digits (it reads back to the same float32).
 
 The Agda programs index the extended arrays of W3SNL1 from 0 (W3SNL1.agda, "Positions"): a
 position p is ISP + NTH - 1, and a table holds positions. This script turns WW3's tables into
 that form and nothing else; the kernels, their launch order and their buffers are the printed
-PROGRAMS and KERNELS of GATHER.py, and W3SDB1's kernel of SDB.py.
+PROGRAMS and KERNELS of GATHER.py, W3SDB1's kernel of SDB.py and W3SDS4's program of LANES.py.
 
 The budget, written down before the first run: a value agrees when
 |triton - ww3| <= ATOL * max|ww3| + RTOL * |ww3|, with ATOL = 1e-6 and RTOL = 1e-5, the
@@ -23,6 +23,8 @@ import argparse
 import importlib.util
 import os
 import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "ocean-triton"))
 
 RTOL = 1e-5
 ATOL = 1e-6
@@ -38,10 +40,17 @@ def read_capture(path):
         name, n = lines[i].split()
         n = int(n)
         vals = lines[i + 1:i + 1 + n]
-        out[name] = [int(v) for v in vals] if name in ("ip", "ic") else [float(v) for v in vals]
+        out[name] = [int(v) for v in vals] if name in ("ip", "ic", "sds4int", "SATI") else [float(v) for v in vals]
         i += 1 + n
     keys = ("nth", "nk", "nspec", "nfr", "nfrhgh", "nfrchg", "nspecx", "nspecy", "isea")
     return dict(zip(keys, dims)), out
+
+
+def load(path, name):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def main() -> int:
@@ -49,6 +58,7 @@ def main() -> int:
     ap.add_argument("gather")
     ap.add_argument("capture")
     ap.add_argument("--sdb", default="ocean-triton/sdb.py", help="the printed W3SDB1 module")
+    ap.add_argument("--lanes", default="ocean-triton/lanes.py", help="the printed lane programs (W3SDS4)")
     ap.add_argument("--bits", action="store_true")
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
     args = ap.parse_args()
@@ -145,9 +155,7 @@ def main() -> int:
     sdbc1, sdbc2, fdonly = c["sdbconst"]
     if sum(c["A"]) < 1e-15:
         raise ValueError("SUM(A) is below THR: W3SDB1 returns early (w3sdb1md.F90:198), which the kernel is not")
-    sdb = importlib.util.spec_from_file_location("ocean_triton_sdb", args.sdb)
-    smod = importlib.util.module_from_spec(sdb)
-    sdb.loader.exec_module(smod)
+    smod = load(args.sdb, "ocean_triton_sdb")
     p = torch.tensor([_emean, _fmean, _wnmean, depth, sdbc1, sdbc2], dtype=torch.float64, device=dev)
     s_out = torch.zeros(nspec, dtype=torch.float32, device=dev)
     d_out = torch.zeros(nspec, dtype=torch.float32, device=dev)
@@ -155,7 +163,27 @@ def main() -> int:
     bad += not compare("W3SDB1 S", s_out.cpu().tolist(), c["SDB"])
     bad += not compare("W3SDB1 D", d_out.cpu().tolist(), c["DDB"])
 
-    print(f"ww3-replay: {6 - bad}/6 outputs of WW3 agree with the printed kernels "
+    # W3SDS4: the program w3sds4 of LANES.py, in the configuration it covers (W3SDS4.agda).
+    ssdsc1, ssdsdth, brfdf, c8, c11, iso = c["sds4case"]
+    if not (ssdsc1 == 1 and ssdsdth < 180 and brfdf == 0 and c8 == 0 and c11 == 0):
+        raise ValueError(f"W3SDS4 is in a configuration the program does not cover: {c['sds4case']}")
+    nsat, ik1, dik = c["sds4int"]
+    lmod = load(args.lanes, "ocean_triton_lanes")
+    fp = dict(zip(("dth", "ssdsbr", "ssdsc2", "ssdsc3", "ssdsc5", "ssdsc6", "ssdsc21", "ssdsp", "ssdsbm0",
+                   "ssdsbm1", "ssdsbm2", "ssdsbm3", "ssdsbm4", "ustar", "usdir", "dair", "grav", "dwat",
+                   "twopi2"), c["sds4const"]))
+    fp["depth"] = depth
+    ip = {"nth": nth, "nk": nk, "nspec": nspec, "nsat": nsat, "ik1": ik1 - 1, "dikcumul": dik,
+          "iso1": 1 if iso == 1 else 0}
+    farrs = {"A": c["A"], "K": c["wn"], "CG": c["cg"], "SIG": c["sig"][:nk], "ECOS": c["ECOS"],
+             "ESIN": c["ESIN"], "SATW": c["SATW"], "CUMULW": c["CUMULW"]}
+    iarrs = {"SATI": [v - 1 for v in c["SATI"]]}
+    import check_lanes  # ocean-triton/check_lanes.py: the launches of a lane program, in order
+    out = check_lanes.run(lmod, "w3sds4", farrs, iarrs, fp, ip, torch, dev)
+    bad += not compare("W3SDS4 S (7 launches)", out["S"].cpu().tolist()[:nspec], c["SDS"])
+    bad += not compare("W3SDS4 D (7 launches)", out["D"].cpu().tolist()[:nspec], c["DDS"])
+
+    print(f"ww3-replay: {8 - bad}/8 outputs of WW3 agree with the printed kernels "
           f"(sea point {d['isea']}, depth {depth} m, {dev}{', interpreter' if dev == 'cpu' else ''})")
     return 1 if bad else 0
 

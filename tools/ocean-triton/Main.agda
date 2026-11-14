@@ -4,7 +4,8 @@
 -- prints, the exact values of `OceanTriton.Vectors`, the 2-D module of `OceanTriton.EmitGrid`,
 -- the values of `OceanTriton.GridVectors`, the gather module of `OceanTriton.EmitGather` and the
 -- values of `OceanTriton.GatherVectors`, and W3SDB1's module and values from
--- `OceanTriton.W3SDB1`, to the eight paths it is given. This file does
+-- `OceanTriton.W3SDB1`, and the lane programs of `OceanTriton.EmitLanes` with their values, to
+-- the ten paths it is given. This file does
 -- output only, so it cannot be --safe (the standard library's IO is not); the kernels,
 -- their soundness theorems, the printer and the values are in agda/src/OceanTriton/, which is
 -- --safe.
@@ -35,6 +36,10 @@ open import OceanTriton.Gather using (KernelG)
 open import OceanTriton.GatherVectors using (gatherVectors; meshTriangles)
 open import OceanTriton.Freq using (freqKernels)
 open import OceanTriton.W3SDB1 using (sdbModule; sdbVectors)
+open import OceanTriton.EmitLanes using (lanesModule; prog)
+open import OceanTriton.LanesVectors using (lanesJson)
+open import OceanTriton.W3SDS4 using (sds4Sig; sds4)
+open import OceanTriton.W3SDS4Vectors using (sds4Cases)
 
 -- The gather kernels: the fused ones, W3SBT1's, the advection in frequency, the mesh step (rows of 3), and W3SNL1's
 -- eleven, with up to 16 tail rows: the R of `ue`, which REP_BOUNDS checks. WW3's grids have fewer
@@ -45,10 +50,11 @@ gather = fusedKernels ++ sbtKernels ++ freqKernels ++ meshK 2 2 ∷ ueK 16 ∷ S
 
 main : Main
 main = run $ getArgs >>= λ where
-  (py ∷ json ∷ gpy ∷ gjson ∷ hpy ∷ hjson ∷ spy ∷ sjson ∷ []) →
+  (py ∷ json ∷ gpy ∷ gjson ∷ hpy ∷ hjson ∷ spy ∷ sjson ∷ lpy ∷ ljson ∷ []) →
     writeFile py (module′ (toList kernels ++ stepKernels ++ m3Kernels) loopKernels) >> writeFile json vectors >>
     writeFile gpy (gridModule kernels2 (programs ++ strang ∷ [])) >> writeFile gjson gridVectors >>
     writeFile hpy (gatherModule gather (meshProgram 2 2 ∷ meshTriangles ∷ snl1 16 ∷ [])) >> writeFile hjson gatherVectors >>
-    writeFile spy sdbModule >> writeFile sjson sdbVectors
-  _ → putStrLn "usage: Main KERNELS.py VECTORS.json GRID.py GRID_VECTORS.json GATHER.py GATHER_VECTORS.json SDB.py SDB_VECTORS.json"
+    writeFile spy sdbModule >> writeFile sjson sdbVectors >>
+    writeFile lpy (lanesModule (prog sds4Sig sds4 ∷ [])) >> writeFile ljson (lanesJson (sds4Cases ∷ []))
+  _ → putStrLn "usage: Main KERNELS.py VECTORS.json GRID.py GRID_VECTORS.json GATHER.py GATHER_VECTORS.json SDB.py SDB_VECTORS.json LANES.py LANES_VECTORS.json"
       >> exitWith (ExitFailure (+ 2))

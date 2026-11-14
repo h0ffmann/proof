@@ -4,12 +4,12 @@
 # 1. WAVEWATCH III at the pin, built by nix/ww3-replay.nix, runs ww3_ts1 in three cases, and
 #    ww3_capture writes captures whose sha256 are those of ww3-replay/captures.sha256 (the run
 #    reproduces, byte for byte);
-# 2. the printed Triton kernels of ocean-triton/gather.py and ocean-triton/sdb.py, run by
-#    Triton's CPU interpreter on each fresh capture, give W3SNL1's, W3SBT1's and W3SDB1's S and D
-#    bit for bit (ww3-replay/replay.py --bits);
-# 3. self-test: a + printed as - in the S kernel of W3SNL1, a sign dropped in W3SDB1's D, and one
-#    captured output of WW3 off by a part in 1000 (and 1e-9), in W3SNL1's S and in W3SDB1's D,
-#    each fail step 2.
+# 2. the printed Triton kernels of ocean-triton/gather.py, sdb.py and lanes.py, run by Triton's
+#    CPU interpreter on each fresh capture, give W3SNL1's, W3SBT1's, W3SDB1's and W3SDS4's S and
+#    D bit for bit (ww3-replay/replay.py --bits);
+# 3. self-test: a + printed as - in the S kernel of W3SNL1, a sign dropped in W3SDB1's D, libmvec's
+#    powf replaced by scalar powf in W3SDS4's DDIAG, and one captured output of WW3 off by a part
+#    in 1000 (and 1e-9), in W3SNL1's S, in W3SDB1's D and in W3SDS4's D, each fail step 2.
 #
 #   checks/ww3-replay.sh            # steps 1 to 3
 #   checks/ww3-replay.sh --write    # run WW3 again and write the captures' hashes into ww3-replay/captures.sha256
@@ -62,4 +62,18 @@ awk 'f && !done { printf "%.9e\n", $1 * 1.001 + 1e-9; done = 1; next } /^DDB / {
 if replay ocean-triton/gather.py "$work/wrong-sdb-capture.txt" > /dev/null; then
   echo "ww3-replay: self-test: a wrong output of W3SDB1 passed" >&2; exit 1
 fi
-echo "ww3-replay: self-test OK (a wrong kernel and a wrong output of WW3 fail, for W3SNL1 and for W3SDB1)"
+# W3SDS4: scalar powf where WW3's -O3 code calls libmvec, the one difference of
+# ww3-replay/README.md's "libmvec"; then a captured D off by a part in 1000.
+sed 's|^_vpow = libmvec.vpowf$|_vpow = libmvec.scalarf|' ocean-triton/lanes.py > "$work/wrong-lanes.py"
+if cmp -s "$work/wrong-lanes.py" ocean-triton/lanes.py; then
+  echo "ww3-replay: self-test: the W3SDS4 mutation did not apply" >&2; exit 1
+fi
+if replay ocean-triton/gather.py "$work/captures/surf.txt" --lanes "$work/wrong-lanes.py" > /dev/null; then
+  echo "ww3-replay: self-test: scalar powf in W3SDS4's DDIAG passed" >&2; exit 1
+fi
+awk 'f && !done { printf "%.9e\n", $1 * 1.001 + 1e-9; done = 1; next } /^DDS / { f = 1 } { print }' \
+  "$work/captures/surf.txt" > "$work/wrong-sds4-capture.txt"
+if replay ocean-triton/gather.py "$work/wrong-sds4-capture.txt" > /dev/null; then
+  echo "ww3-replay: self-test: a wrong output of W3SDS4 passed" >&2; exit 1
+fi
+echo "ww3-replay: self-test OK (a wrong kernel and a wrong output of WW3 fail, for W3SNL1, W3SDB1 and W3SDS4)"

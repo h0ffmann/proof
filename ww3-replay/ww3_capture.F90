@@ -1,4 +1,4 @@
-! Capture the inputs and outputs of WAVEWATCH III's W3SNL1, W3SBT1 and W3SDB1 at the state of a
+! Capture the inputs and outputs of WAVEWATCH III's W3SNL1, W3SBT1, W3SDB1 and W3SDS4 at the state of a
 ! run. The program links WW3's own library, built unchanged at the pinned commit, and calls the
 ! routines as W3SRCE calls them (w3srcemd.F90:1258, :1319, :1337), on the spectrum that ww3_shel
 ! wrote to a restart file:
@@ -14,7 +14,8 @@ program ww3_capture
   use constants,  only: tpiinv
   use w3gdatmd,   only: w3nmod, w3setg, nk, nth, nspec, nsea, sig, dmin, fachfe, &
                         kdcon, kdmn, snlc1, snls1, snls2, snls3, sbtc1, &
-                        sdbc1, sdbc2, fdonly
+                        sdbc1, sdbc2, fdonly, dth, ecos, esin, ssdsbr, ssdsc, ssdsp, ssdsbm, &
+                        ssdsdth, ssdsiso, ssdsbrfdf, satindices, satweights, cumulw
   use w3wdatmd,   only: w3ndat, w3setw, va, time
   use w3adatmd,   only: w3naux, w3seta, nfr, nfrhgh, nfrchg, nspecx, nspecy, &
                         ip11, ip12, ip13, ip14, im11, im12, im13, im14,      &
@@ -33,7 +34,8 @@ program ww3_capture
   use w3snl1md,   only: w3snl1
   use w3sbt1md,   only: w3sbt1
   use w3sdb1md,   only: w3sdb1
-  use w3src4md,   only: w3spr4
+  use w3src4md,   only: w3spr4, w3sds4, dikcumul
+  use constants,  only: grav, dwat, dair, pi
   use w3gdatmd,   only: dw => zb
   implicit none
 
@@ -44,6 +46,8 @@ program ww3_capture
   logical :: lbreak
   logical, allocatable :: llws(:)
   real, allocatable :: a(:), wn(:), cg(:), snl(:), dnl(:), sbt(:), dbt(:), sdb(:), ddb(:)
+  real, allocatable :: sds(:), dds(:), brlambda(:)
+  real    :: whitecap(4)
   character(len=16) :: arg
 
   call w3nmod(1, 6, 6); call w3setg(1, 6, 6)
@@ -80,6 +84,11 @@ program ww3_capture
   call w3snl1(a, cg, wnmean*depth, snl, dnl)
   call w3sbt1(a, cg, wn, depth, sbt, dbt)
   call w3sdb1(1, a, depth, emean, fmean, wnmean, cg, lbreak, sdb, ddb)
+  ! W3SDS4 as W3SRCE calls it (w3srcemd.F90:1298), with USTAR and USDIR of the W3SPR4 call above
+  ! (no wind); in the configuration of ww3_ts1 they reach S and D only through SSDSC(5) = 0.
+  allocate (sds(nspec), dds(nspec), brlambda(nspec))
+  whitecap = 0.
+  call w3sds4(a, wn, cg, ustar, usdir, depth, dair, sds, dds, 1, 1, brlambda, whitecap, dlwmean)
 
   ! CONS of W3SNL1 (w3snl1md.F90:324-326), which the kernels take as data.
   x    = max(kdcon*wnmean*depth, kdmn)
@@ -106,6 +115,18 @@ program ww3_capture
   call put('SDB', sdb); call put('DDB', ddb)
   ! W3SDB1's constants from mod_def.ww3 (ww3_grid's &SDB1), FDONLY as 1 or 0.
   call put('sdbconst', [sdbc1, sdbc2, merge(1., 0., fdonly)])
+  ! W3SDS4: its constants, the switches of the configuration the program covers, INSIN4's tables.
+  call put('sds4const', [dth, ssdsbr, ssdsc(2), ssdsc(3), ssdsc(5), ssdsc(6), ssdsc(21), ssdsp, &
+                         ssdsbm(0), ssdsbm(1), ssdsbm(2), ssdsbm(3), ssdsbm(4), ustar, usdir, &
+                         dair, grav, dwat, 2.*pi**2.])
+  call put('sds4case', [ssdsc(1), ssdsdth, real(ssdsbrfdf), ssdsc(8), ssdsc(11), real(ssdsiso)])
+  ! IK1 = 1 without the switch IG1 (w3src4md.F90:2055), which ww3_ts1 does not have.
+  call puti('sds4int', [size(satindices, 1), 1, dikcumul])
+  call put('ECOS', ecos(1:nth)); call put('ESIN', esin(1:nth))
+  call put('SATW', reshape(satweights, [size(satweights)]))
+  call puti('SATI', reshape(satindices, [size(satindices)]))
+  call put('CUMULW', reshape(cumulw, [size(cumulw)]))
+  call put('SDS', sds); call put('DDS', dds)
   close (out)
   write (*, '(a, i0, a, es12.4, a, l1)') 'ww3_capture: sea point ', isea, ', depth ', depth, ', lbreak ', lbreak
 

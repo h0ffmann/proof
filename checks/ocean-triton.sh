@@ -5,17 +5,20 @@
 #    (the kernels, their soundness theorems and the printer are --safe Agda in
 #    agda/src/OceanTriton/, which checks/agda.sh type-checks);
 # 2. ocean-triton/kernels.py, vectors.json, grid.py, grid_vectors.json, gather.py,
-#    gather_vectors.json, sdb.py and sdb_vectors.json are what the Agda prints now;
+#    gather_vectors.json, sdb.py, sdb_vectors.json, lanes.py and lanes_vectors.json are what
+#    the Agda prints now;
 # 3. the printed kernels, run by Triton (its CPU interpreter, `nix develop .#triton`), agree
 #    with the exact values within the float32 budget of ocean-triton/check.py, and so do the
 #    printed launch programs of milestone M2 (ocean-triton/check_grid.py), and so do the
 #    gather kernels and programs of M3 and M4, W3SBT1 and W3SNL1 among them
-#    (ocean-triton/check_gather.py), and so does W3SDB1 in float64 (ocean-triton/check_sdb.py);
+#    (ocean-triton/check_gather.py), and so does W3SDB1 in float64 (ocean-triton/check_sdb.py),
+#    and so do the lane programs of ST4, W3SDS4 first (ocean-triton/check_lanes.py), whose
+#    libmvec powf equals the library's bits (ocean-triton/libmvec.py --self-test);
 # 4. self-test: a wrong exact value and a wrong operator in a kernel both fail step 3, for the
 #    kernels, for the programs and for the gather module, and so does a count above its R.
 #
 #   checks/ocean-triton.sh            # steps 1 to 4
-#   checks/ocean-triton.sh --write    # print the eight files again into ocean-triton/
+#   checks/ocean-triton.sh --write    # print the ten files again into ocean-triton/
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -26,9 +29,10 @@ fi
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
-files="kernels.py vectors.json grid.py grid_vectors.json gather.py gather_vectors.json sdb.py sdb_vectors.json"
+files="kernels.py vectors.json grid.py grid_vectors.json gather.py gather_vectors.json sdb.py sdb_vectors.json lanes.py lanes_vectors.json"
 tools/ocean-triton/run.sh "$work/kernels.py" "$work/vectors.json" "$work/grid.py" "$work/grid_vectors.json" \
-  "$work/gather.py" "$work/gather_vectors.json" "$work/sdb.py" "$work/sdb_vectors.json"
+  "$work/gather.py" "$work/gather_vectors.json" "$work/sdb.py" "$work/sdb_vectors.json" \
+  "$work/lanes.py" "$work/lanes_vectors.json"
 
 if [ "${1:-}" = "--write" ]; then
   for f in $files; do cp "$work/$f" ocean-triton/; done
@@ -50,11 +54,14 @@ triton() { py ocean-triton/check.py "$@"; }
 grid() { py ocean-triton/check_grid.py "$@"; }
 gather() { py ocean-triton/check_gather.py "$@"; }
 sdb() { py ocean-triton/check_sdb.py "$@"; }
+lanes() { py ocean-triton/check_lanes.py "$@"; }
 
 triton ocean-triton/kernels.py ocean-triton/vectors.json
 grid ocean-triton/grid.py ocean-triton/grid_vectors.json
 gather ocean-triton/gather.py ocean-triton/gather_vectors.json
 sdb ocean-triton/sdb.py ocean-triton/sdb_vectors.json
+py ocean-triton/libmvec.py --self-test
+lanes ocean-triton/lanes.py ocean-triton/lanes_vectors.json
 
 # Self-test: an exact value off by 1/1000, then a + printed as - in the upwind kernel.
 py - "$work/vectors.json" "$work/wrong-value.json" <<'PY'
@@ -146,4 +153,24 @@ fi
 if sdb "$work/wrong-sdb.py" ocean-triton/sdb_vectors.json > /dev/null; then
   echo "ocean-triton: self-test: a wrong W3SDB1 kernel passed" >&2; exit 1
 fi
-echo "ocean-triton: self-test OK (a wrong value and a wrong kernel fail, for kernels, programs, gathers and W3SDB1; a count above R fails)"
+# The same for the lane programs: a point of W3SDS4's D off by a part in 1000, and the * of
+# SRHS = DDIAG A printed as +.
+py - "$work/lanes_vectors.json" "$work/wrong-lanes-value.json" <<'PY'
+import json, sys
+c = json.load(open(sys.argv[1]))
+e = c["w3sds4"][0]["expected"]["D"]
+e[9] = repr(float(e[9]) * 1.001)
+json.dump(c, open(sys.argv[2], "w"))
+PY
+if lanes ocean-triton/lanes.py "$work/wrong-lanes-value.json" > /dev/null; then
+  echo "ocean-triton: self-test: a wrong exact value of W3SDS4 passed" >&2; exit 1
+fi
+sed '/^def w3sds4_s1(/,/tl.store/s|(tl.load(D1_ptr + (i) + z, mask=m, other=0.0) \* |(tl.load(D1_ptr + (i) + z, mask=m, other=0.0) + |' \
+  ocean-triton/lanes.py > "$work/wrong-lanes.py"
+if cmp -s "$work/wrong-lanes.py" ocean-triton/lanes.py; then
+  echo "ocean-triton: self-test: the W3SDS4 kernel mutation did not apply" >&2; exit 1
+fi
+if lanes "$work/wrong-lanes.py" ocean-triton/lanes_vectors.json > /dev/null; then
+  echo "ocean-triton: self-test: a wrong W3SDS4 kernel passed" >&2; exit 1
+fi
+echo "ocean-triton: self-test OK (a wrong value and a wrong kernel fail, for kernels, programs, gathers, W3SDB1 and W3SDS4; a count above R fails)"

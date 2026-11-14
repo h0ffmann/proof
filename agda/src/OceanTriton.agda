@@ -27,3 +27,8 @@ import OceanTriton.EmitGather
 import OceanTriton.GatherVectors
 import OceanTriton.Freq
 import OceanTriton.W3SDB1
+import OceanTriton.Lanes
+import OceanTriton.EmitLanes
+import OceanTriton.LanesVectors
+import OceanTriton.W3SDS4
+import OceanTriton.W3SDS4Vectors
