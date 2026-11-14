@@ -92,7 +92,7 @@ def w3snl1_ue(A_ptr, sig_ptr, cg_ptr, msk_ptr, src_ptr, kof_ptr, cnt_ptr, tpiinv
     """UE, the action density over CONX on the extended grid (w3snl1md.F90:335-359)."""
     i = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
     m = i < n
-    tl.store(out_ptr + i, (tl.load(msk_ptr + i, mask=m, other=0.0) * _rep(_div0(tl.load(A_ptr + tl.load(src_ptr + i, mask=m, other=0), mask=m, other=0.0), (_div0(tpiinv, tl.load(sig_ptr + tl.load(kof_ptr + i, mask=m, other=0), mask=m, other=0.0)) * tl.load(cg_ptr + tl.load(kof_ptr + i, mask=m, other=0), mask=m, other=0.0))), fachfe, tl.load(cnt_ptr + i, mask=m, other=0), 2)), mask=m)
+    tl.store(out_ptr + i, (tl.load(msk_ptr + i, mask=m, other=0.0) * _rep(_div0(tl.load(A_ptr + tl.load(src_ptr + i, mask=m, other=0), mask=m, other=0.0), (_div0(tpiinv, tl.load(sig_ptr + tl.load(kof_ptr + i, mask=m, other=0), mask=m, other=0.0)) * tl.load(cg_ptr + tl.load(kof_ptr + i, mask=m, other=0), mask=m, other=0.0))), fachfe, tl.load(cnt_ptr + i, mask=m, other=0), 16)), mask=m)
 
 
 @triton.jit
@@ -197,7 +197,7 @@ KERNELS = {
 
 # kernel: ((index array, R), ...): every count a rep reads there must be at most its R
 REP_BOUNDS = {
-    "w3snl1_ue": ((2, 2),),
+    "w3snl1_ue": ((2, 16),),
 }
 
 # name: (buffers, index arrays, parameters, lane counts,

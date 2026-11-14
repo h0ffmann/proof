@@ -24,9 +24,9 @@ step, but not WW3's numbers. Milestone M4 replaces it, routine by routine.
 | M0 The kernels of one reduced step | done | 12 of 12 | 12 of 12 (CPU interpreter) | 0 |
 | M1 The step without host-side physics | done | 6 of 6 | 6 of 6 (CPU interpreter) | 0 |
 | M2 Space: 2-D propagation and the time loop | done (step 4 in M3) | 2 programs (5 kernels) | 2 programs (CPU interpreter) | 0 |
-| M3 Spectral space and other grids | done in this change, except steps 2b and 3b | 5 kernels, 2 programs | 5 kernels, 2 programs (CPU interpreter) | 0 |
-| M4 WW3's own source terms | W3SBT1 and W3SNL1 done in this change; ST4 and W3SRCE open | 2 routines (2 + 11 kernels) | 2 routines (CPU interpreter) | 0 |
-| M5 Verification against WW3 | planned | — | — | 0 |
+| M3 Spectral space and other grids | done, except steps 2b and 3b | 5 kernels, 2 programs | 5 kernels, 2 programs (CPU interpreter) | 0 |
+| M4 WW3's own source terms | W3SBT1 and W3SNL1 done; W3SDB1, ST4 and W3SRCE open | 2 routines (2 + 11 kernels) | 2 routines (CPU interpreter) | 2 routines (M5) |
+| M5 Verification against WW3 | steps 1 to 3 done in this change for W3SNL1 and W3SBT1; step 4 open | — | — | W3SNL1, W3SBT1: bit for bit on 3 captures |
 | M6 GPU runs and timing | planned | — | 0 on a GPU | — |
 
 ## M0: the kernels of one reduced step (done)
@@ -181,6 +181,20 @@ A routine gets W only through numbers from a running WW3:
 
 Checkpoints: one W row per routine in the status table, with the capture and the command that
 replays it.
+
+Done in this change ([`ww3-replay/`](../ww3-replay/README.md), `just ww3-replay`):
+
+- [x] 1. `nix/ww3-replay.nix` builds WW3 at the pin with its own CMake, unchanged, with the switch
+  of `ww3_ts1` (`ST4 NL1 BT1 DB1`).
+- [x] 2. `ww3_capture.F90` links that build's library and calls W3SNL1, W3SBT1 and W3SDB1 as
+  W3SRCE does, on the spectrum of a restart that `ww3_shel` wrote, with INSNL1's own tables.
+  Three cases of `ww3_ts1`: 2500 m (the test as it is), 6 m, and 2 m with breaking. Nothing in WW3
+  is changed or printed from inside; the run reproduces the captures byte for byte.
+- [x] 3. W: the printed Triton kernels give W3SNL1's S and D (eleven launches) and W3SBT1's S
+  and D **bit for bit**, 864 values each, on all three captures (Triton's CPU interpreter). The
+  budget was written before the first run; no value needed it.
+- [ ] W3SDB1: captured (the surf case breaks), not replayed, since no kernel exists for it yet.
+- [ ] 4. The whole step against a regression test. Open: it needs ST4 and W3SRCE.
 
 ## M6: GPU runs and timing
 
