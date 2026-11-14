@@ -2,7 +2,7 @@
 # Build tools/ocean-triton/ with `agda --compile` (Agda's GHC backend) and write the Triton
 # module and the exact test values, from the repository root:
 #
-#   tools/ocean-triton/run.sh KERNELS.py VECTORS.json
+#   tools/ocean-triton/run.sh KERNELS.py VECTORS.json GRID.py GRID_VECTORS.json
 #
 # Outside its shell it enters `nix develop .#agda` (nix/agda.nix): the Agda wrapper there calls
 # the GHC of the same locked nixpkgs, so every version comes from flake.lock. The binary is built

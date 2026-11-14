@@ -22,8 +22,8 @@ step, but not WW3's numbers. Milestone M4 replaces it, routine by routine.
 | Milestone | State | P | T | W |
 |---|---|---|---|---|
 | M0 The kernels of one reduced step | done | 12 of 12 | 12 of 12 (CPU interpreter) | 0 |
-| M1 The step without host-side physics | done in this change | 6 of 6 | 6 of 6 (CPU interpreter) | 0 |
-| M2 Space: 2-D propagation and the time loop | next | 0 | 0 | 0 |
+| M1 The step without host-side physics | done | 6 of 6 | 6 of 6 (CPU interpreter) | 0 |
+| M2 Space: 2-D propagation and the time loop | done in this change, except step 4 | 2 programs (5 kernels) | 2 programs (CPU interpreter) | 0 |
 | M3 Spectral space and other grids | planned | 0 | 0 | 0 |
 | M4 WW3's own source terms | planned | 0 | 0 | 0 |
 | M5 Verification against WW3 | planned | — | — | 0 |
@@ -40,7 +40,7 @@ Checkpoints:
 - [x] P, T: `lin_step`, `euler_step`, `source_step` (the limiter).
 - [ ] W: none. The formulas are the reduced ones above.
 
-## M1: the step without host-side physics (done in this change)
+## M1: the step without host-side physics (done)
 
 Before M1, the host had to compute S_nl and the wavenumber. Now each has a kernel.
 
@@ -57,26 +57,36 @@ Before M1, the host had to compute S_nl and the wavenumber. Now each has a kerne
 - [x] T: all six agree with the exact values on 40 lanes (20 bisection steps).
 - [ ] W: none.
 
-## M2: space (next)
+## M2: space (done in this change, except step 4)
 
 Goal: one full time step of a 2-D regular grid on the device, with the host only launching
 kernels.
 
-1. A 2-D read in `Expr`: `at2 a dx dy` reads `a[(x + dx) mod nx, (y + dy) mod ny]` on a periodic
-   grid. Lanes are cells, `x = i mod nx`, `y = i / nx`.
-   - Checkpoint P: `sweepX`, `sweepY` of `WaveTheory.Propagation2D` as kernels, proved equal;
-     `run2D-total`, `run2D-nonneg` and `run2D-le` restated for their meaning.
-   - Checkpoint T: a pulse on a 9 × 7 grid; the total in float32 within the budget.
-2. A spectral dimension: one lane per (cell, bin); the bin's Courant number from `advect_cg`.
-3. The chain of launches. A host script cannot be proved, so the chain is written in Agda as a
-   list of kernel launches (`Program`), with a meaning that runs them in order.
-   - Checkpoint P: the meaning of the program for one step equals `OceanWaves.ActionBalance.step`;
-     for k steps, `WaveTheory.TimeLoop.run`. So `run-nonneg` and `run-total-le` hold for it.
-   - Checkpoint T: `check.py` runs the program, not single kernels.
-4. Checkpoint T: the fused whitecapping (the three reductions, then `ds_rate`) in one launch with
-   a block reduction, compared with the three-launch form.
-
-Risk: a periodic 2-D read in Agda needs `mod` on ℕ, whose proofs are longer than `refl`.
+1. A 2-D read: `OceanTriton.Grid.Expr2`, one lane per cell, `x = i % nx`, `y = i // nx`. The
+   periodic reads `west` and `south` are the upstream values of `advectPeriodic`, so no `mod`
+   on ℕ enters a proof (the risk named in the first version of this plan).
+   - [x] P: `sweep_x`, `sweep_y` equal `sweepX`, `sweepY` by `refl` (`sweepXK-sound`,
+     `sweepYK-sound`); `run2D-total`, `run2D-nonneg` and `run2D-le` restated for the program's
+     meaning (`prop2D-total`, `prop2D-nonneg`, `prop2D-le`).
+   - [x] T: a 9 × 7 grid, 3 runs with cx = 2/5 and cy = 1/3: every cell and the total in
+     float32 within the budget.
+2. A spectral dimension: y is the bin j, so one lane per (cell, bin). `propagate` reads each
+   bin's Courant number from a buffer that the host fills once with `ActionBalance.μ`.
+   - [x] P, T: inside the model program below.
+3. The chain of launches: `Program`, a list of launches on named buffers, with a meaning that
+   runs them in order (`steps`) and k times (`repeat`).
+   - [x] P: `model-step`: the meaning of the program `propagate`, `exchange`, `sources` is
+     `OceanWaves.ActionBalance.step` at every cell and bin. `model-run`: for k runs it is
+     `WaveTheory.TimeLoop.run`. So `run-nonneg` holds for it (`model-nonneg`). `prop2D-run`: the
+     2-D program run k times is `run2D`, as an equality of fields.
+   - [x] T: `check_grid.py` runs the programs (each launch into a fresh buffer), not single
+     kernels: `model` on 5 cells and 6 bins, 2 runs, with the limiter at both bounds.
+   - Scope: the model's rates are per bin and the exchange amount is κ N (`ModelConfig`), a
+     special case of `StepConfig`, whose rates are functions of the local spectrum.
+     `run-total-le` is not restated: its hypotheses are about `TimeLoop`'s own terms, and
+     `model-run` carries them over pointwise.
+4. [ ] T: the fused whitecapping (the three reductions, then `ds_rate`) in one launch with a
+   block reduction, compared with the three-launch form. Not done; it moves to M3.
 
 ## M3: spectral space and other grids
 
@@ -92,6 +102,8 @@ Risk: a periodic 2-D read in Agda needs `mod` on ℕ, whose proofs are longer th
      `triangle-grids/`.
 3. Advection in θ and k with their own Courant numbers, from `WaveTheory.Splitting` (Lie and
    Strang orders).
+4. From M2: the fused whitecapping (the three reductions, then `ds_rate`) in one launch with a
+   block reduction. Checkpoint T: compared with the three-launch form.
 
 ## M4: WW3's own source terms
 
