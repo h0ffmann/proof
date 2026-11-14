@@ -13,11 +13,13 @@ have. So the kernels go through a small language instead:
 
 1. `agda/src/OceanTriton/Expr.agda` defines `Expr`, the expressions of a kernel: array reads at
    lane `i + k`, the upwind read (`upstream`), scalars, constants, `+ - *`, negation, the total
-   division `/₀`, `⊔`, `⊓` and a choice on `x ≤ y`. `eval` gives each expression its exact
-   meaning over `ℚ`. A `map` kernel writes one value per lane; a `reduce` kernel writes the sum
-   over the lanes, as `sumTo` does.
-2. `agda/src/OceanTriton/Kernels.agda` writes 12 kernels in `Expr` and proves, for every input,
-   that the meaning of each one is the `OceanWaves` kernel. Most proofs are `refl`. So the
+   division `/₀`, `⊔`, `⊓`, a choice on `x ≤ y` or `x < y`, and a read of a neighbour bin gated
+   to the interior. `eval` gives each expression its exact meaning over `ℚ`. A `map` kernel
+   writes one value per lane; a `reduce` kernel writes the sum over the lanes, as `sumTo` does;
+   a loop kernel keeps two registers per lane for a fixed number of steps.
+2. `agda/src/OceanTriton/Kernels.agda` and `Step.agda` write 18 kernels in `Expr` and prove,
+   for every input, that the meaning of each one is the `OceanWaves` or `WaveTheory` kernel. Most proofs are
+   `refl`; the stencil of S_nl and the bisection loop are proved by sums and by induction. So the
    theorems of `OceanWaves` hold for the meaning of the printed code; positivity of the upwind
    step, of the wind input and of the source step are restated there.
 3. `agda/src/OceanTriton/Emit.agda` prints each kernel as a `@triton.jit` function.
@@ -45,6 +47,10 @@ the two files, the same exception as `tools/prose-check/Main.agda`.
 | `lin_step` | map | `Sources.linStep` | `linStepK-sound` |
 | `euler_step` | map | `Sources.eulerStep` | `eulerK-sound` |
 | `source_step` | map | `Sources.sourceStep` (limiter included) | `sourceK-sound`, `sourceK-nonneg` |
+| `snl` | map | `Sources.snl` (quadruplet transfer) as a three-point stencil | `snl-stencil`, `snlK-sound`, `snlK-conserves` |
+| `source_step_snl` | map | `Sources.sourceStep` with S_nl computed in the kernel | `sourceSnlK-sound` |
+| `wavenumber` | loop | `Bisection.waveNumber` (Padé tanh), for every number of steps | `wavenumberK-sound` |
+| `sxx`, `sxy`, `syy` | map | `WaveTheory.RadiationStress` (the WW3 output fields SXX, SXY, SYY) | `sxxK-sound`, `sxyK-sound`, `syyK-sound`, `stressK-trace` |
 
 `dsK-sound` states the whole whitecapping chain: the three reduce kernels, then `ds_rate`, give
 `dsRate P S i` for every spectrum `S`.
@@ -59,9 +65,11 @@ the two files, the same exception as `tools/prose-check/Main.agda`.
   measured, not proved. On the test inputs the worst kernel uses 3% of it.
 - **The reduce kernels add in another order** than `sumTo`. The exact sum is the same; the
   rounded sum is not.
-- **Not every kernel.** `snl` (the quadruplet transfer) is a sum over all bins for each bin;
-  `source_step` takes its values as an input array, and no kernel computes them yet. The
-  bisection of the wavenumber is a loop with a decision per step and is not printed either.
+- **Not WAVEWATCH III's numbers.** The kernels are those of the reduced physics of
+  `OceanWaves`, not WW3's routines. [`PLAN.md`](PLAN.md) has the milestones and checkpoints
+  that lead to WW3, and what "verified against WW3" will mean.
+- **The bisection in float32** takes the same branch as the exact one only when no midpoint is
+  within rounding of the root's test. On the test inputs every branch is the same.
 - **No GPU run here.** `just ocean-triton` runs Triton's interpreter on the CPU, which executes
   the same kernel source with NumPy. `just ocean-triton-cuda` runs on a CUDA device; it has not
   run yet.
@@ -69,7 +77,7 @@ the two files, the same exception as `tools/prose-check/Main.agda`.
 ## Run it
 
 ```bash
-just ocean-triton          # checks/ocean-triton.sh: files current, 12 kernels agree, self-test
+just ocean-triton          # checks/ocean-triton.sh: files current, 18 kernels agree, self-test
 just ocean-triton-write    # print kernels.py and vectors.json again after a change to the Agda
 just ocean-triton-cuda     # the same comparison on a CUDA GPU
 ```

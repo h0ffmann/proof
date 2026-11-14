@@ -7,5 +7,6 @@ module OceanTriton where
 
 import OceanTriton.Expr
 import OceanTriton.Kernels
+import OceanTriton.Step
 import OceanTriton.Emit
 import OceanTriton.Vectors

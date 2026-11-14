@@ -23,7 +23,7 @@ fi
 export LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 bin="$here/build/Main"
-if [ ! -x "$bin" ] || [ -n "$(find "$here/Main.agda" agda/src/OceanTriton agda/src/OceanWaves \
+if [ ! -x "$bin" ] || [ -n "$(find "$here/Main.agda" agda/src/OceanTriton agda/src/OceanWaves agda/src/WaveTheory \
     -name '*.agda' -newer "$bin")" ]; then
   mkdir -p "$here/build"
   (cd "$here" && agda --compile --compile-dir=build Main.agda) > "$here/build/agda.log" 2>&1 \
