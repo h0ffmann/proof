@@ -23,9 +23,9 @@ step, but not WW3's numbers. Milestone M4 replaces it, routine by routine.
 |---|---|---|---|---|
 | M0 The kernels of one reduced step | done | 12 of 12 | 12 of 12 (CPU interpreter) | 0 |
 | M1 The step without host-side physics | done | 6 of 6 | 6 of 6 (CPU interpreter) | 0 |
-| M2 Space: 2-D propagation and the time loop | done in this change, except step 4 | 2 programs (5 kernels) | 2 programs (CPU interpreter) | 0 |
-| M3 Spectral space and other grids | planned | 0 | 0 | 0 |
-| M4 WW3's own source terms | planned | 0 | 0 | 0 |
+| M2 Space: 2-D propagation and the time loop | done (step 4 in M3) | 2 programs (5 kernels) | 2 programs (CPU interpreter) | 0 |
+| M3 Spectral space and other grids | done in this change, except steps 2b and 3b | 5 kernels, 2 programs | 5 kernels, 2 programs (CPU interpreter) | 0 |
+| M4 WW3's own source terms | W3SBT1 and W3SNL1 done in this change; ST4 and W3SRCE open | 2 routines (2 + 11 kernels) | 2 routines (CPU interpreter) | 0 |
 | M5 Verification against WW3 | planned | — | — | 0 |
 | M6 GPU runs and timing | planned | — | 0 on a GPU | — |
 
@@ -57,7 +57,7 @@ Before M1, the host had to compute S_nl and the wavenumber. Now each has a kerne
 - [x] T: all six agree with the exact values on 40 lanes (20 bisection steps).
 - [ ] W: none.
 
-## M2: space (done in this change, except step 4)
+## M2: space (done; step 4 done in M3)
 
 Goal: one full time step of a 2-D regular grid on the device, with the host only launching
 kernels.
@@ -85,25 +85,40 @@ kernels.
      special case of `StepConfig`, whose rates are functions of the local spectrum.
      `run-total-le` is not restated: its hypotheses are about `TimeLoop`'s own terms, and
      `model-run` carries them over pointwise.
-4. [ ] T: the fused whitecapping (the three reductions, then `ds_rate`) in one launch with a
-   block reduction, compared with the three-launch form. Not done; it moves to M3.
+4. [x] The fused whitecapping in one launch: done in M3, step 4.
 
-## M3: spectral space and other grids
+## M3: spectral space and other grids (done in this change, except 2b and 3b)
 
-1. Refraction and shoaling: `WaveTheory.Refraction` (Snell, k sin θ kept) and
-   `WaveTheory.Shoaling` (energy flux kept, depth-limited breaking `breakCap`, `breakScale`).
-   Checkpoints P and T per kernel; WW3 turns refraction into advection in θ (its `W3KTP` routines, not yet read at a pin), so step 3
-   below adds that form.
-2. Unstructured grids (`WaveTheory.Unstructured`): a step on a triangle mesh as a gather over
-   each node's incoming edges, from a compressed edge list sorted by target node. A gather keeps
-   the order of the sum fixed; a scatter with atomics would not.
-   - Checkpoint P: the gather equals `meshStep` for every mesh; `meshStep-total` restated.
-   - Checkpoint T: the two-triangle mesh of `WaveTheory.GridExamples`, then a mesh of
-     `triangle-grids/`.
-3. Advection in θ and k with their own Courant numbers, from `WaveTheory.Splitting` (Lie and
-   Strang orders).
-4. From M2: the fused whitecapping (the three reductions, then `ds_rate`) in one launch with a
-   block reduction. Checkpoint T: compared with the three-launch form.
+A new kernel language, `OceanTriton.Gather`, adds what M0's `Expr` cannot say: a read through
+an index array (`gat`), a padded row of an edge list (`rowW`, `rowG`), a product repeated a
+per-lane number of times (`rep`, for W3SNL1's tail), and sums over the lanes computed in the
+same launch (a fused kernel). Its programs (`ProgramG`) carry index arrays and lane counts per
+launch. `OceanTriton.EmitGather` prints it to `gather.py`; `check_gather.py` runs it.
+
+1. Refraction and shoaling (`OceanTriton.Shallow`).
+   - [x] P: `snell`, `shoal`, `break_cap` equal `WaveTheory.Refraction.snell`,
+     `WaveTheory.Shoaling.shoal` and `breakCap` by `refl`; `shoalK-flux` (energy flux kept) and
+     `breakCapK-le` restated for the kernels.
+   - [x] T: 40 lanes each in `kernels.py`, the cap active on some lanes and not on others.
+   - WW3 turns refraction into advection in θ (its `W3KTP` routines, not yet read at a pin);
+     step 3 gives the split form that such an advection enters.
+2. Unstructured grids (`OceanTriton.Mesh`): a step on a mesh as a gather over each node's
+   padded rows of outgoing fractions and incoming edges. A gather keeps the order of the sum
+   fixed; a scatter with atomics would not.
+   - [x] P: `meshK-sound`: the kernel is `meshStep` for every edge list whose degrees fit the
+     rows (`MaxDeg`); `mesh-run`: k launches are `meshRun`; `mesh-total` and `mesh-nonneg`
+     restated.
+   - [x] T: a 6-node mesh (a ring and three chords, rows of 3 with padding), 4 steps.
+   - [ ] 2b. T on a mesh of `triangle-grids/`. Open.
+3. Splitting (`OceanTriton.Shallow`, `strang`): half a step in x, a step in y (θ), half a step
+   in x, as a program of three launches.
+   - [x] P: `strang-run`: k runs are `strangRun`; `strang-total`, `strang-nonneg`.
+   - [x] T: an 8 × 5 grid, 2 runs, in `grid.py`.
+   - [ ] 3b. Advection in k with its own Courant numbers. Open.
+4. Fused reductions (from M2): each sum in a loop over the lanes, then every lane, in one launch.
+   - [x] P: `dsFusedK-sound`: `ds_fused` is `OceanWaves.Sources.dsRate`, its three sums
+     included, by `refl`; `breakScaleK-sound` and `breakScaleK-le` for `break_scale`.
+   - [x] T: 20 lanes each. The sums run in float32 in Triton's order, inside the budget.
 
 ## M4: WW3's own source terms
 
@@ -111,16 +126,33 @@ This is where the specification changes from the reduced physics to WW3's. For e
 read `model/src/<file>.F90` at a pinned WW3 commit, transcribe it into Agda under `--safe`,
 cite file and line, then write the kernel and its proof as in M0.
 
+The pin: metocean/WW3, tag `7.14.mos-92e2cf6`, commit `92e2cf66af6e15ae80eb12562f2b05d4a2d75df5`.
+Each module's header lists the lines it transcribes.
+
 Order (most of a WW3 step's run time first, to be measured with a profile at the pin):
 
-1. `W3SNL1`, the DIA: the quartets of `WaveTheory.Quadruplets` and the off-grid weights of
-   `WaveTheory.Interpolation`, on WW3's geometric frequency grid
-   (`WaveTheory.SpectralGrid`). Checkpoint P: action kept (`apply-action`) for the printed
-   kernel; energy kept only on resonant quartets.
-2. `W3SIN4` and `W3SDS4` (ST4 input and dissipation).
-3. `W3SRCE`'s integration: the dynamic time step and the limiter as WW3 writes them, with the
-   sub-steps of `WaveTheory.Splitting`.
-4. Depth-induced breaking and bottom friction, as `Shoaling` and new modules.
+1. `W3SNL1`, the DIA (`OceanTriton.W3SNL1`, from `w3snl1md.F90:335-414`): UE on the extended
+   grid with its zero rows and its tail (`FACHFE`), the eight arrays SA1 … DA2M at every
+   position, then S and D by the IC tables; eleven launches in the order of the Fortran's loops.
+   CONS (`:324-326`, it needs `EXP`) and INSNL1's tables (`:467-770`) are data.
+   - [x] P: `snl1-S`, `snl1-D`: the program's S and D are the routine's at every point, for
+     every input and every table. The tail is a `rep` whose count is at most the number of tail
+     rows (`ue-closed`).
+   - [x] T: NTH = 4, NFR = 3, two tail rows, 24 positions, 12 points, synthetic tables in range.
+   - [ ] T with INSNL1's own tables, and the action and energy properties of the quartets
+     (`WaveTheory.Quadruplets`) restated for this form. Open.
+2. [ ] `W3SIN4` and `W3SDS4` (ST4 input and dissipation). Open: they need `exp`, `log`, `tanh`
+   and `sqrt` (below).
+3. [ ] `W3SRCE`'s integration: the dynamic time step and the limiter as WW3 writes them, with
+   the sub-steps of `WaveTheory.Splitting`. Open.
+4. Bottom friction and depth-induced breaking.
+   - [x] `W3SBT1` (`OceanTriton.W3SBT1`, from `w3sbt1md.F90:175-212`), the JONSWAP form, with
+     the deep-water test and the loop's `EXIT` written as they are. P: `sbtD-sound`,
+     `sbtS-sound`: the kernel is the routine at every spectral point when WN increases over the
+     bins (every WW3 frequency grid) and the depth is not negative; the loop needs no lane of
+     its own. T: 12 bins of 3 directions, k d on both sides of 6.
+   - [ ] Depth-induced breaking as WW3 writes it (`W3SDB1`). Open; `break_cap` and
+     `break_scale` are the reduced form.
 
 The obstacle: ℚ has no `exp`, `log`, `tanh`, `sqrt` or `cos`, and ST4 uses all of them. Two
 ways, decided per function:
@@ -159,7 +191,9 @@ replays it.
 
 ## What stays trusted at every milestone
 
-- The printer `agda/src/OceanTriton/Emit.agda`: no Triton semantics exists in Agda.
+- The printers `agda/src/OceanTriton/Emit.agda`, `EmitGrid.agda` and `EmitGather.agda`: no
+  Triton semantics exists in Agda. `rep` prints a loop of R steps, which means `repN` only where
+  the count is at most R; `check_gather.py` checks that bound on every launch (`REP_BOUNDS`).
 - Triton and the GPU's arithmetic: float32 rounding, the order of a reduction, the compiler's
   contraction of a multiply and an add.
 - For M4 and M5: the reading of the Fortran into Agda, until the replay of M5 checks it.
@@ -169,6 +203,6 @@ replays it.
 ```bash
 bash checks/agda.sh          # P: every theorem of agda/src, OceanTriton included
 just ocean-triton            # T: the printed kernels against the exact values
-just ocean-triton-write      # print kernels.py and vectors.json again
+just ocean-triton-write      # print the six files of ocean-triton/ again
 just ocean-triton-cuda       # T on a CUDA GPU
 ```

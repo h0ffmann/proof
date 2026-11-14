@@ -74,4 +74,9 @@ PROGRAMS = {
         (exchange, ("P", ), ("kappa", ), "D"),
         (sources, ("beta", "gamma", "P", "D", ), ("dt", "L", ), "N"),
     ), "N"),
+    "strang2d": (("F", "T", "U", ), ("cxh", "cy", ), (
+        (sweep_x, ("F", ), ("cxh", ), "T"),
+        (sweep_y, ("T", ), ("cy", ), "U"),
+        (sweep_x, ("U", ), ("cxh", ), "F"),
+    ), "F"),
 }

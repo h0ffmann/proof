@@ -11,3 +11,4 @@ ocean-triton-write:
 ocean-triton-cuda:
     nix develop --no-update-lock-file .#triton --command python3 ocean-triton/check.py ocean-triton/kernels.py ocean-triton/vectors.json --device cuda
     nix develop --no-update-lock-file .#triton --command python3 ocean-triton/check_grid.py ocean-triton/grid.py ocean-triton/grid_vectors.json --device cuda
+    nix develop --no-update-lock-file .#triton --command python3 ocean-triton/check_gather.py ocean-triton/gather.py ocean-triton/gather_vectors.json --device cuda
