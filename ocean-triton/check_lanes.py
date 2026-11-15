@@ -45,9 +45,11 @@ def run(mod, prog, farrs, iarrs, fps, ips, torch, dev):
     def launch(fn, lanes, out, step):
         n = int(ips[lanes])
         res = torch.zeros(n, dtype=torch.float32, device=dev)
+        # The interpreter's cost is per operation, not per lane, so it takes every lane in one block.
+        block = min(1 << max(n - 1, 1).bit_length(), 1 << 16) if os.environ.get("TRITON_INTERPRET") == "1" else BLOCK
         # No contraction: WW3 is built without it, and libm.py's float64 arithmetic needs it so.
-        fn[((n + BLOCK - 1) // BLOCK,)](*[bufs[f] for f in fnames], *ibufs, *fvals, *ivals, step, _LM[dev], res, n,
-                                        BLOCK=BLOCK, enable_fp_fusion=False)
+        fn[((n + block - 1) // block,)](*[bufs[f] for f in fnames], *ibufs, *fvals, *ivals, step, _LM[dev], res, n,
+                                        BLOCK=block, enable_fp_fusion=False)
         bufs[out] = res
 
     for item in launches:
@@ -77,6 +79,7 @@ def main() -> int:
     ap.add_argument("lanes")
     ap.add_argument("vectors")
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
+    ap.add_argument("--only", default="", help="a comma-separated list of the programs to check (default: all)")
     args = ap.parse_args()
     if args.device == "cpu":
         os.environ["TRITON_INTERPRET"] = "1"
@@ -93,7 +96,10 @@ def main() -> int:
         print(f"check_lanes: programs {sorted(mod.PROGRAMS_L)} and cases {sorted(progs)} differ")
         return 1
     bad = total = 0
+    only = set(args.only.split(",")) if args.only else set(progs)
     for prog, cases in progs.items():
+        if prog not in only:
+            continue
         results = mod.PROGRAMS_L[prog][5]
         for c in cases:
             bufs = run(mod, prog, c["farrays"], c["iarrays"], c["fparams"], c["iparams"], torch, args.device)

@@ -17,8 +17,17 @@
 --               r := e; for k = 0 … c - 1: r := body (k, r); the value is r. b is the integer
 --               parameter that bounds c, for the printer (Triton's loop needs a scalar bound,
 --               and the host checks c ≤ b on every lane).
+--     fold2 w b c e₁ e₂ b₁ b₂
+--               the same with two accumulators updated together (W3SIN4's stress sums along
+--               x and y); w picks the one that is the value
+--     bind e body
+--               let: e is computed once and is accumulator 0 in body
+--     ix e body
+--               INT(e) (truncation toward zero, 0 below 0) is loop variable 0 in body, for an
+--               index read from a float (W3SIN4's table indices)
+--     real i    REAL(i), an index as a float
 --
--- v counts the loop variables in scope and a the accumulators; both are de Bruijn indices,
+-- IE also has min and max. v counts the loop variables in scope and a the accumulators; both are de Bruijn indices,
 -- innermost first. Every loop is a left fold in the Fortran's order, so a sum keeps its order.
 --
 -- A program (`ProgL`) is a list of launches on nf float buffers, some of them in loops; each
@@ -28,14 +37,16 @@
 module OceanTriton.Lanes where
 
 open import Data.Bool using (Bool; true; false; if_then_else_; _∧_; _∨_; not)
-open import Data.Fin using (Fin)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.List using (List; []; _∷_)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _∸_; _<ᵇ_)
 open import Data.Nat.DivMod using (_/_; _%_)
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Rational using (ℚ)
 open import Data.String using (String)
 open import Data.Vec as V using (Vec; []; _∷_; lookup; _[_]≔_)
+import Data.Vec.Properties as VP
+open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; cong)
 
 -- Operations, functions and comparisons of float32.
 data Op : Set where
@@ -59,6 +70,10 @@ record Model (R : Set) : Set where
     vpow : R → R → R
     lit : ℚ → R
     cmp : Cmp → R → R → Bool
+    -- REAL(n) and INT(x) for a table's index: INT truncates toward zero, and every index of
+    -- the routines here is clamped at 0 or above, so a negative or NaN x may give 0.
+    fromℕ : ℕ → R
+    trunc : R → ℕ
 
 -- The names of a program: float arrays, integer arrays, float parameters, integer parameters.
 record Sig : Set where
@@ -78,7 +93,7 @@ module Syntax (σ : Sig) where
     ipar : Fin (nip σ) → IE v
     iarr : Fin (ni σ) → IE v → IE v
     _+ᵢ_ _∸ᵢ_ _*ᵢ_ : IE v → IE v → IE v
-    quot rem : IE v → IE v → IE v
+    quot rem minᵢ maxᵢ : IE v → IE v → IE v
 
   data FE (v a : ℕ) : Set where
     ld   : Fin (nf σ) → IE v → FE v a
@@ -92,6 +107,62 @@ module Syntax (σ : Sig) where
     sel  : Cmp → FE v a → FE v a → FE v a → FE v a → FE v a   -- if x cmp y then t else e
     isel : IE v → IE v → FE v a → FE v a → FE v a              -- if p < q then t else e
     fold : Fin (nip σ) → IE v → FE v a → FE (suc v) (suc a) → FE v a
+    -- Two accumulators that read each other (W3SIN4's stress, x and y): both start, both step
+    -- from the pair before, and the Fin 2 says which one is the value. acc 0 is the first.
+    fold2 : Fin 2 → Fin (nip σ) → IE v → FE v a → FE v a →
+            FE (suc v) (suc (suc a)) → FE (suc v) (suc (suc a)) → FE v a
+    bind : FE v a → FE v (suc a) → FE v a                      -- let acc 0 = e in body
+    ix   : FE v a → FE (suc v) a → FE v a                      -- let var 0 = INT(e) in body
+    real : IE v → FE v a                                       -- REAL of an index
+
+  -- Renaming, to move a term under a binder: `wk` for one more accumulator, `wkI` for one more
+  -- loop variable.
+  private
+    lift : ∀ {m n} → (Fin m → Fin n) → Fin (suc m) → Fin (suc n)
+    lift f zero    = zero
+    lift f (suc i) = suc (f i)
+
+  renI : ∀ {v w} → (Fin v → Fin w) → IE v → IE w
+  renI f lane       = lane
+  renI f step       = step
+  renI f (var k)    = var (f k)
+  renI f (nat n)    = nat n
+  renI f (ipar p)   = ipar p
+  renI f (iarr t e) = iarr t (renI f e)
+  renI f (p +ᵢ q)   = renI f p +ᵢ renI f q
+  renI f (p ∸ᵢ q)   = renI f p ∸ᵢ renI f q
+  renI f (p *ᵢ q)   = renI f p *ᵢ renI f q
+  renI f (quot p q) = quot (renI f p) (renI f q)
+  renI f (rem p q)  = rem (renI f p) (renI f q)
+  renI f (minᵢ p q) = minᵢ (renI f p) (renI f q)
+  renI f (maxᵢ p q) = maxᵢ (renI f p) (renI f q)
+
+  ren : ∀ {v w a b} → (Fin v → Fin w) → (Fin a → Fin b) → FE v a → FE w b
+  ren f g (ld x e)        = ld x (renI f e)
+  ren f g (fpar p)        = fpar p
+  ren f g (lit q)         = lit q
+  ren f g (acc r)         = acc (g r)
+  ren f g (op o p q)      = op o (ren f g p) (ren f g q)
+  ren f g (fn h p)        = fn h (ren f g p)
+  ren f g (pow p q)       = pow (ren f g p) (ren f g q)
+  ren f g (vpow p q)      = vpow (ren f g p) (ren f g q)
+  ren f g (sel c x y t e) = sel c (ren f g x) (ren f g y) (ren f g t) (ren f g e)
+  ren f g (isel p q t e)  = isel (renI f p) (renI f q) (ren f g t) (ren f g e)
+  ren f g (fold b c e body) = fold b (renI f c) (ren f g e) (ren (lift f) (lift g) body)
+  ren f g (fold2 w b c e₁ e₂ b₁ b₂) =
+    fold2 w b (renI f c) (ren f g e₁) (ren f g e₂) (ren (lift f) (lift (lift g)) b₁) (ren (lift f) (lift (lift g)) b₂)
+  ren f g (bind e body)   = bind (ren f g e) (ren f (lift g) body)
+  ren f g (ix e body)     = ix (ren f g e) (ren (lift f) g body)
+  ren f g (real e)        = real (renI f e)
+
+  wk : ∀ {v a} → FE v a → FE v (suc a)
+  wk = ren (λ k → k) suc
+
+  wkI : ∀ {v} → IE v → IE (suc v)
+  wkI = renI suc
+
+  wkV : ∀ {v a} → FE v a → FE (suc v) a
+  wkV = ren suc (λ r → r)
 
   -- One launch: its body, the integer parameter that is its lane count, and the buffer it writes.
   record Launch : Set where
@@ -133,6 +204,10 @@ foldN : ∀ {R : Set} → ℕ → R → (ℕ → R → R) → R
 foldN zero    r f = r
 foldN (suc c) r f = f c (foldN c r f)
 
+pick : ∀ {R : Set} → Fin 2 → R × R → R
+pick zero    p = proj₁ p
+pick (suc _) p = proj₂ p
+
 -- What a program reads: its arrays, its parameters.
 record Env (σ : Sig) (R : Set) : Set where
   constructor env
@@ -145,7 +220,7 @@ record Env (σ : Sig) (R : Set) : Set where
 
 module Eval {σ : Sig} {R : Set} (M : Model R) where
   open Syntax σ
-  open Model M renaming (op to opM; fun to funM; pow to powM; vpow to vpowM; lit to litM)
+  open Model M renaming (op to opM; fun to funM; pow to powM; vpow to vpowM; lit to litM; fromℕ to fromℕM)
 
   evI : ∀ {v} → Env σ R → ℕ → Vec ℕ v → IE v → ℕ
   evI ρ i ks lane       = i
@@ -159,6 +234,8 @@ module Eval {σ : Sig} {R : Set} (M : Model R) where
   evI ρ i ks (p *ᵢ q)   = evI ρ i ks p ℕ.* evI ρ i ks q
   evI ρ i ks (quot p q) = idiv (evI ρ i ks p) (evI ρ i ks q)
   evI ρ i ks (rem p q)  = imod (evI ρ i ks p) (evI ρ i ks q)
+  evI ρ i ks (minᵢ p q) = evI ρ i ks p ℕ.⊓ evI ρ i ks q
+  evI ρ i ks (maxᵢ p q) = evI ρ i ks p ℕ.⊔ evI ρ i ks q
 
   evF : ∀ {v a} → Env σ R → ℕ → Vec ℕ v → Vec R a → FE v a → R
   evF ρ i ks rs (ld x e)         = lookup (Env.farr ρ) x (evI ρ i ks e)
@@ -173,10 +250,24 @@ module Eval {σ : Sig} {R : Set} (M : Model R) where
   evF ρ i ks rs (isel p q t e)   = if evI ρ i ks p <ᵇ evI ρ i ks q then evF ρ i ks rs t else evF ρ i ks rs e
   evF ρ i ks rs (fold b c e body) =
     foldN (evI ρ i ks c) (evF ρ i ks rs e) (λ k r → evF ρ i (k ∷ ks) (r ∷ rs) body)
+  evF ρ i ks rs (fold2 w b c e₁ e₂ b₁ b₂) =
+    pick w (foldN (evI ρ i ks c) (evF ρ i ks rs e₁ , evF ρ i ks rs e₂)
+              (λ k p → evF ρ i (k ∷ ks) (proj₁ p ∷ proj₂ p ∷ rs) b₁ , evF ρ i (k ∷ ks) (proj₁ p ∷ proj₂ p ∷ rs) b₂))
+  evF ρ i ks rs (bind e body)    = evF ρ i ks (evF ρ i ks rs e ∷ rs) body
+  evF ρ i ks rs (ix e body)      = evF ρ i (trunc (evF ρ i ks rs e) ∷ ks) rs body
+  evF ρ i ks rs (real e)         = fromℕM (evI ρ i ks e)
 
   -- One launch writes its buffer, every lane at once (the lanes read the buffers as they were).
   stepL : Launch → Env σ R → Env σ R
   stepL L ρ = record ρ { farr = Env.farr ρ [ Launch.out L ]≔ (λ i → evF ρ i [] [] (Launch.body L)) }
+
+  -- What a launch leaves in a buffer, proved for any launch: a proof that reads a buffer through
+  -- these never makes Agda evaluate a body to compare two environments.
+  stepL-here : ∀ L ρ i → lookup (Env.farr (stepL L ρ)) (Launch.out L) i ≡ evF ρ i [] [] (Launch.body L)
+  stepL-here L ρ i = cong (λ f → f i) (VP.lookup∘update (Launch.out L) (Env.farr ρ) _)
+
+  stepL-other : ∀ L ρ b i → b ≢ Launch.out L → lookup (Env.farr (stepL L ρ)) b i ≡ lookup (Env.farr ρ) b i
+  stepL-other L ρ b i b≢ = cong (λ f → f i) (VP.lookup∘update′ b≢ (Env.farr ρ) _)
 
   runLs : List Launch → Env σ R → Env σ R
   runLs []       ρ = ρ

@@ -12,10 +12,12 @@
 #    printed launch programs of milestone M2 (ocean-triton/check_grid.py), and so do the
 #    gather kernels and programs of M3 and M4, W3SBT1 and W3SNL1 among them
 #    (ocean-triton/check_gather.py), and so does W3SDB1 in float64 (ocean-triton/check_sdb.py),
-#    and so do the lane programs of ST4, W3SDS4 first (ocean-triton/check_lanes.py), whose
-#    glibc and libmvec functions equal the libraries' bits (ocean-triton/libm.py --self-test);
+#    and so do the lane programs of ST4, W3SLN1, WAVNU1, INSIN4's tables and W3SRCE
+#    (ocean-triton/check_lanes.py), whose glibc and libmvec functions equal the libraries' bits
+#    (ocean-triton/libm.py --self-test);
 # 4. self-test: a wrong exact value and a wrong operator in a kernel both fail step 3, for the
-#    kernels, for the programs and for the gather module, and so does a count above its R.
+#    kernels, for the programs, for the gather module and for the lane programs (W3SDS4, and
+#    W3SRCE's bound of DT), and so does a count above its R.
 #
 #   checks/ocean-triton.sh            # steps 1 to 4
 #   checks/ocean-triton.sh --write    # print the ten files again into ocean-triton/
@@ -173,4 +175,12 @@ fi
 if lanes "$work/wrong-lanes.py" ocean-triton/lanes_vectors.json > /dev/null; then
   echo "ocean-triton: self-test: a wrong W3SDS4 kernel passed" >&2; exit 1
 fi
-echo "ocean-triton: self-test OK (a wrong value and a wrong kernel fail, for kernels, programs, gathers, W3SDB1 and W3SDS4; a count above R fails)"
+# W3SRCE's step: the lower bound of DT, 0.5 s, printed as 0.25 s.
+sed '/^def w3srce_dt(/,/tl.store/s|(1.0 / 2.0)|(1.0 / 4.0)|g' ocean-triton/lanes.py > "$work/wrong-srce.py"
+if cmp -s "$work/wrong-srce.py" ocean-triton/lanes.py; then
+  echo "ocean-triton: self-test: the W3SRCE kernel mutation did not apply" >&2; exit 1
+fi
+if lanes "$work/wrong-srce.py" ocean-triton/lanes_vectors.json --only w3srce_step > /dev/null; then
+  echo "ocean-triton: self-test: a DT bound of 0.25 s in W3SRCE passed" >&2; exit 1
+fi
+echo "ocean-triton: self-test OK (a wrong value and a wrong kernel fail, for kernels, programs, gathers, W3SDB1, W3SDS4 and W3SRCE; a count above R fails)"

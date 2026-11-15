@@ -10,7 +10,8 @@ module OceanTriton.LanesVectors where
 
 open import Data.Bool using (Bool; true; false; if_then_else_; not)
 import Data.Float as F
-open import Data.Integer using (ℤ)
+open import Data.Integer as ℤ using (ℤ)
+open import Data.Maybe using (Maybe; just; nothing)
 open import Data.List as L using (List; []; _∷_; upTo)
 open import Data.Nat using (ℕ)
 open import Data.Nat.Show using () renaming (show to showℕ)
@@ -32,7 +33,14 @@ floatModel = record
   ; pow = F._**_
   ; vpow = F._**_
   ; lit = λ q → F.fromRatio (↥ q) (↧ q)
-  ; cmp = λ { lt a b → a F.<ᵇ b ; le a b → a F.≤ᵇ b ; ne a b → not (a F.≡ᵇ b) } }
+  ; cmp = λ { lt a b → a F.<ᵇ b ; le a b → a F.≤ᵇ b ; ne a b → not (a F.≡ᵇ b) }
+  ; fromℕ = F.fromℕ
+  ; trunc = λ x → floor′ (F.⌊ x ⌋) }
+  where
+  -- INT(x) for x ≥ 0 is the floor; a negative or NaN x gives 0, as Model.trunc allows.
+  floor′ : Maybe ℤ → ℕ
+  floor′ (just (ℤ.+ n)) = n
+  floor′ _              = 0
 
 private
   quoted : String → String

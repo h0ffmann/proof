@@ -2,47 +2,47 @@
 
 -- WAVEWATCH III's ST4 dissipation W3SDS4, read from model/src/w3src4md.F90 of MetOcean's fork at
 -- tag 7.14.mos-92e2cf6, commit 92e2cf66, in the configuration that ww3_ts1 runs (the defaults
--- of &SDS4, w3gridmd.F90:2077-2125): SSDSC(1) = 1, the saturation form of Ardhuin et al. (2010),
+-- of &SDS4, w3gridmd.F90:2077-2123): SSDSC(1) = 1, the saturation form of Ardhuin et al. (2010),
 -- with the integration over SSDSDTH = 80° (< 180), no smoothing (SSDSBRFDF = 0), no straining
 -- of B (SSDSC(8) = SSDSC(11) = 0, so FACSTRAINB = 1), then the cumulative, turbulent and viscous
 -- terms. The program covers SSDSISO = 1 and ≠ 1 and both forms of MICHE; the replay checks that
 -- the captured constants are in this configuration.
 --
---     w3src4md.F90:2128   EPSR = SQRT(SSDSBR)
---     w3src4md.F90:2132   DO IK=IK1, NK
---     w3src4md.F90:2133     FACSAT = SIG(IK)*K(IK)**3*DTH
---     w3src4md.F90:2136     ASUM = SUM(A(IS0+1:IS0+NTH)) ;  BTH0(IK) = ASUM*FACSAT
+--     w3src4md.F90:2123   EPSR = SQRT(SSDSBR)
+--     w3src4md.F90:2133   DO IK=IK1, NK
+--     w3src4md.F90:2135     FACSAT = SIG(IK)*K(IK)**3*DTH
+--     w3src4md.F90:2138     ASUM = SUM(A(IS0+1:IS0+NTH)) ;  BTH0(IK) = ASUM*FACSAT
 --     w3src4md.F90:2167     BTH(IS) = DOT_PRODUCT(SATWEIGHTS(:,ITH), A(IS0+SATINDICES(:,ITH))) *FACSAT*FACSTRAINB
 --     w3src4md.F90:2171     IF (SSDSISO.NE.1) BTH0(IK) = MAXVAL(BTH(IS0+1:IS0+NTH))
---     w3src4md.F90:2235   DO IK=IK1, NK
---     w3src4md.F90:2236     IF (SSDSBM(0).EQ.1) THEN MICHE=1. ELSE X=TANH(MIN(K(IK)*DEPTH,10.))
---     w3src4md.F90:2240       MICHE=(X*(SSDSBM(1)+X*(SSDSBM(2)+X*(SSDSBM(3)+X*SSDSBM(4)))))**2
---     w3src4md.F90:2242     COEF1 = SSDSBR*MICHE
---     w3src4md.F90:2246     SDIAGISO = SSDSC(2)*SIG(IK)*SSDSC(6)*(MAX(0.,BTH0(IK)/COEF1-1.))**2
---     w3src4md.F90:2249     COEF2 = SSDSC(2)*SIG(IK)*(1-SSDSC(6))/(COEF1*COEF1)
---     w3src4md.F90:2252     DDIAG(IK) = SDIAGISO + COEF2*((MAX(0.,BTH(IK)-COEF1))**SSDSP)
---     w3src4md.F90:2258   PB = (MAX(SQRT(BTH)-EPSR,0.))**2 ;  PB = PB*28.16 ;  BRLAMBDA = PB/(2.*PI**2.)
---     w3src4md.F90:2263   SRHS = DDIAG*A
---     w3src4md.F90:2485   IF (SSDSC(3).NE.0. .OR. SSDSC(5).NE.0. .OR. SSDSC(21).NE.0.) THEN DO IK=IK1, NK
---     w3src4md.F90:2487     FACTURB2 = -2.*SIG(IK)*K(IK)*FACTURB   (FACTURB = SSDSC(5)*USTAR**2/GRAV*DAIR/DWAT, :2048)
---     w3src4md.F90:2488     DVISC = -4.*SSDSC(21)*K(IK)*K(IK)
+--     w3src4md.F90:2236   DO IK=IK1, NK
+--     w3src4md.F90:2240     IF (SSDSBM(0).EQ.1) THEN MICHE=1. ELSE X=TANH(MIN(K(IK)*DEPTH,10.))
+--     w3src4md.F90:2244       MICHE=(X*(SSDSBM(1)+X*(SSDSBM(2)+X*(SSDSBM(3)+X*SSDSBM(4)))))**2
+--     w3src4md.F90:2246     COEF1 = SSDSBR*MICHE
+--     w3src4md.F90:2250     SDIAGISO = SSDSC(2)*SIG(IK)*SSDSC(6)*(MAX(0.,BTH0(IK)/COEF1-1.))**2
+--     w3src4md.F90:2254     COEF2 = SSDSC(2)*SIG(IK)*(1-SSDSC(6))/(COEF1*COEF1)
+--     w3src4md.F90:2255     DDIAG(IK) = SDIAGISO + COEF2*((MAX(0.,BTH(IK)-COEF1))**SSDSP)
+--     w3src4md.F90:2261   PB = (MAX(SQRT(BTH)-EPSR,0.))**2 ;  PB = PB*28.16 ;  BRLAMBDA = PB/(2.*PI**2.)
+--     w3src4md.F90:2272   SRHS = DDIAG*A
+--     w3src4md.F90:2486   IF (SSDSC(3).NE.0. .OR. SSDSC(5).NE.0. .OR. SSDSC(21).NE.0.) THEN DO IK=IK1, NK
+--     w3src4md.F90:2488     FACTURB2 = -2.*SIG(IK)*K(IK)*FACTURB   (FACTURB = SSDSC(5)*USTAR**2/GRAV*DAIR/DWAT, :2052)
+--     w3src4md.F90:2489     DVISC = -4.*SSDSC(21)*K(IK)*K(IK)
 --     w3src4md.F90:2497     IF (SSDSC(3).NE.0 .AND. IK.GT.DIKCUMUL) DO IK2=IK1,IK-DIKCUMUL
 --     w3src4md.F90:2499       IF (BTH0(IK2).GT.SSDSBR)
 --     w3src4md.F90:2501         RENEWALFREQ = RENEWALFREQ + DOT_PRODUCT(CUMULW(IS2+1:IS2+NTH,IS), BRLAMBDA(IS2+1:IS2+NTH))
---     w3src4md.F90:2505     COSWIND = ECOS(ITH)*COS(USDIR) + ESIN(ITH)*SIN(USDIR)
---     w3src4md.F90:2506     DTURB = FACTURB2*MAX(0.,COSWIND)
---     w3src4md.F90:2509     DIAG2 = SSDSC(3)*RENEWALFREQ + DTURB + DVISC
---     w3src4md.F90:2510     DDIAG(IS) = DDIAG(IS) + DIAG2 ;  SRHS(IS) = SRHS(IS) + A(IS)*DIAG2
+--     w3src4md.F90:2508     COSWIND = ECOS(ITH)*COS(USDIR) + ESIN(ITH)*SIN(USDIR)
+--     w3src4md.F90:2509     DTURB = FACTURB2*MAX(0.,COSWIND)
+--     w3src4md.F90:2513     DIAG2 = SSDSC(3)*RENEWALFREQ + DTURB + DVISC
+--     w3src4md.F90:2514     DDIAG(IS) = DDIAG(IS) + DIAG2 ;  SRHS(IS) = SRHS(IS) + A(IS)*DIAG2
 --
 -- Indices start at 0: ik = IK - 1, ith = ITH - 1, is = IS - 1 = ith + ik NTH, ik1 = IK1 - 1, and
 -- SATINDICES and SATWEIGHTS are laid out by direction, sati(ith NSAT + j) = SATINDICES(j+1,ITH) - 1;
 -- CUMULW(r+1, c+1) is cumulw(r + c NSPEC), Fortran's column order. The tables are INSIN4's
--- (:1031-1173), DIKCUMUL included, and 2.*PI**2. is a constant the compiler folds, so all of
+-- (:917-1179), DIKCUMUL included, and 2.*PI**2. is a constant the compiler folds, so all of
 -- them are inputs. K**3 is K*K*K and X**2 is X*X, as gfortran expands an integer power; X**SSDSP
--- is a real power: gfortran -O3 vectorises that array expression (:2252) four directions at a
+-- is a real power: gfortran -O3 vectorises that array expression (:2255-2256) four directions at a
 -- time from the first, through libmvec's _ZGVbN4vv_powf, `vpow`, and calls powf, `pow`, for
 -- the last NTH mod 4 (ocean-triton/libmvec.py). -2.*… is written -(2.*…), which has the same bits. Arrays BTH, BTH0,
--- PB and the rest start at 0 (:2032-2041), so a bin below IK1 keeps D = S = 0.
+-- PB and the rest start at 0 (:2042), so a bin below IK1 keeps D = S = 0.
 --
 -- The whitecap outputs after :2520 do not reach S or D and are not here.
 --
@@ -106,7 +106,7 @@ module Routine {R : Set} (M : Model R) (x : Inputs R) where
                   (λ j r → r + SATW (ithOf is ℕ.* nsat ℕ.+ j) * A (ikOf is ℕ.* nth ℕ.+ SATI (ithOf is ℕ.* nsat ℕ.+ j)))
                 * facsat (ikOf is) * ℓ (+ 1 / 1)
 
-  -- BTH0 (:2136, :2171): the bin's sum times FACSAT when SSDSISO = 1, else the largest BTH of
+  -- BTH0 (:2138-2139, :2171-2172): the bin's sum times FACSAT when SSDSISO = 1, else the largest BTH of
   -- the bin, the first one first (MAXVAL keeps the first of equal values; equal values have
   -- the same bits).
   bth0 : ℕ → R
@@ -135,7 +135,7 @@ module Routine {R : Set} (M : Model R) (x : Inputs R) where
                      * (if ithOf is <ᵇ nth ∸ imod nth 4 then vpow b ssdsp else pow b ssdsp))
                 where b = mx (ℓ (+ 0 / 1)) (bth is - coef1 (ikOf is))
 
-  -- BRLAMBDA (:2258-2260).
+  -- BRLAMBDA (:2261-2271).
   brl : ℕ → R
   brl is = let t = mx (sqrt (bth is) - sqrt ssdsbr) (ℓ (+ 0 / 1)) in t * t * ℓ (+ 704 / 25) ÷ twopi2
 
@@ -143,7 +143,7 @@ module Routine {R : Set} (M : Model R) (x : Inputs R) where
   s1 : ℕ → R
   s1 is = d1 is * A is
 
-  -- RENEWALFREQ (:2495-2504).
+  -- RENEWALFREQ (:2496-2506).
   renewal : ℕ → R
   renewal is =
     if cmp ne ssdsc3 (ℓ (+ 0 / 1))
@@ -156,7 +156,7 @@ module Routine {R : Set} (M : Model R) (x : Inputs R) where
           else ℓ (+ 0 / 1))
     else ℓ (+ 0 / 1)
 
-  -- DIAG2 (:2487-2509).
+  -- DIAG2 (:2488-2513).
   diag2 : ℕ → R
   diag2 is =
     let ik = ikOf is ; ith = ithOf is
@@ -286,13 +286,13 @@ private
 
 sds4Launches : List Launch
 sds4Launches =
-    launch "w3sds4_bth"  bthB  NSPEC BTH  "BTH, the saturation over SSDSDTH (w3src4md.F90:2133-2167)"
-  ∷ launch "w3sds4_bth0" bth0B NK    BTH0 "BTH0, the bin's saturation (w3src4md.F90:2136, 2171), one lane per bin"
-  ∷ launch "w3sds4_d1"   d1B   NSPEC D1   "DDIAG of the saturation term (w3src4md.F90:2235-2253)"
-  ∷ launch "w3sds4_brl"  brlB  NSPEC BRL  "BRLAMBDA, the breaking crest length (w3src4md.F90:2258-2260)"
-  ∷ launch "w3sds4_s1"   s1B   NSPEC S1   "SRHS = DDIAG A (w3src4md.F90:2263)"
-  ∷ launch "w3sds4_d"    dB    NSPEC D    "DDIAG with the cumulative, turbulent and viscous terms (w3src4md.F90:2485-2510)"
-  ∷ launch "w3sds4_s"    sB    NSPEC S    "SRHS with the cumulative, turbulent and viscous terms (w3src4md.F90:2485-2511)"
+    launch "w3sds4_bth"  bthB  NSPEC BTH  "BTH, the saturation over SSDSDTH (w3src4md.F90:2133-2168)"
+  ∷ launch "w3sds4_bth0" bth0B NK    BTH0 "BTH0, the bin's saturation (w3src4md.F90:2138-2139, 2171-2172), one lane per bin"
+  ∷ launch "w3sds4_d1"   d1B   NSPEC D1   "DDIAG of the saturation term (w3src4md.F90:2236-2257)"
+  ∷ launch "w3sds4_brl"  brlB  NSPEC BRL  "BRLAMBDA, the breaking crest length (w3src4md.F90:2261-2271)"
+  ∷ launch "w3sds4_s1"   s1B   NSPEC S1   "SRHS = DDIAG A (w3src4md.F90:2272)"
+  ∷ launch "w3sds4_d"    dB    NSPEC D    "DDIAG with the cumulative, turbulent and viscous terms (w3src4md.F90:2486-2514)"
+  ∷ launch "w3sds4_s"    sB    NSPEC S    "SRHS with the cumulative, turbulent and viscous terms (w3src4md.F90:2486-2515)"
   ∷ []
 
 sds4 : ProgL

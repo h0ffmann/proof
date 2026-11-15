@@ -17,7 +17,7 @@ Cycle 4 whitecapping with the k⁻¹ moment instead of k^(-1/2), a tridiagonal q
 in place of the DIA, a Padé tanh, and exact rationals. It is the right shape for WW3's time
 step, but not WW3's numbers. Milestone M4 replaces it, routine by routine.
 
-## Status on 2026-11-14
+## Status on 2026-11-15
 
 | Milestone | State | P | T | W |
 |---|---|---|---|---|
@@ -25,8 +25,8 @@ step, but not WW3's numbers. Milestone M4 replaces it, routine by routine.
 | M1 The step without host-side physics | done | 6 of 6 | 6 of 6 (CPU interpreter) | 0 |
 | M2 Space: 2-D propagation and the time loop | done (step 4 in M3) | 2 programs (5 kernels) | 2 programs (CPU interpreter) | 0 |
 | M3 Spectral space and other grids | done | 6 kernels, 2 programs | 6 kernels, 2 programs, the mesh on two meshes (CPU interpreter) | 0 |
-| M4 WW3's own source terms | W3SBT1, W3SNL1 and W3SDB1 done; ST4 and W3SRCE open | 3 routines (2 + 11 + 2 kernels) | 3 routines (CPU interpreter) | 3 routines (M5) |
-| M5 Verification against WW3 | steps 1 to 3 done for W3SNL1, W3SBT1 and W3SDB1; step 4 open | — | — | W3SNL1, W3SBT1, W3SDB1: bit for bit on 3 captures |
+| M4 WW3's own source terms | W3SBT1, W3SNL1, W3SDB1, ST4 (W3SIN4, W3SDS4, W3SPR4, INSIN4's tables), W3SLN1, WAVNU1 and W3SRCE's integration done | 3 routines (2 + 11 + 2 kernels) and 13 lane programs (34 launches) | the same (CPU interpreter) | the same (M5) |
+| M5 Verification against WW3 | steps 1 to 3 done for every M4 routine, and a whole W3SRCE call; step 4 open | — | — | every M4 routine bit for bit on 3 captures (INSIN4's tables on one, they depend on the grid only); W3SRCE: see `ww3-replay/` |
 | M6 GPU runs and timing | planned | — | 0 on a GPU | — |
 
 ## M0: the kernels of one reduced step (done)
@@ -133,7 +133,7 @@ This is where the specification changes from the reduced physics to WW3's. For e
 read `model/src/<file>.F90` at a pinned WW3 commit, transcribe it into Agda under `--safe`,
 cite file and line, then write the kernel and its proof as in M0.
 
-The pin: metocean/WW3, tag `7.14.mos-92e2cf6`, commit `92e2cf66af6e15ae80eb12562f2b05d4a2d75df5`.
+The pin: MetOcean's fork, tag `7.14.mos-92e2cf6`, commit `92e2cf66af6e15ae80eb12562f2b05d4a2d75df5`.
 Each module's header lists the lines it transcribes.
 
 Order (most of a WW3 step's run time first, to be measured with a profile at the pin):
@@ -148,11 +148,29 @@ Order (most of a WW3 step's run time first, to be measured with a profile at the
    - [x] T: NTH = 4, NFR = 3, two tail rows, 24 positions, 12 points, synthetic tables in range.
    - [ ] T with INSNL1's own tables, and the action and energy properties of the quartets
      (`WaveTheory.Quadruplets`) restated for this form. Open.
-2. [ ] `W3SIN4` and `W3SDS4` (ST4 input and dissipation). Open: they need `exp`, `log`, `tanh`
-   and `sqrt`; `W3SDB1`'s `Model` and float64 programs are the way in, with `log` and the
-   loops over directions added.
-3. [ ] `W3SRCE`'s integration: the dynamic time step and the limiter as WW3 writes them, with
-   the sub-steps of `WaveTheory.Splitting`. Open.
+2. ST4, input and dissipation, in a new language, `OceanTriton.Lanes`: a lane's value is an
+   expression with loads at computed indices, integer tables, folds whose length depends on the
+   lane (`fold`, `fold2` for a pair), `let` (`bind`), INT (`ix`) and the functions of float32
+   libm, over any `Model` of the arithmetic. `EmitLanes` prints it onto glibc's float32
+   functions and libmvec's `powf` written in Triton (`ocean-triton/libm.py`), so a kernel calls
+   the function that WW3's `-O3` code calls. Each transcription follows the routine's GIMPLE at
+   the pin, not its source read by eye.
+   - [x] `W3SDS4` (`OceanTriton.W3SDS4`), the saturation form with the cumulative, turbulent and
+     viscous terms: P `sds4-S`, `sds4-D`; T; W.
+   - [x] `W3SIN4` (`OceanTriton.W3SIN4`), every branch without STAB3, the band loop's stress as a
+     `fold2`, both stress tables: P `sin4-S`, `sin4-D`, `sin4-LLWS`, `sin4-TAU`; T; W.
+   - [x] `W3SPR4` with CALC_USTAR (`OceanTriton.W3SPR4`): P `spr4-OUT`; T; W.
+   - [x] INSIN4's tables: `TABU_STRESS` (P `taut-T`), `TABU_TAUHF` (P `tauhf-T`), `TABU_TAUHF2`
+     with its 3-D table, whose plane I starts from the friction velocity the plane I-1 left
+     (P `tauhf2-T`, `tauhf2-T2`), and SATINDICES, SATWEIGHTS, CUMULW (P `sati-T`, `satw-T`,
+     `cumulw-T`); T; W.
+   - [x] `W3SLN1` (P `sln1-S`) and `WAVNU1` from DISTAB's tables (P `wavnu1-K`, `wavnu1-CG`);
+     T; W.
+3. [x] `W3SRCE`'s integration (`OceanTriton.W3SRCE`, `W3SRCEFlux`): DAM, the dynamic step DT
+   with SHAVE, the limited increment and the new spectrum, FHIGH, NKH and the tail after the
+   pass (P `step-DAM`, `step-DTB`, `step-SPEC`, `tail-FT`, `tail-SPEC`), and the fluxes of a
+   pass and of the end of the call (P `pass-FX`, `end-FX`); T. The loop itself (how many passes,
+   the exit) runs on the host in `ww3-replay/srce.py`, which also computes W3SNL1's CONS.
 4. Bottom friction and depth-induced breaking.
    - [x] `W3SBT1` (`OceanTriton.W3SBT1`, from `w3sbt1md.F90:175-212`), the JONSWAP form, with
      the deep-water test and the loop's `EXIT` written as they are. P: `sbtD-sound`,
@@ -209,7 +227,12 @@ Done in this change ([`ww3-replay/`](../ww3-replay/README.md), `just ww3-replay`
 - [x] W3SDB1: S and D bit for bit, 864 values each, on all three captures. Only `surf` breaks
   (B ≈ 0.24, so Q0 = 0 and the fixed-point loop runs); the branches B > 0.5 and BB ≥ 1 and
   FDONLY false are not reached by these captures (ww3_ts1 sets FDONLY true) and have T only.
-- [ ] 4. The whole step against a regression test. Open: it needs ST4 and W3SRCE.
+- [x] ST4, W3SLN1, WAVNU1 and INSIN4's tables: every output bit for bit on the captures; the
+  rows of [`ww3-replay/README.md`](../ww3-replay/README.md) give the counts.
+- [x] A whole W3SRCE call (two passes of 30 s on the `deep` capture, DTG = 60 s), every kernel
+  chained by `ww3-replay/srce.py`: see [`ww3-replay/README.md`](../ww3-replay/README.md).
+- [ ] 4. The whole step against a regression test. Open: it needs propagation (W3WAVE's other
+  half) and more than one sea point.
 
 ## M6: GPU runs and timing
 

@@ -103,7 +103,7 @@ arrays and a lane count per launch. `EmitGather.agda` prints it into [`gather.py
 | `w3snl1` (11 launches) | WW3's W3SNL1 (the DIA), `w3snl1md.F90:335-414`: S and D | `snl1-S`, `snl1-D` |
 | `w3sdb1`, `w3sdb1_fdonly` (in [`sdb.py`](sdb.py)) | WW3's W3SDB1, `w3sdb1md.F90:223-280`, in float64 with a float32 D | `sdb-cbj`, `sdb-D`, `sdb-S` |
 
-The three WW3 routines are read from metocean/WW3 at tag `7.14.mos-92e2cf6`, commit `92e2cf66`;
+The three WW3 routines are read from MetOcean's fork at tag `7.14.mos-92e2cf6`, commit `92e2cf66`;
 each module's header lists the lines. They are transcriptions read by eye and proved against
 the transcription. W3SNL1's CONS and INSNL1's tables are inputs: the theorems hold for every
 value, and the test here uses synthetic tables in range.
@@ -123,6 +123,40 @@ The three are also compared with a running WW3 (the W mark of [`PLAN.md`](PLAN.m
 the regression test `ww3_ts1` with INSNL1's own tables, and replays the captures through these
 kernels. Their S and D are WW3's bit for bit.
 
+## WW3's ST4 and W3SRCE: the lane programs
+
+ST4 and the source term integration need what the gather language cannot say: `exp`, `log`,
+`tanh`, `sqrt`, `cos`, `sin`, `atan2` and real powers, indices computed from the lane, loops
+whose length depends on the lane, and integer tables. `agda/src/OceanTriton/Lanes.agda` is that
+language (`IE`, `FE`, `fold`, `fold2`, `bind`, `ix`), with its meaning `runL` over any `Model`
+of float32 arithmetic, and `EmitLanes.agda` prints a program as Triton kernels in
+[`lanes.py`](lanes.py). glibc's float32 functions, libmvec's `powf` and the CPU's `rcpps`, which
+WW3's `-O3` code calls, are written in Triton in [`libm.py`](libm.py) (hand-written, checked
+against the libraries by `libm.py --self-test`).
+
+| Program | Its meaning is | Theorems |
+|---|---|---|
+| `w3sds4` (7 launches) | WW3's W3SDS4, ST4 dissipation, `w3src4md.F90:1872-2599` | `sds4-S`, `sds4-D` |
+| `w3sin4` (7 launches) | WW3's W3SIN4, ST4 wind input with its stresses, `w3src4md.F90:424-906` | `sin4-S`, `sin4-D`, `sin4-LLWS`, `sin4-TAU` |
+| `w3spr4` (3 launches) | W3SPR4, ST4's means, with CALC_USTAR, `w3src4md.F90:143-385`, `:1738-1840` | `spr4-OUT` |
+| `w3sln1` | W3SLN1, the linear input, `w3sln1md.F90:176-199` | `sln1-S` |
+| `w3srce_step` (3 launches) | a pass of W3SRCE's dynamic integration: DAM, DT, the limiter, the new spectrum | `step-DAM`, `step-DTB`, `step-SPEC` |
+| `w3srce_tail` (2 launches) | the pass's FHIGH, NKH and the tail above NKH | `tail-FT`, `tail-SPEC` |
+| `w3srce_pass`, `w3srce_end` | W3SRCE's fluxes: PHIAW, PHIBBL, WHITECAP(3), the stresses, PHIOC, DTDYN, FCUT | `pass-FX`, `end-FX` |
+| `wavnu1` (2 launches) | WAVNU1, the dispersion relation from its table, `w3dispmd.F90:84-201` | `wavnu1-K`, `wavnu1-CG` |
+| `tabu_stress` | TABU_STRESS, ST4's friction velocity table, `w3src4md.F90:1188-1309` | `taut-T` |
+| `tabu_tauhf` | TABU_TAUHF, ST4's high-frequency stress table, `w3src4md.F90:1325-1477` | `tauhf-T` |
+| `tabu_tauhf2` (2 launches) | TABU_TAUHF2, the same table with the tail's sheltering and the 3-D TAUHFT2, `w3src4md.F90:1495-1720` | `tauhf2-T`, `tauhf2-T2` |
+| `insin4` (3 launches) | INSIN4's SATINDICES, SATWEIGHTS and CUMULW, which W3SDS4 reads, `w3src4md.F90:1032-1048`, `:1144-1172` | `sati-T`, `satw-T`, `cumulw-T` |
+
+Each theorem says, by refl, that the program computes the routine's transcription at every
+point, in every model; the transcription follows the optimised code gfortran -O3 makes at the
+pin (its GIMPLE), not the source read by eye, and each module's header says where the two
+differ. [`lanes_vectors.json`](lanes_vectors.json) holds the same routines in Agda's Float, and
+[`check_lanes.py`](check_lanes.py) compares the printed programs with them: 52 of 52 results
+within the budget. The same programs are replayed against a running WW3 in
+[`ww3-replay/`](../ww3-replay/README.md).
+
 ## What is not proved
 
 - **The printer.** No Triton semantics exists in Agda, so nothing proves that the printed Python
@@ -136,10 +170,11 @@ kernels. Their S and D are WW3's bit for bit.
   measured, not proved. On the test inputs the worst kernel uses 3% of it.
 - **The reduce kernels add in another order** than `sumTo`. The exact sum is the same; the
   rounded sum is not.
-- **Not yet WAVEWATCH III's numbers, except three routines.** The M0 to M2 kernels are those of
-  the reduced physics of `OceanWaves`. W3SBT1, W3SNL1 and W3SDB1 are WW3's own formulas, and their
-  kernels give WW3's numbers bit for bit on three captures of one regression test; that is a
-  measurement on those inputs, not a proof for every input. [`PLAN.md`](PLAN.md) has the milestones and checkpoints that
+- **WAVEWATCH III's numbers only for the WW3 routines.** The M0 to M2 kernels are those of the
+  reduced physics of `OceanWaves`. W3SBT1, W3SNL1, W3SDB1 and the ST4 programs above are WW3's
+  own formulas, and their kernels give WW3's numbers bit for bit on the captures of one
+  regression test ([`ww3-replay/`](../ww3-replay/README.md)); that is a measurement on those
+  inputs, not a proof for every input. [`PLAN.md`](PLAN.md) has the milestones and checkpoints that
   lead to WW3, and what "verified against WW3" will mean.
 - **The bisection in float32** takes the same branch as the exact one only when no midpoint is
   within rounding of the root's test. On the test inputs every branch is the same.
@@ -150,7 +185,7 @@ kernels. Their S and D are WW3's bit for bit.
 ## Run it
 
 ```bash
-just ocean-triton          # checks/ocean-triton.sh: files current, 21 kernels, 3 programs, 9 gather results and 7 W3SDB1 cases agree, self-test
+just ocean-triton          # checks/ocean-triton.sh: files current, 21 kernels, 3 programs, 9 gather results, 7 W3SDB1 cases and 52 lane-program results agree, self-test
 just ocean-triton-write    # print the eight generated files again after a change to the Agda
 just ocean-triton-cuda     # the same comparison on a CUDA GPU
 ```

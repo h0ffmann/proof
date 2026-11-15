@@ -2,7 +2,7 @@
 
 -- Milestone M4 of ocean-triton/PLAN.md: WAVEWATCH III's discrete interaction approximation of
 -- the quadruplet transfer, W3SNL1 (the DIA of Hasselmann et al. 1985), read from
--- model/src/w3snl1md.F90 of metocean/WW3 at tag 7.14.mos-92e2cf6, commit 92e2cf66, and written
+-- model/src/w3snl1md.F90 of MetOcean's fork at tag 7.14.mos-92e2cf6, commit 92e2cf66, and written
 -- here statement by statement. The routine, at that commit:
 --
 --     :335  CONX = TPIINV / SIG(IFR) * CG(IFR)                       IFR = 1 … NFR

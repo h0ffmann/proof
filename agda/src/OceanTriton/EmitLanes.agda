@@ -24,7 +24,7 @@
 -- and tl.sqrt are approximate on a GPU; the CPU interpreter computes both exactly either way.
 module OceanTriton.EmitLanes where
 
-open import Data.Fin using (Fin)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.List as L using (List; []; _∷_; _++_)
 open import Data.Nat using (ℕ; zero; suc)
 open import Data.Nat.Show using () renaming (show to showℕ)
@@ -56,6 +56,8 @@ module Print (σ : Sig) (P : Syntax.ProgL σ) where
   pyI ks m (p *ᵢ q)   = paren (pyI ks m p ⊕ " * " ⊕ pyI ks m q)
   pyI ks m (quot p q) = paren (pyI ks m p ⊕ " // " ⊕ pyI ks m q)
   pyI ks m (rem p q)  = paren (pyI ks m p ⊕ " % " ⊕ pyI ks m q)
+  pyI ks m (minᵢ p q) = "tl.minimum(" ⊕ pyI ks m p ⊕ ", " ⊕ pyI ks m q ⊕ ")"
+  pyI ks m (maxᵢ p q) = "tl.maximum(" ⊕ pyI ks m p ⊕ ", " ⊕ pyI ks m q ⊕ ")"
 
   private
     opPy : Op → String → String → String
@@ -123,6 +125,36 @@ module Print (σ : Sig) (P : Syntax.ProgL σ) where
     indent (s₁ ++ (r ⊕ " = tl.where(" ⊕ k ⊕ " < " ⊕ pyI ks m n ⊕ ", " ⊕ e₁ ⊕ ", " ⊕ r ⊕ ")") ∷ [])
     , r , c₁
     where k = "k" ⊕ showℕ c ; r = "r" ⊕ showℕ c
+
+  pyF ks rs m c (fold2 w b n e₁ e₂ b₁ b₂) with pyF ks rs m (suc c) e₁
+  ... | s₀ , x₀ , c₀ with pyF ks rs m c₀ e₂
+  ...   | s₀′ , y₀ , c₀′ with pyF (k ∷ ks) (r ∷ r′ ∷ rs) m′ c₀′ b₁
+    where k = "k" ⊕ showℕ c ; r = "r" ⊕ showℕ c ; r′ = "q" ⊕ showℕ c
+          m′ = paren (m ⊕ " & (" ⊕ "k" ⊕ showℕ c ⊕ " < " ⊕ pyI ks m n ⊕ ")")
+  ...     | s₁ , x₁ , c₁ with pyF (k ∷ ks) (r ∷ r′ ∷ rs) m′ c₁ b₂
+    where k = "k" ⊕ showℕ c ; r = "r" ⊕ showℕ c ; r′ = "q" ⊕ showℕ c
+          m′ = paren (m ⊕ " & (" ⊕ "k" ⊕ showℕ c ⊕ " < " ⊕ pyI ks m n ⊕ ")")
+  ...       | s₂ , y₁ , c₂ =
+    s₀ ++ s₀′ ++ (r ⊕ " = " ⊕ x₀ ⊕ " + zf") ∷ (r′ ⊕ " = " ⊕ y₀ ⊕ " + zf") ∷ ("for " ⊕ k ⊕ " in range(" ⊕ lookup iparams b ⊕ "):") ∷
+    indent (s₁ ++ s₂ ++ ("n" ⊕ r ⊕ " = " ⊕ x₁) ∷ ("n" ⊕ r′ ⊕ " = " ⊕ y₁)
+            ∷ (r ⊕ " = tl.where(" ⊕ k ⊕ " < " ⊕ pyI ks m n ⊕ ", n" ⊕ r ⊕ ", " ⊕ r ⊕ ")")
+            ∷ (r′ ⊕ " = tl.where(" ⊕ k ⊕ " < " ⊕ pyI ks m n ⊕ ", n" ⊕ r′ ⊕ ", " ⊕ r′ ⊕ ")") ∷ [])
+    , pickS w r r′ , c₂
+    where k = "k" ⊕ showℕ c ; r = "r" ⊕ showℕ c ; r′ = "q" ⊕ showℕ c
+          pickS : Fin 2 → String → String → String
+          pickS zero    a _ = a
+          pickS (suc _) _ b = b
+  pyF ks rs m c (bind e body) with pyF ks rs m (suc c) e
+  ... | s₀ , e₀ , c₀ with pyF ks (r ∷ rs) m c₀ body
+    where r = "b" ⊕ showℕ c
+  ...   | s₁ , e₁ , c₁ = s₀ ++ (r ⊕ " = " ⊕ e₀ ⊕ " + zf") ∷ s₁ , e₁ , c₁
+    where r = "b" ⊕ showℕ c
+  pyF ks rs m c (ix e body) with pyF ks rs m (suc c) e
+  ... | s₀ , e₀ , c₀ with pyF (k ∷ ks) rs m c₀ body
+    where k = "j" ⊕ showℕ c
+  ...   | s₁ , e₁ , c₁ = s₀ ++ (k ⊕ " = tl.maximum((" ⊕ e₀ ⊕ " + zf).to(tl.int32), 0)") ∷ s₁ , e₁ , c₁
+    where k = "j" ⊕ showℕ c
+  pyF ks rs m c (real e) = [] , "((" ⊕ pyI ks m e ⊕ ") + z).to(tl.float32)" , c
 
   args : String
   args = intersperse ", " (L.map (_⊕ "_ptr") (toList farrays) ++ L.map (_⊕ "_ptr") (toList iarrays)
