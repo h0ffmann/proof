@@ -1,7 +1,7 @@
 {-# OPTIONS --safe --without-K #-}
 
 -- Milestone M4 of ocean-triton/PLAN.md: WAVEWATCH III's bottom friction W3SBT1 (the JONSWAP
--- form), read from model/src/w3sbt1md.F90 of metocean/WW3 at tag 7.14.mos-92e2cf6, commit
+-- form), read from model/src/w3sbt1md.F90 of MetOcean's fork at tag 7.14.mos-92e2cf6, commit
 -- 92e2cf66, and written here line by line.
 --
 --     w3sbt1md.F90:175   IF ( DEPTH*WN(1) .GT. 6 ) THEN  D = 0.  S = 0.      (deep water)
