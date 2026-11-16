@@ -42,9 +42,10 @@ days, weekday :: Int -> Rational
 days = fromIntegral
 weekday t = fromIntegral (t `mod` 7)
 
-slotAudiences, weights :: [Rational]
+slotAudiences, weights, obs :: [Rational]
 slotAudiences = [6, 4, 2]
 weights = [1, 2, 1 / 2]
+obs = [1 / 9, 4 / 9, 1 / 9]
 
 tree :: Tree Rational
 tree = Node 0 (1 / 2) (Leaf (-1)) (Node 1 3 (Leaf 2) (Leaf 4))
@@ -98,6 +99,8 @@ specLines w =
   , q "ns-utility" (3 / 2) (nsUtility clip nsP [1])
   , q "ns-off" 1 (nsUtility clip nsP { w2 = [0] } [1])
   , q "resid-slot-1/9" (1 / 9) (sumL (resid (jcsShares weights) [1 / 9, 4 / 9, 1 / 9]))
+  , q "gradBias-fit-0" 0 (gradBias (jcsShares (invert obs)) obs)
+  , q "featureGrad-1/9" (1 / 9) (featureGrad [1, 2, 3] (jcsShares weights) obs)
   , q "pipeline-pool" 10 (poolHat nsModel slot1)
   , qs "pipeline-forecast" [50 / 9, 20 / 9] (forecastSlot nsModel slot1)
   , exact "pipeline-winner-0" (0 :: Int) (winner (forecastSlot nsModel slot1))

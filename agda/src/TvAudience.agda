@@ -18,5 +18,6 @@ import TvAudience.Trees
 import TvAudience.JcsTheory
 import TvAudience.Features
 import TvAudience.Neural
+import TvAudience.LogitFit
 import TvAudience.Pipeline
 import TvAudience.Examples

@@ -26,8 +26,8 @@ python3 tv-audience/python/experiment.py   # downloads mistralai/Timestral-209M 
 
 Without them the script prints `Timestral not run` and reports that arm as "not run".
 
-The metrics, baselines and share layer are also defined in Agda, with their properties proved;
-[`agda.md`](agda.md) says what is proved and what stays in the Python.
+The metrics, baselines, share layer and the logit fit's gradient are also defined in Agda, with
+their properties proved; [`agda.md`](agda.md) says what is proved and what stays in the Python.
 
 A Haskell pipeline runs the experiment as it is and computes its numbers again. They are every
 score of every model, the JCS forecasts from the fitted weights, the gradient of the logit fit,

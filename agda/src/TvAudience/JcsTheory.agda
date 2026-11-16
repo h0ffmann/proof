@@ -19,7 +19,8 @@
 -- * `jcs-pool-scale`: an error of the pool forecast by a factor c moves every channel's forecast
 --   by c, and leaves the shares and the winner (`TvAudience.Winner.jcs-winner`) as they were.
 --
--- The derivative ∂s/∂u = s (1 - s) of the logit's gradient needs the exponential and stays out.
+-- The derivative ∂s/∂u = s (1 - s) of the logit's gradient needs the exponential and stays out;
+-- the residual layer of the gradient is `TvAudience.LogitFit`.
 module TvAudience.JcsTheory where
 
 open import Data.List using (List; []; _∷_; map)

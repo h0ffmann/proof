@@ -15,7 +15,10 @@ Every Agda statement is about finite lists of exact rationals (`Data.Rational`),
   JCS are fitted by the Python (L-BFGS, Adam). Agda has no fitted weight. It proves what holds
   for every tree ensemble, every network and every set of utilities, so the theorems cover the
   fitted models too. Of training it states the logit layer's signal: the residual s - s_obs sums
-  over a slot to s₀,obs - s₀, and it is 0 at the weights that fit the observed shares.
+  over a slot to s₀,obs - s₀, and it is 0 at the weights that fit the observed shares;
+  [`LogitFit`](#modules-and-theorems) adds the gradient layer: at the exact fit every coordinate
+  of the unpenalised gradient is 0, with the L2 penalty a coordinate there is the penalty term
+  alone, and the exact fit is the only fit.
 - **Logarithms, exponentials and tanh.** ℚ has none of them. The models predict a log audience
   and forecast `exp(lag_mean + f(x))`, and JCS uses the weights `exp(u)`. The modules before
   `Pipeline` take the weights as numbers ≥ 0 and the level as a mean of whatever the series
@@ -48,6 +51,7 @@ Every Agda statement is about finite lists of exact rationals (`Data.Rational`),
 | `JcsTheory` | `stableShare`, `stableOutside` (`_softmax_out` after subtracting the largest utility), `invert` (shares to weights, s / s₀) | `jcs-odds` (share / outside share = weight, so the log-odds is u), `jcs-stable` and `jcs-stable-outside` (the stable form is the same share), `jcs-invert` and `jcs-invert-outside` (every slot of shares with a sum below 1 is fitted exactly), `jcs-diversion` (a channel that leaves gives its viewers to the rest in proportion, s / (1 - s_a)), `jcs-own` and `jcs-cross` (a larger weight raises the own share and lowers every rival's), `jcs-accounting` (channels + outside = pool forecast), `jcs-pool-scale` |
 | `Features` | `Programme`, `picks` (each channel with its rivals), `slotFeatures`: `n_same_genre`, `rival_sum_hype`, `rival_max_hype`, `rival_big` | `picks-length`, `picks-rivals` (C - 1 rivals each), `picks-sum` (own hype + rivals' = the slot's), `picks-max` (rivals' max ≤ the slot's), `nSameGenre-le`, `alone` |
 | `Neural` | `dot`, `dense`, `standardise`, `NsParams`, `nsUtility` (w·z + b + W2·act(W1 z + b1)), `resid` | `ns-nests-jcs` (W2 = 0 gives the JCS utility), `ns-bounded` (an activation within [-1, 1] moves u by at most Σ \|W2\|), `unstandardise-standardise`, `resid-slot`, `resid-fit` |
+| `LogitFit` | `gradBias` (Σ resid), `featureGrad` (Σ resid · z, one column of Z) | `gradBias-fit` and `featureGrad-fit` (at the exact fit of the observed shares every coordinate of the unpenalised gradient is 0), `l2-coordinate` (with the L2 penalty a coordinate there is the penalty term 2λw alone), `l2-stationary-zero` (if the penalised gradient is 0 at an exact fit, the coefficient is 0), `fit-unique` (the exact fit is the only one: equal shares give equal weights) |
 | `Pipeline` | `ExpLike`, `channelRaw`, `slotZ` (line-up and own features to standardised z), `Model`, `poolHat` (exp of level + trees), `forecastSlot`, `pipelineWape`, `againstPoolHat`, `winners` | for every model and input: `weights-nonneg`, `poolHat-pos`, `pipeline-coherent`, `pipeline-accounting`, `pipeline-countOver` (0 against the pool forecast), `winner-mono`, `pipeline-winner` (the winner is the largest utility, whatever the pool model), `pipeline-nests` (the neurosymbolic pipeline with W2 = 0 is the JCS pipeline) |
 | `Examples` | a slot of three channels, a JCS slot, a tree, a line-up, a one-unit network, a two-channel pipeline | every definition by `refl`: WAPE 3/20 in millions and in thousands, the JCS shares 2/9, 4/9, 1/9 with outside 2/9, a rival that takes the first channel from 2/9 to 1/6, shares 1/4 and 1/4 from weights 1/2 and 1/2, a pipeline that forecasts 50/9 and 20/9 from a pool of 10 (5 and 5/2 with the network off) |
 
@@ -59,9 +63,10 @@ with the observed pool, so its 0.0 % for JCS is a measurement, not this theorem.
 ```bash
 bash checks/agda.sh          # every Agda root type-checks, TvAudience among them (nix develop .#agda)
 bash checks/tv-audience.sh   # the tool: self-test, then the spec, data and table checks
+bash checks/tv-z3.sh         # Z3 re-checks the theorems at two or three channels (tools/tv-z3/)
 ```
 
-The tool prints one line for each number. The spec check computes the 42 examples of
+The tool prints one line for each number. The spec check computes the 44 examples of
 `Examples.agda` on `Rational` and needs each one to be equal. The data check reads the 8208 test
 rows, which [`export.py`](../tools/tv-audience/export.py) writes from the Python's own `simulate`
 and `build_features` (`nix develop .#data`). On them it computes the seasonal naive WAPE of all
