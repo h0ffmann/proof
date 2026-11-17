@@ -13,6 +13,7 @@ module TvAudience
   , stableShare, invert
   , Programme (..), Rival (..), picks, slotFeatures
   , dot, dense, NsParams (..), nsUtility, resid
+  , gradBias, featureGrad
   , Model (..), SlotIn (..), poolHat, forecastSlot, withoutNetwork, pipelineWape
   ) where
 
@@ -184,6 +185,14 @@ nsUtility act p z = (dot (w p) z + b p) + dot (w2 p) (map act (dense (w1 p) (b1 
 
 resid :: Num a => [a] -> [a] -> [a]
 resid = zipWith (-)
+
+-- LogitFit.agda ------------------------------------------------------------------------------
+
+gradBias :: Num a => [a] -> [a] -> a
+gradBias ss os = sumL (resid ss os)
+
+featureGrad :: Num a => [a] -> [a] -> [a] -> a
+featureGrad z ss os = dot (resid ss os) z
 
 -- Pipeline.agda ------------------------------------------------------------------------------
 

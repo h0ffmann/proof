@@ -24,6 +24,7 @@ open import TvAudience.Trees
 open import TvAudience.JcsTheory
 open import TvAudience.Features
 open import TvAudience.Neural
+open import TvAudience.LogitFit
 open import TvAudience.Pipeline
 open import Data.Rational using (_⊓_)
 open import Data.Rational.Properties using (_≤?_)
@@ -202,6 +203,23 @@ ns-off = refl
 -- Shares 2/9, 4/9, 1/9 against observed 1/9, 4/9, 1/9: the residuals add up to 1/9 = s₀,obs - s₀.
 resid-slot-1/9 : sum (resid (jcsShares weights) (+ 1 / 9 ∷ + 4 / 9 ∷ + 1 / 9 ∷ [])) ≡ + 1 / 9
 resid-slot-1/9 = refl
+
+-- ---------------------------------------------------------------------------------------------
+-- The logit fit
+
+-- The same observed shares, with the rest on the outside option.
+observed : List ℚ
+observed = + 1 / 9 ∷ + 4 / 9 ∷ + 1 / 9 ∷ []
+
+-- The exact fit (weights 1/3, 4/3, 1/3) has residual 0 on every channel, so both gradient
+-- coordinates are 0 there.
+gradBias-fit-0 : gradBias (jcsShares (invert observed)) observed ≡ 0ℚ
+gradBias-fit-0 = refl
+
+-- One feature coordinate of the running slot: the first channel's residual 2/9 - 1/9 = 1/9 times
+-- its feature 1.
+featureGrad-1/9 : featureGrad (1ℚ ∷ + 2 / 1 ∷ + 3 / 1 ∷ []) (jcsShares weights) observed ≡ + 1 / 9
+featureGrad-1/9 = refl
 
 -- ---------------------------------------------------------------------------------------------
 -- The pipeline
